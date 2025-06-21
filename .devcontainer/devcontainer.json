@@ -1,0 +1,34 @@
+{
+  "name": "ado.fan Dev Container",
+  "context": "..",
+  "dockerFile": "../Dockerfile",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "editor.formatOnSave": true
+      },
+      "extensions": [
+        "EditorConfig.EditorConfig",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "prisma.prisma",
+        "ms-vscode.vscode-typescript-next",
+        "GraphQL.vscode-graphql",
+        "GraphQL.vscode-graphql-syntax",
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "apollographql.vscode-apollo"
+      ]
+    }
+  },
+  "postCreateCommand": {
+    "server": "npm start",
+    "db": "npm run db:provision"
+  },
+  "forwardPorts": [3000],
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+  ],
+  "remoteUser": "node"
+}
