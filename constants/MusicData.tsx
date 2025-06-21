@@ -10,6 +10,22 @@ const prisma = new PrismaClient();
 export async function getAllSongs(): Promise<Song[]> {
   const db = await prisma.song.findMany({
     orderBy: { releaseDate: "desc" },
+    select: {
+      id: true,
+      titleEnglish: true,
+      titleJapanese: true,
+      lyricsJapanese: true,
+      lyricsRomaji: true,
+      lyricsEnglish: true,
+      length: true,
+      year: true,
+      releaseDate: true,
+      description: true,
+      nicoId: true,
+      youtubeId: true,
+      coverArt: true,
+      themeColor: true,
+    },
   });
 
   return db.map((song) => ({
@@ -27,6 +43,7 @@ export async function getAllSongs(): Promise<Song[]> {
     nicoId: song.nicoId,
     youtubeId: song.youtubeId,
     coverArt: song.coverArt,
+    themeColor: song.themeColor || undefined,
   }));
 }
 
@@ -34,7 +51,25 @@ export async function getAllSongs(): Promise<Song[]> {
  * Fetch specific songs by their IDs, preserving the given order.
  */
 export async function getSongsByIds(ids: string[]): Promise<Song[]> {
-  const db = await prisma.song.findMany({ where: { id: { in: ids } } });
+  const db = await prisma.song.findMany({
+    where: { id: { in: ids } },
+    select: {
+      id: true,
+      titleEnglish: true,
+      titleJapanese: true,
+      lyricsJapanese: true,
+      lyricsRomaji: true,
+      lyricsEnglish: true,
+      length: true,
+      year: true,
+      releaseDate: true,
+      description: true,
+      nicoId: true,
+      youtubeId: true,
+      coverArt: true,
+      themeColor: true,
+    },
+  });
 
   return ids.map((id) => {
     const song = db.find((r) => r.id === id);
@@ -54,6 +89,7 @@ export async function getSongsByIds(ids: string[]): Promise<Song[]> {
       nicoId: song.nicoId,
       youtubeId: song.youtubeId,
       coverArt: song.coverArt,
+      themeColor: song.themeColor || undefined,
     };
   });
 }
@@ -66,7 +102,24 @@ export async function getAllAlbums(): Promise<Album[]> {
     include: {
       tracks: {
         include: {
-          song: true,
+          song: {
+            select: {
+              id: true,
+              titleEnglish: true,
+              titleJapanese: true,
+              lyricsJapanese: true,
+              lyricsRomaji: true,
+              lyricsEnglish: true,
+              length: true,
+              year: true,
+              releaseDate: true,
+              description: true,
+              nicoId: true,
+              youtubeId: true,
+              coverArt: true,
+              themeColor: true,
+            },
+          },
         },
       },
     },
@@ -101,6 +154,7 @@ export async function getAllAlbums(): Promise<Album[]> {
           english: track.song.lyricsEnglish,
         },
         year: track.song.year,
+        themeColor: track.song.themeColor || undefined,
       },
       trackNumber: track.trackNumber,
       isBonusTrack: track.isBonusTrack || undefined,
@@ -113,7 +167,26 @@ export async function getSongsBySection(id: string): Promise<Song[]> {
     where: { id },
     include: {
       items: {
-        include: { song: true },
+        include: {
+          song: {
+            select: {
+              id: true,
+              titleEnglish: true,
+              titleJapanese: true,
+              lyricsJapanese: true,
+              lyricsRomaji: true,
+              lyricsEnglish: true,
+              length: true,
+              year: true,
+              releaseDate: true,
+              description: true,
+              nicoId: true,
+              youtubeId: true,
+              coverArt: true,
+              themeColor: true,
+            },
+          },
+        },
         orderBy: { order: "asc" },
       },
     },
@@ -136,6 +209,7 @@ export async function getSongsBySection(id: string): Promise<Song[]> {
     nicoId: song.nicoId,
     youtubeId: song.youtubeId,
     coverArt: song.coverArt,
+    themeColor: song.themeColor || undefined,
   }));
 }
 

@@ -66,7 +66,7 @@ export const fanLinks: SocialLink[] = [
   },
   {
     name: "Discord",
-    url: "https://discord.com/invite/qNU3sQcYUJ",
+    url: "https://discord.gg/ado1024",
     icon: <FontAwesomeIcon icon={faDiscord} className="h-5 w-5" />,
     description:
       "Join the Ado Hangout server in Discord to connect with other Ado fans",
