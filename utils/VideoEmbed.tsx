@@ -1,6 +1,6 @@
 import React from "react";
 
-import type { Song } from "@/constants/MusicData";
+import { Song } from "@/types/Music";
 
 export function YouTubePlayer({ song }: Readonly<{ song: Song }>) {
   if (!song.youtubeId) return null;

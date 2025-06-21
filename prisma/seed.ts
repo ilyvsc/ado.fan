@@ -22,6 +22,7 @@ interface Song {
   nicoId?: string | null;
   youtubeId?: string | null;
   coverArt: string;
+  themeColor?: string;
 }
 
 interface SongData {
@@ -38,6 +39,7 @@ interface SongData {
   nicoId: string;
   youtubeId: string;
   coverArt: string;
+  themeColor?: string;
 }
 
 interface AlbumDefinition {
@@ -96,6 +98,7 @@ function transformSongData(songsRaw: Song[]): SongData[] {
     nicoId: s.nicoId ?? "",
     youtubeId: s.youtubeId ?? "",
     coverArt: s.coverArt,
+    themeColor: s.themeColor,
   }));
 }
 
@@ -188,24 +191,44 @@ function getAlbumDefinitions(): AlbumDefinition[] {
 
 async function seedSongs(songs: SongData[]) {
   console.log(`Seeding ${songs.length} songs…`);
-  await prisma.song.createMany({
-    data: songs.map((s) => ({
-      id: s.id,
-      titleEnglish: s.titleEnglish,
-      titleJapanese: s.titleJapanese,
-      lyricsJapanese: s.lyricsJapanese,
-      lyricsRomaji: s.lyricsRomaji,
-      lyricsEnglish: s.lyricsEnglish,
-      length: s.length.toString(),
-      year: s.year,
-      releaseDate: new Date(s.releaseDate),
-      description: s.description,
-      nicoId: s.nicoId,
-      youtubeId: s.youtubeId,
-      coverArt: s.coverArt,
-    })),
-    skipDuplicates: true,
-  });
+
+  for (const s of songs) {
+    await prisma.song.upsert({
+      where: { id: s.id },
+      update: {
+        titleEnglish: s.titleEnglish,
+        titleJapanese: s.titleJapanese,
+        lyricsJapanese: s.lyricsJapanese,
+        lyricsRomaji: s.lyricsRomaji,
+        lyricsEnglish: s.lyricsEnglish,
+        length: s.length.toString(),
+        year: s.year,
+        releaseDate: new Date(s.releaseDate),
+        description: s.description,
+        nicoId: s.nicoId,
+        youtubeId: s.youtubeId,
+        coverArt: s.coverArt,
+        themeColor: s.themeColor,
+      },
+      create: {
+        id: s.id,
+        titleEnglish: s.titleEnglish,
+        titleJapanese: s.titleJapanese,
+        lyricsJapanese: s.lyricsJapanese,
+        lyricsRomaji: s.lyricsRomaji,
+        lyricsEnglish: s.lyricsEnglish,
+        length: s.length.toString(),
+        year: s.year,
+        releaseDate: new Date(s.releaseDate),
+        description: s.description,
+        nicoId: s.nicoId,
+        youtubeId: s.youtubeId,
+        coverArt: s.coverArt,
+        themeColor: s.themeColor,
+      },
+    });
+  }
+
   console.log("🎉 Songs seeded!");
 }
 

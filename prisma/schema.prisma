@@ -23,6 +23,7 @@ model Song {
   coverArt       String
   albumTracks    AlbumTrack[]
   SectionItem    SectionItem[]
+  themeColor     String?
 }
 
 model Album {
