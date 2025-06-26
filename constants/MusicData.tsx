@@ -1,34 +1,32 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 import { Album, Song } from "@/types/Music";
+import { prisma } from "@/utils/lib/prisma";
 
-const prisma = new PrismaClient();
+const songSelect = {
+  id: true,
+  titleEnglish: true,
+  titleJapanese: true,
+  lyricsJapanese: true,
+  lyricsRomaji: true,
+  lyricsEnglish: true,
+  length: true,
+  year: true,
+  releaseDate: true,
+  description: true,
+  nicoId: true,
+  youtubeId: true,
+  coverArt: true,
+  themeColor: true,
+};
 
 /**
- * Fetch all songs from the database.
+ * Transform a Prisma song object to the application's Song type.
  */
-export async function getAllSongs(): Promise<Song[]> {
-  const db = await prisma.song.findMany({
-    orderBy: { releaseDate: "desc" },
-    select: {
-      id: true,
-      titleEnglish: true,
-      titleJapanese: true,
-      lyricsJapanese: true,
-      lyricsRomaji: true,
-      lyricsEnglish: true,
-      length: true,
-      year: true,
-      releaseDate: true,
-      description: true,
-      nicoId: true,
-      youtubeId: true,
-      coverArt: true,
-      themeColor: true,
-    },
-  });
-
-  return db.map((song) => ({
+function transformSong(
+  song: Prisma.SongGetPayload<{ select: typeof songSelect }>,
+): Song {
+  return {
     id: song.id,
     title: { english: song.titleEnglish, japanese: song.titleJapanese },
     lyrics: {
@@ -44,53 +42,34 @@ export async function getAllSongs(): Promise<Song[]> {
     youtubeId: song.youtubeId,
     coverArt: song.coverArt,
     themeColor: song.themeColor || undefined,
-  }));
+  };
+}
+
+/**
+ * Fetch all songs from the database.
+ */
+export async function getAllSongs(): Promise<Song[]> {
+  const songs = await prisma.song.findMany({
+    orderBy: { releaseDate: "desc" },
+    select: songSelect,
+  });
+  return songs.map(transformSong);
 }
 
 /**
  * Fetch specific songs by their IDs, preserving the given order.
  */
 export async function getSongsByIds(ids: string[]): Promise<Song[]> {
-  const db = await prisma.song.findMany({
+  const songs = await prisma.song.findMany({
     where: { id: { in: ids } },
-    select: {
-      id: true,
-      titleEnglish: true,
-      titleJapanese: true,
-      lyricsJapanese: true,
-      lyricsRomaji: true,
-      lyricsEnglish: true,
-      length: true,
-      year: true,
-      releaseDate: true,
-      description: true,
-      nicoId: true,
-      youtubeId: true,
-      coverArt: true,
-      themeColor: true,
-    },
+    select: songSelect,
   });
 
+  const songMap = new Map(songs.map((s) => [s.id, s]));
   return ids.map((id) => {
-    const song = db.find((r) => r.id === id);
+    const song = songMap.get(id);
     if (!song) throw new Error(`Song with ID "${id}" not found.`);
-    return {
-      id: song.id,
-      title: { english: song.titleEnglish, japanese: song.titleJapanese },
-      lyrics: {
-        japanese: song.lyricsJapanese,
-        romaji: song.lyricsRomaji,
-        english: song.lyricsEnglish,
-      },
-      length: song.length,
-      year: song.year,
-      releaseDate: song.releaseDate.toISOString().split("T")[0],
-      description: song.description,
-      nicoId: song.nicoId,
-      youtubeId: song.youtubeId,
-      coverArt: song.coverArt,
-      themeColor: song.themeColor || undefined,
-    };
+    return transformSong(song);
   });
 }
 
@@ -98,35 +77,19 @@ export async function getSongsByIds(ids: string[]): Promise<Song[]> {
  * Fetch all albums with their tracks.
  */
 export async function getAllAlbums(): Promise<Album[]> {
-  const db = await prisma.album.findMany({
+  const albums = await prisma.album.findMany({
     include: {
       tracks: {
         include: {
-          song: {
-            select: {
-              id: true,
-              titleEnglish: true,
-              titleJapanese: true,
-              lyricsJapanese: true,
-              lyricsRomaji: true,
-              lyricsEnglish: true,
-              length: true,
-              year: true,
-              releaseDate: true,
-              description: true,
-              nicoId: true,
-              youtubeId: true,
-              coverArt: true,
-              themeColor: true,
-            },
-          },
+          song: { select: songSelect },
         },
+        orderBy: { trackNumber: "asc" },
       },
     },
     orderBy: { releaseDate: "desc" },
   });
 
-  return db.map((album) => ({
+  return albums.map((album) => ({
     id: album.id,
     title: {
       english: album.titleEnglish,
@@ -136,56 +99,23 @@ export async function getAllAlbums(): Promise<Album[]> {
     type: album.type,
     coverArt: album.coverArt,
     tracks: album.tracks.map((track) => ({
-      song: {
-        id: track.song.id,
-        title: {
-          english: track.song.titleEnglish,
-          japanese: track.song.titleJapanese,
-        },
-        length: track.song.length,
-        releaseDate: track.song.releaseDate.toISOString().split("T")[0],
-        description: track.song.description,
-        youtubeId: track.song.youtubeId,
-        nicoId: track.song.nicoId,
-        coverArt: track.song.coverArt,
-        lyrics: {
-          japanese: track.song.lyricsJapanese,
-          romaji: track.song.lyricsRomaji,
-          english: track.song.lyricsEnglish,
-        },
-        year: track.song.year,
-        themeColor: track.song.themeColor || undefined,
-      },
+      song: transformSong(track.song),
       trackNumber: track.trackNumber,
       isBonusTrack: track.isBonusTrack || undefined,
     })),
   }));
 }
 
+/**
+ * Fetch songs by section.
+ */
 export async function getSongsBySection(id: string): Promise<Song[]> {
   const section = await prisma.section.findUnique({
     where: { id },
     include: {
       items: {
         include: {
-          song: {
-            select: {
-              id: true,
-              titleEnglish: true,
-              titleJapanese: true,
-              lyricsJapanese: true,
-              lyricsRomaji: true,
-              lyricsEnglish: true,
-              length: true,
-              year: true,
-              releaseDate: true,
-              description: true,
-              nicoId: true,
-              youtubeId: true,
-              coverArt: true,
-              themeColor: true,
-            },
-          },
+          song: { select: songSelect },
         },
         orderBy: { order: "asc" },
       },
@@ -194,23 +124,7 @@ export async function getSongsBySection(id: string): Promise<Song[]> {
 
   if (!section) return [];
 
-  return section.items.map(({ song }) => ({
-    id: song.id,
-    title: { english: song.titleEnglish, japanese: song.titleJapanese },
-    lyrics: {
-      japanese: song.lyricsJapanese,
-      romaji: song.lyricsRomaji,
-      english: song.lyricsEnglish,
-    },
-    length: song.length,
-    year: song.year,
-    releaseDate: song.releaseDate.toISOString().split("T")[0],
-    description: song.description,
-    nicoId: song.nicoId,
-    youtubeId: song.youtubeId,
-    coverArt: song.coverArt,
-    themeColor: song.themeColor || undefined,
-  }));
+  return section.items.map(({ song }) => transformSong(song));
 }
 
 /**
