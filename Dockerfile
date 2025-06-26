@@ -1,32 +1,47 @@
-FROM node:24-alpine AS builder
+FROM node:24.5.0-alpine AS base
+RUN npm install -g pnpm
+WORKDIR /workspace
 
+# Development stage
+FROM base AS development
+COPY package.json pnpm-lock.yaml* ./
+RUN pnpm install
+
+COPY prisma ./prisma/
+RUN pnpm exec prisma generate
+
+CMD ["pnpm", "run", "dev"]
+
+# Builder stage
+FROM base AS builder
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml* ./
+RUN pnpm install --prod
+
+ENV DATABASE_URL="file:./dev.db"
+
 COPY prisma ./prisma/
-
-ENV DATABASE_URL=""
-
-RUN npm install
-RUN npx prisma generate
+RUN pnpm exec prisma generate
 
 COPY . .
 
-RUN npm run build
+RUN pnpm run build
 
-FROM node:24-alpine
-
+# Production stage
+FROM base AS production
 WORKDIR /app
 
-COPY --from=builder /app/package*.json ./
+ENV NODE_ENV=production
+
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/pnpm-lock.yaml ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/next.config.mjs ./next.config.mjs
 
-ENV NODE_ENV=production
-
 EXPOSE 3000
 
-CMD ["sh", "-c", "npx prisma generate && npm run db:deploy && npm run start"]
+CMD ["sh", "-c", "pnpm exec prisma generate && pnpm run db:deploy && pnpm run start"]

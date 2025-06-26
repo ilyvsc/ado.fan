@@ -1,13 +1,13 @@
 services:
   postgres:
-    image: postgres:latest
-    container_name: postgres
+    image: postgres:16.3-alpine
+    container_name: ado_postgres_dev
     environment:
       POSTGRES_DB: prisma
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER:-postgres}"]
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
@@ -19,16 +19,18 @@ services:
 
   web:
     build:
-      context: "."
+      context: .
       dockerfile: Dockerfile
-    image: ado
-    container_name: ado-web
+      target: development
+    container_name: ado_web_dev
     environment:
-      DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@postgres:5432/prisma
-    stdin_open: true
-    tty: true # Keeps the container running for debugging
+      DATABASE_URL: postgresql://${DATABASE_USER:-postgres}:${DATABASE_PASSWORD:-postgres}@postgres.local:5432/prisma
+    volumes:
+      - .:/workspace:cached
+      - node_modules:/workspace/node_modules
     ports:
       - 3000:3000
+      - 5555:5555 # For Prisma Studio
     networks:
       - ado_dev
     depends_on:
@@ -36,6 +38,8 @@ services:
         condition: service_healthy
     restart: always
     hostname: ado.local
+    stdin_open: true # Keep the container running
+    tty: true
 
 networks:
   ado_dev:
@@ -43,3 +47,4 @@ networks:
 
 volumes:
   postgres-data:
+  node_modules:
