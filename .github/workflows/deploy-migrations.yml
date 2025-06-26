@@ -1,4 +1,4 @@
-name: Build
+name: Deploy Migrations
 on:
   push:
     paths:
@@ -12,19 +12,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
 
-      - name: Apply code style correction
-        run: npx prettier --check .
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: npm install --include=dev
+        run: pnpm install --frozen-lockfile
 
       - name: Apply all pending migrations to the database
-        run: npx prisma migrate deploy
+        run: pnpm exec prisma migrate deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
