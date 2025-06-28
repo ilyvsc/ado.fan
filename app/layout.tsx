@@ -37,7 +37,7 @@ export default function RootLayout({
         <meta name="color-scheme" content="dark light" />
       </head>
 
-      <body className={`${inter.className} h-full`}>
+      <body className={`${inter.className} h-full`} suppressHydrationWarning>
         <NoScriptError />
 
         <div className="js-required">
