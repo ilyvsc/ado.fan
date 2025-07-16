@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+
 import Link from "next/link";
 import React from "react";
 
@@ -11,30 +12,29 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 import { fanLinks, officialLinks } from "@/constants/SocialLinks";
 
 export function ConnectSection() {
   return (
-    <section className="relative overflow-hidden bg-ado-key/5 py-20">
+    <section className="relative flex min-h-screen w-full flex-col justify-center overflow-hidden bg-ado-key/5 py-20 sm:items-center">
       <div className="container mx-auto px-4">
         <motion.h2
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-6 text-center text-4xl font-bold text-foreground md:text-5xl"
+          className="mb-6 text-center text-4xl leading-tight font-black text-foreground uppercase md:text-6xl"
         >
-          Connect with Ado
+          Adomination
         </motion.h2>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="mx-auto mb-12 max-w-xl text-center text-accent-foreground"
+          className="mx-auto mb-8 max-w-2xl text-center text-lg text-muted-foreground md:text-2xl"
         >
           Follow official accounts or join vibrant fan communities to celebrate
-          together!
+          together while supporting Ado's music!
         </motion.p>
 
         <Tabs defaultValue="official" className="mx-auto w-full max-w-4xl">

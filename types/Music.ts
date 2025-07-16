@@ -16,6 +16,7 @@ export type Song = {
   nicoId?: string | null;
   youtubeId?: string | null;
   coverArt: string;
+  themeColor?: string;
 };
 
 export type Album = {

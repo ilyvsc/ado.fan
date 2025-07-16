@@ -1,6 +1,7 @@
 "use client";
 
-import { Variants, motion, useAnimation, useInView } from "framer-motion";
+import { motion, useAnimation, useInView, Variants } from "framer-motion";
+
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -64,7 +65,7 @@ export function HeroSection() {
   return (
     <section
       ref={ref}
-      className="relative flex h-screen items-center justify-center overflow-hidden bg-black"
+      className="relative flex min-h-[100dvh] w-full items-center justify-center overflow-hidden bg-black"
     >
       <motion.div
         initial="initial"
@@ -72,7 +73,6 @@ export function HeroSection() {
         variants={backgroundVariants}
         className="absolute inset-0 z-0 overflow-hidden"
         style={{
-          opacity: 1,
           willChange: "transform, filter",
         }}
       >
@@ -84,7 +84,7 @@ export function HeroSection() {
           className="h-full w-full object-cover"
           onLoad={() => setImageLoaded(true)}
           sizes="100vw"
-          quality={75}
+          quality={85}
         />
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-background"></div>
@@ -93,30 +93,30 @@ export function HeroSection() {
         initial="initial"
         animate={contentControls}
         variants={contentVariants}
-        className="z-20 px-6 text-center flex flex-col items-center"
+        className="z-20 flex flex-col items-center px-6 py-20 text-center"
       >
-        <motion.div variants={itemVariants} className="mb-4">
+        <motion.div variants={itemVariants} className="mb-8">
           <Image
             src="https://sp.universal-music.co.jp/ado/5thanniversary/assets/images/img-icon.png"
             alt="Ado Logo"
-            width={80}
-            height={80}
-            className="h-32 w-32 md:h-40 md:w-40 object-contain"
+            width={128}
+            height={128}
+            className="h-32 w-32 object-contain md:h-48 md:w-48"
             priority
-            sizes="(max-width: 768px) 128px, 160px"
+            sizes="(max-width: 768px) 128px, 192px"
           />
         </motion.div>
 
         <motion.h1
           variants={itemVariants}
-          className="text-4xl font-extrabold tracking-tight text-white drop-shadow-lg sm:text-5xl md:text-6xl lg:text-7xl"
+          className="text-3xl font-black text-white uppercase drop-shadow-lg sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
         >
           <span className="sr-only">Ado --</span>The Voice That Shook Japan
         </motion.h1>
 
         <motion.p
           variants={itemVariants}
-          className="mx-auto mt-6 max-w-3xl text-md leading-relaxed md:text-2xl text-white"
+          className="mx-auto mt-8 max-w-4xl text-lg leading-relaxed text-white/80 md:text-xl lg:text-2xl xl:text-3xl"
         >
           A force of nature. A whirlwind of raw emotion. A voice that defies
           expectations and leaves hearts trembling in its wake.
