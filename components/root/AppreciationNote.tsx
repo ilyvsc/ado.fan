@@ -1,11 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { HeartHandshake } from "lucide-react";
+
 import React from "react";
 
 export function FanAppreciation() {
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: {
       opacity: 1,
@@ -15,13 +16,13 @@ export function FanAppreciation() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-ado-key/10 to-transparent py-20">
-      <div className="absolute top-0 left-1/3 w-72 h-72 bg-ado-key/20 rounded-full filter blur-3xl animate-[spin_30s_linear_infinite]" />
-      <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-ado-key/30 rounded-full filter blur-2xl animate-[spin_25s_reverse_linear_infinite]" />
+    <section className="relative overflow-hidden bg-transparent py-20">
+      <div className="absolute top-0 left-1/3 h-96 w-96 animate-[spin_40s_linear_infinite] rounded-full bg-ado-blue/20 blur-3xl filter" />
+      <div className="absolute right-1/4 bottom-0 h-80 w-80 animate-[spin_35s_reverse_linear_infinite] rounded-full bg-ado-red/20 blur-3xl filter" />
 
       <div className="container mx-auto px-4 text-center">
         <motion.div
-          className="relative mx-auto max-w-4xl rounded-3xl bg-white/30 dark:bg-slate-800/30 p-12 backdrop-blur-md shadow-2xl"
+          className="relative mx-auto w-fit rounded-3xl border border-white/10 bg-card/50 p-6 shadow-2xl backdrop-blur-xl md:p-12"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -34,11 +35,11 @@ export function FanAppreciation() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <HeartHandshake className="mx-auto size-14 md:size-24 text-ado-key" />
+            <HeartHandshake className="mx-auto size-20 text-ado-key md:size-28" />
           </motion.div>
 
           <motion.h2
-            className="mb-8 text-4xl font-bold text-foreground md:text-5xl"
+            className="mb-8 text-3xl font-black tracking-tighter text-foreground uppercase md:text-5xl"
             initial={{ opacity: 0, y: -16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -48,7 +49,7 @@ export function FanAppreciation() {
           </motion.h2>
 
           <motion.p
-            className="mb-12 text-md leading-snug text-foreground italic md:text-2xl"
+            className="mx-auto mb-8 max-w-5xl text-lg leading-relaxed text-foreground/90 italic md:text-3xl"
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -60,7 +61,7 @@ export function FanAppreciation() {
           </motion.p>
 
           <motion.p
-            className="text-sm text-foreground/80 md:text-lg"
+            className="text-md mx-auto max-w-3xl text-foreground/80 md:text-xl"
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -73,7 +74,7 @@ export function FanAppreciation() {
             <span className="font-semibold text-ado-key">
               "One Piece Film: Red"
             </span>{" "}
-            , further cementing her status as a musical phenomenon.
+            further cementing her status as a musical phenomenon.
           </motion.p>
         </motion.div>
       </div>

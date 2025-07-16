@@ -5,7 +5,6 @@ import React from "react";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 import { Album } from "@/types/Music";
 
 interface DiscographyClientProps {
@@ -14,17 +13,14 @@ interface DiscographyClientProps {
 
 export function DiscographyClient({ albums }: DiscographyClientProps) {
   return (
-    <div className="space-y-16 mb-16">
+    <div className="mb-16 space-y-16">
       <Tabs defaultValue={albums[0]?.id || ""} className="w-full">
-        <TabsList className="mx-auto flex flex-wrap justify-left gap-2 p-2">
+        <TabsList className="justify-left mx-auto flex flex-wrap gap-2 p-2">
           {albums.map((album) => (
             <TabsTrigger
               key={album.id}
               value={album.id}
-              className="
-                rounded-md border border-foreground/20 bg-transparent p-4 text-sm font-semibold text-foreground
-                transition-colors hover:bg-foreground/10 data-[state=active]:border-ado-key data-[state=active]:bg-ado-key data-[state=active]:text-white
-              "
+              className="rounded-md border border-foreground/20 bg-transparent p-4 text-sm font-semibold text-foreground transition-colors hover:bg-foreground/10 data-[state=active]:border-ado-key data-[state=active]:bg-ado-key data-[state=active]:text-white"
             >
               {album.title.english}
             </TabsTrigger>
@@ -35,7 +31,7 @@ export function DiscographyClient({ albums }: DiscographyClientProps) {
           <TabsContent
             key={album.id}
             value={album.id}
-            className="mt-16 md:mt-10 space-y-12"
+            className="mt-16 space-y-12 md:mt-10"
           >
             <div className="flex flex-col items-start gap-8 md:flex-row">
               <div className="relative h-40 w-40 shrink-0 overflow-hidden rounded-xl shadow-lg md:h-48 md:w-48">
@@ -57,7 +53,7 @@ export function DiscographyClient({ albums }: DiscographyClientProps) {
                     </span>
                   )}
                 </h2>
-                <p className="text-lg text-accent-foreground">
+                <p className="text-accent-foreground text-lg">
                   Released:{" "}
                   <span className="font-semibold">{album.releaseDate}</span> •{" "}
                   <span className="font-semibold">{album.tracks.length}</span>{" "}
@@ -71,9 +67,7 @@ export function DiscographyClient({ albums }: DiscographyClientProps) {
               {album.tracks.map((track) => (
                 <Card
                   key={track.song.id}
-                  className="
-                    flex flex-col overflow-hidden rounded-2xl bg-background/70 border-ado-white dark:border-ado-white/30
-                    shadow-md backdrop-blur transition-all hover:scale-[1.02] hover:shadow-xl gap-0 py-0"
+                  className="flex flex-col gap-0 overflow-hidden rounded-2xl border-ado-white bg-background/70 py-0 shadow-md backdrop-blur transition-all hover:scale-[1.02] hover:shadow-xl dark:border-ado-white/30"
                 >
                   <div className="relative aspect-video overflow-hidden bg-background">
                     {track.song.youtubeId ? (

@@ -20,6 +20,7 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.1.1",
     "@icons-pack/react-simple-icons": "^13.2.0",
     "@prisma/client": "^6.10.1",
@@ -56,6 +57,7 @@
     "cmdk": "1.1.1",
     "embla-carousel-react": "8.6.0",
     "framer-motion": "^12.19.1",
+    "gsap": "^3.12.5",
     "input-otp": "1.4.2",
     "lucide-react": "^0.503.0",
     "next": "15.3.1",
