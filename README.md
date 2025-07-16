@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Build CI Status](https://github.com/ilyvsc/ado.fan/actions/workflows/build.yml/badge.svg)](https://github.com/ilyvsc/ado.fan/actions/workflows/build.yml)
+[![Build CI Status](https://github.com/ilyvsc/ado.fan/actions/workflows/build.yml/badge.svg)](https://github.com/ilyvsc/ado.fan/actions/workflows/ci.yml)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen?logo=github&labelColor=001219&color=blue)](CODE_OF_CONDUCT.md)
 [![code style](https://img.shields.io/badge/code_style-prettier-F7B93E.svg?labelColor=001219)](https://github.com/prettier/prettier)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fado.fan&labelColor=001219)](https://ado.fan)
@@ -26,7 +26,7 @@ A fan tribute to the Japanese artist Ado.
 ## Development
 
 > [!WARNING]
-> This section is intended for experienced/enthusiasts developers comfortable with full-stack JavaScript projects.
+> This section is intended for experienced/enthusiast developers comfortable with full-stack JavaScript projects.
 
 Setting up a local development environment is easy, for now.
 
@@ -34,7 +34,7 @@ Clone (or fork) this repo on your machine, navigate to its location in the termi
 
 ### Manual Setup
 
-Setup by hand, if something breaks or it's not working properly **it's on you**.
+Set up by hand, if something breaks or it's not working properly **it's on you**.
 
 #### Install dependencies
 
