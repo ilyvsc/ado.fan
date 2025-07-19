@@ -27,6 +27,9 @@ export default function NotFound() {
                   width={250}
                   height={250}
                   className="h-50 w-50 rounded-sm md:h-80 md:w-80"
+                  loading="lazy"
+                  sizes="(max-width: 768px) 200px, 320px"
+                  quality={85}
                 />
               </div>
 

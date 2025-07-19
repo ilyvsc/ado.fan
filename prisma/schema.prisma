@@ -24,6 +24,9 @@ model Song {
   albumTracks    AlbumTrack[]
   SectionItem    SectionItem[]
   themeColor     String?
+
+  @@index([releaseDate(sort: Desc)], name: "song_release_date_idx")
+  @@index([year], name: "song_year_idx")
 }
 
 model Album {
@@ -34,6 +37,9 @@ model Album {
   type          AlbumType
   coverArt      String
   tracks        AlbumTrack[]
+
+  @@index([releaseDate(sort: Desc)], name: "album_release_date_idx")
+  @@index([type], name: "album_type_idx")
 }
 
 model AlbumTrack {
@@ -46,6 +52,7 @@ model AlbumTrack {
 
   @@id([albumId, songId])
   @@unique([albumId, trackNumber])
+  @@index([albumId, trackNumber], name: "album_track_order_idx")
 }
 
 model Section {
@@ -62,7 +69,8 @@ model SectionItem {
 
   @@id([sectionId, songId])
   @@unique([sectionId, order])
-  @@index([songId])
+  @@index([songId], name: "section_item_song_idx")
+  @@index([sectionId, order], name: "section_item_order_idx")
 }
 
 enum AlbumType {
