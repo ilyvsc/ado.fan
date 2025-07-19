@@ -17,12 +17,24 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Ado Fan Tribute | Japan's Vocal Powerhouse",
+  title: "Ado's Fan Tribute: Japan’s Anonymous Superstar",
   description:
     "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.",
-  // Basic SEO
   keywords: ["Ado", "Ado Fan Site", "Ado Music", "Japanese Singer", "Utaite"],
   authors: [{ name: "ilyvsc", url: "https://github.com/ilyvsc" }],
+  openGraph: {
+    title: "Ado's Fan Tribute: Japan’s Anonymous Superstar",
+    description: "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.",
+    type: "website",
+    locale: "en_US",
+    siteName: "Ado Fan Tribute",
+    url: "https://ado.fan"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ado's Fan Tribute: Japan’s Anonymous Superstar",
+    description: "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.",
+  },
 };
 
 export default function RootLayout({
