@@ -23,30 +23,65 @@ A fan tribute to the Japanese artist Ado.
 
 </div>
 
-## Development
+## Project Overview
 
-> [!WARNING]
-> This section is intended for experienced/enthusiast developers comfortable with full-stack JavaScript projects.
+This project is a fan-made website dedicated to the Japanese singer Ado. It's a place for fans to discover her music, watch music videos, and stay up-to-date with her latest activities. The goal is to create a comprehensive and beautifully designed resource for the fan community.
 
-Setting up a local development environment is easy, for now.
+This is a full-stack application built with modern web technologies, designed to be scalable, performant, and easy to contribute to.
 
-Clone (or fork) this repo on your machine, navigate to its location in the terminal, and follow the steps below.
+## Built With
+
+This project is built with a modern, full-stack JavaScript setup:
+
+- **Framework**: [Next.js](https://nextjs.org/) (React)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Database**: [PostgreSQL](https://www.postgresql.org/) with [Prisma ORM](https://www.prisma.io/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with [shadcn/ui](https://ui.shadcn.com/) components
+- **Package Manager**: [pnpm](https://pnpm.io/)
+- **Containerization**: [Docker](https://www.docker.com/)
+
+## Getting Started
+
+To get a local copy up and running, follow one of these simple setup methods.
 
 ### Manual Setup
 
-Set up by hand, if something breaks or it's not working properly **it's on you**.
+If you prefer to set up the project manually on your local machine.
 
-#### Install dependencies
+#### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v20 or higher)
+- [pnpm](https://pnpm.io/installation)
+
+#### Install Dependencies
 
 ```sh
 pnpm install
 ```
 
-#### Setup Environment Variables
+#### Configure Environment
 
-Create a `.env` file at the project's root directory. Refer to the [environment variables](#environment-variables) section to read the full specifications.
+Duplicate [`sample.env`](sample.env) -> `.env` and populate all keys specified in [environment variables](#environment-variables).
 
-#### Initialize Prisma
+```sh
+cp sample.env .env
+```
+
+#### Bootstrap local database
+
+Launch a dedicated [Prisma‑powered Postgres instance](https://www.prisma.io/docs/postgres/database/local-development#1-launching-local-prisma-postgres) in local:
+
+```sh
+pnpm prisma dev --name="ado.fan"
+```
+
+##### Generate Prisma Client
+
+```sh
+pnpm prisma generate --no-engine
+```
+
+##### Apply Migrations & Seed (Optional)
 
 Run Prisma migrations to initialize the database:
 
@@ -54,10 +89,10 @@ Run Prisma migrations to initialize the database:
 pnpm prisma migrate dev
 ```
 
-Then, generate a Prisma client to handle queries:
+Seed the database with data from [`songs.json`](prisma/fixtures/songs.json):
 
 ```sh
-pnpm prisma generate --no-engine
+pnpm prisma db seed
 ```
 
 #### Run the development server
@@ -68,11 +103,10 @@ pnpm run dev
 
 This will initialize all packages in parallel and watch for changes, including the website, which will be available at [localhost:3000](http://localhost:3000).
 
-### Environment variables
+## Environment variables
 
-To deploy the project, you need to set the following environment variables:
-
-- `DATABASE_URL`: **Required**. Sets the URL where Prisma is going to fetch/query data from. Get yours at <https://prisma.io>
+- `DATABASE_URL`: **Required**. Sets the URL where Prisma is going to fetch/query data from.
+  - Get a production-ready database at [Prisma](https://prisma.io), [Supabase](https://supabase.com/), [Render](https://render.com), or similar.
 
 <!-- link definitions -->
 [banner-url]: https://www.ado.fan/
