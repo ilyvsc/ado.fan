@@ -1,12 +1,12 @@
-[![Adobum][banner-image]][banner-url]
+[![Adobum][banner-image]][website-url]
 
 <div align="center">
 
-[![Build CI Status](https://github.com/ilyvsc/ado.fan/actions/workflows/build.yml/badge.svg)](https://github.com/ilyvsc/ado.fan/actions/workflows/ci.yml)
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen?logo=github&labelColor=001219&color=blue)](CODE_OF_CONDUCT.md)
-[![code style](https://img.shields.io/badge/code_style-prettier-F7B93E.svg?labelColor=001219)](https://github.com/prettier/prettier)
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Fado.fan&labelColor=001219)](https://ado.fan)
-[![Join Ado Hangout Discord!](https://img.shields.io/badge/Ado_Hangout-001219?logo=discord)][fan-discord]
+[![Build CI Status][ci-badge]](https://github.com/ilyvsc/ado.fan/actions/workflows/ci.yml)
+[![contributions welcome][contributions-badge]](CODE_OF_CONDUCT.md)
+[![code style][prettier-badge]](https://github.com/prettier/prettier)
+[![Website][uptime-badge]][website-url]
+[![Join Ado Hangout Discord!][discord-badge]][fan-discord]
 
 <p>
 <br>
@@ -29,7 +29,7 @@ This project is a fan-made website dedicated to the Japanese singer Ado. It's a 
 
 This is a full-stack application built with modern web technologies, designed to be scalable, performant, and easy to contribute to.
 
-## Built With
+### Built With
 
 This project is built with a modern, full-stack JavaScript setup:
 
@@ -103,15 +103,10 @@ pnpm run dev
 
 This will initialize all packages in parallel and watch for changes, including the website, which will be available at [localhost:3000](http://localhost:3000).
 
-## Environment variables
+### Environment variables
 
 - `DATABASE_URL`: **Required**. Sets the URL where Prisma is going to fetch/query data from.
   - Get a production-ready database at [Prisma](https://prisma.io), [Supabase](https://supabase.com/), [Render](https://render.com), or similar.
-
-<!-- link definitions -->
-[banner-url]: https://www.ado.fan/
-[banner-image]: https://ado-shop.com/cdn/shop/files/Ado_BEST_5000x2000_banner_ENG2.jpg
-[fan-discord]: https://discord.gg/ado1024
 
 ## License
 
@@ -124,3 +119,17 @@ This project is an unofficial, non-commercial fan project that makes use of mult
 Full license details and copyright notices are provided in the [LICENSE](LICENSE) file.
 
 © Copyright 2025 <https://ado.fan/>
+
+<!-- link definitions --urls-- -->
+[website-url]: https://www.ado.fan/
+[fan-discord]: https://discord.gg/ado1024
+
+<!-- link definitions --other-- -->
+[banner-image]: https://ado-shop.com/cdn/shop/files/Ado_BEST_5000x2000_banner_ENG2.jpg
+
+<!-- link definitions --badges-- -->
+[ci-badge]: https://github.com/ilyvsc/ado.fan/actions/workflows/ci.yml/badge.svg
+[discord-badge]: https://img.shields.io/badge/Ado_Hangout-001219?logo=discord
+[prettier-badge]: https://img.shields.io/badge/code_style-prettier-F7B93E.svg?labelColor=001219
+[contributions-badge]: https://img.shields.io/badge/contributions-welcome-brightgreen?logo=github&color=blue&labelColor=001219
+[uptime-badge]: https://img.shields.io/website?url=https%3A%2F%2Fado.fan&labelColor=001219
