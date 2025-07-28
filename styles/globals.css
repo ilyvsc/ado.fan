@@ -5,15 +5,15 @@
 
 /* Theme Colors for TailwindCSS v4 */
 @theme {
-  --color-ado-blue: hsl(230, 100%, 60%);
+  --color-ado-blue: hsl(220 96% 56%);
   --color-ado-white: hsl(240 5.9% 90%);
-  --color-ado-red: hsl(0 84.2% 60.2%);
+  --color-ado-red: hsl(0 91% 54%);
   --color-ado-key: var(--color-ado-blue);
 
   --color-secondary: hsl(240 4.8% 15%);
   --color-background: hsl(0 0% 100%);
   --color-foreground: hsl(240 10% 3.9%);
-  --color-muted-foreground: hsl(240 3.8% 46.1%);
+  --color-muted-foreground: hsl(240 5% 34%);
   --color-card: hsl(0 0% 100%);
   --color-card-foreground: hsl(240 10% 3.9%);
 }
@@ -21,10 +21,48 @@
 @layer base {
   .dark {
     --color-secondary: hsl(240 3.7% 95%);
-    --color-background: hsl(240, 13%, 18%);
-    --color-foreground: hsl(0 0% 100%);
-    --color-muted-foreground: hsl(240 5% 65%);
-    --color-card: hsl(240 10% 5%);
-    --color-card-foreground: hsl(0 0% 100%);
+    --color-background: hsl(240 10% 3.9%);
+    --color-foreground: hsl(0 0% 98%);
+    --color-muted-foreground: hsl(240 5% 63%);
+    --color-card: hsl(240 10% 10%);
+    --color-card-foreground: hsl(0 0% 98%);
+  }
+}
+
+@layer components {
+  .fullscreen-video-container iframe {
+    width: 100vw !important;
+    height: 100vh !important;
+    min-width: 100vw;
+    min-height: 100vh;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  @media (max-width: 768px) {
+    .fullscreen-video-container iframe {
+      width: 120vw !important;
+      height: 120vh !important;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+  }
+
+  @media (min-aspect-ratio: 16/9) {
+    .fullscreen-video-container iframe {
+      width: 100vw !important;
+      height: 56.25vw !important;
+      min-height: 100vh;
+    }
+  }
+
+  @media (max-aspect-ratio: 16/9) {
+    .fullscreen-video-container iframe {
+      width: 177.78vh !important;
+      height: 100vh !important;
+      min-width: 100vw;
+    }
   }
 }

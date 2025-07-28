@@ -6,9 +6,15 @@ interface VideoPlayerProps {
   src: string;
   title: string;
   allow?: string;
+  isFullscreenBackground?: boolean;
 }
 
-const VideoPlayer = ({ src, title, allow }: Readonly<VideoPlayerProps>) => {
+const VideoPlayer = ({ src, title, allow, isFullscreenBackground = false }: Readonly<VideoPlayerProps>) => {
+  const baseClasses = "border-0";
+  const fullscreenClasses = isFullscreenBackground
+    ? "absolute inset-0 w-full h-full object-cover"
+    : "";
+
   return (
     <iframe
       width="100%"
@@ -19,7 +25,18 @@ const VideoPlayer = ({ src, title, allow }: Readonly<VideoPlayerProps>) => {
       allowFullScreen
       loading="lazy"
       sandbox="allow-scripts allow-same-origin allow-presentation"
-      className="border-0"
+      className={`${baseClasses} ${fullscreenClasses}`}
+      style={isFullscreenBackground ? {
+        minWidth: '100%',
+        minHeight: '100%',
+        width: '100vw',
+        height: '100vh',
+        objectFit: 'cover',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%) scale(1.1)', // Scale slightly to ensure no black bars
+      } : {}}
     />
   );
 };
@@ -28,9 +45,11 @@ interface YouTubePlayerProps {
   song?: Song;
   youtubeId?: string;
   title?: string;
+  extraParams?: string;
+  isFullscreenBackground?: boolean;
 }
 
-export function YouTubePlayer({ song, youtubeId, title }: Readonly<YouTubePlayerProps>) {
+export function YouTubePlayer({ song, youtubeId, title, extraParams, isFullscreenBackground = false }: Readonly<YouTubePlayerProps>) {
   const id = song?.youtubeId ?? youtubeId;
   const videoTitle = song ? `${song.title.english} by Ado` : (title ?? "YouTube Video");
 
@@ -40,9 +59,10 @@ export function YouTubePlayer({ song, youtubeId, title }: Readonly<YouTubePlayer
 
   return (
     <VideoPlayer
-      src={`https://www.youtube.com/embed/${id}`}
+      src={`https://www.youtube.com/embed/${id}?${extraParams}`}
       title={videoTitle}
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      isFullscreenBackground={isFullscreenBackground}
     />
   );
 }
