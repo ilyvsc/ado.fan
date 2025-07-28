@@ -1,36 +1,30 @@
 "use client";
 
-import React, { lazy } from "react";
+import React, { useMemo, useDeferredValue } from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Song } from "@/types/Music";
-
-const YouTubePlayer = lazy(() =>
-  import("@/utils/VideoEmbed").then((module) => ({
-    default: module.YouTubePlayer,
-  })),
-);
-const NicoNicoPlayer = lazy(() =>
-  import("@/utils/VideoEmbed").then((module) => ({
-    default: module.NicoNicoPlayer,
-  })),
-);
+import { YouTubePlayer, NicoNicoPlayer } from "@/utils/VideoEmbed";
 
 interface FeaturedSongsClientProps {
   songs: Song[];
 }
 
-function FeaturedSongCard({
+const FeaturedSongCard = React.memo(function FeaturedSongCard({
   song,
 }: Readonly<{
   song: Song;
 }>) {
   const themeColor = song.themeColor || "var(--ado-key)";
 
+  const dynamicStyles = useMemo(() => ({
+    color: themeColor,
+  }), [themeColor]);
+
   return (
     <div className="group relative w-full">
-      <Card className="relative overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-card/90 to-card/50 shadow-md hover:shadow-ado-key/40 backdrop-blur-xl transition-all duration-300 group-hover:shadow-2xl p-0 gap-0">
-        <div className="relative overflow-hidden h-56 w-full">
+      <Card className="relative gap-0 overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-card/90 to-card/50 p-0 shadow-md backdrop-blur-xl transition-all duration-300 group-hover:shadow-2xl hover:shadow-ado-key/40">
+        <div className="relative h-56 w-full overflow-hidden">
           {song.youtubeId ? (
             <YouTubePlayer song={song} />
           ) : song.nicoId ? (
@@ -41,7 +35,7 @@ function FeaturedSongCard({
             </div>
           )}
 
-          <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent pointer-events-none" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
         </div>
 
         <CardContent className="space-y-3 p-4 sm:space-y-4 sm:p-6">
@@ -52,7 +46,7 @@ function FeaturedSongCard({
             {song.title.japanese && (
               <h4
                 className="line-clamp-1 text-lg font-bold tracking-wide sm:text-xl"
-                style={{ color: themeColor }}
+                style={dynamicStyles}
               >
                 {song.title.japanese}
               </h4>
@@ -72,15 +66,34 @@ function FeaturedSongCard({
       </Card>
     </div>
   );
-}
+});
 
 export function FeaturedSongsClient({
   songs,
 }: Readonly<FeaturedSongsClientProps>) {
+  const deferredSongs = useDeferredValue(songs, []);
+  const backgroundElements = useMemo(() => (
+    <>
+      <div
+        className="absolute top-1/3 left-1/3 h-72 w-72 rounded-full bg-ado-blue/20 blur-3xl filter sm:h-96 sm:w-96"
+        style={{
+          animation: 'spin 40s linear infinite',
+          willChange: 'transform'
+        }}
+      />
+      <div
+        className="absolute right-1/3 bottom-1/3 h-64 w-64 rounded-full bg-ado-red/20 blur-3xl filter sm:h-80 sm:w-80"
+        style={{
+          animation: 'spin 35s linear reverse infinite',
+          willChange: 'transform'
+        }}
+      />
+    </>
+  ), []);
+
   return (
     <section className="relative w-full overflow-x-hidden py-12 sm:py-16">
-      <div className="absolute top-1/3 left-1/3 h-72 w-72 animate-[spin_40s_linear_infinite] rounded-full bg-ado-blue/20 blur-3xl filter sm:h-96 sm:w-96" />
-      <div className="absolute right-1/3 bottom-1/3 h-64 w-64 animate-[spin_35s_reverse_linear_infinite] rounded-full bg-ado-red/20 blur-3xl filter sm:h-80 sm:w-80" />
+      {backgroundElements}
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6">
         <div className="mx-auto w-full max-w-7xl">
@@ -101,7 +114,7 @@ export function FeaturedSongsClient({
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
-            {songs.map((song) => (
+            {deferredSongs.map((song) => (
               <FeaturedSongCard key={song.id} song={song} />
             ))}
           </div>
