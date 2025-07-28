@@ -1,5 +1,4 @@
 import { DiscographyClient } from "@/components/discography/DiscographyClient";
-
 import { getAllAlbums } from "@/constants/MusicData";
 
 export async function Discography() {

@@ -24,16 +24,18 @@ export const metadata: Metadata = {
   authors: [{ name: "ilyvsc", url: "https://github.com/ilyvsc" }],
   openGraph: {
     title: "Ado's Fan Tribute: Japan’s Anonymous Superstar",
-    description: "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.",
+    description:
+      "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.",
     type: "website",
     locale: "en_US",
     siteName: "Ado Fan Tribute",
-    url: "https://ado.fan"
+    url: "https://ado.fan",
   },
   twitter: {
     card: "summary_large_image",
     title: "Ado's Fan Tribute: Japan’s Anonymous Superstar",
-    description: "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.",
+    description:
+      "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.",
   },
 };
 

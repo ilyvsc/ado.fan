@@ -9,7 +9,12 @@ interface VideoPlayerProps {
   isFullscreenBackground?: boolean;
 }
 
-const VideoPlayer = ({ src, title, allow, isFullscreenBackground = false }: Readonly<VideoPlayerProps>) => {
+const VideoPlayer = ({
+  src,
+  title,
+  allow,
+  isFullscreenBackground = false,
+}: Readonly<VideoPlayerProps>) => {
   const baseClasses = "border-0";
   const fullscreenClasses = isFullscreenBackground
     ? "absolute inset-0 w-full h-full object-cover"
@@ -26,17 +31,21 @@ const VideoPlayer = ({ src, title, allow, isFullscreenBackground = false }: Read
       loading="lazy"
       sandbox="allow-scripts allow-same-origin allow-presentation"
       className={`${baseClasses} ${fullscreenClasses}`}
-      style={isFullscreenBackground ? {
-        minWidth: '100%',
-        minHeight: '100%',
-        width: '100vw',
-        height: '100vh',
-        objectFit: 'cover',
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%) scale(1.1)', // Scale slightly to ensure no black bars
-      } : {}}
+      style={
+        isFullscreenBackground
+          ? {
+              minWidth: "100%",
+              minHeight: "100%",
+              width: "100vw",
+              height: "100vh",
+              objectFit: "cover",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%) scale(1.1)", // Scale slightly to ensure no black bars
+            }
+          : {}
+      }
     />
   );
 };
@@ -49,9 +58,17 @@ interface YouTubePlayerProps {
   isFullscreenBackground?: boolean;
 }
 
-export function YouTubePlayer({ song, youtubeId, title, extraParams, isFullscreenBackground = false }: Readonly<YouTubePlayerProps>) {
+export function YouTubePlayer({
+  song,
+  youtubeId,
+  title,
+  extraParams,
+  isFullscreenBackground = false,
+}: Readonly<YouTubePlayerProps>) {
   const id = song?.youtubeId ?? youtubeId;
-  const videoTitle = song ? `${song.title.english} by Ado` : (title ?? "YouTube Video");
+  const videoTitle = song
+    ? `${song.title.english} by Ado`
+    : (title ?? "YouTube Video");
 
   if (!id) {
     return null;
@@ -73,9 +90,15 @@ interface NicoNicoPlayerProps {
   title?: string;
 }
 
-export function NicoNicoPlayer({ song, nicoId, title }: Readonly<NicoNicoPlayerProps>) {
+export function NicoNicoPlayer({
+  song,
+  nicoId,
+  title,
+}: Readonly<NicoNicoPlayerProps>) {
   const id = song?.nicoId ?? nicoId;
-  const videoTitle = song ? `${song.title.english} by Ado` : (title ?? "NicoNico Video");
+  const videoTitle = song
+    ? `${song.title.english} by Ado`
+    : (title ?? "NicoNico Video");
 
   if (!id) {
     return null;

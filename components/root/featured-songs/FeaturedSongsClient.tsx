@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useMemo, useDeferredValue } from "react";
+import React, { useDeferredValue, useMemo } from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Song } from "@/types/Music";
-import { YouTubePlayer, NicoNicoPlayer } from "@/utils/VideoEmbed";
+import { NicoNicoPlayer, YouTubePlayer } from "@/utils/VideoEmbed";
 
 interface FeaturedSongsClientProps {
   songs: Song[];
@@ -17,9 +17,12 @@ const FeaturedSongCard = React.memo(function FeaturedSongCard({
 }>) {
   const themeColor = song.themeColor || "var(--ado-key)";
 
-  const dynamicStyles = useMemo(() => ({
-    color: themeColor,
-  }), [themeColor]);
+  const dynamicStyles = useMemo(
+    () => ({
+      color: themeColor,
+    }),
+    [themeColor],
+  );
 
   return (
     <div className="group relative w-full">
@@ -72,24 +75,27 @@ export function FeaturedSongsClient({
   songs,
 }: Readonly<FeaturedSongsClientProps>) {
   const deferredSongs = useDeferredValue(songs, []);
-  const backgroundElements = useMemo(() => (
-    <>
-      <div
-        className="absolute top-1/3 left-1/3 h-72 w-72 rounded-full bg-ado-blue/20 blur-3xl filter sm:h-96 sm:w-96"
-        style={{
-          animation: 'spin 40s linear infinite',
-          willChange: 'transform'
-        }}
-      />
-      <div
-        className="absolute right-1/3 bottom-1/3 h-64 w-64 rounded-full bg-ado-red/20 blur-3xl filter sm:h-80 sm:w-80"
-        style={{
-          animation: 'spin 35s linear reverse infinite',
-          willChange: 'transform'
-        }}
-      />
-    </>
-  ), []);
+  const backgroundElements = useMemo(
+    () => (
+      <>
+        <div
+          className="absolute top-1/3 left-1/3 h-72 w-72 rounded-full bg-ado-blue/20 blur-3xl filter sm:h-96 sm:w-96"
+          style={{
+            animation: "spin 40s linear infinite",
+            willChange: "transform",
+          }}
+        />
+        <div
+          className="absolute right-1/3 bottom-1/3 h-64 w-64 rounded-full bg-ado-red/20 blur-3xl filter sm:h-80 sm:w-80"
+          style={{
+            animation: "spin 35s linear reverse infinite",
+            willChange: "transform",
+          }}
+        />
+      </>
+    ),
+    [],
+  );
 
   return (
     <section className="relative w-full overflow-x-hidden py-12 sm:py-16">
