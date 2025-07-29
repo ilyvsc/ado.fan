@@ -11,6 +11,9 @@
 /build
 prisma/client/
 
+# pnpm
+pnpm-lock.yaml
+
 # debug
 npm-debug.log*
 yarn-debug.log*
