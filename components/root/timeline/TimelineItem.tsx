@@ -20,13 +20,11 @@ function getPeriodLabel(period: Period, year: number): string {
 
 interface TimelineItemProps {
   readonly timelineYear: TimelineYear;
-  readonly isLeft: boolean;
   readonly index?: number;
 }
 
 export const TimelineItem = React.memo(function TimelineItem({
   timelineYear,
-  isLeft,
   index = 0,
 }: TimelineItemProps) {
   const { year, songs, periods } = timelineYear;
@@ -35,8 +33,8 @@ export const TimelineItem = React.memo(function TimelineItem({
   return (
     <div className="relative w-full max-w-6xl px-2 sm:px-4 lg:px-6">
       <motion.div
-        className={`flex w-full items-center ${isLeft ? "justify-start" : "justify-end"}`}
-        initial={{ opacity: 0, x: isLeft ? -100 : 100, y: 50 }}
+        className="flex w-full items-center justify-center"
+        initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, x: 0, y: 0 }}
         transition={{
           duration: 0.8,
@@ -45,7 +43,7 @@ export const TimelineItem = React.memo(function TimelineItem({
         }}
       >
         <motion.div
-          className={`w-full max-w-5xl ${isLeft ? "mr-auto" : "ml-auto"}`}
+          className="mx-auto w-full max-w-5xl"
           whileHover={{
             scale: 1.01,
             y: -3,
