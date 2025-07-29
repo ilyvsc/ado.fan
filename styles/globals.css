@@ -16,6 +16,11 @@
   --color-muted-foreground: hsl(240 5% 34%);
   --color-card: hsl(0 0% 100%);
   --color-card-foreground: hsl(240 10% 3.9%);
+
+  --breakpoint-xs: 420px;
+  --breakpoint-2xl: 1536px;
+  --breakpoint-3xl: 1920px;
+  --breakpoint-4xl: 2560px;
 }
 
 @layer base {
