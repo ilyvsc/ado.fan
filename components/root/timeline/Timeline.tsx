@@ -1,14 +1,14 @@
 import React from "react";
 
 import { TimelineClient } from "@/components/root/timeline/TimelineClient";
-import { getTimelineSongs } from "@/constants/MusicData";
+import { getTimelineSongsByYear } from "@/constants/MusicData";
 
 export const dynamic = "force-dynamic";
 
 export async function DiscographyTimeline() {
   try {
-    const songs = await getTimelineSongs();
-    return <TimelineClient songs={songs} />;
+    const timelineYears = await getTimelineSongsByYear();
+    return <TimelineClient timelineYears={timelineYears} />;
   } catch (error) {
     return null;
   }

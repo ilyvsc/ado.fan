@@ -1,203 +1,144 @@
 "use client";
 
-import React, { useState } from "react";
+import { motion } from "framer-motion";
 
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import React, { useMemo } from "react";
 
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TimelineItem } from "./TimelineItem";
+import { TimelineNavigation } from "./TimelineNavigation";
 
-import { Song } from "@/types/Music";
+import { TimelineStep, TimelineYear } from "@/types/Music";
+import { useIsMobile } from "@/utils/hooks/use-mobile";
+import { useTimelineScroll } from "@/utils/hooks/use-timeline-scroll";
 
-import { NicoNicoPlayer, YouTubePlayer } from "@/utils/VideoEmbed";
+function createTimelineSteps(
+  timelineYears: readonly TimelineYear[],
+): TimelineStep[] {
+  const steps: TimelineStep[] = [];
 
-interface TimelineClientProps {
-  readonly songs: readonly Song[];
+  timelineYears.forEach((yearData) => {
+    yearData.periods.forEach(([period, songs], periodIndex) => {
+      steps.push({
+        year: yearData.year,
+        period: period,
+        songs,
+        periodIndex,
+      });
+    });
+  });
+
+  return steps;
 }
 
-export function TimelineClient({ songs }: TimelineClientProps) {
-  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
-  const [open, setOpen] = useState(false);
+function createMobileTimelineSteps(
+  timelineYears: readonly TimelineYear[],
+): TimelineStep[] {
+  const steps: TimelineStep[] = [];
 
-  const handleSongClick = (song: Song) => {
-    setSelectedSong(song);
-    setOpen(true);
-  };
+  timelineYears.forEach((yearData) => {
+    yearData.periods.forEach(([period, songs], periodIndex) => {
+      songs.forEach((song, songIndex) => {
+        steps.push({
+          year: yearData.year,
+          period: period,
+          songs: [song],
+          periodIndex,
+          songIndex,
+        });
+      });
+    });
+  });
 
-  // Group songs by year
-  const songsByYear = songs.reduce(
-    (acc, song) => {
-      acc[song.year] ??= [];
-      acc[song.year].push(song);
-      return acc;
-    },
-    {} as Record<number, Song[]>,
-  );
+  return steps;
+}
 
-  // Get years in ascending order
-  const years = Object.keys(songsByYear)
-    .map(Number)
-    .sort((a, b) => a - b);
+interface TimelineClientProps {
+  readonly timelineYears: readonly TimelineYear[];
+}
+
+export function TimelineClient({ timelineYears }: TimelineClientProps) {
+  const isMobile = useIsMobile();
+
+  const timelineSteps = useMemo(() => {
+    return isMobile
+      ? createMobileTimelineSteps(timelineYears)
+      : createTimelineSteps(timelineYears);
+  }, [timelineYears, isMobile]);
+
+  const { containerRef, currentIndex, scrollToStep } = useTimelineScroll({
+    stepsLength: timelineSteps.length,
+    isMobile,
+  });
 
   return (
-    <section className="bg-background py-20">
-      <div className="container mx-auto max-w-5xl px-4 lg:px-6">
-        <h2 className="mb-8 text-center text-4xl font-bold text-foreground md:text-5xl">
-          Ado's Musical Journey
-        </h2>
-        <p className="mx-auto mb-16 max-w-2xl text-center text-accent-foreground">
-          Explore Ado's discography from 2020 to the present. Click on any song
-          to learn more.
-        </p>
+    <section
+      className="relative h-screen w-full overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black"
+      aria-label={`Timeline with ${timelineSteps.length} steps across ${timelineYears.length} years. Currently viewing step ${currentIndex + 1}`}
+    >
+      <TimelineNavigation
+        timelineYears={timelineYears}
+        timelineSteps={timelineSteps}
+        currentIndex={currentIndex}
+        onYearClick={scrollToStep}
+      />
 
-        <div className="relative pb-12">
-          {/* Vertical timeline line */}
-          <div className="absolute inset-y-0 left-1/2 hidden w-[3px] bg-ado-key/30 md:block"></div>
-
-          {/* Timeline entries */}
-          <div className="space-y-24">
-            {years.map((year, yearIndex) => (
-              <div key={year} className="relative">
-                {/* Year marker */}
-                <div className="mb-12 flex justify-center">
-                  <div className="z-10 rounded-full bg-ado-key px-6 py-2 text-lg font-bold text-white">
-                    {year}
-                  </div>
-                </div>
-
-                {/* Songs for this year */}
-                <div className="space-y-24">
-                  {songsByYear[year].map((song, songIndex) => {
-                    const isLeft = (songIndex + yearIndex) % 2 === 0;
-                    return (
-                      <div
-                        key={song.id}
-                        className={`relative flex flex-col items-center md:flex-row md:items-start ${
-                          isLeft ? "md:flex-row" : "md:flex-row-reverse"
-                        } gap-8`}
-                      >
-                        {/* Video */}
-                        <div className="w-full md:w-1/2">
-                          <div className="overflow-hidden rounded-xl bg-background/60 shadow-lg backdrop-blur-sm transition-all hover:scale-[1.015]">
-                            <div className="relative aspect-video overflow-hidden">
-                              {song.youtubeId ? (
-                                <YouTubePlayer song={song} />
-                              ) : song.nicoId ? (
-                                <NicoNicoPlayer song={song} />
-                              ) : (
-                                <div className="flex h-full items-center justify-center text-muted-foreground">
-                                  No preview available
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Content */}
-                        <div className="w-full space-y-4 md:w-1/2">
-                          <div className="inline-block rounded-full bg-ado-key px-4 py-1 text-sm text-white">
-                            {song.releaseDate}
-                          </div>
-                          <h3 className="text-2xl font-bold">
-                            {song.title.english}{" "}
-                            {song.title.japanese && (
-                              <span className="text-ado-key">
-                                ({song.title.japanese})
-                              </span>
-                            )}
-                          </h3>
-                          <p className="text-accent-foreground">
-                            {song.description}
-                          </p>
-                          <Button
-                            variant="default"
-                            size="default"
-                            className="h-9 bg-ado-key text-ado-white hover:bg-ado-key/80"
-                            onClick={() => handleSongClick(song)}
-                          >
-                            View Details
-                          </Button>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
+      <motion.main
+        ref={containerRef}
+        className={`h-full w-full scroll-smooth ${
+          isMobile ? "overflow-x-auto" : "overflow-y-auto"
+        }`}
+        style={{
+          scrollSnapType: isMobile ? "x mandatory" : "y mandatory",
+          scrollBehavior: "smooth",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch",
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        tabIndex={0}
+        aria-live="polite"
+      >
+        <div className={`relative ${isMobile ? "flex h-full" : ""}`}>
+          {timelineSteps.map((step, index) => (
+            <motion.article
+              key={`${step.year}-${step.period}-${step.songIndex ?? 0}`}
+              className={`${
+                isMobile
+                  ? "flex h-full w-screen shrink-0 snap-start items-start justify-center px-4 pt-20 sm:px-6"
+                  : "flex h-screen w-full snap-start items-start justify-center px-2 pt-30 sm:px-4 lg:px-6"
+              }`}
+              initial={{
+                opacity: 0,
+                y: isMobile ? 0 : 50,
+                x: isMobile ? 50 : 0,
+              }}
+              animate={{ opacity: 1, y: 0, x: 0 }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.1,
+                ease: "easeOut",
+              }}
+              aria-label={`Timeline step ${index + 1} of ${timelineSteps.length}: ${step.period} ${step.year} with ${step.songs.length} song${step.songs.length > 1 ? "s" : ""}`}
+              aria-current={index === currentIndex ? "step" : undefined}
+            >
+              <TimelineItem
+                timelineYear={{
+                  year: step.year,
+                  songs: step.songs,
+                  categorized: { early: [], mid: [], late: [] },
+                  totalSongs: step.songs.length,
+                  periods: [[step.period, step.songs]],
+                  hasMultiplePeriods: false,
+                }}
+                isLeft={index % 2 === 0}
+                index={index}
+              />
+            </motion.article>
+          ))}
         </div>
-      </div>
-
-      {/* Song details modal */}
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-2xl lg:max-w-4xl xl:max-w-5/6xl rounded-xl bg-background/90 shadow-2xl backdrop-blur-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-2xl">
-              {selectedSong?.title.english}{" "}
-              {selectedSong?.title.japanese && (
-                <span className="text-ado-key">
-                  ({selectedSong?.title.japanese})
-                </span>
-              )}
-            </DialogTitle>
-
-            <DialogDescription className="text-left text-sm">
-              Released: {selectedSong?.releaseDate}
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="mt-4">
-            <p className="mb-6 text-accent-foreground">
-              {selectedSong?.description}
-            </p>
-            <div className="mb-6 aspect-video overflow-hidden rounded-md bg-accent">
-              {selectedSong?.youtubeId ? (
-                <YouTubePlayer song={selectedSong} />
-              ) : selectedSong?.nicoId ? (
-                <NicoNicoPlayer song={selectedSong} />
-              ) : (
-                <div className="flex h-full items-center justify-center text-muted-foreground">
-                  No preview available
-                </div>
-              )}
-            </div>
-
-            {/* TODO: refactor lyrics section... */}
-            {/* <h4 className="mb-2 text-lg font-semibold">Lyrics</h4>
-            <Tabs defaultValue="japanese">
-              <TabsList className="grid grid-cols-3 w-full items-center justify-center p-2">
-                <TabsTrigger value="japanese">Japanese</TabsTrigger>
-                <TabsTrigger value="romaji">Romaji</TabsTrigger>
-                <TabsTrigger value="english">English</TabsTrigger>
-              </TabsList>
-
-              <TabsContent
-                value="japanese"
-                className="mt-4 whitespace-pre-line"
-              >
-                {selectedSong?.lyrics.japanese}
-              </TabsContent>
-              <TabsContent value="romaji" className="mt-4 whitespace-pre-line">
-                {selectedSong?.lyrics.romaji}
-              </TabsContent>
-              <TabsContent value="english" className="mt-4 whitespace-pre-line">
-                {selectedSong?.lyrics.english}
-              </TabsContent>
-            </Tabs> */}
-          </div>
-
-          <DialogClose className="absolute top-4 right-4">
-            <span className="sr-only">Close</span>
-          </DialogClose>
-        </DialogContent>
-      </Dialog>
+      </motion.main>
     </section>
   );
 }

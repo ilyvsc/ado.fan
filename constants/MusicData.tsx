@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-import { Album, Song } from "@/types/Music";
+import { Album, Song, TimelineYear } from "@/types/Music";
 import { prisma } from "@/utils/lib/prisma";
 
 const songSelect = {
@@ -139,4 +139,60 @@ export async function getFeaturedSongs(): Promise<Song[]> {
  */
 export async function getTimelineSongs(): Promise<Song[]> {
   return getSongsBySection("timelineSongs");
+}
+
+/**
+ * Fetch the timeline songs grouped by year.
+ */
+export async function getTimelineSongsByYear(): Promise<TimelineYear[]> {
+  const songs = await getTimelineSongs();
+
+  // Group songs by year
+  const songsByYear = songs.reduce(
+    (acc, song) => {
+      const year = song.year;
+      if (!acc[year]) {
+        acc[year] = [];
+      }
+      acc[year].push(song);
+      return acc;
+    },
+    {} as Record<number, Song[]>,
+  );
+
+  // Convert to TimelineYear array with full data
+  return Object.entries(songsByYear)
+    .map(([year, songs]): TimelineYear => {
+      const sortedSongs = songs.toSorted(
+        (a, b) =>
+          new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime(),
+      );
+
+      // Categorize songs by period
+      const categorized = {
+        early: [] as Song[],
+        mid: [] as Song[],
+        late: [] as Song[],
+      };
+      sortedSongs.forEach((song) => {
+        const month = new Date(song.releaseDate).getMonth() + 1;
+        if (month <= 4) categorized.early.push(song);
+        else if (month <= 8) categorized.mid.push(song);
+        else categorized.late.push(song);
+      });
+
+      const periods = Object.entries(categorized).filter(
+        ([_, songs]) => songs.length > 0,
+      );
+
+      return {
+        year: parseInt(year),
+        songs: sortedSongs,
+        categorized,
+        totalSongs: sortedSongs.length,
+        periods,
+        hasMultiplePeriods: periods.length > 1,
+      };
+    })
+    .sort((a, b) => a.year - b.year);
 }
