@@ -72,7 +72,7 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
 
   return (
     <section
-      className="relative h-[calc(100vh-24rem)] w-full overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black lg:h-[calc(100vh-28rem)]"
+      className={`relative h-[calc(100vh-24rem)] w-full overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black sm:h-[calc(100vh-26rem)] lg:h-[calc(100vh-10rem)] xl:h-[calc(100vh-14rem)] 2xl:h-[calc(100vh-26rem)]`}
       aria-label={`Timeline with ${timelineSteps.length} steps across ${timelineYears.length} years. Currently viewing step ${currentIndex + 1}`}
     >
       <TimelineNavigation
@@ -107,7 +107,7 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
               className={`${
                 isMobile
                   ? "relative h-full w-screen shrink-0 snap-start px-4 sm:px-6"
-                  : "relative h-screen w-full snap-start px-2 sm:px-4 lg:px-6"
+                  : "relative w-full snap-start px-2 sm:h-[calc(100vh-26rem)] sm:px-4 lg:h-[calc(100vh-10rem)] lg:px-6 xl:h-[calc(100vh-14rem)] 2xl:h-[calc(100vh-26rem)]"
               }`}
               initial={{
                 opacity: 0,
@@ -123,7 +123,7 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
               aria-label={`Timeline step ${index + 1} of ${timelineSteps.length}: ${step.period} ${step.year} with ${step.songs.length} song${step.songs.length > 1 ? "s" : ""}`}
               aria-current={index === currentIndex ? "step" : undefined}
             >
-              <div className="absolute inset-0 flex items-start justify-center pt-24 sm:pt-36">
+              <div className="absolute inset-0 flex items-start justify-center pt-18 sm:pt-26 lg:pt-48 xl:pt-28 2xl:pt-40">
                 <TimelineItem
                   timelineYear={{
                     year: step.year,
