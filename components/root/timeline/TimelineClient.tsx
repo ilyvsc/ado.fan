@@ -72,7 +72,7 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
 
   return (
     <section
-      className="relative h-screen w-full overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black"
+      className="relative h-[calc(100vh-24rem)] w-full overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black lg:h-[calc(100vh-28rem)]"
       aria-label={`Timeline with ${timelineSteps.length} steps across ${timelineYears.length} years. Currently viewing step ${currentIndex + 1}`}
     >
       <TimelineNavigation
@@ -102,12 +102,12 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
       >
         <div className={`relative ${isMobile ? "flex h-full" : ""}`}>
           {timelineSteps.map((step, index) => (
-            <motion.article
+            <motion.section
               key={`${step.year}-${step.period}-${step.songIndex ?? 0}`}
               className={`${
                 isMobile
-                  ? "flex h-full w-screen shrink-0 snap-start items-start justify-center px-4 pt-20 sm:px-6"
-                  : "flex h-screen w-full snap-start items-start justify-center px-2 pt-30 sm:px-4 lg:px-6"
+                  ? "relative h-full w-screen shrink-0 snap-start px-4 sm:px-6"
+                  : "relative h-screen w-full snap-start px-2 sm:px-4 lg:px-6"
               }`}
               initial={{
                 opacity: 0,
@@ -123,19 +123,21 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
               aria-label={`Timeline step ${index + 1} of ${timelineSteps.length}: ${step.period} ${step.year} with ${step.songs.length} song${step.songs.length > 1 ? "s" : ""}`}
               aria-current={index === currentIndex ? "step" : undefined}
             >
-              <TimelineItem
-                timelineYear={{
-                  year: step.year,
-                  songs: step.songs,
-                  categorized: { early: [], mid: [], late: [] },
-                  totalSongs: step.songs.length,
-                  periods: [[step.period, step.songs]],
-                  hasMultiplePeriods: false,
-                }}
-                isLeft={index % 2 === 0}
-                index={index}
-              />
-            </motion.article>
+              <div className="absolute inset-0 flex items-start justify-center pt-24 sm:pt-36">
+                <TimelineItem
+                  timelineYear={{
+                    year: step.year,
+                    songs: step.songs,
+                    categorized: { early: [], mid: [], late: [] },
+                    totalSongs: step.songs.length,
+                    periods: [[step.period, step.songs]],
+                    hasMultiplePeriods: false,
+                  }}
+                  isLeft={index % 2 === 0}
+                  index={index}
+                />
+              </div>
+            </motion.section>
           ))}
         </div>
       </motion.main>

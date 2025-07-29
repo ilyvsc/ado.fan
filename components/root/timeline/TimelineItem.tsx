@@ -33,7 +33,7 @@ export const TimelineItem = React.memo(function TimelineItem({
   const themeColor = songs[0]?.themeColor ?? "var(--ado-key)";
 
   return (
-    <div className="relative w-full max-w-7xl px-2 sm:px-4 lg:px-6">
+    <div className="relative w-full max-w-6xl px-2 sm:px-4 lg:px-6">
       <motion.div
         className={`flex w-full items-center ${isLeft ? "justify-start" : "justify-end"}`}
         initial={{ opacity: 0, x: isLeft ? -100 : 100, y: 50 }}
@@ -45,34 +45,34 @@ export const TimelineItem = React.memo(function TimelineItem({
         }}
       >
         <motion.div
-          className={`w-full max-w-6xl ${isLeft ? "mr-auto" : "ml-auto"}`}
+          className={`w-full max-w-5xl ${isLeft ? "mr-auto" : "ml-auto"}`}
           whileHover={{
-            scale: 1.02,
-            y: -5,
+            scale: 1.01,
+            y: -3,
           }}
           transition={{ duration: 0.3 }}
         >
           <motion.div
             className="relative"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <div className="space-y-8">
+            <div className="space-y-6">
               {periods.map(([period, periodSongs], periodIndex) => {
                 return (
                   <motion.section
                     key={period}
                     className="relative"
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      duration: 0.6,
-                      delay: 0.6 + periodIndex * 0.1,
+                      duration: 0.5,
+                      delay: 0.5 + periodIndex * 0.1,
                     }}
                     aria-labelledby={`period-${year}-${period}`}
                   >
-                    <header className="mb-3 flex items-center gap-4">
+                    <header className="mb-4 flex items-center gap-4">
                       <div className="h-px flex-1 bg-gradient-to-r from-gray-400/20 to-gray-600/20" />
                       <div className="flex items-center gap-3">
                         <h3
@@ -86,15 +86,15 @@ export const TimelineItem = React.memo(function TimelineItem({
                     </header>
 
                     <div
-                      className="relative isolate min-h-[200px] sm:min-h-[250px] lg:min-h-[300px]"
-                      role="grid"
+                      className="relative isolate"
                       aria-label={`${periodSongs.length} songs from ${getPeriodLabel(period as Period, year)}`}
                     >
                       {periodSongs.map((song, songIndex) => {
                         const position = songIndex % 3; // 0, 1, or 2
+                        const row = Math.floor(songIndex / 3);
                         const gridPosition = {
                           left: `${position * 33.33}%`,
-                          top: `${Math.floor(songIndex / 3) * 100 + 20}px`,
+                          top: `${row * 90 + 10}px`,
                         };
 
                         return (
@@ -104,26 +104,21 @@ export const TimelineItem = React.memo(function TimelineItem({
                             style={{
                               left: gridPosition.left,
                               top: gridPosition.top,
-                              width: "340px",
-                              maxWidth: "90vw",
-                              height: "320px",
+                              width: "min(320px, 90vw)",
+                              height: "280px",
                               zIndex: 1,
                             }}
                           >
                             <SongCard
                               song={song}
-                              isLeft={isLeft}
                               position={{ left: "0px", top: "0px" }}
                               animationDelay={
-                                0.7 +
+                                0.6 +
                                 periodIndex * 0.1 +
-                                position * 0.05 +
+                                position * 0.03 +
                                 songIndex * 0.02
                               }
                               themeColor={themeColor}
-                              stackIndex={0}
-                              isVisible={true}
-                              isHovered={false}
                             />
                           </div>
                         );
