@@ -121,13 +121,16 @@ Full license details and copyright notices are provided in the [LICENSE](LICENSE
 © Copyright 2025 <https://ado.fan/>
 
 <!-- link definitions --urls-- -->
+
 [website-url]: https://www.ado.fan/
 [fan-discord]: https://discord.gg/ado1024
 
 <!-- link definitions --other-- -->
+
 [banner-image]: https://ado-shop.com/cdn/shop/files/Ado_BEST_5000x2000_banner_ENG2.jpg
 
 <!-- link definitions --badges-- -->
+
 [ci-badge]: https://github.com/ilyvsc/ado.fan/actions/workflows/ci.yml/badge.svg
 [discord-badge]: https://img.shields.io/badge/Ado_Hangout-001219?logo=discord
 [prettier-badge]: https://img.shields.io/badge/code_style-prettier-F7B93E.svg?labelColor=001219
