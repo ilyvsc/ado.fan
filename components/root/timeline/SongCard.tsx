@@ -9,14 +9,12 @@ import { NicoNicoPlayer, YouTubePlayer } from "@/utils/VideoEmbed";
 
 interface SongCardProps {
   song: Song;
-  position: { left: string; top: string };
   animationDelay: number;
   themeColor: string;
 }
 
 export const SongCard = React.memo(function SongCard({
   song,
-  position,
   animationDelay,
   themeColor,
 }: SongCardProps) {
@@ -24,13 +22,7 @@ export const SongCard = React.memo(function SongCard({
 
   return (
     <motion.div
-      className="absolute"
-      style={{
-        left: position.left,
-        top: position.top,
-        width: "320px",
-        maxWidth: "85vw",
-      }}
+      className="w-full max-w-[320px]"
       initial={{
         opacity: 0,
         scale: 0.9,

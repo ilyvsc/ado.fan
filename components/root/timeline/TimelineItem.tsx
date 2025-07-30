@@ -84,36 +84,20 @@ export const TimelineItem = React.memo(function TimelineItem({
                     </header>
 
                     <div
-                      className="relative isolate"
+                      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full"
                       aria-label={`${periodSongs.length} songs from ${getPeriodLabel(period as Period, year)}`}
                     >
                       {periodSongs.map((song, songIndex) => {
-                        const position = songIndex % 3; // 0, 1, or 2
-                        const row = Math.floor(songIndex / 3);
-                        const gridPosition = {
-                          left: `${position * 33.33}%`,
-                          top: `${row * 90 + 10}px`,
-                        };
-
                         return (
                           <div
                             key={song.id}
-                            className="absolute"
-                            style={{
-                              left: gridPosition.left,
-                              top: gridPosition.top,
-                              width: "min(320px, 90vw)",
-                              height: "280px",
-                              zIndex: 1,
-                            }}
+                            className="flex justify-center"
                           >
                             <SongCard
                               song={song}
-                              position={{ left: "0px", top: "0px" }}
                               animationDelay={
                                 0.6 +
                                 periodIndex * 0.1 +
-                                position * 0.03 +
                                 songIndex * 0.02
                               }
                               themeColor={themeColor}
