@@ -84,21 +84,16 @@ export const TimelineItem = React.memo(function TimelineItem({
                     </header>
 
                     <div
-                      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full"
+                      className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
                       aria-label={`${periodSongs.length} songs from ${getPeriodLabel(period as Period, year)}`}
                     >
                       {periodSongs.map((song, songIndex) => {
                         return (
-                          <div
-                            key={song.id}
-                            className="flex justify-center"
-                          >
+                          <div key={song.id} className="flex justify-center">
                             <SongCard
                               song={song}
                               animationDelay={
-                                0.6 +
-                                periodIndex * 0.1 +
-                                songIndex * 0.02
+                                0.6 + periodIndex * 0.1 + songIndex * 0.02
                               }
                               themeColor={themeColor}
                             />
