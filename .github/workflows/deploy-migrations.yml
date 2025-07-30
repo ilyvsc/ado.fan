@@ -25,7 +25,7 @@ jobs:
           version: 9
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Apply all pending migrations to the database
         run: pnpm exec prisma migrate deploy
