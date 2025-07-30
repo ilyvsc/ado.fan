@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -56,10 +55,10 @@ export default function NotFound() {
               <Button
                 asChild
                 className="text-md h-12 flex-1 bg-ado-red font-semibold text-foreground hover:bg-ado-red/80"
+                onClick={() => window.history.back()}
               >
-                <Link href="/">vanish away from here</Link>
+                vanish away from here
               </Button>
-              {/* TODO: add a button to go back to the previous page */}
             </div>
           </CardContent>
         </Card>

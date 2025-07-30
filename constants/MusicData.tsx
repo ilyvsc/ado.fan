@@ -41,7 +41,7 @@ function transformSong(
     nicoId: song.nicoId,
     youtubeId: song.youtubeId,
     coverArt: song.coverArt,
-    themeColor: song.themeColor || undefined,
+    themeColor: song.themeColor ?? undefined,
   };
 }
 

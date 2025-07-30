@@ -15,7 +15,7 @@ const FeaturedSongCard = React.memo(function FeaturedSongCard({
 }: Readonly<{
   song: Song;
 }>) {
-  const themeColor = song.themeColor || "var(--ado-key)";
+  const themeColor = song.themeColor ?? "var(--ado-key)";
 
   const dynamicStyles = useMemo(
     () => ({
@@ -28,15 +28,21 @@ const FeaturedSongCard = React.memo(function FeaturedSongCard({
     <div className="group relative w-full">
       <Card className="relative gap-0 overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-card/90 to-card/50 p-0 shadow-md backdrop-blur-xl transition-all duration-300 group-hover:shadow-2xl hover:shadow-ado-key/40">
         <div className="relative h-56 w-full overflow-hidden">
-          {song.youtubeId ? (
-            <YouTubePlayer song={song} />
-          ) : song.nicoId ? (
-            <NicoNicoPlayer song={song} />
-          ) : (
-            <div className="flex h-full items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 text-muted-foreground">
-              No preview available
-            </div>
-          )}
+          {(() => {
+            if (song.youtubeId) {
+              return <YouTubePlayer song={song} />;
+            }
+
+            if (song.nicoId) {
+              return <NicoNicoPlayer song={song} />;
+            }
+
+            return (
+              <div className="flex h-full items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 text-muted-foreground">
+                No preview available
+              </div>
+            );
+          })()}
 
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
         </div>
