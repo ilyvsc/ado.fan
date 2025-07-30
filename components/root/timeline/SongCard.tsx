@@ -47,18 +47,18 @@ export const SongCard = React.memo(function SongCard({
         },
       }}
     >
-      <div className="group relative overflow-hidden rounded-xl border border-white/20 bg-white/10 shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-white/30">
+      <div
+        className="group relative overflow-hidden rounded-xl border border-white/20 bg-white/10 shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-white/30 hover:shadow-xl"
+        style={
+          {
+            "--theme-color": cardThemeColor,
+          } as React.CSSProperties
+        }
+      >
         <div
-          className={`absolute inset-0 opacity-0 transition-opacity duration-300 group-hover/song:opacity-20`}
+          className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-40"
           style={{
             background: `radial-gradient(circle at 50% 50%, ${cardThemeColor}, transparent)`,
-          }}
-        />
-
-        <div
-          className="pointer-events-none absolute inset-0 z-10 rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-10"
-          style={{
-            background: `linear-gradient(45deg, ${cardThemeColor}, transparent)`,
           }}
         />
 

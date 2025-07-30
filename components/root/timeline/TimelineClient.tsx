@@ -70,14 +70,12 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
     isMobile,
   });
 
-  const containerHeightClasses = isMobile
-    ? "h-[calc(100vh-20rem)] max-sm:h-[calc(100vh-24rem)]"
-    : "h-[calc(100vh-24rem)] 2xl:h-[calc(100vh-24rem)] max-3xl:h-[calc(100vh-30rem)] 3xl:h-[calc(100vh-35rem)]";
+  const currentStep = timelineSteps[currentIndex];
 
   return (
     <section
-      className={`relative ${containerHeightClasses} w-full overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black`}
-      aria-label={`Timeline with ${timelineSteps.length} steps across ${timelineYears.length} years. Currently viewing step ${currentIndex + 1}`}
+      className="relative h-[calc(100dvh-18rem)] max-h-screen w-full overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black"
+      aria-label={`Music timeline with ${timelineSteps.length} steps from ${timelineYears.length} years`}
     >
       <TimelineNavigation
         timelineYears={timelineYears}
@@ -88,8 +86,9 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
 
       <motion.main
         ref={containerRef}
-        className={`h-full w-full scroll-smooth ${isMobile ? "overflow-x-auto" : "overflow-y-auto"
-          }`}
+        className={`h-full w-full scroll-smooth ${
+          isMobile ? "overflow-x-auto" : "overflow-y-auto"
+        }`}
         style={{
           scrollSnapType: isMobile ? "x mandatory" : "y mandatory",
           scrollBehavior: "smooth",
@@ -101,27 +100,25 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         tabIndex={0}
-        aria-live="polite"
+        aria-label={
+          currentStep
+            ? `Currently viewing ${currentStep.period} ${currentStep.year}`
+            : "Timeline content"
+        }
       >
         <div className={`relative ${isMobile ? "flex h-full" : ""}`}>
           {timelineSteps.map((step, index) => (
-            <motion.section
+            <section
               key={`${step.year}-${step.period}-${step.songIndex ?? 0}`}
-              className={`${isMobile
+              className={`${
+                isMobile
                   ? "relative h-full w-screen shrink-0 snap-start px-4 sm:px-6"
-                  : "relative h-[calc(100vh-24rem)] w-full snap-start px-2 max-3xl:h-[calc(100vh-30rem)] 2xl:h-[calc(100vh-24rem)] 3xl:h-[calc(100vh-35rem)] sm:px-4 lg:px-6"
-                }`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.1,
-                ease: "easeOut",
-              }}
-              aria-label={`Timeline step ${index + 1} of ${timelineSteps.length}: ${step.period} ${step.year} with ${step.songs.length} song${step.songs.length > 1 ? "s" : ""}`}
+                  : "relative h-[calc(100dvh-14rem)] max-h-screen w-full snap-start px-2 sm:px-4 lg:px-6"
+              }`}
+              aria-label={`${step.period} ${step.year}: ${step.songs.length} song${step.songs.length > 1 ? "s" : ""}`}
               aria-current={index === currentIndex ? "step" : undefined}
             >
-              <div className="absolute inset-0 flex items-start justify-center pt-18 2xl:pt-30 sm:pt-26 xl:pt-24">
+              <div className="flex h-full items-start justify-center pt-18 2xl:pt-30 sm:pt-26 xl:pt-24">
                 <TimelineItem
                   timelineYear={{
                     year: step.year,
@@ -134,7 +131,7 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
                   index={index}
                 />
               </div>
-            </motion.section>
+            </section>
           ))}
         </div>
       </motion.main>
