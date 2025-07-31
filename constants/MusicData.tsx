@@ -110,21 +110,16 @@ export async function getAllAlbums(): Promise<Album[]> {
  * Fetch songs by section.
  */
 export async function getSongsBySection(id: string): Promise<Song[]> {
-  const section = await prisma.section.findUnique({
-    where: { id },
+  const sections = await prisma.section.findMany({
+    where: { name: id },
     include: {
-      items: {
-        include: {
-          song: { select: songSelect },
-        },
-        orderBy: { order: "asc" },
-      },
+      song: { select: songSelect },
     },
   });
 
-  if (!section) return [];
+  if (sections.length === 0) return [];
 
-  return section.items.map(({ song }) => transformSong(song));
+  return sections.map(({ song }) => transformSong(song));
 }
 
 /**

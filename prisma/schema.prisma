@@ -8,12 +8,12 @@ datasource db {
 }
 
 model Song {
-  id             String        @id
+  id             String       @id
   titleEnglish   String
   titleJapanese  String
-  lyricsJapanese String        @default("")
-  lyricsRomaji   String        @default("")
-  lyricsEnglish  String        @default("")
+  lyricsJapanese String       @default("")
+  lyricsRomaji   String       @default("")
+  lyricsEnglish  String       @default("")
   length         String
   year           Int
   releaseDate    DateTime
@@ -22,7 +22,7 @@ model Song {
   youtubeId      String?
   coverArt       String
   albumTracks    AlbumTrack[]
-  SectionItem    SectionItem[]
+  Section        Section[]
   themeColor     String?
 
   @@index([releaseDate(sort: Desc)], name: "song_release_date_idx")
@@ -56,21 +56,12 @@ model AlbumTrack {
 }
 
 model Section {
-  id    String        @id @unique
-  items SectionItem[]
-}
+  name   String
+  songId String
+  song   Song   @relation(fields: [songId], references: [id])
 
-model SectionItem {
-  sectionId String
-  songId    String
-  order     Int
-  section   Section @relation(fields: [sectionId], references: [id])
-  song      Song    @relation(fields: [songId], references: [id])
-
-  @@id([sectionId, songId])
-  @@unique([sectionId, order])
-  @@index([songId], name: "section_item_song_idx")
-  @@index([sectionId, order], name: "section_item_order_idx")
+  @@id([name, songId])
+  @@index([songId])
 }
 
 enum AlbumType {

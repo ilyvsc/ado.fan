@@ -178,19 +178,10 @@ async function seedSongs(songs: Prisma.SongCreateInput[]) {
 async function seedSections(sections: SectionDefinition[]) {
   console.log(`Seeding ${sections.length} sections…`);
   for (const { id, items } of sections) {
-    await prisma.section.upsert({
-      where: { id },
-      create: { id },
-      update: {},
-    });
-
-    await prisma.sectionItem.deleteMany({ where: { sectionId: id } });
-
-    await prisma.sectionItem.createMany({
-      data: items.map((songId, idx) => ({
-        sectionId: id,
+    await prisma.section.createMany({
+      data: items.map((songId) => ({
+        name: id,
         songId,
-        order: idx + 1,
       })),
       skipDuplicates: true,
     });
