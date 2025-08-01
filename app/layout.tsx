@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
 import React from "react";
 
-import NoScriptError from "@/components/NoScriptError";
+import NoScriptError from "@/app/no-script";
 import { ThemeProvider } from "@/utils/providers/ThemeProvider";
 
 import "@/styles/globals.css";

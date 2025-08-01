@@ -7,9 +7,9 @@ import React, { useMemo } from "react";
 import { TimelineItem } from "./TimelineItem";
 import { TimelineNavigation } from "./TimelineNavigation";
 
+import { useIsMobile } from "@/components/ui/use-mobile";
+import { useTimelineScroll } from "@/features/timeline/hooks/use-timeline-scroll";
 import { TimelineStep, TimelineYear } from "@/types/Music";
-import { useIsMobile } from "@/utils/hooks/use-mobile";
-import { useTimelineScroll } from "@/utils/hooks/use-timeline-scroll";
 
 function createTimelineSteps(
   timelineYears: readonly TimelineYear[],

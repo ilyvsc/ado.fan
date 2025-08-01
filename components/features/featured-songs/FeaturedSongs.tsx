@@ -1,7 +1,7 @@
 import React from "react";
 
-import { FeaturedSongsClient } from "@/components/root/featured-songs/FeaturedSongsClient";
-import { getFeaturedSongs } from "@/constants/MusicData";
+import { FeaturedSongsClient } from "./FeaturedSongsClient";
+import { getFeaturedSongs } from "@/prisma/queries/songs";
 
 export const dynamic = "force-dynamic";
 

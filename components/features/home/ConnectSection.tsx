@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { fanLinks, officialLinks } from "@/constants/SocialLinks";
+import { fanLinks, officialLinks } from "@/utils/lib/constants/social-links";
 
 export function ConnectSection() {
   return (

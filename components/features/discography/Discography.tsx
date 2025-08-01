@@ -1,5 +1,8 @@
-import { DiscographyClient } from "@/components/discography/DiscographyClient";
-import { getAllAlbums } from "@/constants/MusicData";
+import { DiscographyClient } from "./DiscographyClient";
+
+import { getAllAlbums } from "@/prisma/queries/albums";
+
+export const dynamic = "force-dynamic";
 
 export async function Discography() {
   try {
