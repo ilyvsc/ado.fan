@@ -1,6 +1,5 @@
 import { prisma } from "@/prisma/client";
-import { songPrismaSelect, serializeSong } from "@/prisma/serializer"
-
+import { serializeSong, songPrismaSelect } from "@/prisma/serializer";
 import { Song, TimelineYear } from "@/types/Music";
 
 /**
@@ -146,7 +145,9 @@ export async function getTimelineSongsByYear(): Promise<TimelineYear[]> {
         late: sorted.filter((s) => new Date(s.releaseDate).getMonth() >= 8),
       };
 
-      const periods = Object.entries(categorized).filter(([, arr]) => arr.length);
+      const periods = Object.entries(categorized).filter(
+        ([, arr]) => arr.length,
+      );
 
       return {
         year: +year,

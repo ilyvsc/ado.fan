@@ -1,6 +1,5 @@
 import { prisma } from "@/prisma/client";
-import { songPrismaSelect, serializeSong } from "@/prisma/serializer"
-
+import { serializeSong, songPrismaSelect } from "@/prisma/serializer";
 import { Album } from "@/types/Music";
 
 /**
@@ -127,7 +126,9 @@ export async function getAlbumById(id: string): Promise<Album | null> {
  *
  * @throws {Error} If database connection fails or query execution fails
  */
-export async function getAlbumInfoById(id: string): Promise<Omit<Album, "tracks"> | null> {
+export async function getAlbumInfoById(
+  id: string,
+): Promise<Omit<Album, "tracks"> | null> {
   const album = await prisma.album.findUnique({
     where: { id },
     select: {

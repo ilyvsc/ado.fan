@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 
+import { fanLinks, officialLinks } from "@/components/SocialLinks";
 import {
   Card,
   CardDescription,
@@ -12,7 +13,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { fanLinks, officialLinks } from "@/components/SocialLinks";
 
 export function ConnectSection() {
   return (

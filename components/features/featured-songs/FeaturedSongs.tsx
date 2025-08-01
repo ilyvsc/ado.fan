@@ -1,6 +1,7 @@
 import React from "react";
 
 import { FeaturedSongsClient } from "./FeaturedSongsClient";
+
 import { getFeaturedSongs } from "@/prisma/queries/songs";
 
 export const dynamic = "force-dynamic";
