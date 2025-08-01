@@ -22,13 +22,13 @@ export const officialLinks: SocialLink[] = [
     name: "@ado_staff",
     url: "https://x.com/ado_staff",
     icon: <SiX className="h-5 w-5" />,
-    description: "Official X (formely Twitter) account managed by Ado's staff",
+    description: "Official X (formerly Twitter) account managed by Ado's staff",
   },
   {
     name: "@ado1024imokenp",
     url: "https://x.com/ado1024imokenp",
     icon: <SiX className="h-5 w-5" />,
-    description: "Official X (formely Twitter) account managed by Ado",
+    description: "Official X (formerly Twitter) account managed by Ado",
   },
   {
     name: "YouTube",

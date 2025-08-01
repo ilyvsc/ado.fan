@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-import { YouTubePlayer } from "@/utils/VideoEmbed";
+import { YouTubePlayer } from "@/components/VideoPlayer";
 
 export function HeroSection() {
   const videoId = "A7FRtZXoXlQ";

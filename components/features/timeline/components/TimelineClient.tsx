@@ -77,12 +77,18 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
       className="relative h-[calc(100dvh-18rem)] max-h-screen w-full overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black"
       aria-label={`Music timeline with ${timelineSteps.length} steps from ${timelineYears.length} years`}
     >
-      <TimelineNavigation
-        timelineYears={timelineYears}
-        timelineSteps={timelineSteps}
-        currentIndex={currentIndex}
-        onYearClick={scrollToStep}
-      />
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        <TimelineNavigation
+          timelineYears={timelineYears}
+          timelineSteps={timelineSteps}
+          currentIndex={currentIndex}
+          onYearClick={scrollToStep}
+        />
+      </motion.div>
 
       <motion.main
         ref={containerRef}

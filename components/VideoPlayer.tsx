@@ -34,16 +34,16 @@ const VideoPlayer = ({
       style={
         isFullscreenBackground
           ? {
-              minWidth: "100%",
-              minHeight: "100%",
-              width: "100vw",
-              height: "100vh",
-              objectFit: "cover",
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%) scale(1.1)", // Scale slightly to ensure no black bars
-            }
+            minWidth: "100%",
+            minHeight: "100%",
+            width: "100vw",
+            height: "100vh",
+            objectFit: "cover",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%) scale(1.1)", // scale to ensure no YT interface
+          }
           : {}
       }
     />

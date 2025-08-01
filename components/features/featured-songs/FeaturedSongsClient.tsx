@@ -4,7 +4,7 @@ import React, { useDeferredValue, useMemo } from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Song } from "@/types/Music";
-import { NicoNicoPlayer, YouTubePlayer } from "@/utils/VideoEmbed";
+import { NicoNicoPlayer, YouTubePlayer } from "@/components/VideoPlayer";
 
 interface FeaturedSongsClientProps {
   songs: Song[];

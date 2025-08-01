@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 import React from "react";
 
-import { SongCard } from "./SongCard";
+import { SongCard } from "./TimelineCard";
 
 import { Period, TimelineYear } from "@/types/Music";
 

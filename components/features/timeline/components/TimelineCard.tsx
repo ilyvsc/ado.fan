@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import React from "react";
 
 import { Song } from "@/types/Music";
-import { NicoNicoPlayer, YouTubePlayer } from "@/utils/VideoEmbed";
+import { NicoNicoPlayer, YouTubePlayer } from "@/components/VideoPlayer";
 
 interface SongCardProps {
   song: Song;
