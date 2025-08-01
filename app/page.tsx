@@ -1,12 +1,12 @@
 import React from "react";
 
 import { Footer } from "@/components/layout/Footer";
-import { FanAppreciation } from "@/components/root/AppreciationNote";
-import { ConnectSection } from "@/components/root/ConnectSection";
-import { FeaturedSongs } from "@/components/root/featured-songs/FeaturedSongs";
-import { HeroSection } from "@/components/root/HeroSection";
-import { NewsletterSection } from "@/components/root/Newsletter";
-import { DiscographyTimeline } from "@/components/root/timeline/Timeline";
+import { FeaturedSongs } from "@/features/featured-songs/FeaturedSongs";
+import { FanAppreciation } from "@/features/home/AppreciationNote";
+import { ConnectSection } from "@/features/home/ConnectSection";
+import { HeroSection } from "@/features/home/HeroSection";
+import { NewsletterSection } from "@/features/home/Newsletter";
+import { DiscographyTimeline } from "@/features/timeline/Timeline";
 
 export default function Home() {
   return (

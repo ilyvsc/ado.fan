@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React from "react";
 
-import { fanLinks, officialLinks } from "@/constants/SocialLinks";
+import { fanLinks, officialLinks } from "@/components/SocialLinks";
 
 interface SocialLinkProps {
   name: string;

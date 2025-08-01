@@ -3,8 +3,8 @@
 import React, { useDeferredValue, useMemo } from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
+import { NicoNicoPlayer, YouTubePlayer } from "@/components/VideoPlayer";
 import { Song } from "@/types/Music";
-import { NicoNicoPlayer, YouTubePlayer } from "@/utils/VideoEmbed";
 
 interface FeaturedSongsClientProps {
   songs: Song[];

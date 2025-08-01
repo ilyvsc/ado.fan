@@ -42,7 +42,7 @@ const VideoPlayer = ({
               position: "absolute",
               top: "50%",
               left: "50%",
-              transform: "translate(-50%, -50%) scale(1.1)", // Scale slightly to ensure no black bars
+              transform: "translate(-50%, -50%) scale(1.1)", // scale to ensure no YT interface
             }
           : {}
       }

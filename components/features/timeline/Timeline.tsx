@@ -1,7 +1,8 @@
 import React from "react";
 
-import { TimelineClient } from "@/components/root/timeline/TimelineClient";
-import { getTimelineSongsByYear } from "@/constants/MusicData";
+import { TimelineClient } from "./components/TimelineClient";
+
+import { getTimelineSongsByYear } from "@/prisma/queries/songs";
 
 export const dynamic = "force-dynamic";
 

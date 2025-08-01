@@ -40,7 +40,7 @@ jobs:
         run: pnpm exec tsc --noEmit
 
       - name: Generate Prisma client
-        run: pnpm exec prisma generate
+        run: pnpm exec prisma generate --no-engine
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
