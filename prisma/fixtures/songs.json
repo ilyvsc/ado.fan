@@ -1,21 +1,438 @@
 [
   {
-    "id": "usseewa",
+    "id": "kimi-no-taion",
     "title": {
-      "english": "Usseewa",
-      "japanese": "うっせぇわ"
+      "english": "Kimi No Taion",
+      "japanese": "君の体温"
     },
-    "length": "3:18",
+    "length": "4:00",
+    "year": 2017,
+    "releaseDate": "2017-01-10",
+    "description": "Ado's first song uploaded to NicoNico at just 14 years old. Even then, her powerful voice and emotional depth hinted at the star she would become.",
+    "youtubeId": "",
+    "nicoId": "sm30407954",
+    "coverArt": "",
+    "themeColor": "#FFB023"
+  },
+  {
+    "id": "star-night-show",
+    "title": {
+      "english": "Star Night Snow",
+      "japanese": "スターナイトスノウ"
+    },
+    "length": "4:40",
+    "year": 2017,
+    "releaseDate": "2017-04-12",
+    "description": "A wintry ballad shimmering with nostalgia and quiet hope, carried by Ado's tender voice. A Hall of Legend classic, it captures fleeting memories like snowflakes, delicate yet unforgettable.",
+    "youtubeId": "",
+    "nicoId": "sm31014792",
+    "coverArt": "https://static.wikia.nocookie.net/vocaloid/images/6/67/Games_-_BanG_Dream_-_Star_Night_Snow.png",
+    "themeColor": "#3AB0FE"
+  },
+  {
+    "id": "strangers",
+    "title": {
+      "english": "Strangers",
+      "japanese": ""
+    },
+    "length": "4:32",
+    "year": 2017,
+    "releaseDate": "2017-06-02",
+    "description": "An anthem for outsiders, where Ado's heartfelt vocals turn fear and loneliness into a defiant cry of connection: “we're not alone.”",
+    "youtubeId": "",
+    "nicoId": "sm31324700",
+    "coverArt": "",
+    "themeColor": "#37E1BD"
+  },
+  {
+    "id": "shinkonsui",
+    "title": {
+      "english": "Deep Coma",
+      "japanese": "深昏睡"
+    },
+    "length": "4:06",
+    "year": 2017,
+    "releaseDate": "2017-12-27",
+    "description": "An ethereal descent into emotional numbness, where despair and comfort blur into one. Ado's haunting voice drifts through its abstract melancholy, making this surreal ballad both unsettling and strangely serene.",
+    "youtubeId": "",
+    "nicoId": "sm32488469",
+    "coverArt": "",
+    "themeColor": "#2D323A"
+  },
+  {
+    "id": "watashino-aru",
+    "title": {
+      "english": "My R",
+      "japanese": "わたしのアール"
+    },
+    "length": "3:37",
+    "year": 2018,
+    "releaseDate": "2018-02-02",
+    "description": "A dark, emotional descent into despair and fleeting human connection, where rooftop encounters echo themes of suicide, loneliness, and fleeting empathy.",
+    "youtubeId": "",
+    "nicoId": "sm32677441",
+    "coverArt": "",
+    "themeColor": "#FFC49E"
+  },
+  {
+    "id": "kirai-kirai",
+    "title": {
+      "english": "Kirai Kirai Jigahidai",
+      "japanese": "キライ・キライ・ジガヒダイ！"
+    },
+    "length": "3:34",
+    "year": 2018,
+    "releaseDate": "2018-03-02",
+    "description": "A furious cry of jealousy and self-obsession, lashing out at fake smiles and shallow praise while flaunting an untouchable ego.",
+    "youtubeId": "gmJiYoRhO5g",
+    "nicoId": "sm32821295",
+    "coverArt": "",
+    "themeColor": "#94ADF4"
+  },
+  {
+    "id": "bad-dance-hall",
+    "title": {
+      "english": "Bad Dance Hall",
+      "japanese": "バッド・ダンス・ホール"
+    },
+    "length": "4:49",
+    "year": 2018,
+    "releaseDate": "2018-03-23",
+    "description": "",
+    "youtubeId": "",
+    "nicoId": "sm32932556",
+    "coverArt": "",
+    "themeColor": "#698C7D"
+  },
+  {
+    "id": "uminaoshi",
+    "title": {
+      "english": "Reborn",
+      "japanese": "うみなおし"
+    },
+    "length": "4:08",
+    "year": 2018,
+    "releaseDate": "2018-05-11",
+    "description": "A brutal, unflinching dive into self-destruction and rebirth, tearing down societal facades and personal illusions.",
+    "youtubeId": "cfVYSHvAhaQ",
+    "nicoId": "sm33192595",
+    "coverArt": "",
+    "themeColor": "#A2A1AC"
+  },
+  {
+    "id": "renai-saiban",
+    "title": {
+      "english": "Love Trial",
+      "japanese": "恋愛裁判"
+    },
+    "length": "3:41",
+    "year": 2018,
+    "releaseDate": "2018-06-22",
+    "description": "A dramatic love courtroom where passion meets punishment, turning heartbreak into a theatrical trial.",
+    "youtubeId": "iHIrEqU5cwM",
+    "nicoId": "sm33404706",
+    "coverArt": "",
+    "themeColor": "#8A2640"
+  },
+  {
+    "id": "akushidento-coordinator",
+    "title": {
+      "english": "Accident Coordinator",
+      "japanese": "アクシデントコーディネイター"
+    },
+    "length": "4:05",
+    "year": 2018,
+    "releaseDate": "2018-08-17",
+    "description": "A sharp reflection on conformity, greed, and fading ideals, wrapped in an electrified urban beat. Ado’s edgy vocals turn its cynical narrative into a biting anthem of modern disillusionment.",
+    "youtubeId": "R8SsFdv35Dg",
+    "nicoId": "sm33709059",
+    "coverArt": "",
+    "themeColor": "#183D4F"
+  },
+  {
+    "id": "merutirando-nightmare",
+    "title": {
+      "english": "Melty Land Nightmare",
+      "japanese": "メルティランドナイトメア"
+    },
+    "length": "4:29",
+    "year": 2018,
+    "releaseDate": "2018-09-07",
+    "description": "A surreal dive into fragile dreams and fleeting love, where fantasy and loneliness blur into a bittersweet nightmare. ",
+    "youtubeId": "OZYqBsmtwuA",
+    "nicoId": "sm33817960",
+    "coverArt": "",
+    "themeColor": "#FE7DA7"
+  },
+  {
+    "id": "adishonaru-memory",
+    "title": {
+      "english": "Additional Memory",
+      "japanese": "アディショナルメモリー"
+    },
+    "length": "4:00",
+    "year": 2018,
+    "releaseDate": "2018-10-02",
+    "description": "A sorrowful reflection on love left unspoken and regrets that can’t be undone. Ado’s voice carries the weight of loss, longing, and a final farewell that lingers long after the song ends.",
+    "youtubeId": "h1q7BNK5U9A",
+    "nicoId": "sm33955760",
+    "coverArt": "",
+    "themeColor": "#E81A35"
+  },
+  {
+    "id": "ego-rock-short",
+    "title": {
+      "english": "Ego Rock",
+      "japanese": "エゴロック"
+    },
+    "length": "1:00",
+    "year": 2018,
+    "releaseDate": "2018-10-23",
+    "description": "",
+    "youtubeId": "V37DacsS_Wg",
+    "nicoId": "sm34065291",
+    "coverArt": "",
+    "themeColor": "#E28786"
+  },
+  {
+    "id": "otome-kaibou",
+    "title": {
+      "english": "Girl Dissection",
+      "japanese": "乙女解剖"
+    },
+    "length": "3:49",
+    "year": 2019,
+    "releaseDate": "2019-02-10",
+    "description": "",
+    "youtubeId": "N5cSFdGANVc",
+    "nicoId": "sm34609548",
+    "coverArt": "",
+    "themeColor": "#F7E4B9"
+  },
+  {
+    "id": "secret-answer",
+    "title": {
+      "english": "Secret Answer",
+      "japanese": ""
+    },
+    "length": "4:30",
+    "year": 2019,
+    "releaseDate": "2019-04-02",
+    "description": "",
+    "youtubeId": "",
+    "nicoId": "sm34895646",
+    "coverArt": "",
+    "themeColor": "#43104E"
+  },
+  {
+    "id": "nounai-kakumei-girl",
+    "title": {
+      "english": "Brain Revolution Girl",
+      "japanese": "脳内革命ガール"
+    },
+    "length": "3:39",
+    "year": 2019,
+    "releaseDate": "2019-04-13",
+    "description": "",
+    "youtubeId": "tYMSo9gW8Ks",
+    "nicoId": "sm34963457",
+    "coverArt": "",
+    "themeColor": "#D60000"
+  },
+  {
+    "id": "ai-oyobi-yau",
+    "title": {
+      "english": "Ai Oyobi Yau",
+      "japanese": "愛及屋烏"
+    },
+    "length": "4:07",
+    "year": 2019,
+    "releaseDate": "2019-05-01",
+    "description": "",
+    "youtubeId": "",
+    "nicoId": "sm35039892",
+    "coverArt": "",
+    "themeColor": "#FBF6E7"
+  },
+  {
+    "id": "jama",
+    "title": {
+      "english": "Jama",
+      "japanese": "邪魔"
+    },
+    "length": "3:28",
+    "year": 2019,
+    "releaseDate": "2019-06-22",
+    "description": "",
+    "youtubeId": "6uR_UxqGoug",
+    "nicoId": "sm35298513",
+    "coverArt": "",
+    "themeColor": "#252557"
+  },
+  {
+    "id": "hungry-nicole",
+    "title": {
+      "english": "Hungry Nicole",
+      "japanese": "ハングリーニコル"
+    },
+    "length": "4:47",
+    "year": 2019,
+    "releaseDate": "2019-08-03",
+    "description": "",
+    "youtubeId": "8Lf_sgxIWlg",
+    "nicoId": "sm35487853",
+    "coverArt": "",
+    "themeColor": "#4B8DDB"
+  },
+  {
+    "id": "bin",
+    "title": {
+      "english": "bin",
+      "japanese": ""
+    },
+    "length": "3:28",
+    "year": 2019,
+    "releaseDate": "2019-09-14",
+    "description": "",
+    "youtubeId": "NfkXMkJV98A",
+    "nicoId": "sm35680631",
+    "coverArt": "",
+    "themeColor": "#575757"
+  },
+  {
+    "id": "basket-worm",
+    "title": {
+      "english": "Basket Worm",
+      "japanese": "バスケットワーム"
+    },
+    "length": "4:06",
+    "year": 2019,
+    "releaseDate": "2019-11-08",
+    "description": "",
+    "youtubeId": "A4fcb5LV1F8",
+    "nicoId": "sm35926740",
+    "coverArt": "",
+    "themeColor": "#EFDEC4"
+  },
+  {
+    "id": "last-resort",
+    "title": {
+      "english": "Last Resort",
+      "japanese": "ラストリゾート"
+    },
+    "length": "3:06",
     "year": 2020,
-    "releaseDate": "2020-10-23",
-    "description": "Ado's breakthrough hit that catapulted her to fame with its raw emotion and powerful vocals addressing societal pressures.",
-    "nicoId": "sm37761910",
-    "coverArt": "https://i.scdn.co/image/ab67616d0000b27389e3b38cb86ef8cfb0cd8def",
-    "lyrics": {
-      "japanese": "",
-      "romaji": "",
-      "english": ""
-    }
+    "releaseDate": "2020-03-14",
+    "description": "",
+    "youtubeId": "slcfa-0urok",
+    "nicoId": "sm36511466",
+    "coverArt": "",
+    "themeColor": "#2123BB"
+  },
+  {
+    "id": "bokkaderaberita",
+    "title": {
+      "english": "Bocca della Verità",
+      "japanese": "ボッカデラベリタ"
+    },
+    "length": "3:19",
+    "year": 2020,
+    "releaseDate": "2020-06-02",
+    "description": "",
+    "youtubeId": "X9aKVLPoKJk",
+    "nicoId": "sm36966835",
+    "coverArt": "",
+    "themeColor": "#480A92"
+  },
+  {
+    "id": "baka",
+    "title": {
+      "english": "Baka",
+      "japanese": "馬鹿"
+    },
+    "length": "3:06",
+    "year": 2020,
+    "releaseDate": "2020-06-22",
+    "description": "",
+    "youtubeId": "aOIrxUTBRgs",
+    "nicoId": "sm37074770",
+    "coverArt": "",
+    "themeColor": "#001DCB"
+  },
+  {
+    "id": "hysteric-night-girl",
+    "title": {
+      "english": "Hysteric Night Girl",
+      "japanese": "ヒステリックナイトガール"
+    },
+    "length": "5:07",
+    "year": 2020,
+    "releaseDate": "2020-07-25",
+    "description": "",
+    "youtubeId": "UoGacSBPYPc",
+    "nicoId": "sm37244891",
+    "coverArt": "",
+    "themeColor": "#FF7D02"
+  },
+  {
+    "id": "hanshoku-no-kansho",
+    "title": {
+      "english": "Hanshoku No Kansho",
+      "japanese": "半色の感傷"
+    },
+    "length": "",
+    "year": 2020,
+    "releaseDate": "2020-09-15",
+    "description": "",
+    "youtubeId": "n_sDtV5oZR0",
+    "nicoId": "sm37524925",
+    "coverArt": "",
+    "themeColor": "#252525"
+  },
+  {
+    "id": "limbo",
+    "title": {
+      "english": "Limbo",
+      "japanese": ""
+    },
+    "length": "2:20",
+    "year": 2020,
+    "releaseDate": "2020-09-19",
+    "description": "",
+    "youtubeId": "13dECLUD-5Q",
+    "nicoId": "sm37544884",
+    "coverArt": "",
+    "themeColor": "#595989"
+  },
+  {
+    "id": "sunny-wave",
+    "title": {
+      "english": "Sunny Wave",
+      "japanese": ""
+    },
+    "length": "4:33",
+    "year": 2020,
+    "releaseDate": "2020-09-20",
+    "description": "",
+    "youtubeId": "1M_A3OIEceg",
+    "nicoId": "sm37552768",
+    "coverArt": "",
+    "themeColor": "#0094EE"
+  },
+  {
+    "id": "black-rock-shooter",
+    "title": {
+      "english": "Black Rock Shooter",
+      "japanese": "ブラック★ロックシューター"
+    },
+    "length": "4:52",
+    "year": 2020,
+    "releaseDate": "2020-12-10",
+    "description": "",
+    "youtubeId": "nMpD5q5wqPM",
+    "nicoId": "sm37943786",
+    "coverArt": "",
+    "themeColor": "#8782A5"
   },
   {
     "id": "readymade",
@@ -26,14 +443,25 @@
     "length": "3:05",
     "year": 2021,
     "releaseDate": "2021-02-14",
-    "description": "A high-energy track showcasing Ado's versatile vocal range and expressive delivery style.",
+    "description": "A raw and defiant cry for authenticity, expressing the struggle to break free from societal pressures while urging listeners to challenge stereotypes and embrace their true selves.",
     "youtubeId": "jg09lNupc1s",
     "coverArt": "https://i.scdn.co/image/ab67616d0000b27360fe03540adbfc0a842ebd1d",
-    "lyrics": {
-      "japanese": "",
-      "romaji": "",
-      "english": ""
-    }
+    "themeColor": "#10648A"
+  },
+  {
+    "id": "kimi-no-taion-2021",
+    "title": {
+      "english": "Kimi No Taion",
+      "japanese": "君の体温"
+    },
+    "length": "4:00",
+    "year": 2021,
+    "releaseDate": "2021-01-10",
+    "description": "",
+    "youtubeId": "QLsXgj4_gOc",
+    "nicoId": "sm38100347",
+    "coverArt": "",
+    "themeColor": "#C47582"
   },
   {
     "id": "gira-gira",
@@ -41,17 +469,29 @@
       "english": "Gira Gira",
       "japanese": "ギラギラ"
     },
-    "length": "3:36",
+    "length": "4:37",
     "year": 2021,
-    "releaseDate": "2021-04-26",
-    "description": "A powerful song that showcases Ado's incredible vocal range and emotional delivery.",
+    "releaseDate": "2021-02-14",
+    "description": "Exploring themes of self-discovery and love, it captures the deep struggle with identity and the longing for acceptance, revealing the fragile balance between hope and pain.",
     "youtubeId": "sOiMD45QGLs",
+    "nicoId": "sm38325925",
     "coverArt": "https://i.scdn.co/image/ab67616d0000b273a017946e3afa6b0d4e7eb123",
-    "lyrics": {
-      "japanese": "",
-      "romaji": "",
-      "english": ""
-    }
+    "themeColor": "#E1DFDE"
+  },
+  {
+    "id": "renai-senso",
+    "title": {
+      "english": "Renai Senso",
+      "japanese": "恋は戦争"
+    },
+    "length": "3:56",
+    "year": 2021,
+    "releaseDate": "2021-04-23",
+    "description": "",
+    "youtubeId": "1OI4Bp8fGYw",
+    "nicoId": "sm38625475",
+    "coverArt": "",
+    "themeColor": "#5D7887"
   },
   {
     "id": "odo",
@@ -59,17 +499,29 @@
       "english": "Odo",
       "japanese": "踊"
     },
-    "length": "3:40",
+    "length": "3:29",
     "year": 2021,
     "releaseDate": "2021-08-22",
-    "description": "An energetic track with a traditional Japanese influence that showcases Ado's versatility.",
+    "description": "",
     "youtubeId": "YnSW8ian29w",
+    "nicoId": "sm38668379",
     "coverArt": "https://i.scdn.co/image/ab67616d0000b2730f7bef8299e3738350d6846e",
-    "lyrics": {
-      "japanese": "",
-      "romaji": "",
-      "english": ""
-    }
+    "themeColor": "#CC0153"
+  },
+  {
+    "id": "16-bit-girl",
+    "title": {
+      "english": "16 Bit Girl",
+      "japanese": "16ビットガール"
+    },
+    "length": "4:22",
+    "year": 2021,
+    "releaseDate": "2021-05-31",
+    "description": "",
+    "youtubeId": "",
+    "nicoId": "sm38819183",
+    "coverArt": "",
+    "themeColor": "#28C3CF"
   },
   {
     "id": "yoru-no-pierrot",
@@ -80,14 +532,26 @@
     "length": "3:22",
     "year": 2021,
     "releaseDate": "2021-06-14",
-    "description": "A melancholic yet powerful song that demonstrates Ado's ability to convey deep emotions.",
+    "description": "",
     "youtubeId": "cSgZxz3le7s",
+    "nicoId": "sm38908617",
     "coverArt": "https://i.scdn.co/image/ab67616d0000b273cb04d918042b247b265022a9",
-    "lyrics": {
-      "japanese": "",
-      "romaji": "",
-      "english": ""
-    }
+    "themeColor": "#2CC4FC"
+  },
+  {
+    "id": "usseewa",
+    "title": {
+      "english": "Usseewa",
+      "japanese": "うっせぇわ"
+    },
+    "length": "3:18",
+    "year": 2020,
+    "releaseDate": "2020-10-23",
+    "description": "Ado's breakthrough hit that catapulted her to fame with its raw emotion and powerful vocals addressing societal pressures.",
+    "youtubeId": "Qp3b-RXtz4w",
+    "nicoId": "sm37761910",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b27389e3b38cb86ef8cfb0cd8def",
+    "themeColor": "#2427B3"
   },
   {
     "id": "ashura-chan",
@@ -101,11 +565,22 @@
     "description": "A powerful and energetic song with traditional Japanese elements.",
     "youtubeId": "cyq5-StPISU",
     "coverArt": "https://i.scdn.co/image/ab67616d0000b273b3dea665dd662e399ae6a2f2",
-    "lyrics": {
-      "japanese": "",
-      "romaji": "",
-      "english": ""
-    }
+    "themeColor": "#FA0000"
+  },
+  {
+    "id": "kokoro-fukakai",
+    "title": {
+      "english": "Kokoro toiu Na no Fukakai",
+      "japanese": "心という名の不可解"
+    },
+    "length": "4:29",
+    "year": 2022,
+    "releaseDate": "2022-02-19",
+    "description": "",
+    "youtubeId": "BMb5IetESGE",
+    "nicoId": "sm40065655",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b27364381fb5ba549f149ae74560",
+    "themeColor": ""
   },
   {
     "id": "kura-kura",
@@ -116,14 +591,130 @@
     "length": "3:10",
     "year": 2023,
     "releaseDate": "2023-10-07",
-    "description": "A dizzy, swirling song that showcases Ado's playful side.",
+    "description": "Third opening theme for SPY×FAMILY Season 2, the song captures themes of uncertainty, emotional instability, and the blurred lines between right and wrong.",
     "youtubeId": "W_fHWaoQwkw",
     "coverArt": "https://i.scdn.co/image/ab67616d0000b2733078277dccc526cca9bacbe5",
-    "lyrics": {
-      "japanese": "",
-      "romaji": "",
-      "english": ""
-    }
+    "themeColor": ""
+  },
+  {
+    "id": "sakura-biyori-time-machine",
+    "title": {
+      "english": "Sakura Biyori To Time Machine",
+      "japanese": "桜日和とタイムマシン with 初音ミク"
+    },
+    "length": "5:30",
+    "year": 2024,
+    "releaseDate": "2024-10-26",
+    "description": "",
+    "youtubeId": "nIWZfhpnq6M",
+    "nicoId": "sm44254722",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273ed2e5fe9927f70863934c134",
+    "themeColor": ""
+  },
+  {
+    "id": "shoka",
+    "title": {
+      "english": "Shoka",
+      "japanese": "初夏"
+    },
+    "length": "3:55",
+    "year": 2024,
+    "releaseDate": "2024-10-27",
+    "description": "Written by Teen Ado, this song digs into feelings of identity, confusion, and frustration. It captures the struggle to make sense of things and the strong need to be heard during tough times.",
+    "youtubeId": "GORsp0gc2Nc",
+    "nicoId": "sm44254778",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273283a117f2bc39bc4122692c0",
+    "themeColor": ""
+  },
+  {
+    "id": "fireworks",
+    "title": {
+      "english": "Fireworks",
+      "japanese": "花火"
+    },
+    "length": "3:35",
+    "year": 2022,
+    "releaseDate": "2022-01-26",
+    "description": "",
+    "youtubeId": "5_-TcIOxm60",
+    "nicoId": "sm40100114",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273f5912abed0ea22e746552771",
+    "themeColor": ""
+  },
+  {
+    "id": "kagakushu",
+    "title": {
+      "english": "Kagakushu",
+      "japanese": "過学習"
+    },
+    "length": "3:34",
+    "year": 2022,
+    "releaseDate": "2022-03-06",
+    "description": "",
+    "youtubeId": "55W2LxbQoHc",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b27364381fb5ba549f149ae74560",
+    "themeColor": ""
+  },
+  {
+    "id": "eien-no-akuruhi",
+    "title": {
+      "english": "Eien No Akuruhi",
+      "japanese": "永遠のあくる日"
+    },
+    "length": "4:06",
+    "year": 2022,
+    "releaseDate": "2022-03-14",
+    "description": "",
+    "youtubeId": "ZHAnZTVF_10",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273a76561498807222449c8496c",
+    "themeColor": "#FFFFFF"
+  },
+  {
+    "id": "domestic-violence",
+    "title": {
+      "english": "Domestic De Violence",
+      "japanese": "ドメスティックでバイオレンス"
+    },
+    "length": "2:36",
+    "year": 2022,
+    "releaseDate": "2022-03-26",
+    "description": "",
+    "youtubeId": "iRMYLKIWyUk",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273514fd72cb9c93ad0e227f633",
+    "themeColor": ""
+  },
+  {
+    "id": "motherland",
+    "title": {
+      "english": "Motherland",
+      "japanese": "マザーランド"
+    },
+    "length": "4:20",
+    "year": 2022,
+    "releaseDate": "2022-05-08",
+    "description": "",
+    "youtubeId": "_wZfYtYwxro",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273514fd72cb9c93ad0e227f633",
+    "themeColor": ""
+  },
+  {
+    "id": "lucky-bruto",
+    "title": {
+      "english": "Lucky Bruto",
+      "japanese": "ラッキー・ブルート"
+    },
+    "length": "3:27",
+    "year": 2022,
+    "releaseDate": "2022-05-08",
+    "description": "",
+    "youtubeId": "u-G_zzhLSy8",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b27364381fb5ba549f149ae74560",
+    "themeColor": ""
   },
   {
     "id": "new-genesis",
@@ -134,14 +725,11 @@
     "length": "3:57",
     "year": 2022,
     "releaseDate": "2022-06-15",
-    "description": "The opening theme for the One Piece Film: Red, demonstrating Ado's incredible vocal power.",
+    "description": "The opening theme of One Piece Film: Red. It reflects Uta's vision for a new era, urging everyone to break free from the past and create a future full of hope, unity, and endless possibilities.",
     "youtubeId": "1FliVTcX8bQ",
+    "nicoId": "",
     "coverArt": "https://i.scdn.co/image/ab67616d0000b273f24f7db074ee5a9042ecb9a2",
-    "lyrics": {
-      "japanese": "",
-      "romaji": "",
-      "english": ""
-    }
+    "themeColor": ""
   },
   {
     "id": "backlight",
@@ -152,13 +740,475 @@
     "length": "4:09",
     "year": 2022,
     "releaseDate": "2022-07-06",
-    "description": "Another song from the One Piece Film: Red soundtrack, showcasing Ado's emotional range.",
+    "description": "",
     "youtubeId": "gt-v_YCkaMY",
+    "nicoId": "",
     "coverArt": "https://i.scdn.co/image/ab67616d0000b2736ba460b21288fc379f941d60",
-    "lyrics": {
-      "japanese": "",
-      "romaji": "",
-      "english": ""
-    }
+    "themeColor": ""
+  },
+  {
+    "id": "im-invincible",
+    "title": {
+      "english": "I'm Invincible",
+      "japanese": "私は最強"
+    },
+    "length": "4:29",
+    "year": 2022,
+    "releaseDate": "2022-07-22",
+    "description": "",
+    "youtubeId": "sk1Z-Hqwwog",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2736b6b10944d514599819d21e5",
+    "themeColor": ""
+  },
+  {
+    "id": "fleeting-lullaby",
+    "title": {
+      "english": "Fleeting Lullaby",
+      "japanese": "ウタカタララバイ"
+    },
+    "length": "3:13",
+    "year": 2022,
+    "releaseDate": "2022-08-06",
+    "description": "",
+    "youtubeId": "hyV1AJiFNyo",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2730cbecafa929898c82adc519c",
+    "themeColor": ""
+  },
+  {
+    "id": "world-continuation",
+    "title": {
+      "english": "The World's Continuation",
+      "japanese": "世界のつづき"
+    },
+    "length": "4:55",
+    "year": 2022,
+    "releaseDate": "2022-08-10",
+    "description": "",
+    "youtubeId": "b3GCfyNKeLs",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2730cbecafa929898c82adc519c",
+    "themeColor": ""
+  },
+  {
+    "id": "tot-musica",
+    "title": {
+      "english": "Tot Musica",
+      "japanese": ""
+    },
+    "length": "3:21",
+    "year": 2022,
+    "releaseDate": "2022-08-17",
+    "description": "",
+    "youtubeId": "V9_ZpqfqHFI",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2730cbecafa929898c82adc519c",
+    "themeColor": ""
+  },
+  {
+    "id": "where-wind-blows",
+    "title": {
+      "english": "Where the Wind Blows",
+      "japanese": "風のゆくえ"
+    },
+    "length": "4:46",
+    "year": 2022,
+    "releaseDate": "2022-08-24",
+    "description": "",
+    "youtubeId": "YO-rXgQKlF8",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2730cbecafa929898c82adc519c",
+    "themeColor": ""
+  },
+  {
+    "id": "binkusuno-sake",
+    "title": {
+      "english": "Binks no Sake",
+      "japanese": "ビンクスの酒"
+    },
+    "length": "3:26",
+    "year": 2022,
+    "releaseDate": "2022-08-09",
+    "description": "",
+    "youtubeId": "Z-WdGYi9Pv4",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2730cbecafa929898c82adc519c",
+    "themeColor": ""
+  },
+  {
+    "id": "aishite",
+    "title": {
+      "english": "Aishite Aishite Aishite",
+      "japanese": ""
+    },
+    "length": "4:18",
+    "year": 2023,
+    "releaseDate": "2023-12-12",
+    "description": "",
+    "youtubeId": "U8BlNEKq0r8",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273514fd72cb9c93ad0e227f633",
+    "themeColor": ""
+  },
+  {
+    "id": "dried-flowers",
+    "title": {
+      "english": "Dried Flowers",
+      "japanese": ""
+    },
+    "length": "4:48",
+    "year": 2023,
+    "releaseDate": "2023-12-12",
+    "description": "",
+    "youtubeId": "qhmrt3ZNgcs",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273514fd72cb9c93ad0e227f633",
+    "themeColor": ""
+  },
+  {
+    "id": "kazarijyanainoyonamidawa",
+    "title": {
+      "english": "Kazarijyanainoyonamidawa",
+      "japanese": ""
+    },
+    "length": "4:12",
+    "year": 2023,
+    "releaseDate": "2023-12-12",
+    "description": "",
+    "youtubeId": "Mtfkq7doqWw",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273514fd72cb9c93ad0e227f633",
+    "themeColor": ""
+  },
+  {
+    "id": "crime-punishment",
+    "title": {
+      "english": "Crime and Punishment",
+      "japanese": ""
+    },
+    "length": "4:50",
+    "year": 2023,
+    "releaseDate": "2023-12-12",
+    "description": "",
+    "youtubeId": "x1UsJ2Znjk0",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273514fd72cb9c93ad0e227f633",
+    "themeColor": ""
+  },
+  {
+    "id": "villain",
+    "title": {
+      "english": "Villain",
+      "japanese": ""
+    },
+    "length": "3:19",
+    "year": 2023,
+    "releaseDate": "2023-12-12",
+    "description": "",
+    "youtubeId": "vvG3BhuBLz8",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273514fd72cb9c93ad0e227f633",
+    "themeColor": ""
+  },
+  {
+    "id": "godish",
+    "title": {
+      "english": "God-ish",
+      "japanese": ""
+    },
+    "length": "3:24",
+    "year": 2023,
+    "releaseDate": "2023-12-12",
+    "description": "",
+    "youtubeId": "7i_nc5GGIsI",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273514fd72cb9c93ad0e227f633",
+    "themeColor": ""
+  },
+  {
+    "id": "unravel",
+    "title": {
+      "english": "unravel",
+      "japanese": ""
+    },
+    "length": "3:58",
+    "year": 2023,
+    "releaseDate": "2023-12-12",
+    "description": "",
+    "youtubeId": "eZuDklxsaRg",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273514fd72cb9c93ad0e227f633",
+    "themeColor": ""
+  },
+  {
+    "id": "kawaikute-gomen",
+    "title": {
+      "english": "Kawaikute Gomen",
+      "japanese": "可愛くてごめん"
+    },
+    "length": "3:39",
+    "year": 2023,
+    "releaseDate": "2023-12-12",
+    "description": "",
+    "youtubeId": "axOhZD3boe8",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273514fd72cb9c93ad0e227f633",
+    "themeColor": ""
+  },
+  {
+    "id": "buriki-no-dance",
+    "title": {
+      "english": "Buriki No Dance",
+      "japanese": ""
+    },
+    "length": "3:22",
+    "year": 2023,
+    "releaseDate": "2023-12-12",
+    "description": "",
+    "youtubeId": "iL7uoLCbJoc",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273514fd72cb9c93ad0e227f633",
+    "themeColor": ""
+  },
+  {
+    "id": "dawn-fireflies",
+    "title": {
+      "english": "Dawn and Fireflies",
+      "japanese": ""
+    },
+    "length": "5:08",
+    "year": 2023,
+    "releaseDate": "2023-12-12",
+    "description": "",
+    "youtubeId": "1T6b26DTQy4",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273514fd72cb9c93ad0e227f633",
+    "themeColor": ""
+  },
+  {
+    "id": "rebellion",
+    "title": {
+      "english": "Rebellion",
+      "japanese": "リベリオン"
+    },
+    "length": "2:58",
+    "year": 2022,
+    "releaseDate": "2022-09-19",
+    "description": "",
+    "youtubeId": "0Y8e0LJf0i0",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2736260cea60fcc0e4c9f29764c",
+    "themeColor": ""
+  },
+  {
+    "id": "missing",
+    "title": {
+      "english": "missing",
+      "japanese": "行方知れず"
+    },
+    "length": "3:09",
+    "year": 2022,
+    "releaseDate": "2022-10-10",
+    "description": "",
+    "youtubeId": "VQtmqpSE64w",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2733b3b781a0164e91b346bf888",
+    "themeColor": ""
+  },
+  {
+    "id": "freedom",
+    "title": {
+      "english": "FREEDOM",
+      "japanese": "行方知れず"
+    },
+    "length": "3:01",
+    "year": 2022,
+    "releaseDate": "2022-11-24",
+    "description": "",
+    "youtubeId": "hgyGhu49sGc",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b27364381fb5ba549f149ae74560",
+    "themeColor": ""
+  },
+  {
+    "id": "all-night-radio",
+    "title": {
+      "english": "All Night Radio",
+      "japanese": "オールナイトレディオ"
+    },
+    "length": "3:34",
+    "year": 2023,
+    "releaseDate": "2023-11-11",
+    "description": "",
+    "youtubeId": "lfw8W3uWO7s",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2731b20471a763f252ba1b03994",
+    "themeColor": ""
+  },
+  {
+    "id": "hello-signals",
+    "title": {
+      "english": "Hello Signals",
+      "japanese": ""
+    },
+    "length": "3:18",
+    "year": 2023,
+    "releaseDate": "2023-12-25",
+    "description": "",
+    "youtubeId": "WEYTjr4z70o",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2737e39bafe4f50dd5e15cfe9b0",
+    "themeColor": ""
+  },
+  {
+    "id": "chocolat-cadabra",
+    "title": {
+      "english": "Chocolat Cadabra",
+      "japanese": "ショコラカタブラ"
+    },
+    "length": "3:03",
+    "year": 2024,
+    "releaseDate": "2024-07-31",
+    "description": "",
+    "youtubeId": "c5j7lpWprro",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b27327b4a270deefbf92cbd52353",
+    "themeColor": ""
+  },
+  {
+    "id": "value",
+    "title": {
+      "english": "Value",
+      "japanese": ""
+    },
+    "length": "3:12",
+    "year": 2024,
+    "releaseDate": "2024-02-23",
+    "description": "",
+    "youtubeId": "5iAQF_q6FSk",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273d966b410803fa97a0ace7ad8",
+    "themeColor": ""
+  },
+  {
+    "id": "zero",
+    "title": {
+      "english": "0",
+      "japanese": ""
+    },
+    "length": "3:00",
+    "year": 2024,
+    "releaseDate": "2024-07-10",
+    "description": "",
+    "youtubeId": "E9UPr5SesCM",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2737ac841876cee380bbeb3fdc1",
+    "themeColor": ""
+  },
+  {
+    "id": "mirror",
+    "title": {
+      "english": "MIRROR",
+      "japanese": ""
+    },
+    "length": "2:59",
+    "year": 2024,
+    "releaseDate": "2024-05-31",
+    "description": "",
+    "youtubeId": "zsBBWBEZkFQ",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273dfdacb364c44d7365b6139b7",
+    "themeColor": ""
+  },
+  {
+    "id": "rule",
+    "title": {
+      "english": "RuLe",
+      "japanese": "ルル"
+    },
+    "length": "3:18",
+    "year": 2024,
+    "releaseDate": "2024-07-05",
+    "description": "",
+    "youtubeId": "0Z_YqhYHhpg",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273136c89edd5683016f3b4cf4a",
+    "themeColor": ""
+  },
+  {
+    "id": "episode-x",
+    "title": {
+      "english": "Episode X",
+      "japanese": ""
+    },
+    "length": "3:45",
+    "year": 2024,
+    "releaseDate": "2024-12-06",
+    "description": "",
+    "youtubeId": "9dKZeL2UbUM",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2738e43712455d553316feae3b1",
+    "themeColor": ""
+  },
+  {
+    "id": "nukegara",
+    "title": {
+      "english": "Nukegara",
+      "japanese": "抜け空"
+    },
+    "length": "3:08",
+    "year": 2024,
+    "releaseDate": "2024-12-30",
+    "description": "",
+    "youtubeId": "JpnqXqy-XMg",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2738e43712455d553316feae3b1",
+    "themeColor": ""
+  },
+  {
+    "id": "elf",
+    "title": {
+      "english": "Elf",
+      "japanese": ""
+    },
+    "length": "4:22",
+    "year": 2025,
+    "releaseDate": "2025-01-24",
+    "description": "",
+    "youtubeId": "SbxR25brgoE",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2739e1c223d7a087f9dfb3757fe",
+    "themeColor": ""
+  },
+  {
+    "id": "bouquet-for-me",
+    "title": {
+      "english": "Bouquet for Me",
+      "japanese": ""
+    },
+    "length": "3:47",
+    "year": 2025,
+    "releaseDate": "2025-04-06",
+    "description": "",
+    "youtubeId": "_RAffg8JQ6g",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273c65febccea6decd687e95b41",
+    "themeColor": ""
+  },
+  {
+    "id": "rockstar",
+    "title": {
+      "english": "Rockstar",
+      "japanese": ""
+    },
+    "length": "3:51",
+    "year": 2025,
+    "releaseDate": "2025-04-09",
+    "description": "Latest single, a vibrant anthem of youthful rebellion and self-discovery. It celebrates the pursuit of dreams, freedom, and living boldly.",
+    "youtubeId": "hRJpiCZlLX8",
+    "nicoId": "",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2737e39bafe4f50dd5e15cfe9b0",
+    "themeColor": ""
   }
 ]
