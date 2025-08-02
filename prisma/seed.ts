@@ -1,11 +1,11 @@
-import { readFileSync } from "fs";
+import { readdirSync, readFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { AlbumType, Prisma, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-interface RawSong {
+interface Song {
   id: string;
   title: {
     english: string;
@@ -24,14 +24,14 @@ interface RawSong {
   youtubeId?: string | null;
   coverArt: string;
   themeColor?: string;
-}
+};
 
 interface AlbumDefinition {
   id: string;
   titleEnglish: string;
   titleJapanese: string;
-  releaseDate: Date;
-  type: AlbumType;
+  releaseDate: string;
+  type: string;
   coverArt: string;
   tracks: Array<{ songId: string; trackNumber: number }>;
 }
@@ -63,102 +63,72 @@ const seedConfig = {
       ],
     },
   ] as SectionDefinition[],
-  albums: [
-    {
-      id: "utattemita",
-      titleEnglish: "Utattemita",
-      titleJapanese: "歌ってみた",
-      releaseDate: new Date("2023-12-13"),
-      type: AlbumType.album,
-      coverArt:
-        "https://i.scdn.co/image/ab67616d0000b273f5912abed0ea22e746552771",
-      tracks: [
-        { songId: "dried-flowers", trackNumber: 1 },
-        { songId: "kazarijyanainoyonamidawa", trackNumber: 2 },
-        { songId: "aishite", trackNumber: 3 },
-        { songId: "crime-punishment", trackNumber: 4 },
-        { songId: "kawaikute-gomen", trackNumber: 5 },
-        { songId: "villain", trackNumber: 6 },
-        { songId: "godish", trackNumber: 7 },
-        { songId: "unravel", trackNumber: 8 },
-        { songId: "buriki-no-dance", trackNumber: 9 },
-        { songId: "dawn-fireflies", trackNumber: 10 },
-      ],
-    },
-    {
-      id: "kyougen",
-      titleEnglish: "Kyōgen",
-      titleJapanese: "狂言",
-      releaseDate: new Date("2022-01-26"),
-      type: AlbumType.album,
-      coverArt:
-        "https://i.scdn.co/image/ab67616d0000b27364381fb5ba549f149ae74560",
-      tracks: [
-        { songId: "readymade", trackNumber: 1 },
-        { songId: "odo", trackNumber: 2 },
-        { songId: "domestic-violence", trackNumber: 3 },
-        { songId: "freedom", trackNumber: 4 },
-        { songId: "fireworks", trackNumber: 5 },
-        { songId: "aishite", trackNumber: 6 },
-        { songId: "lucky-bruto", trackNumber: 7 },
-        { songId: "gira-gira", trackNumber: 8 },
-        { songId: "ashura-chan", trackNumber: 9 },
-        { songId: "kokoro-fukakai", trackNumber: 10 },
-        { songId: "usseewa", trackNumber: 11 },
-        { songId: "motherland", trackNumber: 12 },
-        { songId: "kagakushu", trackNumber: 13 },
-        { songId: "yoru-no-pierrot", trackNumber: 14 },
-      ],
-    },
-    {
-      id: "uta-songs-one-piece-film-red",
-      titleEnglish: "Uta's Songs: One Piece Film Red",
-      titleJapanese: "ウタの歌 ONE PIECE FILM RED",
-      releaseDate: new Date("2022-08-10"),
-      type: AlbumType.album,
-      coverArt:
-        "https://i.scdn.co/image/ab67616d0000b2730cbecafa929898c82adc519c",
-      tracks: [
-        { songId: "new-genesis", trackNumber: 1 },
-        { songId: "im-invincible", trackNumber: 2 },
-        { songId: "backlight", trackNumber: 3 },
-        { songId: "fleeting-lullaby", trackNumber: 4 },
-        { songId: "tot-musica", trackNumber: 5 },
-        { songId: "world-continuation", trackNumber: 6 },
-        { songId: "where-wind-blows", trackNumber: 7 },
-        { songId: "binkusuno-sake", trackNumber: 8 },
-      ],
-    },
-  ] as AlbumDefinition[],
 };
 
-function loadSongsFromJson(jsonPath: string): RawSong[] {
+/**
+ * Transform an array of Song objects to Prisma.SongCreateInput objects for database seeding.
+ *
+ * Converts the nested application Song structure to the flat database structure
+ * required by Prisma for creating records.
+ *
+ * @param songs - Array of Song objects from fixture files
+ * @returns Array of Prisma.SongCreateInput objects ready for database insertion
+ */
+export function serializeSongInput(songs: Song[]): Prisma.SongCreateInput[] {
+  return songs.map((s) => ({
+    id: s.id,
+    titleEnglish: s.title.english,
+    titleJapanese: s.title.japanese,
+    lyricsJapanese: s.lyrics?.japanese ?? "",
+    lyricsRomaji: s.lyrics?.romaji ?? "",
+    lyricsEnglish: s.lyrics?.english ?? "",
+    length: s.length,
+    year: s.year,
+    releaseDate: new Date(s.releaseDate),
+    description: s.description ?? "",
+    nicoId: s.nicoId ?? null,
+    youtubeId: s.youtubeId ?? null,
+    coverArt: s.coverArt,
+    themeColor: s.themeColor,
+  }));
+}
+
+function loadJsonFromFile<T>(jsonPath: string): T {
   try {
-    const file = readFileSync(jsonPath, "utf-8");
-    return JSON.parse(file);
+    return JSON.parse(readFileSync(jsonPath, "utf-8"));
   } catch (err) {
-    console.error(`Failed to load or parse fixtures/songs.json:`, err);
+    console.error(`Failed to load or parse ${jsonPath}:`, err);
     throw err;
   }
 }
 
-function transformSongData(rawSongs: RawSong[]): Prisma.SongCreateInput[] {
-  return rawSongs.map((s) => ({
-    id: s.id,
-    titleEnglish: s.title.english,
-    titleJapanese: s.title.japanese,
-    lyricsJapanese: s.lyrics?.japanese || "",
-    lyricsRomaji: s.lyrics?.romaji || "",
-    lyricsEnglish: s.lyrics?.english || "",
-    length: s.length,
-    year: s.year,
-    releaseDate: new Date(s.releaseDate),
-    description: s.description || "",
-    nicoId: s.nicoId || null,
-    youtubeId: s.youtubeId || null,
-    coverArt: s.coverArt,
-    themeColor: s.themeColor,
-  }));
+function loadAllSongsFromFixtures(fixturesDir: string): Song[] {
+  const allSongs: Song[] = [];
+  const songsDir = join(fixturesDir, "songs");
+
+  try {
+    const files = readdirSync(songsDir);
+    const songJsonFiles = files.filter((file) => file.endsWith(".json"));
+
+    console.log(
+      `📁 Found ${songJsonFiles.length} song JSON files in songs directory:`,
+      songJsonFiles,
+    );
+
+    for (const filename of songJsonFiles) {
+      try {
+        const songs = loadJsonFromFile<Song[]>(join(songsDir, filename));
+        allSongs.push(...songs);
+        console.log(`✅ Loaded ${songs.length} songs from songs/${filename}`);
+      } catch (err) {
+        console.error(`⚠️  Failed to load songs/${filename}:`, err);
+      }
+    }
+  } catch (err) {
+    console.error(`❌ Failed to read songs directory ${songsDir}:`, err);
+    throw err;
+  }
+  return allSongs;
 }
 
 // --- Seeding Functions ---
@@ -193,10 +163,16 @@ async function seedSections(sections: SectionDefinition[]) {
 async function seedAlbums(albumDefinitions: AlbumDefinition[]) {
   console.log(`Seeding ${albumDefinitions.length} albums…`);
   for (const { tracks, ...albumData } of albumDefinitions) {
+    const albumDataForPrisma = {
+      ...albumData,
+      releaseDate: new Date(albumData.releaseDate),
+      type: albumData.type as AlbumType,
+    };
+
     await prisma.album.upsert({
       where: { id: albumData.id },
-      create: albumData,
-      update: albumData,
+      create: albumDataForPrisma,
+      update: albumDataForPrisma,
     });
 
     await prisma.albumTrack.deleteMany({ where: { albumId: albumData.id } });
@@ -211,10 +187,7 @@ async function seedAlbums(albumDefinitions: AlbumDefinition[]) {
         skipDuplicates: true,
       });
     }
-
-    console.log(
-      `  - Album "${albumData.titleEnglish}" seeded with ${tracks.length} tracks.`,
-    );
+    console.log(`- Album "${albumData.titleEnglish}" seeded with ${tracks.length} tracks.`);
   }
   console.log("✅ Albums seeded!");
 }
@@ -225,14 +198,23 @@ async function main() {
   try {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
-    const jsonPath = join(__dirname, "fixtures", "songs.json");
+    const fixturesDir = join(__dirname, "fixtures");
 
-    const rawSongs = loadSongsFromJson(jsonPath);
-    const songsToCreate = transformSongData(rawSongs);
+    console.log("🔄 Loading songs from all fixture files...");
+    const rawSongs = loadAllSongsFromFixtures(fixturesDir);
+
+    console.log("🔄 Loading albums from fixtures...");
+    const albums = loadJsonFromFile<AlbumDefinition[]>(
+      join(fixturesDir, "albums.json"),
+    );
+
+    console.log(`📦 Total songs loaded: ${rawSongs.length}`);
+    console.log(`📦 Total albums loaded: ${albums.length}`);
+    const songsToCreate = serializeSongInput(rawSongs);
 
     await seedSongs(songsToCreate);
     await seedSections(seedConfig.sections);
-    await seedAlbums(seedConfig.albums);
+    await seedAlbums(albums);
 
     console.log("\n🎉 Database seeding completed successfully!");
   } catch (error) {
