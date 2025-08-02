@@ -1,0 +1,64 @@
+[
+  {
+    "id": "utattemita",
+    "titleEnglish": "Utattemita",
+    "titleJapanese": "歌ってみた",
+    "releaseDate": "2023-12-13",
+    "type": "album",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b273f5912abed0ea22e746552771",
+    "tracks": [
+      { "songId": "dried-flowers", "trackNumber": 1 },
+      { "songId": "kazarijyanainoyonamidawa", "trackNumber": 2 },
+      { "songId": "aishite", "trackNumber": 3 },
+      { "songId": "crime-punishment", "trackNumber": 4 },
+      { "songId": "kawaikute-gomen", "trackNumber": 5 },
+      { "songId": "villain", "trackNumber": 6 },
+      { "songId": "godish", "trackNumber": 7 },
+      { "songId": "unravel", "trackNumber": 8 },
+      { "songId": "buriki-no-dance", "trackNumber": 9 },
+      { "songId": "dawn-fireflies", "trackNumber": 10 }
+    ]
+  },
+  {
+    "id": "kyougen",
+    "titleEnglish": "Kyōgen",
+    "titleJapanese": "狂言",
+    "releaseDate": "2022-01-26",
+    "type": "album",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b27364381fb5ba549f149ae74560",
+    "tracks": [
+      { "songId": "readymade", "trackNumber": 1 },
+      { "songId": "odo", "trackNumber": 2 },
+      { "songId": "domestic-violence", "trackNumber": 3 },
+      { "songId": "freedom", "trackNumber": 4 },
+      { "songId": "fireworks", "trackNumber": 5 },
+      { "songId": "aishite", "trackNumber": 6 },
+      { "songId": "lucky-bruto", "trackNumber": 7 },
+      { "songId": "gira-gira", "trackNumber": 8 },
+      { "songId": "ashura-chan", "trackNumber": 9 },
+      { "songId": "kokoro-fukakai", "trackNumber": 10 },
+      { "songId": "usseewa", "trackNumber": 11 },
+      { "songId": "motherland", "trackNumber": 12 },
+      { "songId": "kagakushu", "trackNumber": 13 },
+      { "songId": "yoru-no-pierrot", "trackNumber": 14 }
+    ]
+  },
+  {
+    "id": "uta-songs-one-piece-film-red",
+    "titleEnglish": "Uta's Songs: One Piece Film Red",
+    "titleJapanese": "ウタの歌 ONE PIECE FILM RED",
+    "releaseDate": "2022-08-10",
+    "type": "album",
+    "coverArt": "https://i.scdn.co/image/ab67616d0000b2730cbecafa929898c82adc519c",
+    "tracks": [
+      { "songId": "new-genesis", "trackNumber": 1 },
+      { "songId": "im-invincible", "trackNumber": 2 },
+      { "songId": "backlight", "trackNumber": 3 },
+      { "songId": "fleeting-lullaby", "trackNumber": 4 },
+      { "songId": "tot-musica", "trackNumber": 5 },
+      { "songId": "world-continuation", "trackNumber": 6 },
+      { "songId": "where-wind-blows", "trackNumber": 7 },
+      { "songId": "binkusuno-sake", "trackNumber": 8 }
+    ]
+  }
+]
