@@ -117,7 +117,7 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
         >
           {timelineSteps.map((step, index) => (
             <section
-              key={`${step.year}-${step.period}-${step.periodIndex}`}
+              key={`${step.year}-${step.period}-${step.periodIndex}-${index}`}
               className={`relative snap-start pt-6 md:pt-10 ${
                 isMobile ? "w-screen shrink-0" : "h-screen lg:h-[36rem]"
               }`}
