@@ -14,16 +14,28 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  preload: true,
+  fallback: [
+    "system-ui",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "Roboto",
+    "Arial",
+    "sans-serif",
+  ],
+  adjustFontFallback: true,
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Ado's Fan Tribute: Japan’s Anonymous Superstar",
+  title: "Ado's Fan Tribute: Japan's Anonymous Superstar",
   description:
     "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.",
   keywords: ["Ado", "Ado Fan Site", "Ado Music", "Japanese Singer", "Utaite"],
   authors: [{ name: "ilyvsc", url: "https://github.com/ilyvsc" }],
   openGraph: {
-    title: "Ado's Fan Tribute: Japan’s Anonymous Superstar",
+    title: "Ado's Fan Tribute: Japan's Anonymous Superstar",
     description:
       "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.",
     type: "website",
@@ -33,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ado's Fan Tribute: Japan’s Anonymous Superstar",
+    title: "Ado's Fan Tribute: Japan's Anonymous Superstar",
     description:
       "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.",
   },
