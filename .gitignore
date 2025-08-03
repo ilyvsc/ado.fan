@@ -12,8 +12,9 @@
 /build
 prisma/client/
 
-# pnpm
+# packager manager stuff
 pnpm-lock.yaml
+bun.lock
 
 # debug
 npm-debug.log*
