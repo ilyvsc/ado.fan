@@ -23,51 +23,94 @@ A fan tribute to the Japanese artist Ado.
 
 </div>
 
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Database Setup](#database-setup)
+  - [Environment Configuration](#environment-configuration)
+- [Development](#development)
+- [Environment Variables](#environment-variables)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Project Overview
 
-This project is a fan-made website dedicated to the Japanese singer Ado. It's a place for fans to discover her music, watch music videos, and stay up-to-date with her latest activities. The goal is to create a comprehensive and beautifully designed resource for the fan community.
+**ado.fan** is a comprehensive fan-made website dedicated to the phenomenal Japanese singer Ado. This platform serves as a central hub for the global fan community to:
 
-This is a full-stack application built with modern web technologies, designed to be scalable, performant, and easy to contribute to.
+- 🎵 **Discover Music**: Explore Ado's complete discography with high-quality audio streaming
+- 🎬 **Watch Music Videos**: Experience her iconic music videos and live performances
+- 📰 **Stay Updated**: Get the latest news, releases, and tour announcements
+- 👥 **Connect**: Join a passionate community of fans from around the world
+
+> [!IMPORTANT] This project is currently under active development. Many features are subject to change, and while we have numerous exciting ideas in the pipeline, we haven't defined a fixed roadmap yet. We welcome community input and contributions. Share your ideas in our [GitHub Discussions](https://github.com/ilyvsc/ado.fan/discussions)
 
 ### Built With
 
 This project is built with a modern, full-stack JavaScript setup:
 
-- **Framework**: [Next.js](https://nextjs.org/) (React)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Database**: [PostgreSQL](https://www.postgresql.org/) with [Prisma ORM](https://www.prisma.io/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with [shadcn/ui](https://ui.shadcn.com/) components
-- **Package Manager**: [pnpm](https://pnpm.io/)
-- **Containerization**: [Docker](https://www.docker.com/)
+#### Frontend & Framework
+
+- **[Next.js 15](https://nextjs.org/)**: React-based framework with App Router, Server Components, and built-in optimizations
+- **[React 19](https://react.dev/)**: Latest React with improved performance and developer experience
+- **[TypeScript](https://www.typescriptlang.org/)**: Full type safety and enhanced IDE support
+
+#### Database & Data Management
+
+- **[PostgreSQL](https://www.postgresql.org/)**: Robust, ACID-compliant relational database
+- **[Prisma ORM](https://www.prisma.io/)**: Type-safe database client with migrations and introspection
+
+#### Styling & UI
+
+- **[Tailwind CSS](https://tailwindcss.com/)**: Utility-first CSS framework for rapid UI development
+- **[shadcn/ui](https://ui.shadcn.com/)**: High-quality, accessible React components built on Radix UI
+- **[Radix UI](https://www.radix-ui.com/)**: Unstyled, accessible components for design systems
+
+#### Development Tools
+
+- **Package Manager**: Flexible support for [pnpm](https://pnpm.io/), [npm](https://npmjs.com/), [yarn](https://yarnpkg.com/), or any of your choice.
+- **[ESLint](https://eslint.org/)**: Code linting for consistent code quality
+- **[Prettier](https://prettier.io/)**: Code formatting for consistent style
+- **[Docker](https://www.docker.com/)**: Containerization for consistent deployment environments
 
 ## Getting Started
 
-To get a local copy up and running, follow one of these simple setup methods.
+Follow this comprehensive guide to set up the project locally. The process is straightforward and should take about 10-15 minutes.
 
-### Manual Setup
+> [!NOTE] This project supports **any modern package manager**. Choose the one you prefer. Examples in this documentation use `pnpm`, just replace `pnpm` with your preferred package manager throughout the commands.
 
-If you prefer to set up the project manually on your local machine.
+### Installation
 
-#### Prerequisites
+#### 1. Clone the Repository
 
-- [Node.js](https://nodejs.org/) (v20 or higher)
-- [pnpm](https://pnpm.io/installation)
+```sh
+git clone https://github.com/ilyvsc/ado.fan.git
+cd ado.fan
+```
 
-#### Install Dependencies
+#### 2. Install Dependencies
 
 ```sh
 pnpm install
 ```
 
-#### Configure Environment
+This will install all required dependencies including Next.js, React, TypeScript, Tailwind CSS, and development tools.
 
-Duplicate [`sample.env`](sample.env) -> `.env` and populate all keys specified in [environment variables](#environment-variables).
+### Environment Configuration
+
+#### 3. Set Up Environment Variables
+
+Open `.env` in your favorite editor and configure the required variables. See the [Environment Variables](#environment-variables) section for reference.
 
 ```sh
 cp sample.env .env
 ```
 
-#### Bootstrap local database
+### Database Setup
+
+#### 4. Set Up Local Database
 
 Launch a dedicated [Prisma‑powered Postgres instance](https://www.prisma.io/docs/postgres/database/local-development#1-launching-local-prisma-postgres) in local:
 
@@ -75,38 +118,122 @@ Launch a dedicated [Prisma‑powered Postgres instance](https://www.prisma.io/do
 pnpm prisma dev --name="ado.fan"
 ```
 
-##### Generate Prisma Client
+#### 5. Generate Prisma Client
+
+Generate the type-safe Prisma client based on your schema:
 
 ```sh
 pnpm prisma generate --no-engine
 ```
 
-##### Apply Migrations & Seed (Optional)
+#### 6. Apply Database Migrations
 
-Run Prisma migrations to initialize the database:
+Initialize your database with the required tables and schema:
 
 ```sh
 pnpm prisma migrate dev
 ```
 
-Seed the database with data from [`songs.json`](prisma/fixtures/songs.json):
+This command will:
+
+- Apply all pending migrations to your database
+- Generate a new migration if schema changes are detected
+- Regenerate the Prisma client
+
+#### 7. Seed Database (Optional)
+
+Populate your database with data including Ado's songs and albums:
 
 ```sh
 pnpm prisma db seed
 ```
 
-#### Run the development server
+The seed data includes:
+
+- Complete discography from [`songs.json`](prisma/fixtures/songs/songs.json)
+- Album information from [`albums.json`](prisma/fixtures/albums.json)
+- Cover songs data from [`covers.json`](prisma/fixtures/songs/covers.json)
+- NicoNico Douga cover songs (2017-2024 songs) data from [`nico-covers.json`](prisma/fixtures/songs/nico-covers.json)
+
+## Development
+
+### Start the Development Server
+
+Launch the development server with hot reloading:
 
 ```sh
 pnpm run dev
 ```
 
-This will initialize all packages in parallel and watch for changes, including the website, which will be available at [localhost:3000](http://localhost:3000).
+🎉 **Success!** The application will be available at:
 
-### Environment variables
+- **Website**: [http://localhost:3000](http://localhost:3000)
+- **Database Studio**: Run `pnpm prisma studio` to explore your data
+
+## Environment Variables
+
+Configure these environment variables in your `.env` file for proper application functionality:
+
+### Required Variables
 
 - `DATABASE_URL`: **Required**. Sets the URL where Prisma is going to fetch/query data from.
   - Get a production-ready database at [Prisma](https://prisma.io), [Supabase](https://supabase.com/), [Render](https://render.com), or similar.
+
+## Contributing
+
+We welcome contributions from the community! Whether you're fixing bugs, adding features, or improving documentation, your help makes ado.fan better for everyone.
+
+### How to Contribute
+
+1. **Fork the Repository**
+
+   ```sh
+   git fork https://github.com/ilyvsc/ado.fan.git
+   ```
+
+2. **Create a Feature Branch**
+
+   ```sh
+   git checkout -b feature/amazing-feature
+   ```
+
+3. **Make Your Changes**
+   - Follow our coding guidelines (see workspace rules)
+   - Ensure your code is properly typed with TypeScript
+   - Add tests for new functionality
+   - Update documentation as needed
+
+4. **Test Your Changes**
+
+   ```sh
+   pnpm run lint
+   pnpm run build
+   ```
+
+5. **Commit Your Changes**
+
+   ```sh
+   git commit -m "Add amazing feature"
+   ```
+
+6. **Push to Your Fork**
+
+   ```sh
+   git push origin feature/amazing-feature
+   ```
+
+7. **Open a Pull Request**
+   - Describe your changes in detail
+   - Link any related issues
+   - Include screenshots for UI changes
+
+### Development Guidelines
+
+- **Code Style**: We use Prettier and ESLint for consistent formatting
+- **TypeScript**: Strict type checking is enforced
+- **Components**: Follow the established component patterns
+- **Accessibility**: Ensure all UI changes are accessible
+- **Performance**: Consider loading times and bundle size
 
 ## License
 
