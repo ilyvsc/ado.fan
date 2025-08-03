@@ -45,7 +45,8 @@ A fan tribute to the Japanese artist Ado.
 - 📰 **Stay Updated**: Get the latest news, releases, and tour announcements
 - 👥 **Connect**: Join a passionate community of fans from around the world
 
-> [!IMPORTANT] This project is currently under active development. Many features are subject to change, and while we have numerous exciting ideas in the pipeline, we haven't defined a fixed roadmap yet. We welcome community input and contributions. Share your ideas in our [GitHub Discussions](https://github.com/ilyvsc/ado.fan/discussions)
+> [!IMPORTANT]
+> This project is currently under active development. Many features are subject to change, and while we have numerous exciting ideas in the pipeline, we haven't defined a fixed roadmap yet. We welcome community input and contributions. Share your ideas in our [GitHub Discussions](https://github.com/ilyvsc/ado.fan/discussions)
 
 ### Built With
 
@@ -79,7 +80,8 @@ This project is built with a modern, full-stack JavaScript setup:
 
 Follow this comprehensive guide to set up the project locally. The process is straightforward and should take about 10-15 minutes.
 
-> [!NOTE] This project supports **any modern package manager**. Choose the one you prefer. Examples in this documentation use `pnpm`, just replace `pnpm` with your preferred package manager throughout the commands.
+> [!NOTE]
+> This project supports **any modern package manager**. Choose the one you prefer. Examples in this documentation use `pnpm`, just replace `pnpm` with your preferred package manager throughout the commands.
 
 ### Installation
 
