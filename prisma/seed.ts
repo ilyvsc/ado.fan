@@ -24,7 +24,7 @@ interface Song {
   youtubeId?: string | null;
   coverArt: string;
   themeColor?: string;
-};
+}
 
 interface AlbumDefinition {
   id: string;
@@ -54,11 +54,72 @@ const seedConfig = {
     {
       id: SECTIONS.TIMELINE,
       items: [
+        // 2017
         "kimi-no-taion",
+        "star-night-show",
+        "strangers",
+        "shinkonsui",
+        // 2018
+        "watashino-aru",
+        "kirai-kirai",
+        "uminaoshi",
+        "renai-saiban",
+        "akushidento-coordinator",
+        "merutirando-nightmare",
+        "adishonaru-memory",
+        "ego-rock-short",
+        // 2019
+        "otome-kaibou",
+        "secret-answer",
+        "nounai-kakumei-girl",
+        "jama",
+        "hungry-nicole",
+        "bin",
+        "basket-worm",
+        // 2020
+        "last-resort",
+        "bokkaderaberita",
+        "baka",
+        "hanshoku-no-kansho",
+        "sunny-wave",
         "usseewa",
+        // 2021
+        "gira-gira",
+        "kimi-no-taion-2021",
+        "daze",
+        "odo",
+        "aitakute",
+        "yokubari",
+        "adam-to-eve",
         "readymade",
-        "kura-kura",
+        "snow-song-show",
+        // 2022
         "new-genesis",
+        "fireworks",
+        "lucky-bruto",
+        "tokyo-wa-yoru",
+        "godish",
+        "buriki-no-dance",
+        "domestic-violence",
+        // 2023
+        "atashi-wa-mondaisaku",
+        "ibara",
+        "himawari",
+        "dignity",
+        "kura-kura",
+        "interviewer",
+        "show",
+        // 2024
+        "value",
+        "mirror",
+        "rule",
+        "chocolat-cadabra",
+        "sakura-biyori-time-machine",
+        "shoka",
+        "episode-x",
+        // 2025
+        "elf",
+        "bouquet-for-me",
         "rockstar",
       ],
     },
@@ -187,7 +248,9 @@ async function seedAlbums(albumDefinitions: AlbumDefinition[]) {
         skipDuplicates: true,
       });
     }
-    console.log(`- Album "${albumData.titleEnglish}" seeded with ${tracks.length} tracks.`);
+    console.log(
+      `- Album "${albumData.titleEnglish}" seeded with ${tracks.length} tracks.`,
+    );
   }
   console.log("✅ Albums seeded!");
 }
