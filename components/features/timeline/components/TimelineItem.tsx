@@ -72,14 +72,23 @@ export const TimelineItem = React.memo(function TimelineItem({
                   aria-label={`${periodSongs.length} songs from ${getPeriodLabel(period as Period, year)}`}
                 >
                   {periodSongs.map((song, songIndex) => {
+                    const isLastCard =
+                      periodSongs.length === 3 && songIndex === 2;
+
                     return (
-                      <div key={song.id} className="flex justify-center">
+                      <div
+                        key={song.id}
+                        className={`flex justify-center ${
+                          isLastCard ? "md:col-span-2 lg:col-span-1" : ""
+                        }`}
+                      >
                         <SongCard
                           song={song}
                           animationDelay={
                             0.6 + periodIndex * 0.1 + songIndex * 0.02
                           }
                           themeColor={themeColor}
+                          useHorizontalLayout={isLastCard}
                         />
                       </div>
                     );

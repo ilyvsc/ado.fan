@@ -11,18 +11,23 @@ interface SongCardProps {
   song: Song;
   animationDelay: number;
   themeColor: string;
+  useHorizontalLayout?: boolean;
 }
 
 export const SongCard = React.memo(function SongCard({
   song,
   animationDelay,
   themeColor,
+  useHorizontalLayout = false,
 }: SongCardProps) {
   const cardThemeColor = song.themeColor ?? themeColor;
+  const videoContainer = `mb-3 overflow-hidden rounded-lg ${
+    useHorizontalLayout ? "md:w-80 lg:w-full" : ""
+  }`;
 
   return (
     <motion.div
-      className="w-full max-w-[320px]"
+      className="w-full max-w-80 md:max-w-full"
       initial={{
         opacity: 0,
         scale: 0.9,
@@ -62,23 +67,13 @@ export const SongCard = React.memo(function SongCard({
           }}
         />
 
-        <div className="relative p-4">
-          <h5 className="mb-2 text-sm font-bold text-white">
-            {song.title.english}
-            {song.title.japanese && (
-              <span
-                className="mt-1 block text-xs"
-                style={{ color: cardThemeColor }}
-              >
-                {song.title.japanese}
-              </span>
-            )}
-          </h5>
-
-          <p className="mb-3 text-xs text-white/80">{song.description}</p>
-
+        <div
+          className={`relative p-4 ${
+            useHorizontalLayout ? "md:flex md:gap-4 lg:block" : ""
+          }`}
+        >
           {song.youtubeId && (
-            <div className="mb-3 overflow-hidden rounded-lg">
+            <div className={videoContainer}>
               <div className="relative aspect-video">
                 <YouTubePlayer song={song} />
               </div>
@@ -86,12 +81,28 @@ export const SongCard = React.memo(function SongCard({
           )}
 
           {!song.youtubeId && song.nicoId && (
-            <div className="mb-3 overflow-hidden rounded-lg">
+            <div className={videoContainer}>
               <div className="relative aspect-video">
                 <NicoNicoPlayer song={song} />
               </div>
             </div>
           )}
+
+          <div className={useHorizontalLayout ? "md:flex-1" : ""}>
+            <h5 className="mb-2 text-sm font-bold text-white">
+              {song.title.english}
+              {song.title.japanese && (
+                <span
+                  className="mt-1 block text-xs"
+                  style={{ color: cardThemeColor }}
+                >
+                  {song.title.japanese}
+                </span>
+              )}
+            </h5>
+
+            <p className="mb-3 text-xs text-white/80">{song.description}</p>
+          </div>
         </div>
       </div>
     </motion.div>
