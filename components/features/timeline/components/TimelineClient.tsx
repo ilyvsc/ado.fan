@@ -13,21 +13,22 @@ import { TimelineStep, TimelineYear } from "@/types/Music";
 
 function createTimelineSteps(
   timelineYears: readonly TimelineYear[],
+  items: number = 3,
 ): TimelineStep[] {
-  const steps: TimelineStep[] = [];
-
-  timelineYears.forEach((yearData) => {
-    yearData.periods.forEach(([period, songs], periodIndex) => {
-      steps.push({
-        year: yearData.year,
-        period: period,
-        songs,
-        periodIndex,
+  return timelineYears.flatMap(({ year, periods }) =>
+    periods.flatMap(([period, songs], periodIndex) => {
+      const length = Math.ceil(songs.length / items);
+      return Array.from({ length }, (_, index) => {
+        const start = index * items;
+        return {
+          year,
+          period,
+          songs: songs.slice(start, start + items),
+          periodIndex: periodIndex * 10 + index,
+        };
       });
-    });
-  });
-
-  return steps;
+    }),
+  );
 }
 
 function createMobileTimelineSteps(
@@ -116,11 +117,11 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
         >
           {timelineSteps.map((step, index) => (
             <section
-              key={`${step.year}-${step.period}-${step.songIndex ?? 0}`}
+              key={`${step.year}-${step.period}-${step.periodIndex}`}
               className={`relative snap-start pt-6 md:pt-10 ${
                 isMobile ? "w-screen shrink-0" : "h-screen lg:h-[36rem]"
               }`}
-              aria-label={`${step.period} ${step.year}: ${step.songs.length} song${step.songs.length > 1 ? "s" : ""}`}
+              aria-label={`${step.period} ${step.year} (Step ${index + 1}): ${step.songs.length} song${step.songs.length > 1 ? "s" : ""}`}
               aria-current={index === currentIndex ? "step" : undefined}
             >
               <div className="flex items-center justify-center md:pt-20">
