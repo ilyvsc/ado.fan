@@ -40,10 +40,13 @@ export function useTimelineScroll({
       // Vertical scrolling for desktop
       const scrollTop = container.scrollTop;
 
-      const sections = container.querySelectorAll('section[aria-current], section:not([aria-current])');
-      const itemHeight = sections.length > 0
-        ? sections[0].getBoundingClientRect().height
-        : container.clientHeight;
+      const sections = container.querySelectorAll(
+        "section[aria-current], section:not([aria-current])",
+      );
+      const itemHeight =
+        sections.length > 0
+          ? sections[0].getBoundingClientRect().height
+          : container.clientHeight;
 
       const newIndex = Math.round(scrollTop / itemHeight);
       const clampedIndex = Math.max(0, Math.min(newIndex, stepsLength - 1));
@@ -79,7 +82,9 @@ export function useTimelineScroll({
         });
       } else {
         // Vertical scrolling for desktop
-        const sections = container.querySelectorAll('section[aria-current], section:not([aria-current])');
+        const sections = container.querySelectorAll(
+          "section[aria-current], section:not([aria-current])",
+        );
         if (sections.length > 0) {
           const sectionHeight = sections[0].getBoundingClientRect().height;
           container.scrollTo({
