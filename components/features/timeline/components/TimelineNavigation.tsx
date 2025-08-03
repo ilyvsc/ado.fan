@@ -33,8 +33,8 @@ export const TimelineNavigation = React.memo(function TimelineNavigation({
       className="absolute top-4 left-1/2 z-10 -translate-x-1/2"
       aria-label="Timeline years navigation"
     >
-      <div className="max-w-[90vw] overflow-x-auto">
-        <div className="flex min-w-fit items-center gap-1 rounded-full border border-white/10 bg-black/20 px-2 py-1 backdrop-blur-sm sm:gap-2 sm:px-4 sm:py-2">
+      <div className="max-w-screen overflow-x-auto">
+        <div className="flex min-w-fit items-center gap-0 rounded-full border border-white/10 bg-black/20 px-2 py-1 backdrop-blur-sm sm:gap-2 sm:px-4 sm:py-2">
           {timelineYears.map((timelineYear) => (
             <button
               key={timelineYear.year}

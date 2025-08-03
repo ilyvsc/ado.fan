@@ -71,10 +71,9 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
   });
 
   const currentStep = timelineSteps[currentIndex];
-
   return (
     <section
-      className="relative h-[calc(100dvh-18rem)] max-h-screen w-full overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black"
+      className="relative bg-gradient-to-b from-black via-gray-900 to-black"
       aria-label={`Music timeline with ${timelineSteps.length} steps from ${timelineYears.length} years`}
     >
       <motion.div
@@ -92,7 +91,7 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
 
       <motion.main
         ref={containerRef}
-        className={`h-full w-full scroll-smooth ${
+        className={`w-full scroll-smooth ${
           isMobile ? "overflow-x-auto" : "overflow-y-auto"
         }`}
         style={{
@@ -104,7 +103,7 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
         tabIndex={0}
         aria-label={
           currentStep
@@ -112,19 +111,19 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
             : "Timeline content"
         }
       >
-        <div className={`relative ${isMobile ? "flex h-full" : ""}`}>
+        <div
+          className={`relative m-12 ${isMobile ? "flex h-full" : "h-screen lg:h-[28rem]"}`}
+        >
           {timelineSteps.map((step, index) => (
             <section
               key={`${step.year}-${step.period}-${step.songIndex ?? 0}`}
-              className={`${
-                isMobile
-                  ? "relative h-full w-screen shrink-0 snap-start px-4 sm:px-6"
-                  : "relative h-[calc(100dvh-14rem)] max-h-screen w-full snap-start px-2 sm:px-4 lg:px-6"
+              className={`relative snap-start pt-6 md:pt-10 ${
+                isMobile ? "w-screen shrink-0" : "h-screen lg:h-[36rem]"
               }`}
               aria-label={`${step.period} ${step.year}: ${step.songs.length} song${step.songs.length > 1 ? "s" : ""}`}
               aria-current={index === currentIndex ? "step" : undefined}
             >
-              <div className="flex h-full items-start justify-center pt-18 2xl:pt-30 sm:pt-26 xl:pt-24">
+              <div className="flex items-center justify-center md:pt-20">
                 <TimelineItem
                   timelineYear={{
                     year: step.year,
