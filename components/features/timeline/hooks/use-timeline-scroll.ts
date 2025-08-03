@@ -39,8 +39,11 @@ export function useTimelineScroll({
     } else {
       // Vertical scrolling for desktop
       const scrollTop = container.scrollTop;
-      const containerHeight = container.clientHeight;
-      const itemHeight = containerHeight;
+
+      const sections = container.querySelectorAll('section[aria-current], section:not([aria-current])');
+      const itemHeight = sections.length > 0
+        ? sections[0].getBoundingClientRect().height
+        : container.clientHeight;
 
       const newIndex = Math.round(scrollTop / itemHeight);
       const clampedIndex = Math.max(0, Math.min(newIndex, stepsLength - 1));
@@ -76,11 +79,20 @@ export function useTimelineScroll({
         });
       } else {
         // Vertical scrolling for desktop
-        const containerHeight = container.clientHeight;
-        container.scrollTo({
-          top: stepIndex * containerHeight,
-          behavior: "smooth",
-        });
+        const sections = container.querySelectorAll('section[aria-current], section:not([aria-current])');
+        if (sections.length > 0) {
+          const sectionHeight = sections[0].getBoundingClientRect().height;
+          container.scrollTo({
+            top: stepIndex * sectionHeight,
+            behavior: "smooth",
+          });
+        } else {
+          const containerHeight = container.clientHeight;
+          container.scrollTo({
+            top: stepIndex * containerHeight,
+            behavior: "smooth",
+          });
+        }
       }
     },
     [isMobile],
