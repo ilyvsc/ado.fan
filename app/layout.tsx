@@ -1,7 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import type { ReactNode } from "react";
 import React from "react";
 
@@ -24,6 +24,16 @@ const inter = Inter({
     "Arial",
     "sans-serif",
   ],
+  adjustFontFallback: true,
+  weight: ["400", "500", "600", "700"],
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+  preload: true,
+  fallback: ["Georgia", "Times New Roman", "serif"],
   adjustFontFallback: true,
   weight: ["400", "500", "600", "700"],
 });
@@ -63,7 +73,10 @@ export default function RootLayout({
         <meta name="color-scheme" content="dark light" />
       </head>
 
-      <body className={`${inter.className} h-full`} suppressHydrationWarning>
+      <body
+        className={`${inter.className} ${playfairDisplay.variable} h-full`}
+        suppressHydrationWarning
+      >
         <NoScriptError />
 
         <div className="js-required">
