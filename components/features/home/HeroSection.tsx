@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { YouTubePlayer } from "@/components/VideoPlayer";
 
 export function HeroSection() {
-  const videoId = "A7FRtZXoXlQ";
+  const videoId = "GORsp0gc2Nc";
   const backgroundParams =
     "autoplay=1&controls=0&mute=1&loop=1&playlist=" + videoId;
 
