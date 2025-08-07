@@ -1,18 +1,35 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import Image from "next/image";
+import { memo, useEffect, useRef, useState } from "react";
+
+import { useTextAnimate } from "@/animations/textAnimation";
 import adoAvatar from "@/public/images/ado-avatar.jpg";
 
-function AdoDescription() {
+gsap.registerPlugin(ScrollTrigger);
+
+const AdoDescription = memo(function AdoDescription() {
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const textRef = useRef<HTMLParagraphElement>(null);
+
+  useTextAnimate(titleRef, textRef);
+
   return (
     <div className="flex flex-col items-center lg:items-start lg:text-left">
-      <h2 className="font-playfair text-2xl text-foreground md:text-3xl lg:text-4xl">
+      <h2
+        ref={titleRef}
+        className="font-playfair text-2xl text-foreground md:text-3xl lg:text-4xl"
+      >
         A Voice That Shatters Boundaries
       </h2>
 
-      <p className="mt-6 text-xl leading-relaxed text-muted-foreground">
+      <p
+        ref={textRef}
+        className="mt-6 text-xl leading-relaxed text-muted-foreground"
+      >
         Ado is a Japanese utaite who began her career covering Vocaloid songs,
         using a stylized avatar to represent herself. She has since transcended
         the utaite scene, releasing original music in collaboration with
@@ -21,22 +38,55 @@ function AdoDescription() {
       </p>
     </div>
   );
-}
+});
+
+const AdoExtraInfo = memo(function AdoExtraInfo() {
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const textRef = useRef<HTMLParagraphElement>(null);
+
+  useTextAnimate(titleRef, textRef);
+
+  return (
+    <div className="flex flex-col items-center lg:items-start lg:text-left">
+      <h2
+        ref={titleRef}
+        className="font-playfair text-2xl text-foreground md:text-3xl lg:text-4xl"
+      >
+        Beyond the Digital Stage
+      </h2>
+
+      <p
+        ref={textRef}
+        className="mt-6 text-xl leading-relaxed text-muted-foreground"
+      >
+        With her signature powerful vocals and emotional depth, Ado has captured
+        millions of hearts worldwide. Her music videos regularly achieve tens of
+        millions of views, and her live performances showcase a rare combination
+        of technical prowess and raw authenticity that defines a new generation
+        of Japanese artists breaking into the global music scene.
+      </p>
+    </div>
+  );
+});
 
 export function WhoIsAdo() {
   const [scrollY, setScrollY] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const mobileImageRef = useRef<HTMLDivElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
+      if (!sectionRef.current) return;
 
-        const scrolledPast = Math.max(0, windowHeight - rect.top);
-        const progress = Math.min(1, scrolledPast / windowHeight);
-        setScrollY(progress);
-      }
+      const rect = sectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      const scrolledPast = Math.max(0, windowHeight - rect.top);
+      const progress = Math.min(1, scrolledPast / (windowHeight * 3));
+      setScrollY(progress);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -45,34 +95,82 @@ export function WhoIsAdo() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!imageRef.current) return;
+
+    gsap.set(imageRef.current, {
+      opacity: 0,
+      scale: 1.1,
+      rotationY: -5,
+    });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: imageRef.current,
+        start: "top 80%",
+        end: "bottom 20%",
+        toggleActions: "play none none reverse",
+      },
+    });
+
+    tl.to(imageRef.current, {
+      opacity: 1,
+      scale: 1,
+      rotationY: 0,
+      duration: 1.2,
+      ease: "power2.out",
+    });
+
+    return () => {
+      tl.kill();
+    };
+  }, []);
+
   return (
     <section ref={sectionRef} className="relative lg:py-24">
-      <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        {/* Mobile Layout */}
-        <div className="lg:hidden">
-          <div className="relative h-[200vh]">
-            <div className="sticky top-0 h-screen">
-              <div className="absolute inset-0 z-0">
-                <Image
-                  src={adoAvatar}
-                  alt="ADO - Japanese singer and artist"
-                  fill
-                  className="object-cover"
-                  priority
-                />
+      <div className="mx-auto w-full max-w-none px-0 sm:px-0 lg:max-w-7xl">
+        {/* Mobile & Tablet Layout */}
+        <div className="block lg:hidden">
+          <div className="relative h-[300vh] w-full">
+            <div
+              className="sticky top-0 z-0 h-screen w-full"
+              ref={mobileImageRef}
+            >
+              <Image
+                src={adoAvatar}
+                alt="ADO - Japanese singer and artist"
+                fill
+                className="object-cover"
+                priority
+                aria-hidden="true"
+              />
+            </div>
+
+            <div
+              ref={backgroundRef}
+              className="sticky top-0 z-10 h-screen w-full bg-background"
+              style={{
+                transform: `translateY(${Math.min(-100, -100 + scrollY * 100)}vh)`,
+                transition: "transform 0.1s ease-out",
+              }}
+            >
+              <div className="flex h-full w-full items-center justify-center px-6 sm:px-8 md:px-12">
+                <div className="w-full max-w-2xl">
+                  <AdoDescription />
+                </div>
               </div>
             </div>
 
             <div
-              className="relative h-screen w-full overflow-y-auto bg-black"
+              ref={contentRef}
+              className="sticky top-0 z-20 h-screen w-full bg-background"
               style={{
-                transform: `translateY(${(1 - scrollY) * 100}vh)`,
-                zIndex: 10,
+                transform: `translateY(${Math.max(0, 1 - (scrollY - 0.3) * 100)}vh)`,
               }}
             >
-              <div className="flex h-full items-center justify-center px-6">
-                <div className="w-full max-w-lg">
-                  <AdoDescription />
+              <div className="flex h-full w-full items-center justify-center px-6 sm:px-8 md:px-12">
+                <div className="w-full max-w-2xl">
+                  <AdoExtraInfo />
                 </div>
               </div>
             </div>
@@ -80,18 +178,30 @@ export function WhoIsAdo() {
         </div>
 
         {/* Desktop Layout */}
-        <div className="hidden lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
-          <div className="relative h-full min-h-[700px] overflow-hidden rounded-xl">
-            <Image
-              src={adoAvatar}
-              alt="ADO - Japanese singer and artist"
-              fill
-              className="object-cover"
-              priority
-            />
+        <div className="hidden lg:block">
+          <div className="mb-16 w-full max-w-2xl">
+            <AdoDescription />
           </div>
 
-          <AdoDescription />
+          <div className="grid grid-cols-2 items-center gap-16 px-8">
+            <div
+              ref={imageRef}
+              className="relative h-full min-h-[700px] overflow-hidden rounded-xl"
+            >
+              <Image
+                src={adoAvatar}
+                alt="ADO - Japanese singer and artist"
+                fill
+                className="object-cover"
+                priority
+                aria-hidden="true"
+              />
+            </div>
+
+            <div className="w-full max-w-2xl">
+              <AdoExtraInfo />
+            </div>
+          </div>
         </div>
       </div>
     </section>

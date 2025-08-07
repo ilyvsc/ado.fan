@@ -1,37 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import React from "react";
 
-import { fanLinks, officialLinks } from "@/components/SocialLinks";
-
-interface SocialLinkProps {
-  name: string;
-  url: string;
-  icon: React.ReactNode;
-  description: string;
-}
-
-function SocialLink({
-  name,
-  url,
-  icon,
-  description,
-}: Readonly<SocialLinkProps>) {
-  return (
-    <Link
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={description}
-      title={description}
-      className="flex items-center space-x-2 rounded-lg px-3 py-2 transition hover:bg-ado-key/10 hover:text-white focus:ring-2 focus:ring-ado-key focus:outline-none"
-    >
-      {icon}
-      <span className="text-sm md:text-lg">{name}</span>
-    </Link>
-  );
-}
+import {
+  fanLinks,
+  officialLinks,
+  SocialLinkList,
+} from "@/components/SocialLinks";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -65,11 +40,7 @@ export function Footer() {
                 Official
               </h4>
               <ul className="justify-left flex flex-wrap gap-2 md:justify-start">
-                {officialLinks.map((link) => (
-                  <li key={link.url}>
-                    <SocialLink {...link} />
-                  </li>
-                ))}
+                <SocialLinkList links={officialLinks} />
               </ul>
             </div>
 
@@ -78,11 +49,7 @@ export function Footer() {
                 Fan Community
               </h4>
               <ul className="justify-left flex flex-wrap gap-2 md:justify-start">
-                {fanLinks.map((link) => (
-                  <li key={link.url}>
-                    <SocialLink {...link} />
-                  </li>
-                ))}
+                <SocialLinkList links={fanLinks} />
               </ul>
             </div>
           </nav>
