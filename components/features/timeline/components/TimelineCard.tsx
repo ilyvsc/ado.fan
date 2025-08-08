@@ -1,56 +1,64 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import React from "react";
 
 import { NicoNicoPlayer, YouTubePlayer } from "@/components/VideoPlayer";
 import { Song } from "@/types/Music";
 
+gsap.registerPlugin(ScrollTrigger);
+
 interface SongCardProps {
   song: Song;
-  animationDelay: number;
   themeColor: string;
   useHorizontalLayout?: boolean;
 }
 
 export const SongCard = React.memo(function SongCard({
   song,
-  animationDelay,
   themeColor,
   useHorizontalLayout = false,
 }: SongCardProps) {
+  const cardRef = React.useRef<HTMLDivElement>(null);
   const cardThemeColor = song.themeColor ?? themeColor;
+
+  useGSAP(() => {
+    if (!cardRef.current) return;
+    gsap.fromTo(
+      cardRef.current,
+      {
+        autoAlpha: 0,
+        y: 30,
+        scale: 0.95,
+      },
+      {
+        autoAlpha: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: cardRef.current,
+          start: "top 90%",
+          toggleActions: "play none none none",
+          once: true,
+          invalidateOnRefresh: true,
+        },
+      },
+    );
+  }, []);
+
   const videoContainer = `mb-3 overflow-hidden rounded-lg ${
     useHorizontalLayout ? "md:w-80 lg:w-full" : ""
   }`;
 
   return (
-    <motion.div
-      className="w-full max-w-80 md:max-w-full"
-      initial={{
-        opacity: 0,
-        scale: 0.9,
-        y: 20,
-      }}
-      animate={{
-        opacity: 1,
-        scale: 1,
-        y: 0,
-      }}
-      transition={{
-        duration: 0.6,
-        delay: animationDelay,
-        ease: "easeOut",
-      }}
-      whileHover={{
-        scale: 1.02,
-        y: -5,
-        transition: {
-          duration: 0.2,
-          ease: "easeOut",
-        },
-      }}
+    <div
+      ref={cardRef}
+      className="w-full max-w-80 transform transition duration-200 ease-out hover:-translate-y-1 hover:scale-[1.02] md:max-w-full"
     >
       <div
         className="group relative overflow-hidden rounded-xl border border-white/20 bg-white/10 shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-white/30 hover:shadow-xl"
@@ -105,6 +113,6 @@ export const SongCard = React.memo(function SongCard({
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 });

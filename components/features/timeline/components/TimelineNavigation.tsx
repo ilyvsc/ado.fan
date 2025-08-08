@@ -1,8 +1,14 @@
 "use client";
 
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 import React from "react";
 
 import { TimelineStep, TimelineYear } from "@/types/Music";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface TimelineNavigationProps {
   readonly timelineYears: readonly TimelineYear[];
@@ -17,7 +23,21 @@ export const TimelineNavigation = React.memo(function TimelineNavigation({
   currentIndex,
   onYearClick,
 }: TimelineNavigationProps) {
+  const navRef = React.useRef<HTMLDivElement>(null);
   const currentYear = timelineSteps[currentIndex]?.year;
+
+  useGSAP(
+    () => {
+      if (!navRef.current) return;
+      gsap.from(navRef.current, {
+        opacity: 0,
+        y: -20,
+        duration: 0.5,
+        ease: "power2.out",
+      });
+    },
+    { dependencies: [navRef] },
+  );
 
   const handleYearClick = (year: number) => {
     const firstStepIndex = timelineSteps.findIndex(
@@ -30,6 +50,7 @@ export const TimelineNavigation = React.memo(function TimelineNavigation({
 
   return (
     <nav
+      ref={navRef}
       className="absolute top-4 left-1/2 z-10 -translate-x-1/2"
       aria-label="Timeline years navigation"
     >

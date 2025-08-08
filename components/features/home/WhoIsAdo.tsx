@@ -1,5 +1,6 @@
 "use client";
 
+import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -95,36 +96,27 @@ export function WhoIsAdo() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (!imageRef.current) return;
+  useGSAP(
+    () => {
+      if (!imageRef.current) return;
 
-    gsap.set(imageRef.current, {
-      opacity: 0,
-      scale: 1.1,
-      rotationY: -5,
-    });
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: imageRef.current,
-        start: "top 80%",
-        end: "bottom 20%",
-        toggleActions: "play none none reverse",
-      },
-    });
-
-    tl.to(imageRef.current, {
-      opacity: 1,
-      scale: 1,
-      rotationY: 0,
-      duration: 1.2,
-      ease: "power2.out",
-    });
-
-    return () => {
-      tl.kill();
-    };
-  }, []);
+      gsap.from(imageRef.current, {
+        opacity: 0,
+        scale: 1.1,
+        rotationY: -5,
+        duration: 1.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: imageRef.current,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse",
+        },
+        transformPerspective: 800,
+      });
+    },
+    { dependencies: [] },
+  );
 
   return (
     <section ref={sectionRef} className="relative lg:py-24">

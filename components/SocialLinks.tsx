@@ -1,3 +1,4 @@
+import { useGSAP } from "@gsap/react";
 import {
   SiDiscord,
   SiInstagram,
@@ -7,10 +8,11 @@ import {
   SiYoutube,
 } from "@icons-pack/react-simple-icons";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Globe } from "lucide-react";
 
 import Link from "next/link";
-import React, { memo, useEffect, useRef } from "react";
+import React from "react";
 
 import {
   Card,
@@ -81,52 +83,49 @@ export const fanLinks: SocialLink[] = [
   },
 ];
 
-export const SocialLinkGrid = memo(function SocialLinkGrid({
+export const SocialLinkGrid = React.memo(function SocialLinkGrid({
   links,
 }: {
   links: SocialLink[];
 }) {
-  const cardRefs = useRef<HTMLDivElement[]>([]);
+  const cardRefs = React.useRef<HTMLDivElement[]>([]);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      cardRefs.current.forEach((card, i) => {
-        if (!card) return;
-        gsap.fromTo(
-          card,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1,
-            yPercent: 0,
-            duration: 0.5,
-            delay: i * 0.1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 95%",
-              once: true,
-            },
+  gsap.registerPlugin(ScrollTrigger);
+
+  useGSAP(() => {
+    cardRefs.current.forEach((card, i) => {
+      if (!card) return;
+      gsap.fromTo(
+        card,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          yPercent: 0,
+          duration: 0.5,
+          delay: i * 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 95%",
+            once: true,
           },
-        );
-        card.addEventListener("mouseenter", () => {
-          gsap.to(card, {
-            scale: 1.05,
-            duration: 0.2,
-            ease: "power2.out",
-          });
+        },
+      );
+      card.addEventListener("mouseenter", () => {
+        gsap.to(card, {
+          scale: 1.05,
+          duration: 0.2,
+          ease: "power2.out",
         });
-
-        card.addEventListener("mouseleave", () => {
-          gsap.to(card, {
-            scale: 1,
-            duration: 0.2,
-            ease: "power2.out",
-          });
+      });
+      card.addEventListener("mouseleave", () => {
+        gsap.to(card, {
+          scale: 1,
+          duration: 0.2,
+          ease: "power2.out",
         });
       });
     });
-
-    return () => ctx.revert();
   }, []);
 
   return (
@@ -163,7 +162,7 @@ export const SocialLinkGrid = memo(function SocialLinkGrid({
   );
 });
 
-export const SocialLinkList = memo(function SocialLinkList({
+export const SocialLinkList = React.memo(function SocialLinkList({
   links,
 }: {
   links: ReadonlyArray<SocialLink>;

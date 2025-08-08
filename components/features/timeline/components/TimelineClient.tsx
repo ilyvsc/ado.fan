@@ -1,8 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 
 import { TimelineItem } from "./TimelineItem";
 import { TimelineNavigation } from "./TimelineNavigation";
@@ -10,6 +12,8 @@ import { TimelineNavigation } from "./TimelineNavigation";
 import { useIsMobile } from "@/components/ui/use-mobile";
 import { useTimelineScroll } from "@/features/timeline/hooks/use-timeline-scroll";
 import { TimelineStep, TimelineYear } from "@/types/Music";
+
+gsap.registerPlugin(ScrollTrigger);
 
 function createTimelineSteps(
   timelineYears: readonly TimelineYear[],
@@ -66,32 +70,40 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
       : createTimelineSteps(timelineYears);
   }, [timelineYears, isMobile]);
 
-  const { containerRef, currentIndex, scrollToStep } = useTimelineScroll({
+  const { currentIndex, scrollToStep } = useTimelineScroll({
     stepsLength: timelineSteps.length,
     isMobile,
   });
 
   const currentStep = timelineSteps[currentIndex];
+  const mainRef = useRef<HTMLElement>(null);
+
+  useGSAP(() => {
+    gsap.fromTo(
+      mainRef.current,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 0.3,
+        ease: "power2.out",
+      },
+    );
+  }, []);
+
   return (
     <section
       className="relative bg-gradient-to-b from-black via-gray-900 to-black"
       aria-label={`Music timeline with ${timelineSteps.length} steps from ${timelineYears.length} years`}
     >
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-      >
-        <TimelineNavigation
-          timelineYears={timelineYears}
-          timelineSteps={timelineSteps}
-          currentIndex={currentIndex}
-          onYearClick={scrollToStep}
-        />
-      </motion.div>
+      <TimelineNavigation
+        timelineYears={timelineYears}
+        timelineSteps={timelineSteps}
+        currentIndex={currentIndex}
+        onYearClick={scrollToStep}
+      />
 
-      <motion.main
-        ref={containerRef}
+      <main
+        ref={mainRef}
         className={`w-full scroll-smooth ${
           isMobile ? "overflow-x-auto" : "overflow-y-auto"
         }`}
@@ -102,10 +114,6 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
           msOverflowStyle: "none",
           WebkitOverflowScrolling: "touch",
         }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
-        tabIndex={0}
         aria-label={
           currentStep
             ? `Currently viewing ${currentStep.period} ${currentStep.year}`
@@ -140,7 +148,7 @@ export function TimelineClient({ timelineYears }: TimelineClientProps) {
             </section>
           ))}
         </div>
-      </motion.main>
+      </main>
     </section>
   );
 }

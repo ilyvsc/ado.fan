@@ -1,10 +1,11 @@
 "use client";
 
+import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { HeartHandshake } from "lucide-react";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,93 +16,89 @@ export function FanAppreciation() {
   const quoteRef = useRef<HTMLParagraphElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        containerRef.current,
-        { opacity: 0, scale: 0.9 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
+  useGSAP(() => {
+    gsap.fromTo(
+      containerRef.current,
+      { opacity: 0, scale: 0.9 },
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
         },
-      );
+      },
+    );
 
-      gsap.fromTo(
-        iconRef.current,
-        { opacity: 0, y: -20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: iconRef.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
+    gsap.fromTo(
+      iconRef.current,
+      { opacity: 0, y: -20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: iconRef.current,
+          start: "top 85%",
+          toggleActions: "play none none reverse",
         },
-      );
+      },
+    );
 
-      gsap.fromTo(
-        headingRef.current,
-        { opacity: 0, y: -16 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          delay: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: headingRef.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
+    gsap.fromTo(
+      headingRef.current,
+      { opacity: 0, y: -16 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        delay: 0.1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: headingRef.current,
+          start: "top 85%",
+          toggleActions: "play none none reverse",
         },
-      );
+      },
+    );
 
-      gsap.fromTo(
-        quoteRef.current,
-        { opacity: 0, y: 16 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          delay: 0.2,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: quoteRef.current,
-            start: "top 90%",
-            toggleActions: "play none none reverse",
-          },
+    gsap.fromTo(
+      quoteRef.current,
+      { opacity: 0, y: 16 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        delay: 0.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: quoteRef.current,
+          start: "top 90%",
+          toggleActions: "play none none reverse",
         },
-      );
+      },
+    );
 
-      gsap.fromTo(
-        descRef.current,
-        { opacity: 0, y: 16 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          delay: 0.3,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: descRef.current,
-            start: "top 90%",
-            toggleActions: "play none none reverse",
-          },
+    gsap.fromTo(
+      descRef.current,
+      { opacity: 0, y: 16 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        delay: 0.3,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: descRef.current,
+          start: "top 90%",
+          toggleActions: "play none none reverse",
         },
-      );
-    });
-
-    return () => ctx.revert();
+      },
+    );
   }, []);
 
   return (
