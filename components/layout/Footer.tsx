@@ -64,7 +64,7 @@ export function Footer() {
                   01/ Sitemap
                 </div>
                 <ul className="flex flex-wrap gap-4">
-                  {["Home", "Home2", "a", "Home3"].map((label) => (
+                  {["Home", "Songs", "Albums"].map((label) => (
                     <li key={label}>
                       <Link
                         href={`/${label.toLowerCase()}`}
