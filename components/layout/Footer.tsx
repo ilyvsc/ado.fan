@@ -1,68 +1,136 @@
 "use client";
 
-import React from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import Link from "next/link";
+import React, { useRef } from "react";
+
+import { InfiniteTextAnimation } from "@/animations/infiniteTextAnimation";
 import {
   fanLinks,
   officialLinks,
   SocialLinkList,
 } from "@/components/SocialLinks";
 
+gsap.registerPlugin(ScrollTrigger);
+
 export function Footer() {
   const year = new Date().getFullYear();
+  const rootRef = useRef<HTMLElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const topCtaRef = useRef<HTMLAnchorElement>(null);
+
+  const reducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  useGSAP(() => {
+    if (reducedMotion) return;
+    gsap.from(panelRef.current, {
+      opacity: 0,
+      y: 40,
+      duration: 0.8,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: panelRef.current,
+        start: "top 85%",
+        once: true,
+      },
+    });
+    gsap.from(topCtaRef.current, {
+      opacity: 0,
+      x: 12,
+      duration: 0.6,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: panelRef.current,
+        start: "top 80%",
+        once: true,
+      },
+    });
+  }, [reducedMotion]);
 
   return (
-    <footer className="flex h-full w-full flex-col items-center justify-center bg-background text-foreground">
-      <div className="mx-auto w-full max-w-7xl bg-transparent px-4">
-        <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-ado-key to-transparent opacity-70" />
+    <footer ref={rootRef} className="w-full bg-background text-foreground">
+      <div ref={panelRef} className="w-full">
+        <div className="relative overflow-hidden border-y border-foreground/10 bg-foreground/[0.04]">
+          <div className="px-6 pt-8 pb-2 md:px-12 lg:px-16">
+            <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16 lg:gap-20">
+              {/* Sitemap */}
+              <nav aria-label="Sitemap" className="space-y-5">
+                <div className="text-xs font-semibold tracking-[0.2em] text-foreground/60 uppercase">
+                  01/ Sitemap
+                </div>
+                <ul className="flex flex-wrap gap-4">
+                  {["Home", "Home2", "a", "Home3"].map((label) => (
+                    <li key={label}>
+                      <Link
+                        href={`/${label.toLowerCase()}`}
+                        className="text-sm text-foreground/80 decoration-ado-key hover:text-muted-foreground hover:overline"
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
 
-        <div className="grid grid-cols-1 gap-12 py-12 md:grid-cols-2 md:gap-16">
-          <div className="space-y-6 text-left">
-            <h2 className="text-4xl font-semibold text-ado-key">ado.fan</h2>
-            <p className="text-lg text-foreground/70">
-              A fan-made site celebrating the incredible artistry of Ado.
-            </p>
-            <p className="text-base text-foreground/60">
-              All music, visuals, trademarks and related content remain the
-              exclusive property of Universal Music Japan and Ado's official
-              staff—this site is not officially affiliated with or endorsed by
-              them.
-            </p>
+              {/* Socials */}
+              <nav aria-label="Socials" className="space-y-5">
+                <div className="text-xs font-semibold tracking-[0.2em] text-foreground/60 uppercase">
+                  02/ Socials
+                </div>
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="mb-3 text-xs font-semibold tracking-wide text-foreground/70 uppercase">
+                      Official
+                    </h4>
+                    <ul className="flex flex-wrap gap-2">
+                      <SocialLinkList links={officialLinks} />
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="mb-3 text-xs font-semibold tracking-wide text-foreground/70 uppercase">
+                      Fan Community
+                    </h4>
+                    <ul className="flex flex-wrap gap-2">
+                      <SocialLinkList links={fanLinks} />
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+            </div>
           </div>
 
-          <nav aria-label="Social links" className="text-left">
-            <h3 className="mb-6 text-3xl font-medium text-ado-key">
-              Connect with Ado
-            </h3>
+          <div className="relative">
+            <InfiniteTextAnimation direction="right" speed={2}>
+              <div className="flex gap-6 text-6xl md:text-8xl">
+                <span className="font-playfair font-thin">Ado</span>
+              </div>
+            </InfiniteTextAnimation>
 
-            <div className="mb-6">
-              <h4 className="mb-3 text-lg font-semibold text-foreground/80 uppercase">
-                Official
-              </h4>
-              <ul className="justify-left flex flex-wrap gap-2 md:justify-start">
-                <SocialLinkList links={officialLinks} />
-              </ul>
+            <div className="mx-6 mt-4 mb-4 flex items-center justify-between text-xs tracking-[0.2em] text-foreground/60 uppercase md:mx-12 lg:mx-16">
+              <span className="pointer-events-none">Fan site / Tribute</span>
+              <span className="pointer-events-none">{year}</span>
             </div>
-
-            <div>
-              <h4 className="mb-3 text-lg font-semibold text-foreground/80 uppercase">
-                Fan Community
-              </h4>
-              <ul className="justify-left flex flex-wrap gap-2 md:justify-start">
-                <SocialLinkList links={fanLinks} />
-              </ul>
-            </div>
-          </nav>
+          </div>
         </div>
 
-        <div className="mb-6 text-center text-sm text-foreground/70">
-          Thank you for visiting—let's honor Ado's talent together!
-        </div>
+        <div className="px-6 py-6 text-center text-xs text-foreground/60 md:px-12 lg:px-16">
+          <p
+            role="note"
+            className="mx-auto max-w-3xl leading-relaxed lg:max-w-6xl"
+          >
+            All content, media, lyrics, trademarks, and imagery on this site are
+            the property of their respective owners; all rights remain with the
+            original authors/rights holders.
+          </p>
 
-        <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-ado-key to-transparent opacity-70" />
-
-        <div className="py-4 text-center text-xs text-foreground/60">
-          &copy; {year} Ado Fan Tribute — Powered by passion, not profit.
+          <p className="pt-2">
+            &copy; {year} Ado Fan Tribute — Powered by passion, not profit.
+          </p>
         </div>
       </div>
     </footer>
