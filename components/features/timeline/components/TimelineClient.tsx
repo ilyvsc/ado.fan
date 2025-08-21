@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { timelineStepsDesktop, timelineStepsMobile } from "../helpers";
 import { TimelineItem } from "./TimelineItem";
@@ -22,16 +22,18 @@ export function TimelineClient({
 }) {
   const isMobile = useIsMobile();
 
-  const timelineSteps = useMemo(() => {
-    return isMobile
-      ? timelineStepsMobile(timelineYears)
-      : timelineStepsDesktop(timelineYears);
-  }, [timelineYears, isMobile]);
+  const timelineSteps = useMemo(
+    () =>
+      isMobile
+        ? timelineStepsMobile(timelineYears)
+        : timelineStepsDesktop(timelineYears),
+    [timelineYears, isMobile],
+  );
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const mainRef = useRef<HTMLElement>(null);
   const sectionsRef = useRef<HTMLElement[]>([]);
   const cardsRef = useRef<HTMLDivElement[]>([]);
+  const mainRef = useRef<HTMLDivElement>(null);
 
   const scrollToStep = useCallback((stepIndex: number) => {
     const section = sectionsRef.current[stepIndex];
@@ -45,13 +47,37 @@ export function TimelineClient({
     }
   }, []);
 
+  const handlePeriodScroll = useCallback(() => {
+    if (!mainRef.current) return;
+
+    const container = mainRef.current;
+    const offset = isMobile ? container.scrollLeft : container.scrollTop;
+    const size = isMobile
+      ? container.clientWidth
+      : (sectionsRef.current[0]?.getBoundingClientRect().height ?? 1);
+
+    const idx = Math.floor(offset / size);
+    const length = Math.min(idx, timelineSteps.length - 1);
+    const newIndex = Math.max(0, length);
+
+    if (newIndex !== currentIndex) setCurrentIndex(newIndex);
+  }, [isMobile, timelineSteps.length, currentIndex]);
+
+  useEffect(() => {
+    const container = mainRef.current;
+    if (!container) return;
+
+    container.addEventListener("scroll", handlePeriodScroll, { passive: true });
+    return () => container.removeEventListener("scroll", handlePeriodScroll);
+  }, [handlePeriodScroll]);
+
   useGSAP(() => {
     if (!sectionsRef.current.length) return;
 
     const horizontal = isMobile;
-    const localTriggers: ScrollTrigger[] = [];
+    const triggers: ScrollTrigger[] = [];
 
-    sectionsRef.current.forEach((section, i) => {
+    sectionsRef.current.forEach((section) => {
       if (!section) return;
 
       const trigger = ScrollTrigger.create({
@@ -59,12 +85,9 @@ export function TimelineClient({
         start: horizontal ? "left center" : "top center",
         end: horizontal ? "right center" : "bottom center",
         horizontal,
-        onEnter: () => setCurrentIndex(i),
-        onEnterBack: () => setCurrentIndex(i),
-        invalidateOnRefresh: true,
       });
 
-      localTriggers.push(trigger);
+      triggers.push(trigger);
     });
 
     ScrollTrigger.batch(cardsRef.current, {
@@ -86,7 +109,7 @@ export function TimelineClient({
       once: true,
     });
     return () => {
-      localTriggers.forEach((t) => t.kill());
+      triggers.forEach((t) => t.kill());
     };
   }, [isMobile, timelineSteps.length]);
 

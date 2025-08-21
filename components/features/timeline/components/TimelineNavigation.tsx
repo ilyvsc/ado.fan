@@ -24,17 +24,15 @@ export const TimelineNavigation = React.memo(function TimelineNavigation({
   onYearClick,
 }: TimelineNavigationProps) {
   const navRef = React.useRef<HTMLDivElement>(null);
+  const buttonRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
   const currentYear = timelineSteps[currentIndex]?.year;
 
   useGSAP(
     () => {
       if (!navRef.current) return;
+      const buttons = buttonRefs.current.filter(Boolean);
 
-      const element = navRef.current;
-      const $ = gsap.utils.selector(element);
-      const buttons = $("button");
-
-      gsap.set(element, {
+      gsap.set(navRef.current, {
         autoAlpha: 0,
         yPercent: -10,
         willChange: "transform,opacity",
@@ -42,7 +40,7 @@ export const TimelineNavigation = React.memo(function TimelineNavigation({
       gsap.set(buttons, { autoAlpha: 0, yPercent: 10 });
 
       const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
-      tl.to(element, { autoAlpha: 1, yPercent: 0, duration: 0.34 }, 0);
+      tl.to(navRef.current, { autoAlpha: 1, yPercent: 0, duration: 0.34 }, 0);
 
       if (buttons.length) {
         tl.to(
@@ -61,11 +59,14 @@ export const TimelineNavigation = React.memo(function TimelineNavigation({
       }
 
       tl.add(() => {
-        gsap.set(element, { willChange: "auto", clearProps: "yPercent" });
+        gsap.set(navRef.current, {
+          willChange: "auto",
+          clearProps: "yPercent",
+        });
       });
 
       ScrollTrigger.create({
-        trigger: element,
+        trigger: navRef.current,
         start: "top 85%",
         onEnter: () => tl.restart(),
         onEnterBack: () => tl.restart(),
@@ -91,11 +92,14 @@ export const TimelineNavigation = React.memo(function TimelineNavigation({
       <div className="max-w-screen px-2">
         <div className="rounded-xl border border-white/10 bg-black/20 p-3 backdrop-blur-sm sm:rounded-full sm:p-2">
           <div className="grid auto-cols-max grid-flow-col grid-rows-2 gap-2 sm:flex sm:flex-nowrap sm:gap-1">
-            {timelineYears.map((timelineYear) => {
+            {timelineYears.map((timelineYear, index) => {
               const isActive = currentYear === timelineYear.year;
               return (
                 <button
                   key={timelineYear.year}
+                  ref={(el) => {
+                    buttonRefs.current[index] = el;
+                  }}
                   onClick={() => handleYearClick(timelineYear.year)}
                   className={`rounded-full px-2 py-1 text-sm font-medium whitespace-nowrap transition-all duration-200 focus:ring-2 focus:ring-foreground/50 focus:outline-none sm:px-3 ${
                     isActive
