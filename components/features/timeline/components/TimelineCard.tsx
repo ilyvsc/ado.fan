@@ -23,32 +23,30 @@ export const SongCard = React.memo(function SongCard({
   const cardRef = React.useRef<HTMLDivElement>(null);
   const mediaRef = React.useRef<HTMLDivElement>(null);
   const textRef = React.useRef<HTMLDivElement>(null);
-  const [inView, setInView] = React.useState(false);
 
   const themeColor = song.themeColor;
 
-  useGSAP(
-    () => {
-      if (!cardRef.current) return;
-      const tl = gsap.timeline({ paused: true });
+  useGSAP(() => {
+    if (!cardRef.current) return;
 
-      tl.fromTo(
-        cardRef.current,
-        { autoAlpha: 0, y: 16, scale: 0.98 },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out" },
-      );
+    const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+
+    const playAnimation = () => {
+      tl.clear();
+
+      if (cardRef.current) {
+        tl.fromTo(
+          cardRef.current,
+          { autoAlpha: 0, y: 16, scale: 0.98 },
+          { autoAlpha: 1, y: 0, scale: 1, duration: 0.5 },
+        );
+      }
 
       if (mediaRef.current) {
         tl.fromTo(
           mediaRef.current,
           { autoAlpha: 0, yPercent: 4, scale: 0.99 },
-          {
-            autoAlpha: 1,
-            yPercent: 0,
-            scale: 1,
-            duration: 0.4,
-            ease: "power2.out",
-          },
+          { autoAlpha: 1, yPercent: 0, scale: 1, duration: 0.4 },
           "-=0.3",
         );
       }
@@ -57,15 +55,29 @@ export const SongCard = React.memo(function SongCard({
         tl.fromTo(
           textRef.current,
           { autoAlpha: 0, y: 8 },
-          { autoAlpha: 1, y: 0, duration: 0.35, ease: "power2.out" },
+          { autoAlpha: 1, y: 0, duration: 0.35 },
           "-=0.25",
         );
       }
-      setInView(true);
-      tl.play();
-    },
-    { scope: cardRef, dependencies: [useHorizontalLayout] },
-  );
+    };
+
+    const st = ScrollTrigger.create({
+      trigger: cardRef.current,
+      start: "top bottom-=100",
+      end: "bottom top+=100",
+      onEnter: () => {
+        playAnimation();
+      },
+      onEnterBack: () => {
+        playAnimation();
+      },
+    });
+
+    return () => {
+      st.kill();
+      tl.kill();
+    };
+  }, [useHorizontalLayout]);
 
   return (
     <div ref={cardRef} className="w-full max-w-80 md:max-w-full">
@@ -86,8 +98,8 @@ export const SongCard = React.memo(function SongCard({
               className={`mb-3 overflow-hidden rounded-lg ${useHorizontalLayout ? "md:w-80 lg:w-full" : ""}`}
             >
               <div className="relative aspect-video">
-                {inView && song.youtubeId && <YouTubePlayer song={song} />}
-                {inView && !song.youtubeId && song.nicoId && (
+                {song.youtubeId && <YouTubePlayer song={song} />}
+                {!song.youtubeId && song.nicoId && (
                   <NicoNicoPlayer song={song} />
                 )}
               </div>

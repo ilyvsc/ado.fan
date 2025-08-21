@@ -2,10 +2,13 @@
 
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import React from "react";
 
 import { TimelinePeriod, TimelineYear } from "@/types/Music";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface TimelineNavigationProps {
   readonly timelineYears: readonly TimelineYear[];
@@ -59,6 +62,14 @@ export const TimelineNavigation = React.memo(function TimelineNavigation({
 
       tl.add(() => {
         gsap.set(element, { willChange: "auto", clearProps: "yPercent" });
+      });
+
+      ScrollTrigger.create({
+        trigger: element,
+        start: "top 85%",
+        onEnter: () => tl.restart(),
+        onEnterBack: () => tl.restart(),
+        invalidateOnRefresh: true,
       });
     },
     { scope: navRef },
