@@ -39,25 +39,20 @@ export type AlbumTrack = {
 
 export type SongsByYear = Record<number, Song[]>;
 
+export type Period = "early" | "mid" | "late";
+
+export type TimelinePeriod = {
+  period: Period;
+  label: string;
+  songs: Song[];
+  year: number;
+  periodIndex?: number;
+  songIndex?: number;
+};
+
 export type TimelineYear = {
   year: number;
   songs: Song[];
-  categorized: {
-    early: Song[];
-    mid: Song[];
-    late: Song[];
-  };
   totalSongs: number;
-  periods: [string, Song[]][];
-  hasMultiplePeriods: boolean;
-};
-
-export type Period = "early" | "mid" | "late";
-
-export type TimelineStep = {
-  year: number;
-  period: string;
-  songs: Song[];
-  periodIndex: number;
-  songIndex?: number;
+  periods: TimelinePeriod[];
 };

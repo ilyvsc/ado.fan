@@ -1,6 +1,6 @@
 import { prisma } from "@/prisma/client";
 import { serializeSong, songPrismaSelect } from "@/prisma/serializer";
-import { Song, TimelineYear } from "@/types/Music";
+import { Song, TimelinePeriod, TimelineYear } from "@/types/Music";
 
 /**
  * Fetch all songs from the database.
@@ -108,7 +108,6 @@ export const getTimelineSongs = () => getSongsBySection("timelineSongs");
  *   console.log(`  Early: ${yearGroup.categorized.early.length}`);
  *   console.log(`  Mid: ${yearGroup.categorized.mid.length}`);
  *   console.log(`  Late: ${yearGroup.categorized.late.length}`);
- *   console.log(`  Multiple periods: ${yearGroup.hasMultiplePeriods}`);
  * });
  * ```
  *
@@ -121,12 +120,8 @@ export const getTimelineSongs = () => getSongsBySection("timelineSongs");
 export async function getTimelineSongsByYear(): Promise<TimelineYear[]> {
   const songs = await getTimelineSongs();
 
-  // Group songs by year
   const byYear = songs.reduce<Record<number, Song[]>>((groupedSongs, song) => {
-    if (!groupedSongs[song.year]) {
-      groupedSongs[song.year] = [];
-    }
-    groupedSongs[song.year].push(song);
+    (groupedSongs[song.year] ||= []).push(song);
     return groupedSongs;
   }, {});
 
@@ -136,26 +131,32 @@ export async function getTimelineSongsByYear(): Promise<TimelineYear[]> {
         a.releaseDate.localeCompare(b.releaseDate),
       );
 
-      const categorized = {
-        early: sorted.filter((s) => new Date(s.releaseDate).getMonth() < 4),
-        mid: sorted.filter((s) => {
-          const m = new Date(s.releaseDate).getMonth();
-          return m >= 4 && m < 8;
-        }),
-        late: sorted.filter((s) => new Date(s.releaseDate).getMonth() >= 8),
-      };
-
-      const periods = Object.entries(categorized).filter(
-        ([, arr]) => arr.length,
-      );
+      const periods: TimelinePeriod[] = [
+        {
+          period: "early" as const,
+          label: `EARLY ${year}`,
+          songs: sorted.filter((s) => new Date(s.releaseDate).getMonth() < 4),
+        },
+        {
+          period: "mid" as const,
+          label: `MID ${year}`,
+          songs: sorted.filter((s) => {
+            const month = new Date(s.releaseDate).getMonth();
+            return month >= 4 && month < 8;
+          }),
+        },
+        {
+          period: "late" as const,
+          label: `LATE ${year}`,
+          songs: sorted.filter((s) => new Date(s.releaseDate).getMonth() >= 8),
+        },
+      ].filter((p) => p.songs.length);
 
       return {
         year: +year,
         songs: sorted,
-        categorized,
         totalSongs: sorted.length,
         periods,
-        hasMultiplePeriods: periods.length > 1,
       };
     })
     .sort((a, b) => a.year - b.year);
