@@ -39,7 +39,7 @@ export function TimelineClient({
       setCurrentIndex(stepIndex);
       section.scrollIntoView({
         behavior: "smooth",
-        block: "start",
+        block: "center",
         inline: "nearest",
       });
     }
