@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import Image from "next/image";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useRef } from "react";
 
 import { useTextAnimate } from "@/animations/textAnimation";
 import adoAvatar from "@/public/images/ado-avatar.jpg";
@@ -22,7 +22,7 @@ const AdoDescription = memo(function AdoDescription() {
     <div className="flex flex-col items-center lg:items-start lg:text-left">
       <h2
         ref={titleRef}
-        className="font-playfair text-2xl text-foreground md:text-3xl lg:text-4xl"
+        className="font-editorial text-2xl text-foreground md:text-3xl lg:text-4xl"
       >
         A Voice That Shatters Boundaries
       </h2>
@@ -71,39 +71,19 @@ const AdoExtraInfo = memo(function AdoExtraInfo() {
 });
 
 export function WhoIsAdo() {
-  const [scrollY, setScrollY] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const mobileImageRef = useRef<HTMLDivElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
+  useGSAP(() => {
+    if (!sectionRef.current) return;
 
-      const rect = sectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      const scrolledPast = Math.max(0, windowHeight - rect.top);
-      const progress = Math.min(1, scrolledPast / (windowHeight * 3));
-      setScrollY(progress);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useGSAP(
-    () => {
-      if (!imageRef.current) return;
-
+    if (imageRef.current) {
       gsap.from(imageRef.current, {
         opacity: 0,
         scale: 1.1,
-        rotationY: -5,
         duration: 1.2,
         ease: "power2.out",
         scrollTrigger: {
@@ -112,11 +92,43 @@ export function WhoIsAdo() {
           end: "bottom 20%",
           toggleActions: "play none none reverse",
         },
-        transformPerspective: 800,
       });
-    },
-    { dependencies: [] },
-  );
+    }
+
+    if (backgroundRef.current) {
+      gsap.fromTo(
+        backgroundRef.current,
+        { yPercent: -100 },
+        {
+          yPercent: -100,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "30% top",
+            end: "bottom top",
+            scrub: true,
+          },
+        },
+      );
+    }
+
+    if (contentRef.current) {
+      gsap.fromTo(
+        contentRef.current,
+        { yPercent: 100 },
+        {
+          yPercent: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top+=30% top",
+            end: "bottom bottom",
+            scrub: true,
+          },
+        },
+      );
+    }
+  }, []);
 
   return (
     <section ref={sectionRef} className="relative lg:py-24">
@@ -141,10 +153,6 @@ export function WhoIsAdo() {
             <div
               ref={backgroundRef}
               className="sticky top-0 z-10 h-screen w-full bg-background"
-              style={{
-                transform: `translateY(${Math.min(-100, -100 + scrollY * 100)}vh)`,
-                transition: "transform 0.1s ease-out",
-              }}
             >
               <div className="flex h-full w-full items-center justify-center px-6 sm:px-8 md:px-12">
                 <div className="w-full max-w-2xl">
@@ -156,9 +164,6 @@ export function WhoIsAdo() {
             <div
               ref={contentRef}
               className="sticky top-0 z-20 h-screen w-full bg-background"
-              style={{
-                transform: `translateY(${Math.max(0, 1 - (scrollY - 0.3) * 100)}vh)`,
-              }}
             >
               <div className="flex h-full w-full items-center justify-center px-6 sm:px-8 md:px-12">
                 <div className="w-full max-w-2xl">
