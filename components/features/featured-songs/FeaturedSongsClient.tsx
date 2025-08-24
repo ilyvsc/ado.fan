@@ -49,7 +49,7 @@ const FeaturedSongCard = React.memo(function FeaturedSongCard({
 
         <CardContent className="space-y-3 p-4 sm:space-y-4 sm:p-6">
           <div className="space-y-1">
-            <h3 className="line-clamp-2 text-xl font-black tracking-tight text-white uppercase sm:text-2xl">
+            <h3 className="line-clamp-2 text-xl font-black tracking-tight text-foreground uppercase sm:text-2xl">
               {song.title.english}
             </h3>
             {song.title.japanese && (
@@ -62,7 +62,7 @@ const FeaturedSongCard = React.memo(function FeaturedSongCard({
             )}
           </div>
 
-          <p className="line-clamp-4 text-xs leading-relaxed text-gray-300 sm:text-sm">
+          <p className="line-clamp-4 text-xs leading-relaxed text-muted-foreground sm:text-sm">
             {song.description}
           </p>
 
@@ -85,14 +85,14 @@ export function FeaturedSongsClient({
     () => (
       <>
         <div
-          className="absolute top-1/3 left-1/3 h-72 w-72 rounded-full bg-ado-blue/20 blur-3xl filter sm:h-96 sm:w-96"
+          className="absolute top-1/3 left-1/3 h-72 w-72 rounded-full bg-ado-key/20 blur-3xl filter sm:h-96 sm:w-96"
           style={{
             animation: "spin 40s linear infinite",
             willChange: "transform",
           }}
         />
         <div
-          className="absolute right-1/3 bottom-1/3 h-64 w-64 rounded-full bg-ado-red/20 blur-3xl filter sm:h-80 sm:w-80"
+          className="absolute right-1/3 bottom-1/3 h-64 w-64 rounded-full bg-ado-red-600/20 blur-3xl filter sm:h-80 sm:w-80"
           style={{
             animation: "spin 35s linear reverse infinite",
             willChange: "transform",
@@ -120,7 +120,7 @@ export function FeaturedSongsClient({
               Featured Songs
             </h2>
 
-            <p className="mx-auto max-w-4xl text-xl leading-relaxed text-foreground/80 sm:text-2xl">
+            <p className="mx-auto max-w-4xl text-xl leading-relaxed text-muted-foreground sm:text-2xl">
               Interactive cards showcasing Ado's most iconic tracks.
             </p>
           </div>

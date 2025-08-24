@@ -67,7 +67,7 @@ export function DiscographyClient({ albums }: DiscographyClientProps) {
               {album.tracks.map((track) => (
                 <Card
                   key={track.song.id}
-                  className="flex flex-col gap-0 overflow-hidden rounded-2xl border-ado-white bg-background/70 py-0 shadow-md backdrop-blur transition-all hover:scale-[1.02] hover:shadow-xl dark:border-ado-white/30"
+                  className="flex flex-col gap-0 overflow-hidden rounded-2xl border-white bg-background/70 py-0 shadow-md backdrop-blur transition-all hover:scale-[1.02] hover:shadow-xl dark:border-white/30"
                 >
                   <div className="relative aspect-video overflow-hidden bg-background">
                     {track.song.youtubeId ? (
@@ -106,7 +106,7 @@ export function DiscographyClient({ albums }: DiscographyClientProps) {
                     <p className="text-sm text-muted-foreground">
                       {track.song.length} • {track.song.releaseDate}
                     </p>
-                    <p className="text-sm text-foreground dark:text-ado-white">
+                    <p className="text-sm text-foreground dark:text-white">
                       {track.song.description}
                     </p>
                   </CardContent>

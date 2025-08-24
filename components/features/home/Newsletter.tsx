@@ -48,8 +48,8 @@ export function NewsletterSection() {
           scrollTrigger: {
             trigger,
             start: "top 70%",
-            end: "bottom 30%",
-            toggleActions: "play none none reverse",
+            end: "bottom 15%",
+            toggleActions: "play none none none",
           },
           defaults: { ease: "power2.out" },
         })
@@ -81,9 +81,9 @@ export function NewsletterSection() {
         .timeline({
           scrollTrigger: {
             trigger,
-            start: "top 65%",
+            start: "top 60%",
             end: "bottom 35%",
-            toggleActions: "play none none reverse",
+            toggleActions: "play none none none",
           },
           defaults: { ease: "power2.out" },
         })
