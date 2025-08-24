@@ -22,8 +22,6 @@ export function timelineStepsDesktop(
     }
   }
 
-  console.log(steps);
-
   return steps;
 }
 
