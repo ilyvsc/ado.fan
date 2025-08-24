@@ -3,108 +3,210 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ExternalLink, Mail } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
+import Image from "next/image";
 import Link from "next/link";
 import React, { useRef } from "react";
 
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import rosesCrownSVG from "@/public/images/roses-crown.svg";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function NewsletterSection() {
   const rootRef = useRef<HTMLElement>(null);
-  const introRef = useRef<HTMLDivElement>(null);
+  const iconRef = useRef<HTMLImageElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
+
   const cardRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const listWrapperRef = useRef<HTMLUListElement>(null);
+
+  const headerTitleRef = useRef<HTMLHeadingElement>(null);
+  const headerDescRef = useRef<HTMLParagraphElement>(null);
 
   useGSAP(
     () => {
-      const reduce = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-      if (reduce) return;
+      const trigger = rootRef.current;
+      if (!trigger) return;
 
-      gsap.from(introRef.current, {
-        opacity: 0,
-        y: -20,
-        duration: 0.7,
-        ease: "power2.out",
-        immediateRender: false,
-        scrollTrigger: {
-          trigger: introRef.current,
-          start: "top 85%",
-        },
-      });
+      const listItems: HTMLElement[] = listWrapperRef.current
+        ? (Array.from(listWrapperRef.current.children) as HTMLElement[])
+        : [];
 
-      gsap.from(cardRef.current, {
-        opacity: 0,
-        y: 20,
-        duration: 0.7,
-        delay: 0.2,
-        ease: "power2.out",
-        immediateRender: false,
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: "top 85%",
-        },
-      });
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger,
+            start: "top 70%",
+            end: "bottom 30%",
+            toggleActions: "play none none reverse",
+          },
+          defaults: { ease: "power2.out" },
+        })
+        .fromTo(
+          iconRef.current,
+          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 1, y: 0, duration: 0.4 },
+        )
+        .fromTo(
+          titleRef.current,
+          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 1, y: 0, duration: 0.42 },
+          "-=0.2",
+        )
+        .fromTo(
+          descRef.current,
+          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 1, y: 0, duration: 0.42 },
+          "-=0.24",
+        )
+        .fromTo(
+          listItems,
+          { autoAlpha: 0, y: 10 },
+          { autoAlpha: 1, y: 0, duration: 0.32, stagger: 0.08 },
+          "-=0.2",
+        );
+
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger,
+            start: "top 65%",
+            end: "bottom 35%",
+            toggleActions: "play none none reverse",
+          },
+          defaults: { ease: "power2.out" },
+        })
+        .fromTo(
+          cardRef.current,
+          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 1, y: 0, duration: 0.46 },
+        )
+        .fromTo(
+          headerTitleRef.current,
+          { autoAlpha: 0, y: 10, skewY: 2 },
+          { autoAlpha: 1, y: 0, skewY: 0, duration: 0.32 },
+          "-=0.3",
+        )
+        .fromTo(
+          headerDescRef.current,
+          { autoAlpha: 0, y: 8 },
+          { autoAlpha: 1, y: 0, duration: 0.28 },
+          "-=0.22",
+        )
+        .fromTo(
+          buttonRef.current,
+          { scale: 0.98, autoAlpha: 0 },
+          { scale: 1, autoAlpha: 1, duration: 0.3, ease: "back.out(1.6)" },
+          "-=0.18",
+        );
     },
     { scope: rootRef },
   );
 
   return (
-    <section
-      ref={rootRef}
-      className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden py-20"
-    >
-      <div className="pointer-events-none absolute h-96 w-96 animate-[spin_40s_linear_infinite] rounded-full bg-ado-blue/20 opacity-30 blur-3xl" />
-      <div className="pointer-events-none absolute right-1/3 bottom-1/4 h-96 w-96 animate-[spin_35s_reverse_linear_infinite] rounded-full bg-ado-red/20 opacity-30 blur-3xl" />
+    <section ref={rootRef} className="relative w-full overflow-hidden">
+      <div className="relative z-10 container mx-auto grid min-h-3/4 grid-cols-1 items-center gap-8 px-4 py-14 md:grid-cols-2">
+        <div className="text-left">
+          <Image
+            ref={iconRef}
+            src={rosesCrownSVG}
+            alt="Blue roses tribute to Ado"
+            width={200}
+            height={200}
+            className="mb-4 h-auto w-50 will-change-transform"
+            priority
+          />
 
-      <div className="relative z-10 container mx-auto px-4">
-        <div ref={introRef} className="mb-12 text-center will-change-transform">
-          <Mail className="mx-auto mb-6 h-20 w-20 text-ado-key drop-shadow" />
-
-          <h2 className="mb-4 text-4xl font-black tracking-tighter text-foreground uppercase md:text-7xl">
-            Ado Newsletter
-          </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground md:text-2xl">
-            Stay updated with the latest news, releases, and events — straight
-            from Ado&apos;s team.
-          </p>
-        </div>
-
-        <div
-          ref={cardRef}
-          className="mx-auto max-w-xl rounded-2xl border-none bg-card/60 p-6 shadow-2xl shadow-ado-key/20 backdrop-blur-lg transition-shadow duration-300 ease-in-out will-change-transform hover:shadow-ado-key/40 md:p-8"
-        >
-          <h3 className="mb-4 text-center text-3xl font-bold text-foreground md:text-4xl">
-            Subscribe Now
-          </h3>
-
-          <p className="mb-6 text-center text-base leading-relaxed text-muted-foreground">
-            You will be redirected to the official signup page managed by
-            Ado&apos;s team.
-          </p>
-
-          <Link
-            href="https://umusic.jp/ado_nl"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block w-full"
+          <h2
+            className="mb-3 font-gambarino text-4xl tracking-wide text-foreground uppercase will-change-transform md:text-5xl"
+            ref={titleRef}
           >
-            <Button
-              size="lg"
-              className="w-full bg-ado-key px-8 py-6 text-lg font-semibold text-white transition-all duration-300 hover:scale-105 hover:bg-ado-key/90 md:px-10 md:py-7 md:text-xl"
-            >
-              Subscribe to Official Newsletter
-              <ExternalLink className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
+            Newsletter
+          </h2>
 
-          <p className="mt-4 text-center text-sm text-muted-foreground">
-            Powered by <span className="text-ado-key">umusic.jp</span>
+          <p
+            ref={descRef}
+            className="mb-5 max-w-prose text-sm leading-relaxed text-muted-foreground will-change-transform md:text-base"
+          >
+            Get official updates on releases, tours, and special projects —
+            directly from Ado&apos;s team.
           </p>
+          <ul
+            ref={listWrapperRef}
+            className="grid grid-cols-2 gap-1.5 text-xs text-muted-foreground/90 sm:gap-2 sm:text-sm"
+          >
+            <li className="rounded-md border border-foreground/10 bg-card/40 p-2 sm:p-3">
+              • Early announcements
+            </li>
+            <li className="rounded-md border border-foreground/10 bg-card/40 p-2 sm:p-3">
+              • Tour & event alerts
+            </li>
+            <li className="rounded-md border border-foreground/10 bg-card/40 p-2 sm:p-3">
+              • Official merch drops
+            </li>
+            <li className="rounded-md border border-foreground/10 bg-card/40 p-2 sm:p-3">
+              • Behind-the-scenes notes
+            </li>
+          </ul>
         </div>
+
+        <Card
+          ref={cardRef}
+          className="mx-auto w-full max-w-md rounded-lg border border-foreground/10 bg-card/40 will-change-transform"
+          aria-label="Subscribe card"
+        >
+          <CardHeader>
+            <CardTitle
+              ref={headerTitleRef}
+              className="font-gambarino text-xl font-semibold tracking-wide text-foreground sm:text-2xl"
+            >
+              Subscribe to Ado&apos;s Newsletter
+            </CardTitle>
+            <CardDescription
+              ref={headerDescRef}
+              className="text-sm text-muted-foreground"
+            >
+              Be the first to know about new music, live events, and exclusive
+              updates. Redirects to the official signup page managed by
+              Ado&apos;s team.
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent>
+            <Link
+              href="https://umusic.jp/ado_nl"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button
+                ref={buttonRef}
+                className="w-full cursor-grab bg-ado-secondary text-base text-white hover:bg-ado-key/70"
+              >
+                Subscribe
+                <ExternalLink />
+              </Button>
+            </Link>
+
+            <p className="mt-6 text-xs text-muted-foreground">
+              Powered by{" "}
+              <span className="rounded bg-ado-key/20 px-1 py-1 font-medium text-ado-key">
+                umusic.jp
+              </span>
+              {", "} we never collect your email here.
+            </p>
+          </CardContent>
+        </Card>
       </div>
     </section>
   );
