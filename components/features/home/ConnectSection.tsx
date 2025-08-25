@@ -69,11 +69,11 @@ export function ConnectSection() {
   }, []);
 
   return (
-    <section className="relative flex w-full flex-col justify-center overflow-hidden bg-ado-key/5 py-20 sm:items-center">
+    <section className="relative flex w-full flex-col justify-center overflow-hidden bg-ado-secondary/15 py-20 sm:items-center">
       <div ref={containerRef} className="container mx-auto px-4">
         <h2
           ref={headingRef}
-          className="mb-6 text-center font-gambarino text-4xl leading-tight text-foreground uppercase md:text-6xl"
+          className="mb-6 text-center font-gambarino text-5xl text-foreground uppercase md:text-6xl"
         >
           Adomination
         </h2>
@@ -91,25 +91,25 @@ export function ConnectSection() {
             <TabsList className="relative inline-flex h-14 items-center justify-center gap-1 rounded-lg bg-foreground/5 p-2">
               <TabsTrigger
                 value="social-media"
-                className="sm:text-md rounded px-2 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-card data-[state=active]:bg-card/90 sm:px-4"
+                className="sm:text-md rounded px-2 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-card data-[state=active]:bg-ado-secondary/40 sm:px-4"
               >
                 Social Media
               </TabsTrigger>
               <TabsTrigger
                 value="shops"
-                className="sm:text-md rounded px-2 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-card data-[state=active]:bg-card/90 sm:px-4"
+                className="sm:text-md rounded px-2 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-card data-[state=active]:bg-ado-secondary/40 sm:px-4"
               >
                 Shops
               </TabsTrigger>
               <TabsTrigger
                 value="music-platforms"
-                className="sm:text-md rounded px-2 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-card data-[state=active]:bg-card/90 sm:px-4"
+                className="sm:text-md rounded px-2 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-card data-[state=active]:bg-ado-secondary/40 sm:px-4"
               >
                 Music Platforms
               </TabsTrigger>
               <TabsTrigger
                 value="fan-communities"
-                className="sm:text-md rounded px-2 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-card data-[state=active]:bg-card/90 sm:px-4"
+                className="sm:text-md rounded px-2 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-card data-[state=active]:bg-ado-secondary/40 sm:px-4"
               >
                 Fandom
               </TabsTrigger>
