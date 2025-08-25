@@ -1,15 +1,19 @@
 import { useGSAP } from "@gsap/react";
 import {
+  SiApplemusic,
   SiDiscord,
   SiInstagram,
+  SiNiconico,
   SiReddit,
   SiSpotify,
+  SiTiktok,
   SiX,
   SiYoutube,
+  SiYoutubemusic,
 } from "@icons-pack/react-simple-icons";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Globe } from "lucide-react";
+import { BadgeJapaneseYen, CircleQuestionMark, Music4 } from "lucide-react";
 
 import Link from "next/link";
 import React from "react";
@@ -21,6 +25,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+type SocialCategory =
+  | "social-media"
+  | "shops"
+  | "music-platforms"
+  | "fan-communities";
+
 interface SocialLink {
   name: string;
   url: string;
@@ -28,60 +38,115 @@ interface SocialLink {
   description: string;
 }
 
-export const officialLinks: SocialLink[] = [
-  {
-    name: "@ado_staff",
-    url: "https://x.com/ado_staff",
-    icon: <SiX className="h-5 w-5" />,
-    description: "Official X (formerly Twitter) account managed by Ado's staff",
-  },
-  {
-    name: "@ado1024imokenp",
-    url: "https://x.com/ado1024imokenp",
-    icon: <SiX className="h-5 w-5" />,
-    description: "Official X (formerly Twitter) account managed by Ado",
-  },
-  {
-    name: "YouTube",
-    url: "https://www.youtube.com/@Ado1024",
-    icon: <SiYoutube className="h-5 w-5" />,
-    description: "Official YouTube channel with music videos and announcements",
-  },
-  {
-    name: "Instagram",
-    url: "https://www.instagram.com/ado_staff_official/",
-    icon: <SiInstagram className="h-5 w-5" />,
-    description: "Official Instagram account with updates and photos",
-  },
-  {
-    name: "Official Shop Website",
-    url: "https://ado-shop.com/",
-    icon: <Globe className="h-5 w-5" />,
-    description: "Ado's official online store, the place to buy merchandise",
-  },
-  {
-    name: "Spotify",
-    url: "https://open.spotify.com/artist/6mEQK9m2krja6X1cfsAjfl",
-    icon: <SiSpotify className="h-5 w-5" />,
-    description: "Listen to Ado's music on Spotify",
-  },
-];
+export const linksCategories: Record<SocialCategory, SocialLink[]> = {
+  "social-media": [
+    {
+      name: "@ado_staff",
+      url: "https://x.com/ado_staff",
+      icon: <SiX className="h-4 w-4" />,
+      description: "News, tour info, and announcements from Ado's staff",
+    },
+    {
+      name: "@ado1024imokenp",
+      url: "https://x.com/ado1024imokenp",
+      icon: <SiX className="h-4 w-4" />,
+      description: "Personal posts, thoughts, and updates directly from Ado",
+    },
+    {
+      name: "Instagram",
+      url: "https://www.instagram.com/ado_staff_/",
+      icon: <SiInstagram className="h-4 w-4" />,
+      description: "Photo highlights, behind-the-scenes moments, and updates",
+    },
+    {
+      name: "NicoNico",
+      url: "https://www.nicovideo.jp/user/39170211",
+      icon: <SiNiconico className="h-4 w-4" />,
+      description: "Archive of Ado's early cover songs and video uploads",
+    },
+    {
+      name: "Tiktok",
+      url: "https://www.tiktok.com/@ado1024osenbei",
+      icon: <SiTiktok className="h-4 w-4" />,
+      description: "Epic concert clips, special moments, and video updates",
+    },
+    {
+      name: "YouTube",
+      url: "https://www.youtube.com/@Ado1024",
+      icon: <SiYoutube className="h-4 w-4" />,
+      description:
+        "Official channel featuring music videos, live shows, and trailers",
+    },
+  ],
 
-export const fanLinks: SocialLink[] = [
-  {
-    name: "Reddit",
-    url: "https://www.reddit.com/r/Ado/",
-    icon: <SiReddit className="h-5 w-5" />,
-    description: "Fan community to discuss Ado's music and news in Reddit",
-  },
-  {
-    name: "Discord",
-    url: "https://discord.gg/ado1024",
-    icon: <SiDiscord className="h-5 w-5" />,
-    description:
-      "Join the Ado Hangout server in Discord to connect with other Ado fans",
-  },
-];
+  shops: [
+    {
+      name: "Music Shop",
+      url: "https://ado-shop.com/",
+      icon: <Music4 className="h-4 w-4" />,
+      description: "Browse Ado's official music shop, limited drops, and goods",
+    },
+    {
+      name: "Merchandise Shop",
+      url: "https://ado-officialshop-friedpotato.com",
+      icon: <BadgeJapaneseYen className="h-4 w-4" />,
+      description:
+        "Browse Ado's official merchandise, limited drops, and goods",
+    },
+  ],
+
+  "music-platforms": [
+    {
+      name: "Apple Music",
+      url: "https://music.apple.com/us/artist/ado/1492604670",
+      icon: <SiApplemusic className="h-4 w-4" />,
+      description: "Listen to Ado's albums, singles, and collaborations",
+    },
+    {
+      name: "Amazon Music",
+      url: "https://music.amazon.com/artists/B0010RVN6C/ado",
+      icon: <Music4 className="h-4 w-4" />,
+      description: "Listen to Ado's albums, singles, and collaborations",
+    },
+    {
+      name: "Spotify",
+      url: "https://open.spotify.com/artist/6mEQK9m2krja6X1cfsAjfl",
+      icon: <SiSpotify className="h-4 w-4" />,
+      description: "Listen to Ado's albums, singles, and collaborations",
+    },
+    {
+      name: "YouTube Music",
+      url: "https://music.youtube.com/channel/UCln9P4Qm3-EAY4aiEPmRwEA",
+      icon: <SiYoutubemusic className="h-4 w-4" />,
+      description: "Listen to Ado's albums, singles, and collaborations",
+    },
+  ],
+
+  "fan-communities": [
+    {
+      name: "Reddit",
+      url: "https://www.reddit.com/r/Ado/",
+      icon: <SiReddit className="h-4 w-4" />,
+      description: "Fan community to discuss Ado's music and news in Reddit",
+    },
+    {
+      name: "Discord",
+      url: "https://discord.gg/ado1024",
+      icon: <SiDiscord className="h-4 w-4" />,
+      description:
+        "Join the Ado Hangout server in Discord to connect with other Ado fans",
+    },
+    {
+      name: "Doki Doki Secret Base",
+      url: "https://ado-dokidokihimitsukichi-daigakuimo.com",
+      icon: <CircleQuestionMark className="h-4 w-4" />,
+      description:
+        "Ado's membership fan club with exclusive content, behind-the-scenes stories, and tour vlogs",
+    },
+  ],
+};
+
+export const links: SocialLink[] = Object.values(linksCategories).flat();
 
 export const SocialLinkGrid = React.memo(function SocialLinkGrid({
   links,
@@ -95,48 +160,45 @@ export const SocialLinkGrid = React.memo(function SocialLinkGrid({
   useGSAP(() => {
     cardRefs.current.forEach((card, i) => {
       if (!card) return;
-      gsap.fromTo(
-        card,
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          yPercent: 0,
-          duration: 0.5,
-          delay: i * 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 95%",
-            once: true,
+
+      const ctx = gsap.context(() => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            yPercent: 0,
+            duration: 0.5,
+            delay: i * 0.06,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 95%",
+              once: true,
+            },
           },
-        },
-      );
-      card.addEventListener("mouseenter", () => {
-        gsap.to(card, {
-          scale: 1.05,
-          duration: 0.2,
-          ease: "power2.out",
+        );
+
+        card.addEventListener("mouseenter", () => {
+          gsap.to(card, { scale: 1.05, duration: 0.2, ease: "power2.out" });
         });
-      });
-      card.addEventListener("mouseleave", () => {
-        gsap.to(card, {
-          scale: 1,
-          duration: 0.2,
-          ease: "power2.out",
+        card.addEventListener("mouseleave", () => {
+          gsap.to(card, { scale: 1, duration: 0.2, ease: "power2.out" });
         });
-      });
+      }, card);
+
+      return () => ctx.revert();
     });
   }, []);
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {links.map((link, i) => (
         <div
           key={link.name}
           ref={(el) => {
             cardRefs.current[i] = el!;
           }}
-          className="h-full transform transition-transform duration-200 ease-out hover:scale-105"
         >
           <Link
             href={link.url}
@@ -148,9 +210,9 @@ export const SocialLinkGrid = React.memo(function SocialLinkGrid({
               <CardHeader className="flex flex-col gap-2">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   {link.icon}
-                  <span className="break-words">{link.name}</span>
+                  {link.name}
                 </CardTitle>
-                <CardDescription className="line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+                <CardDescription className="text-sm text-muted-foreground">
                   {link.description}
                 </CardDescription>
               </CardHeader>
@@ -168,7 +230,7 @@ export const SocialLinkList = React.memo(function SocialLinkList({
   links: ReadonlyArray<SocialLink>;
 }) {
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex flex-wrap gap-1 sm:gap-2">
       {links.map(({ url, description, icon, name }) => (
         <Link
           key={url}
@@ -177,7 +239,7 @@ export const SocialLinkList = React.memo(function SocialLinkList({
           rel="noopener noreferrer"
           aria-label={description}
           title={description}
-          className="flex items-center space-x-2 rounded-lg px-3 py-2 transition hover:bg-ado-key/10 hover:text-white focus:ring-2 focus:ring-ado-key focus:outline-none"
+          className="flex items-center space-x-2 rounded px-2 py-2 transition hover:bg-ado-secondary/70 hover:text-white focus:ring-2 focus:ring-ado-secondary/70 focus:outline-none"
         >
           {icon}
           <span className="text-sm md:text-lg">{name}</span>

@@ -4,13 +4,9 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 
-import {
-  fanLinks,
-  officialLinks,
-  SocialLinkGrid,
-} from "@/components/SocialLinks";
+import { linksCategories, SocialLinkGrid } from "@/components/SocialLinks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,7 +17,18 @@ export function ConnectSection() {
   const textRef = useRef<HTMLParagraphElement>(null);
   const tabsRef = useRef<HTMLDivElement>(null);
 
+  const { socialMedia, shops, musicPlatforms, fanCommunities } = useMemo(() => {
+    return {
+      socialMedia: linksCategories["social-media"] ?? [],
+      shops: linksCategories["shops"] ?? [],
+      musicPlatforms: linksCategories["music-platforms"] ?? [],
+      fanCommunities: linksCategories["fan-communities"] ?? [],
+    };
+  }, []);
+
   useGSAP(() => {
+    if (!headingRef.current || !textRef.current || !tabsRef.current) return;
+
     gsap.fromTo(
       headingRef.current,
       { opacity: 0, y: -30 },
@@ -30,10 +37,7 @@ export function ConnectSection() {
         y: 0,
         duration: 0.6,
         ease: "power2.out",
-        scrollTrigger: {
-          trigger: headingRef.current,
-          start: "top 80%",
-        },
+        scrollTrigger: { trigger: headingRef.current, start: "top 80%" },
       },
     );
 
@@ -44,12 +48,9 @@ export function ConnectSection() {
         opacity: 1,
         y: 0,
         duration: 0.6,
-        delay: 0.2,
+        delay: 0.15,
         ease: "power2.out",
-        scrollTrigger: {
-          trigger: textRef.current,
-          start: "top 85%",
-        },
+        scrollTrigger: { trigger: textRef.current, start: "top 85%" },
       },
     );
 
@@ -60,58 +61,75 @@ export function ConnectSection() {
         opacity: 1,
         y: 0,
         duration: 0.6,
-        delay: 0.4,
+        delay: 0.3,
         ease: "power2.out",
-        scrollTrigger: {
-          trigger: tabsRef.current,
-          start: "top 90%",
-        },
+        scrollTrigger: { trigger: tabsRef.current, start: "top 90%" },
       },
     );
   }, []);
 
   return (
-    <section className="relative flex min-h-screen w-full flex-col justify-center overflow-hidden bg-ado-key/5 py-20 sm:items-center">
+    <section className="relative flex w-full flex-col justify-center overflow-hidden bg-ado-key/5 py-20 sm:items-center">
       <div ref={containerRef} className="container mx-auto px-4">
         <h2
           ref={headingRef}
-          className="mb-6 text-center text-4xl leading-tight font-black text-foreground uppercase md:text-6xl"
+          className="mb-6 text-center font-gambarino text-4xl leading-tight text-foreground uppercase md:text-6xl"
         >
           Adomination
         </h2>
 
         <p
           ref={textRef}
-          className="mx-auto mb-8 max-w-2xl text-center text-lg text-muted-foreground md:text-2xl"
+          className="mx-auto mb-8 max-w-4xl text-center text-md text-balance text-muted-foreground md:text-xl"
         >
-          Follow official accounts or join vibrant fan communities to celebrate
-          together while supporting Ado's music!
+          Follow official accounts, shop official merch, stream the music, or
+          join vibrant communities to celebrate together while supporting Ado!
         </p>
 
-        <Tabs defaultValue="official" className="mx-auto w-full max-w-4xl">
+        <Tabs defaultValue="social-media" className="mx-auto w-full max-w-5xl">
           <div ref={tabsRef} className="flex justify-center">
-            <TabsList className="inline-flex h-14 items-center justify-center p-2">
+            <TabsList className="relative inline-flex h-14 items-center justify-center gap-1 rounded-lg bg-foreground/5 p-2">
               <TabsTrigger
-                value="official"
-                className="text-md rounded-lg px-5 py-2 font-semibold transition-all data-[state=active]:bg-ado-key/80 data-[state=active]:text-white"
+                value="social-media"
+                className="sm:text-md rounded px-2 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-card data-[state=active]:bg-card/90 sm:px-4"
               >
-                Official
+                Social Media
               </TabsTrigger>
               <TabsTrigger
-                value="fan"
-                className="text-md rounded-lg px-5 py-2 font-semibold transition-all data-[state=active]:bg-ado-key/80 data-[state=active]:text-white"
+                value="shops"
+                className="sm:text-md rounded px-2 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-card data-[state=active]:bg-card/90 sm:px-4"
               >
-                Fan Communities
+                Shops
+              </TabsTrigger>
+              <TabsTrigger
+                value="music-platforms"
+                className="sm:text-md rounded px-2 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-card data-[state=active]:bg-card/90 sm:px-4"
+              >
+                Music Platforms
+              </TabsTrigger>
+              <TabsTrigger
+                value="fan-communities"
+                className="sm:text-md rounded px-2 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-card data-[state=active]:bg-card/90 sm:px-4"
+              >
+                Fandom
               </TabsTrigger>
             </TabsList>
           </div>
 
-          <TabsContent value="official" className="mt-8">
-            <SocialLinkGrid links={officialLinks} />
+          <TabsContent value="social-media">
+            <SocialLinkGrid links={socialMedia} />
           </TabsContent>
 
-          <TabsContent value="fan" className="mt-8">
-            <SocialLinkGrid links={fanLinks} />
+          <TabsContent value="shops">
+            <SocialLinkGrid links={shops} />
+          </TabsContent>
+
+          <TabsContent value="music-platforms">
+            <SocialLinkGrid links={musicPlatforms} />
+          </TabsContent>
+
+          <TabsContent value="fan-communities">
+            <SocialLinkGrid links={fanCommunities} />
           </TabsContent>
         </Tabs>
       </div>
