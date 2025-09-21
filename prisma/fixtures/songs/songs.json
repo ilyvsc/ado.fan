@@ -637,10 +637,25 @@
     "length": "3:51",
     "year": 2025,
     "releaseDate": "2025-04-09",
-    "description": "Latest single, a vibrant anthem of youthful rebellion and self-discovery. It celebrates the pursuit of dreams, freedom, and living boldly.",
+    "description": "A vibrant anthem of youthful rebellion and self-discovery. It celebrates the pursuit of dreams, freedom, and living boldly.",
     "youtubeId": "hRJpiCZlLX8",
     "nicoId": "",
     "coverArt": "https://i.scdn.co/image/ab67616d0000b2737e39bafe4f50dd5e15cfe9b0",
     "themeColor": "#C82737"
+  },
+  {
+    "id": "cats-eye",
+    "title": {
+      "english": "CAT'S EYE",
+      "japanese": ""
+    },
+    "length": "3:00",
+    "year": 2025,
+    "releaseDate": "2025-09-12",
+    "description": "Song created in collaboration for the Disney+ series “Cat's Eye.”",
+    "youtubeId": "wsnAn7CXiFc",
+    "nicoId": "",
+    "coverArt": "https://linkstorage.linkfire.com/medialinks/images/02634556-5886-4226-b11f-46e4190859cc/artwork-440x440.jpg",
+    "themeColor": "#edda05"
   }
 ]

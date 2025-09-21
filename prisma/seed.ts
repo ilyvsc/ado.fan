@@ -121,6 +121,7 @@ const seedConfig = {
         "elf",
         "bouquet-for-me",
         "rockstar",
+        "cats-eye",
       ],
     },
   ] as SectionDefinition[],
