@@ -118,12 +118,30 @@ export function TimelineClient({
       className="relative bg-gradient-to-br from-ado-secondary/40 via-background/80 to-ado-secondary/40"
       aria-label={`Music timeline with ${timelineSteps.length} steps from ${timelineYears.length} years`}
     >
-      <TimelineNavigation
-        timelineYears={timelineYears}
-        timelineSteps={timelineSteps}
-        currentIndex={currentIndex}
-        onYearClick={scrollToStep}
-      />
+      <header className="mx-auto max-w-4xl px-6 pt-12 text-center">
+        <h2 className="text-5xl font-gambarino tracking-tight sm:text-4xl lg:text-6xl">
+          Musical Journey
+        </h2>
+        <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+          Explore the evolution of Ado's artistry through{" "}
+          <span className="font-semibold">
+            {timelineSteps.length} milestones
+          </span>{" "}
+          spanning{" "}
+          <span className="font-semibold">{timelineYears.length} years</span>.
+          Scroll through iconic releases, performances, and unforgettable
+          moments that shaped her career.
+        </p>
+      </header>
+
+      <div className="relative z-10 flex justify-center my-2">
+        <TimelineNavigation
+          timelineYears={timelineYears}
+          timelineSteps={timelineSteps}
+          currentIndex={currentIndex}
+          onYearClick={scrollToStep}
+        />
+      </div>
 
       <main
         ref={mainRef}

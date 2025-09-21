@@ -1,7 +1,6 @@
 import React from "react";
 
 import { Footer } from "@/components/layout/Footer";
-import { FeaturedSongs } from "@/features/featured-songs/FeaturedSongs";
 import { FanAppreciation } from "@/features/home/AppreciationNote";
 import { ConnectSection } from "@/features/home/ConnectSection";
 import { HeroSection } from "@/features/home/HeroSection";
@@ -16,11 +15,10 @@ export default function Home() {
     <main className="min-h-screen bg-background">
       <HeroSection />
       <WhoIsAdo />
-      {/* <FanAppreciation /> */}
-      {/* <FeaturedSongs /> */}
+      <FanAppreciation />
       <DiscographyTimeline />
       <ConnectSection />
-      {/* <NewsletterSection /> */}
+      <NewsletterSection />
       <Footer />
     </main>
   );
