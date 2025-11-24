@@ -7,33 +7,40 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { memo, useRef } from "react";
 
-import { useTextAnimate } from "@/animations/textAnimation";
 import adoAvatar from "@/public/images/ado-avatar.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const AdoDescription = memo(function AdoDescription() {
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const textRef = useRef<HTMLParagraphElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  useTextAnimate(titleRef, textRef, {
-    start: "500",
-    toggleActions: "play none none reverse",
+  useGSAP(() => {
+    if (!containerRef.current) return;
+
+    gsap.from(containerRef.current.children, {
+      opacity: 0,
+      y: 20,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+    });
   });
 
   return (
-    <div className="flex flex-col items-center lg:items-start lg:text-left">
-      <h2
-        ref={titleRef}
-        className="font-gambarino text-4xl text-foreground md:text-5xl"
-      >
+    <div
+      ref={containerRef}
+      className="flex flex-col items-center lg:items-start lg:text-left"
+    >
+      <h2 className="font-gambarino text-4xl text-foreground md:text-5xl">
         A Voice That Shatters Boundaries
       </h2>
 
-      <p
-        ref={textRef}
-        className="mt-6 text-lg md:text-xl leading-relaxed font-light text-muted-foreground"
-      >
+      <p className="mt-6 text-lg leading-relaxed font-light text-muted-foreground md:text-xl">
         Ado is a Japanese utaite who began her career covering Vocaloid songs,
         using a stylized avatar to represent herself. She has since transcended
         the utaite scene, releasing original music in collaboration with
@@ -45,24 +52,35 @@ const AdoDescription = memo(function AdoDescription() {
 });
 
 const AdoExtraInfo = memo(function AdoExtraInfo() {
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const textRef = useRef<HTMLParagraphElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  useTextAnimate(titleRef, textRef);
+  useGSAP(() => {
+    if (!containerRef.current) return;
+
+    gsap.from(containerRef.current.children, {
+      opacity: 0,
+      y: 20,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+    });
+  });
 
   return (
-    <div className="flex flex-col items-center lg:items-start lg:text-left">
-      <h2
-        ref={titleRef}
-        className="font-gambarino text-4xl text-foreground md:text-5xl"
-      >
+    <div
+      ref={containerRef}
+      className="flex flex-col items-center lg:items-start lg:text-left"
+    >
+      <h2 className="font-gambarino text-4xl text-foreground md:text-5xl">
         Beyond the Digital Stage
       </h2>
 
-      <p
-        ref={textRef}
-        className="mt-6 text-lg md:text-xl leading-relaxed font-light text-muted-foreground"
-      >
+      <p className="mt-6 text-lg leading-relaxed font-light text-muted-foreground md:text-xl">
         With her signature powerful vocals and emotional depth, Ado has captured
         millions of hearts worldwide. Her music videos regularly achieve tens of
         millions of views, and her live performances showcase a rare combination
