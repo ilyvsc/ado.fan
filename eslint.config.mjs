@@ -1,55 +1,48 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { FlatCompat } from "@eslint/eslintrc";
-import tseslint from "@typescript-eslint/eslint-plugin";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
+import nextPlugin from "eslint-config-next";
 import importPlugin from "eslint-plugin-import";
 import nPlugin from "eslint-plugin-n";
 import promisePlugin from "eslint-plugin-promise";
-import reactHooksPlugin from "eslint-plugin-react-hooks";
+import reactHooks from "eslint-plugin-react-hooks";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-/** @type {import('eslint').Linter.Config[]} */
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript", "prettier"),
+export default [
   {
-    ignores: ["dist/*", "**/node_modules/*", "**/.next/*"],
+    ignores: ["dist", ".next", "node_modules", "prisma/generated"],
   },
   {
-    files: ["**/*.{js,mjs,cjs,ts,mts,jsx,tsx}"],
+    files: ["**/*.{ts,tsx,js,jsx}"],
     languageOptions: {
-      parser: tseslint.parser,
+      parser: tsParser,
       parserOptions: {
         project: "./tsconfig.json",
-        tsconfigRootDir: __dirname,
-        ecmaVersion: "latest",
-        sourceType: "module",
       },
     },
     plugins: {
-      n: nPlugin,
+      "@typescript-eslint": tsPlugin,
       import: importPlugin,
+      n: nPlugin,
       promise: promisePlugin,
-      "react-hooks": reactHooksPlugin,
+      "react-hooks": reactHooks,
+      next: nextPlugin,
+    },
+    settings: {
+      "import/resolver": {
+        typescript: {
+          project: "./tsconfig.json",
+        },
+      },
     },
     rules: {
-      "react/no-unescaped-entities": "off",
-      "react/prop-types": "off",
-      "no-console": "off",
-      "no-debugger": "error",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
       "import/no-unresolved": "error",
       "import/order": ["warn", { alphabetize: { order: "asc" } }],
-      "n/no-unsupported-features/es-syntax": "off",
       "promise/always-return": "warn",
       "promise/no-return-wrap": "error",
+      "n/no-unsupported-features/es-syntax": "off",
       "@typescript-eslint/no-unused-vars": "off",
+      "no-debugger": "error",
     },
   },
 ];
-
-export default eslintConfig;

@@ -10,7 +10,7 @@
 
 # production
 /build
-prisma/client/
+prisma/generated/
 
 # packager manager stuff
 pnpm-lock.yaml
@@ -34,3 +34,5 @@ next-env.d.ts
 
 .vscode/
 .cursor/
+
+/docs
