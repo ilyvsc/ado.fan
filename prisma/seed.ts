@@ -1,9 +1,9 @@
 import { readdirSync, readFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-import { AlbumType, Prisma, PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+import { prisma } from "./client";
+import { AlbumType, Prisma } from "./generated/client";
 
 interface Song {
   id: string;
