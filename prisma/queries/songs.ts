@@ -135,11 +135,13 @@ export async function getTimelineSongsByYear(): Promise<TimelineYear[]> {
         {
           period: "early" as const,
           label: `EARLY ${year}`,
+          year: +year,
           songs: sorted.filter((s) => new Date(s.releaseDate).getMonth() < 4),
         },
         {
           period: "mid" as const,
           label: `MID ${year}`,
+          year: +year,
           songs: sorted.filter((s) => {
             const month = new Date(s.releaseDate).getMonth();
             return month >= 4 && month < 8;
@@ -148,6 +150,7 @@ export async function getTimelineSongsByYear(): Promise<TimelineYear[]> {
         {
           period: "late" as const,
           label: `LATE ${year}`,
+          year: +year,
           songs: sorted.filter((s) => new Date(s.releaseDate).getMonth() >= 8),
         },
       ].filter((p) => p.songs.length);

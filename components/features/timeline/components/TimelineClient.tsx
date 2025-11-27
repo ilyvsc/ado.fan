@@ -119,7 +119,7 @@ export function TimelineClient({
       aria-label={`Music timeline with ${timelineSteps.length} steps from ${timelineYears.length} years`}
     >
       <header className="mx-auto max-w-4xl px-6 pt-12 text-center">
-        <h2 className="text-5xl font-gambarino tracking-tight sm:text-4xl lg:text-6xl">
+        <h2 className="font-gambarino text-5xl tracking-tight sm:text-4xl lg:text-6xl">
           Musical Journey
         </h2>
         <p className="mt-4 text-base text-muted-foreground sm:text-lg">
@@ -134,7 +134,7 @@ export function TimelineClient({
         </p>
       </header>
 
-      <div className="relative z-10 flex justify-center my-2">
+      <div className="relative z-10 my-2 flex justify-center">
         <TimelineNavigation
           timelineYears={timelineYears}
           timelineSteps={timelineSteps}

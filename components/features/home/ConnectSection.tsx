@@ -80,7 +80,7 @@ export function ConnectSection() {
 
         <p
           ref={textRef}
-          className="mx-auto mb-8 max-w-4xl text-center text-md text-balance text-muted-foreground md:text-xl"
+          className="text-md mx-auto mb-8 max-w-4xl text-center text-balance text-muted-foreground md:text-xl"
         >
           Follow official accounts, shop official merch, stream the music, or
           join vibrant communities to celebrate together while supporting Ado!
