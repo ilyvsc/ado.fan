@@ -26,7 +26,7 @@ const FeaturedSongCard = React.memo(function FeaturedSongCard({
 
   return (
     <div className="group relative w-full">
-      <Card className="relative gap-0 overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-card/90 to-card/50 p-0 shadow-md backdrop-blur-xl transition-all duration-300 group-hover:shadow-2xl hover:shadow-ado-key/40">
+      <Card className="relative gap-0 overflow-hidden rounded-2xl border border-white/20 bg-linear-to-br from-card/90 to-card/50 p-0 shadow-md backdrop-blur-xl transition-all duration-300 group-hover:shadow-2xl hover:shadow-ado-key/40">
         <div className="relative h-56 w-full overflow-hidden">
           {(() => {
             if (song.youtubeId) {
@@ -38,13 +38,13 @@ const FeaturedSongCard = React.memo(function FeaturedSongCard({
             }
 
             return (
-              <div className="flex h-full items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 text-muted-foreground">
+              <div className="flex h-full items-center justify-center bg-linear-to-br from-gray-800 to-gray-900 text-muted-foreground">
                 No preview available
               </div>
             );
           })()}
 
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-card/80 via-transparent to-transparent" />
         </div>
 
         <CardContent className="space-y-3 p-4 sm:space-y-4 sm:p-6">

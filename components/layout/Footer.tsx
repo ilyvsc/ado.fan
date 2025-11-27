@@ -48,7 +48,7 @@ export function Footer() {
   return (
     <footer ref={rootRef} className="w-full bg-background text-foreground">
       <div className="w-full">
-        <div className="relative overflow-hidden border-y border-foreground/10 bg-foreground/[0.04]">
+        <div className="relative overflow-hidden border-y border-foreground/10 bg-foreground/5">
           <div className="px-6 pt-8 pb-2 md:px-12 lg:px-16">
             <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16 lg:gap-20">
               {/* Sitemap */}

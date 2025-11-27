@@ -115,7 +115,7 @@ export function TimelineClient({
 
   return (
     <section
-      className="relative bg-gradient-to-br from-ado-secondary/40 via-background/80 to-ado-secondary/40"
+      className="relative bg-linear-to-br from-ado-secondary/40 via-background/80 to-ado-secondary/40"
       aria-label={`Music timeline with ${timelineSteps.length} steps from ${timelineYears.length} years`}
     >
       <header className="mx-auto max-w-4xl px-6 pt-12 text-center">

@@ -16,7 +16,7 @@ export default function NotFound() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4 md:p-6">
       <div className="w-full max-w-2xl md:max-w-3xl">
-        <Card className="border-0 bg-gradient-to-br from-card/95 to-card/80 shadow-2xl backdrop-blur-sm">
+        <Card className="border-0 bg-linear-to-br from-card/95 to-card/80 shadow-2xl backdrop-blur-sm">
           <CardHeader className="px-6 pt-8 pb-0 md:px-8 md:pt-10">
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">

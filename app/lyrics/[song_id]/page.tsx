@@ -53,7 +53,7 @@ export default async function LyricsSongPage({
           </Link>
 
           <div className="flex flex-col gap-6 md:flex-row md:gap-8 lg:gap-12">
-            <div className="relative h-48 w-48 flex-shrink-0 overflow-hidden rounded-lg shadow-2xl md:h-56 md:w-56 lg:h-64 lg:w-64">
+            <div className="relative h-48 w-48 shrink-0 overflow-hidden rounded-lg shadow-2xl md:h-56 md:w-56 lg:h-64 lg:w-64">
               <Image
                 src={song.coverArt}
                 alt={`${song.title.english} (${song.title.japanese})`}
@@ -140,7 +140,7 @@ export default async function LyricsSongPage({
           {song.description && (
             <div className="mb-8 rounded-xl border border-foreground/5 bg-background/50 p-6">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 rounded-lg bg-foreground/5 p-2.5">
+                <div className="shrink-0 rounded-lg bg-foreground/5 p-2.5">
                   <Sparkles className="h-4 w-4" style={{ color: themeColor }} />
                 </div>
                 <div className="space-y-2">
