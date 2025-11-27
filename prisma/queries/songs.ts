@@ -164,3 +164,28 @@ export async function getTimelineSongsByYear(): Promise<TimelineYear[]> {
     })
     .sort((a, b) => a.year - b.year);
 }
+
+/**
+ * Search songs by title (English or Japanese).
+ *
+ * @param query - Search query string
+ * @returns Promise resolving to an array of matching songs
+ *
+ * @example
+ * ```typescript
+ * const results = await searchSongs('usseewa');
+ * ```
+ */
+export async function searchSongs(query: string): Promise<Song[]> {
+  const songs = await prisma.song.findMany({
+    where: {
+      OR: [
+        { titleEnglish: { contains: query, mode: "insensitive" } },
+        { titleJapanese: { contains: query, mode: "insensitive" } },
+      ],
+    },
+    orderBy: { releaseDate: "desc" },
+    select: songPrismaSelect,
+  });
+  return songs.map(serializeSong);
+}

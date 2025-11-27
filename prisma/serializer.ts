@@ -24,6 +24,19 @@ export const songPrismaSelect = {
   youtubeId: true,
   coverArt: true,
   themeColor: true,
+  albumTracks: {
+    select: {
+      trackNumber: true,
+      album: {
+        select: {
+          id: true,
+          titleEnglish: true,
+          titleJapanese: true,
+        },
+      },
+    },
+    take: 1,
+  },
 };
 
 /**
@@ -46,6 +59,7 @@ export function serializeSong(
   song: Prisma.SongGetPayload<{ select: typeof songPrismaSelect }>,
 ): Song {
   const lyrics = song.lyrics?.[0];
+  const albumTrack = song.albumTracks?.[0];
 
   return {
     id: song.id,
@@ -66,6 +80,18 @@ export function serializeSong(
     youtubeId: song.youtubeId,
     coverArt: song.coverArt,
     themeColor: song.themeColor ?? undefined,
+    albumTrack: albumTrack
+      ? {
+          trackNumber: albumTrack.trackNumber,
+          album: {
+            id: albumTrack.album.id,
+            title: {
+              english: albumTrack.album.titleEnglish,
+              japanese: albumTrack.album.titleJapanese,
+            },
+          },
+        }
+      : undefined,
   };
 }
 

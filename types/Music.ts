@@ -17,6 +17,16 @@ export type Song = {
   youtubeId?: string | null;
   coverArt: string;
   themeColor?: string;
+  albumTrack?: {
+    trackNumber: number;
+    album: {
+      id: string;
+      title: {
+        english: string;
+        japanese: string;
+      };
+    };
+  };
 };
 
 export type Album = {
