@@ -1,5 +1,5 @@
 import { prisma } from "@/prisma/client";
-import { serializeSong, songPrismaSelect } from "@/prisma/serializer";
+import { albumPrismaSelect, serializeAlbum } from "@/prisma/serializer";
 import { Album } from "@/types/Music";
 
 /**
@@ -24,36 +24,11 @@ import { Album } from "@/types/Music";
  */
 export async function getAllAlbums(): Promise<Album[]> {
   const albums = await prisma.album.findMany({
-    include: {
-      tracks: {
-        include: {
-          song: { select: songPrismaSelect },
-        },
-        orderBy: { trackNumber: "asc" },
-      },
-    },
+    select: albumPrismaSelect,
     orderBy: { releaseDate: "desc" },
   });
 
-  return albums.map((album) => {
-    const tracks = album.tracks.map((track) => ({
-      song: serializeSong(track.song),
-      trackNumber: track.trackNumber,
-      isBonusTrack: track.isBonusTrack ?? undefined,
-    }));
-
-    return {
-      id: album.id,
-      title: {
-        english: album.titleEnglish,
-        japanese: album.titleJapanese,
-      },
-      releaseDate: album.releaseDate.toISOString().slice(0, 10), // YYYY-MM-DD
-      type: album.type,
-      coverArt: album.coverArt,
-      tracks,
-    };
-  });
+  return albums.map(serializeAlbum);
 }
 
 /**
@@ -77,35 +52,12 @@ export async function getAllAlbums(): Promise<Album[]> {
 export async function getAlbumById(id: string): Promise<Album | null> {
   const album = await prisma.album.findUnique({
     where: { id },
-    include: {
-      tracks: {
-        include: {
-          song: { select: songPrismaSelect },
-        },
-        orderBy: { trackNumber: "asc" },
-      },
-    },
+    select: albumPrismaSelect,
   });
 
   if (!album) return null;
 
-  const tracks = album.tracks.map((track) => ({
-    song: serializeSong(track.song),
-    trackNumber: track.trackNumber,
-    isBonusTrack: track.isBonusTrack ?? undefined,
-  }));
-
-  return {
-    id: album.id,
-    title: {
-      english: album.titleEnglish,
-      japanese: album.titleJapanese,
-    },
-    releaseDate: album.releaseDate.toISOString().slice(0, 10),
-    type: album.type,
-    coverArt: album.coverArt,
-    tracks,
-  };
+  return serializeAlbum(album);
 }
 
 /**

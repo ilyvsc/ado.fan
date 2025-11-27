@@ -37,6 +37,16 @@ export type AlbumTrack = {
   isBonusTrack?: boolean;
 };
 
+export type AlbumDefinition = {
+  id: string;
+  titleEnglish: string;
+  titleJapanese: string;
+  releaseDate: string;
+  type: string;
+  coverArt: string;
+  tracks: Array<{ songId: string; trackNumber: number }>;
+};
+
 export type SongsByYear = Record<number, Song[]>;
 
 export type Period = "early" | "mid" | "late";
@@ -55,4 +65,9 @@ export type TimelineYear = {
   songs: Song[];
   totalSongs: number;
   periods: TimelinePeriod[];
+};
+
+export type SectionDefinition = {
+  id: string;
+  items: string[];
 };

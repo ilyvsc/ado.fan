@@ -1,58 +1,20 @@
 import { readdirSync, readFileSync } from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+import { join } from "path";
 
 import { prisma } from "./client";
 import { AlbumType, Prisma } from "./generated/client";
+import { serializeSongInput } from "./serializer";
 
-interface Song {
-  id: string;
-  title: {
-    english: string;
-    japanese: string;
-  };
-  lyrics: {
-    japanese: string;
-    romaji: string;
-    english: string;
-  };
-  length: string;
-  year: number;
-  releaseDate: string;
-  description: string;
-  nicoId?: string | null;
-  youtubeId?: string | null;
-  coverArt: string;
-  themeColor?: string;
-}
+import { AlbumDefinition, SectionDefinition, Song } from "@/types/Music";
 
-interface AlbumDefinition {
-  id: string;
-  titleEnglish: string;
-  titleJapanese: string;
-  releaseDate: string;
-  type: string;
-  coverArt: string;
-  tracks: Array<{ songId: string; trackNumber: number }>;
-}
-
-interface SectionDefinition {
-  id: string;
-  items: string[];
-}
-const SECTIONS = {
-  FEATURED: "featuredSongs",
-  TIMELINE: "timelineSongs",
-};
-
-const seedConfig = {
+const seedConfig: { sections: SectionDefinition[] } = {
   sections: [
     {
-      id: SECTIONS.FEATURED,
+      id: "featuredSongs",
       items: ["readymade", "gira-gira", "new-genesis"],
     },
     {
-      id: SECTIONS.TIMELINE,
+      id: "timelineSongs",
       items: [
         // 2017
         "kimi-no-taion",
@@ -124,125 +86,76 @@ const seedConfig = {
         "cats-eye",
       ],
     },
-  ] as SectionDefinition[],
+  ],
 };
 
-/**
- * Transform an array of Song objects to Prisma.SongCreateInput objects for database seeding.
- *
- * Converts the nested application Song structure to the flat database structure
- * required by Prisma for creating records.
- *
- * @param songs - Array of Song objects from fixture files
- * @returns Array of Prisma.SongCreateInput objects ready for database insertion
- */
-export function serializeSongInput(songs: Song[]): Prisma.SongCreateInput[] {
-  return songs.map((s) => ({
-    id: s.id,
-    titleEnglish: s.title.english,
-    titleJapanese: s.title.japanese,
-    lyricsJapanese: s.lyrics?.japanese ?? "",
-    lyricsRomaji: s.lyrics?.romaji ?? "",
-    lyricsEnglish: s.lyrics?.english ?? "",
-    length: s.length,
-    year: s.year,
-    releaseDate: new Date(s.releaseDate),
-    description: s.description ?? "",
-    nicoId: s.nicoId ?? null,
-    youtubeId: s.youtubeId ?? null,
-    coverArt: s.coverArt,
-    themeColor: s.themeColor,
-  }));
-}
-
 function loadJsonFromFile<T>(jsonPath: string): T {
-  try {
-    return JSON.parse(readFileSync(jsonPath, "utf-8"));
-  } catch (err) {
-    console.error(`Failed to load or parse ${jsonPath}:`, err);
-    throw err;
-  }
+  return JSON.parse(readFileSync(jsonPath, "utf-8"));
 }
 
-function loadAllSongsFromFixtures(fixturesDir: string): Song[] {
+function loadAllSongsFromFixtures(path: string): Song[] {
+  const songsPath = join(path, "songs");
+  const files = readdirSync(songsPath).filter((f) => f.endsWith(".json"));
+
   const allSongs: Song[] = [];
-  const songsDir = join(fixturesDir, "songs");
-
-  try {
-    const files = readdirSync(songsDir);
-    const songJsonFiles = files.filter((file) => file.endsWith(".json"));
-
-    console.log(
-      `📁 Found ${songJsonFiles.length} song JSON files in songs directory:`,
-      songJsonFiles,
-    );
-
-    for (const filename of songJsonFiles) {
-      try {
-        const songs = loadJsonFromFile<Song[]>(join(songsDir, filename));
-        allSongs.push(...songs);
-        console.log(`✅ Loaded ${songs.length} songs from songs/${filename}`);
-      } catch (err) {
-        console.error(`⚠️  Failed to load songs/${filename}:`, err);
-      }
-    }
-  } catch (err) {
-    console.error(`❌ Failed to read songs directory ${songsDir}:`, err);
-    throw err;
+  for (const f of files) {
+    const fileSongs = loadJsonFromFile<Song[]>(join(songsPath, f));
+    allSongs.push(...fileSongs);
+    console.log(`- Songs from "${f}" loaded.`);
   }
+
+  console.log(`Total of ${allSongs.length} songs loaded.`);
+
   return allSongs;
 }
 
-// --- Seeding Functions ---
+async function clearDatabase() {
+  console.log("🧹 Clearing database...");
+
+  await prisma.albumTrack.deleteMany();
+  await prisma.section.deleteMany();
+  await prisma.song.deleteMany();
+  await prisma.album.deleteMany();
+}
 
 async function seedSongs(songs: Prisma.SongCreateInput[]) {
   console.log(`Seeding ${songs.length} songs…`);
-  for (const songData of songs) {
-    await prisma.song.upsert({
-      where: { id: songData.id },
-      update: songData,
-      create: songData,
-    });
-  }
-  console.log("✅ Songs seeded!");
-}
 
-async function seedSections(sections: SectionDefinition[]) {
-  console.log(`Seeding ${sections.length} sections…`);
-  for (const { id, items } of sections) {
-    await prisma.section.createMany({
-      data: items.map((songId) => ({
-        name: id,
-        songId,
-      })),
-      skipDuplicates: true,
-    });
-    console.log(`  - Section "${id}" seeded with ${items.length} items.`);
-  }
-  console.log("✅ Sections seeded!");
+  await Promise.all(
+    songs.map((song) =>
+      prisma.song.upsert({
+        where: { id: song.id },
+        update: song,
+        create: song,
+      }),
+    ),
+  );
+
+  console.log("✅ Songs seeded!");
 }
 
 async function seedAlbums(albumDefinitions: AlbumDefinition[]) {
   console.log(`Seeding ${albumDefinitions.length} albums…`);
+
   for (const { tracks, ...albumData } of albumDefinitions) {
-    const albumDataForPrisma = {
+    const album = {
       ...albumData,
-      releaseDate: new Date(albumData.releaseDate),
       type: albumData.type as AlbumType,
+      releaseDate: new Date(albumData.releaseDate),
     };
 
     await prisma.album.upsert({
-      where: { id: albumData.id },
-      create: albumDataForPrisma,
-      update: albumDataForPrisma,
+      where: { id: album.id },
+      create: album,
+      update: album,
     });
 
-    await prisma.albumTrack.deleteMany({ where: { albumId: albumData.id } });
+    await prisma.albumTrack.deleteMany({ where: { albumId: album.id } });
 
     if (tracks.length > 0) {
       await prisma.albumTrack.createMany({
         data: tracks.map((t) => ({
-          albumId: albumData.id,
+          albumId: album.id,
           songId: t.songId,
           trackNumber: t.trackNumber,
         })),
@@ -253,32 +166,37 @@ async function seedAlbums(albumDefinitions: AlbumDefinition[]) {
       `- Album "${albumData.titleEnglish}" seeded with ${tracks.length} tracks.`,
     );
   }
+
   console.log("✅ Albums seeded!");
 }
 
-// --- Main Execution ---
+async function seedSections(sections: SectionDefinition[]) {
+  console.log(`Seeding ${sections.length} sections…`);
+
+  for (const section of sections) {
+    await prisma.section.createMany({
+      data: section.items.map((songId) => ({
+        name: section.id,
+        songId,
+      })),
+      skipDuplicates: true,
+    });
+  }
+  console.log("✅ Sections seeded!");
+}
 
 async function main() {
   try {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
-    const fixturesDir = join(__dirname, "fixtures");
+    await prisma.$connect();
+    await clearDatabase();
 
-    console.log("🔄 Loading songs from all fixture files...");
-    const rawSongs = loadAllSongsFromFixtures(fixturesDir);
+    const path = join(import.meta.dirname, "fixtures");
+    const rawSongs = loadAllSongsFromFixtures(path);
+    const rawAlbums = loadJsonFromFile(join(path, "albums.json"));
 
-    console.log("🔄 Loading albums from fixtures...");
-    const albums = loadJsonFromFile<AlbumDefinition[]>(
-      join(fixturesDir, "albums.json"),
-    );
-
-    console.log(`📦 Total songs loaded: ${rawSongs.length}`);
-    console.log(`📦 Total albums loaded: ${albums.length}`);
-    const songsToCreate = serializeSongInput(rawSongs);
-
-    await seedSongs(songsToCreate);
+    await seedSongs(serializeSongInput(rawSongs));
+    await seedAlbums(rawAlbums as AlbumDefinition[]);
     await seedSections(seedConfig.sections);
-    await seedAlbums(albums);
 
     console.log("\n🎉 Database seeding completed successfully!");
   } catch (error) {
