@@ -106,3 +106,40 @@ export async function getAlbumInfoById(
     coverArt: album.coverArt,
   };
 }
+
+/**
+ * Fetch all albums that contain a specific song.
+ *
+ * Retrieves all albums where the given song appears as a track,
+ * including full track information for each album. Albums are ordered
+ * by release date (oldest first).
+ *
+ * @param songId - The song ID to search for
+ * @returns Promise resolving to an array of albums containing the song
+ *
+ * @example
+ * ```typescript
+ * const albums = await getAlbumsBySongId("song1");
+ * console.log(`Song appears in ${albums.length} album(s)`);
+ * albums.forEach(album => {
+ *   console.log(`- ${album.title.english} (${album.type})`);
+ * });
+ * ```
+ *
+ * @throws {Error} If database connection fails or query execution fails
+ */
+export async function getAlbumsBySongId(songId: string): Promise<Album[]> {
+  const albums = await prisma.album.findMany({
+    where: {
+      tracks: {
+        some: {
+          songId,
+        },
+      },
+    },
+    select: albumPrismaSelect,
+    orderBy: { releaseDate: "desc" }, // always first album!!!
+  });
+
+  return albums.map(serializeAlbum);
+}
