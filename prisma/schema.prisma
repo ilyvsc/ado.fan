@@ -27,6 +27,8 @@ model Song {
 
   @@index([releaseDate(sort: Desc)], name: "song_release_date_idx")
   @@index([year], name: "song_year_idx")
+  @@index([titleEnglish], name: "song_title_english_idx")
+  @@index([titleJapanese], name: "song_title_japanese_idx")
 }
 
 model Lyrics {

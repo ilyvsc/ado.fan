@@ -1,6 +1,6 @@
 import { Prisma } from "./generated/client";
 
-import { Album, Song } from "@/types/Music";
+import { Album, Song, SongListItem } from "@/types/Music";
 
 /**
  * Fields to fetch from the database for a Song.
@@ -38,6 +38,41 @@ export const songPrismaSelect = {
     take: 1,
   },
 };
+
+/**
+ * Lightweight fields for song listings (excludes lyrics content).
+ * Used for search results and listing pages where full lyrics are not needed.
+ */
+export const songListPrismaSelect = {
+  id: true,
+  titleEnglish: true,
+  titleJapanese: true,
+  length: true,
+  year: true,
+  releaseDate: true,
+  coverArt: true,
+  themeColor: true,
+};
+
+/**
+ * Transform a Prisma song object to a lightweight SongListItem.
+ */
+export function serializeSongListItem(
+  song: Prisma.SongGetPayload<{ select: typeof songListPrismaSelect }>,
+): SongListItem {
+  return {
+    id: song.id,
+    title: {
+      english: song.titleEnglish,
+      japanese: song.titleJapanese,
+    },
+    length: song.length,
+    year: song.year,
+    releaseDate: song.releaseDate.toISOString().slice(0, 10),
+    coverArt: song.coverArt,
+    themeColor: song.themeColor ?? undefined,
+  };
+}
 
 /**
  * Transform a Prisma song object to the application's Song type.

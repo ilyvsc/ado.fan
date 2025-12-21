@@ -1,10 +1,25 @@
 import { NextResponse } from "next/server";
 
-import { getAllSongs } from "@/prisma/queries/songs";
+import {
+  getAllSongsForListing,
+  getPaginatedSongsForListing,
+} from "@/prisma/queries/songs";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const songs = await getAllSongs();
+    const { searchParams } = new URL(request.url);
+    const limit = searchParams.get("limit");
+    const offset = searchParams.get("offset");
+
+    if (limit !== null || offset !== null) {
+      const limitNum = limit ? parseInt(limit, 10) : 24;
+      const offsetNum = offset ? parseInt(offset, 10) : 0;
+
+      const result = await getPaginatedSongsForListing(limitNum, offsetNum);
+      return NextResponse.json(result);
+    }
+
+    const songs = await getAllSongsForListing();
     return NextResponse.json(songs);
   } catch (error) {
     console.error("Failed to fetch songs:", error);
