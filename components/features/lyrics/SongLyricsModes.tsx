@@ -15,7 +15,7 @@ import { useState } from "react";
 type ViewMode = "tabs" | "split";
 type Language = "japanese" | "romaji" | "english";
 
-export function LyricsDisplay({
+export function SongLyricsModes({
   japanese,
   romaji,
   english,
@@ -28,7 +28,7 @@ export function LyricsDisplay({
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [compareLeft, setCompareLeft] = useState<Language>("japanese");
   const [compareRight, setCompareRight] = useState<Language>("english");
-  const [fontSize, setFontSize] = useState(18);
+  const [fontSize, setFontSize] = useState(16);
 
   const tabs = [
     { id: "japanese" as const, label: "日本語", content: japanese },
@@ -54,11 +54,9 @@ export function LyricsDisplay({
   const LanguageSelect = ({
     value,
     onChange,
-    tabs,
   }: {
     value: Language;
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-    tabs: { id: Language; label: string; content: string }[];
   }) => (
     <div className="relative">
       <select
@@ -88,19 +86,21 @@ export function LyricsDisplay({
   const LyricsContent = ({
     content,
     fontSize,
-    className = "",
+    className,
   }: {
     content: string;
     fontSize: number;
     className?: string;
-  }) => (
-    <p
-      className={`font-sans leading-loose tracking-wide whitespace-pre-wrap text-foreground transition-all duration-300 ${className}`}
-      style={{ fontSize: `${fontSize + 2}px` }}
-    >
-      {content}
-    </p>
-  );
+  }) => {
+    return (
+      <p
+        className={`font-sans leading-loose tracking-wide whitespace-pre-wrap text-foreground transition-all duration-300 ${className}`}
+        style={{ fontSize: `${fontSize + 2}px` }}
+      >
+        {content}
+      </p>
+    );
+  };
 
   return (
     <div className="relative">
@@ -111,14 +111,14 @@ export function LyricsDisplay({
 
         <div className="flex flex-wrap items-center gap-2">
           {viewMode === "split" && (
-            <div className="group flex items-center gap-1 rounded-full border border-foreground/10 bg-background/50 p-1.5 backdrop-blur-xl transition-all hover:border-foreground/20 hover:bg-background/70">
+            <div className="group flex items-center gap-1 rounded-full border border-foreground/10 bg-background/50 p-1.5 transition-all hover:border-foreground/20 hover:bg-background/70">
               <LanguageSelect
                 value={compareLeft}
                 onChange={(e) =>
                   handleLanguageChange(e.target.value as Language, "left")
                 }
-                tabs={tabs}
               />
+
               <button
                 onClick={swapLanguages}
                 className="group/swap rounded-full p-2 text-muted-foreground transition-all hover:bg-foreground/10 hover:text-foreground"
@@ -126,12 +126,12 @@ export function LyricsDisplay({
               >
                 <ArrowRightLeft className="h-4 w-4 transition-transform duration-300 group-hover/swap:rotate-180" />
               </button>
+
               <LanguageSelect
                 value={compareRight}
                 onChange={(e) =>
                   handleLanguageChange(e.target.value as Language, "right")
                 }
-                tabs={tabs}
               />
             </div>
           )}
@@ -144,7 +144,7 @@ export function LyricsDisplay({
                   onClick={() => setActiveTab(tab.id)}
                   className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-300 ${
                     activeTab === tab.id
-                      ? "bg-foreground/10 text-foreground shadow-lg shadow-background/20"
+                      ? "bg-foreground/10 text-foreground"
                       : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
                   }`}
                 >
@@ -183,12 +183,14 @@ export function LyricsDisplay({
             >
               <Minus className="h-4 w-4" />
             </button>
+
             <div className="flex items-center gap-1">
               <Type className="h-4 w-4 text-muted-foreground" />
-              <span className="w-4 text-center text-sm font-medium text-muted-foreground">
+              <span className="text-center text-sm font-medium text-muted-foreground">
                 {fontSize}
               </span>
             </div>
+
             <button
               onClick={() => setFontSize(Math.min(32, fontSize + 2))}
               className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
@@ -207,18 +209,14 @@ export function LyricsDisplay({
               key={tab.id}
               className={`${
                 activeTab === tab.id
-                  ? "relative z-10 translate-y-0 opacity-100"
-                  : "pointer-events-none absolute top-0 left-0 w-full translate-y-8 opacity-0"
+                  ? "relative z-10 opacity-100"
+                  : "pointer-events-none absolute top-0 left-0 w-full opacity-0"
               }`}
             >
               {tab.content ? (
                 <div className="mx-auto max-w-3xl text-center">
-                  <div className="relative inline-block w-full px-4">
-                    <LyricsContent
-                      content={tab.content}
-                      fontSize={fontSize}
-                      className="drop-shadow-lg"
-                    />
+                  <div className="relative inline-block w-full">
+                    <LyricsContent content={tab.content} fontSize={fontSize} />
                   </div>
                 </div>
               ) : (

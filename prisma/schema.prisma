@@ -10,29 +10,39 @@ datasource db {
 }
 
 model Song {
-  id             String       @id
-  titleEnglish   String
-  titleJapanese  String
-  lyricsJapanese String       @default("")
-  lyricsRomaji   String       @default("")
-  lyricsEnglish  String       @default("")
-  length         String
-  year           Int
-  releaseDate    DateTime
-  description    String
-  nicoId         String?
-  youtubeId      String?
-  coverArt       String
-  albumTracks    AlbumTrack[]
-  Section        Section[]
-  themeColor     String?
+  id            String       @id @unique
+  titleEnglish  String
+  titleJapanese String
+  length        String
+  year          Int
+  releaseDate   DateTime
+  description   String
+  nicoId        String?
+  youtubeId     String?
+  coverArt      String
+  albumTracks   AlbumTrack[]
+  Section       Section[]
+  themeColor    String?
+  lyrics        Lyrics[]
 
   @@index([releaseDate(sort: Desc)], name: "song_release_date_idx")
   @@index([year], name: "song_year_idx")
+  @@index([titleEnglish], name: "song_title_english_idx")
+  @@index([titleJapanese], name: "song_title_japanese_idx")
+}
+
+model Lyrics {
+  songId         String @id @unique
+  lyricsJapanese String
+  lyricsRomaji   String
+  lyricsEnglish  String
+  song           Song   @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  @@index([songId], name: "lyrics_song_id_idx")
 }
 
 model Album {
-  id            String       @id
+  id            String       @id @unique
   titleEnglish  String
   titleJapanese String
   releaseDate   DateTime

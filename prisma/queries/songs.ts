@@ -1,9 +1,113 @@
 import { prisma } from "@/prisma/client";
-import { serializeSong, songPrismaSelect } from "@/prisma/serializer";
-import { Song, TimelinePeriod, TimelineYear } from "@/types/Music";
+import {
+  serializeSong,
+  serializeSongListItem,
+  songListPrismaSelect,
+  songPrismaSelect,
+} from "@/prisma/serializer";
+import {
+  SearchResult,
+  Song,
+  SongListItem,
+  TimelinePeriod,
+  TimelineYear,
+} from "@/types/Music";
 
 /**
- * Fetch all songs from the database.
+ * Fetch all songs for listing (lightweight, excludes lyrics content).
+ *
+ * Used for the lyrics search page and other listing views where full lyrics
+ * are not needed. This is a security improvement to avoid exposing full
+ * lyrics content when only metadata is required.
+ *
+ * @returns Promise resolving to an array of SongListItem (no lyrics content)
+ */
+export async function getAllSongsForListing(): Promise<SongListItem[]> {
+  const songs = await prisma.song.findMany({
+    orderBy: [{ titleEnglish: "asc" }, { titleJapanese: "asc" }],
+    select: songListPrismaSelect,
+  });
+  return songs.map(serializeSongListItem);
+}
+
+/**
+ * Fetch paginated songs for listing with total count.
+ *
+ * @param limit - Number of songs to fetch (default: 24)
+ * @param offset - Number of songs to skip (default: 0)
+ * @returns Promise resolving to songs array, total count, and hasMore flag
+ */
+export async function getPaginatedSongsForListing(
+  limit = 24,
+  offset = 0,
+): Promise<{ songs: SongListItem[]; total: number; hasMore: boolean }> {
+  const [songs, total] = await Promise.all([
+    prisma.song.findMany({
+      orderBy: [{ titleEnglish: "asc" }, { titleJapanese: "asc" }],
+      select: songListPrismaSelect,
+      take: limit,
+      skip: offset,
+    }),
+    prisma.song.count(),
+  ]);
+
+  return {
+    songs: songs.map(serializeSongListItem),
+    total,
+    hasMore: offset + songs.length < total,
+  };
+}
+
+/**
+ * Fetch the latest songs by release date.
+ *
+ * @param count - Number of latest songs to fetch (default: 3)
+ * @returns Promise resolving to an array of the most recent songs
+ */
+export async function getLatestSongs(count = 3): Promise<SongListItem[]> {
+  const songs = await prisma.song.findMany({
+    orderBy: { releaseDate: "desc" },
+    select: songListPrismaSelect,
+    take: count,
+  });
+  return songs.map(serializeSongListItem);
+}
+
+/**
+ * Fetch random songs from the catalog.
+ *
+ * _This is a POSTGRESQL only query, ensures true random_
+ *
+ * @param count - Number of random songs to fetch (default: 3)
+ * @returns Promise resolving to an array of random songs
+ */
+export async function getRandomSongs(count = 3): Promise<SongListItem[]> {
+  const songs = await prisma.$queryRaw<
+    any[]
+  >`SELECT * FROM "Song" ORDER BY RANDOM() LIMIT ${count}`;
+
+  return songs.map(serializeSongListItem);
+}
+
+/**
+ * Fetch recommended songs (latest releases + random picks).
+ *
+ * @returns Promise resolving to object with latest and random song arrays
+ */
+export async function getRecommendedSongs(): Promise<{
+  latest: SongListItem[];
+  random: SongListItem[];
+}> {
+  const [latest, random] = await Promise.all([
+    getLatestSongs(1),
+    getRandomSongs(5),
+  ]);
+
+  return { latest, random };
+}
+
+/**
+ * Fetch all songs from the database (includes lyrics).
  *
  * Retrieves every song record from the database, ordered by release date
  * (most recent first). Each song is transformed to match the application's
@@ -163,4 +267,49 @@ export async function getTimelineSongsByYear(): Promise<TimelineYear[]> {
       };
     })
     .sort((a, b) => a.year - b.year);
+}
+
+/**
+ * Universal search for songs by title OR lyrics content.
+ * Returns lightweight results with match context showing where the query matched.
+ *
+ * @param query - Search query string
+ * @returns Promise resolving to an array of SearchResult with match context
+ *
+ * @example
+ * ```typescript
+ * const results = await searchSongsUniversal('usseewa');
+ * results.forEach(r => console.log(r.matchType, r.matchContext));
+ * ```
+ */
+export async function searchSongsUniversal(
+  query: string,
+): Promise<SearchResult[]> {
+  const q = query.trim();
+  if (!q) return [];
+
+  const songs = await prisma.song.findMany({
+    where: {
+      OR: [
+        { titleEnglish: { contains: q, mode: "insensitive" } },
+        { titleJapanese: { contains: q, mode: "insensitive" } },
+      ],
+    },
+    orderBy: [{ titleEnglish: "asc" }, { titleJapanese: "asc" }],
+    select: songListPrismaSelect,
+  });
+
+  return songs.map((song) => ({
+    id: song.id,
+    title: {
+      english: song.titleEnglish,
+      japanese: song.titleJapanese,
+    },
+    length: song.length,
+    year: song.year,
+    releaseDate: song.releaseDate.toISOString().slice(0, 10),
+    coverArt: song.coverArt,
+    themeColor: song.themeColor ?? undefined,
+    matchType: "title",
+  }));
 }

@@ -17,6 +17,40 @@ export type Song = {
   youtubeId?: string | null;
   coverArt: string;
   themeColor?: string;
+  albumTrack?: {
+    trackNumber: number;
+    album: {
+      id: string;
+      title: {
+        english: string;
+        japanese: string;
+      };
+    };
+  };
+};
+
+/**
+ * Lightweight song type for listings (excludes lyrics content).
+ * Used by the /api/songs endpoint to avoid exposing full lyrics!!!
+ */
+export type SongListItem = {
+  id: string;
+  title: {
+    english: string;
+    japanese: string;
+  };
+  length: string;
+  year: number;
+  releaseDate: string;
+  coverArt: string;
+  themeColor?: string;
+};
+
+/**
+ * Search result with match context information.
+ */
+export type SearchResult = SongListItem & {
+  matchType: "title" | "lyrics";
 };
 
 export type Album = {
