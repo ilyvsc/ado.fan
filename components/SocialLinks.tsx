@@ -11,6 +11,7 @@ import {
   SiYoutube,
   SiYoutubemusic,
 } from "@icons-pack/react-simple-icons";
+import clsx from "clsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BadgeJapaneseYen, CircleQuestionMark, Music4 } from "lucide-react";
@@ -226,11 +227,13 @@ export const SocialLinkGrid = React.memo(function SocialLinkGrid({
 
 export const SocialLinkList = React.memo(function SocialLinkList({
   links,
+  className,
 }: {
   links: ReadonlyArray<SocialLink>;
+  className?: string;
 }) {
   return (
-    <div className="flex flex-wrap gap-1 sm:gap-2">
+    <>
       {links.map(({ url, description, icon, name }) => (
         <Link
           key={url}
@@ -239,12 +242,12 @@ export const SocialLinkList = React.memo(function SocialLinkList({
           rel="noopener noreferrer"
           aria-label={description}
           title={description}
-          className="flex items-center space-x-2 rounded px-2 py-2 transition hover:bg-ado-secondary/70 hover:text-white focus:ring-2 focus:ring-ado-secondary/70 focus:outline-none"
+          className={clsx("flex items-center gap-2", className)}
         >
           {icon}
-          <span className="text-sm md:text-lg">{name}</span>
+          <span>{name}</span>
         </Link>
       ))}
-    </div>
+    </>
   );
 });
