@@ -83,7 +83,7 @@ export async function getLatestSongs(count = 3): Promise<SongListItem[]> {
  */
 export async function getRandomSongs(count = 3): Promise<SongListItem[]> {
   const songs = await prisma.$queryRaw<
-    SongListItem[]
+    any[]
   >`SELECT * FROM "Song" ORDER BY RANDOM() LIMIT ${count}`;
 
   return songs.map(serializeSongListItem);
