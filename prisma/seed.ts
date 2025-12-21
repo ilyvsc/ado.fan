@@ -121,8 +121,17 @@ async function clearDatabase() {
 async function seedSongs(songs: Prisma.SongCreateInput[]) {
   console.log(`Seeding ${songs.length} songs…`);
 
+  const normalized = songs.map((song) => ({
+    ...song,
+    description: Array.isArray(song.description)
+    ? song.description
+        .map(item => Array.isArray(item) ? item.join("\n") : item)
+        .join("\n")
+    : (song.description ?? ""),
+  }));
+
   await Promise.all(
-    songs.map((song) =>
+    normalized.map((song) =>
       prisma.song.upsert({
         where: { id: song.id },
         update: song,
