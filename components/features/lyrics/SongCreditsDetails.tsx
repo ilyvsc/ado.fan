@@ -6,7 +6,7 @@ export function SongCreditsDetails({ song }: { song: Song }) {
   if (!song.description) return null;
 
   return (
-    <section className="pt-12 pb-4 sm:pb-8 w-full max-w-3xl">
+    <section className="w-full max-w-3xl pt-12 pb-4 sm:pb-8">
       <header className="flex justify-start gap-2 text-white/70">
         <Quote className="h-4 w-4" />
         <h3 className="text-sm font-medium tracking-widest uppercase">
@@ -15,7 +15,7 @@ export function SongCreditsDetails({ song }: { song: Song }) {
       </header>
 
       <div className="mt-2 mb-4">
-        <p className="whitespace-pre-wrap text-sm sm:text-base">
+        <p className="text-sm whitespace-pre-wrap sm:text-base">
           {song.description}
         </p>
       </div>

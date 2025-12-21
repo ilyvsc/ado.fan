@@ -19,7 +19,7 @@ export function RelatedAlbumSongs({
   const songs = mainAlbum.tracks.map((t) => t.song);
 
   return (
-    <div className="space-y-4 py-8 ">
+    <div className="space-y-4 py-8">
       <div className="flex items-start gap-4">
         <div className="relative h-32 w-32 overflow-hidden sm:h-40 sm:w-40">
           <Image
@@ -39,9 +39,7 @@ export function RelatedAlbumSongs({
         </div>
       </div>
 
-      <div
-        className={`gap-2 ${songs.length > 5 ? "columns-2" : "columns-1"}`}
-      >
+      <div className={`gap-2 ${songs.length > 5 ? "columns-2" : "columns-1"}`}>
         {songs.map((song) => {
           const isCurrentSong = song.id === currentSongId;
           return (

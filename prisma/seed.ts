@@ -124,10 +124,10 @@ async function seedSongs(songs: Prisma.SongCreateInput[]) {
   const normalized = songs.map((song) => ({
     ...song,
     description: Array.isArray(song.description)
-    ? song.description
-        .map(item => Array.isArray(item) ? item.join("\n") : item)
-        .join("\n")
-    : (song.description ?? ""),
+      ? song.description
+          .map((item) => (Array.isArray(item) ? item.join("\n") : item))
+          .join("\n")
+      : (song.description ?? ""),
   }));
 
   await Promise.all(

@@ -69,7 +69,7 @@ export default async function LyricsSongPage({
             <RelatedAlbumSongs albums={albums} currentSongId={song.id} />
           </div>
         </div>
-        </div>
+      </div>
 
       <Footer />
     </div>
