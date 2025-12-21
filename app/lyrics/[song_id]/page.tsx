@@ -1,7 +1,7 @@
-import { Metadata } from "next";
+// import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { buildLyricsMetadata } from "./metadata";
+// import { buildLyricsMetadata } from "./metadata";
 
 import { RelatedAlbumSongs } from "@/components/features/lyrics/RelatedAlbumSongs";
 import { SongCreditsDetails } from "@/components/features/lyrics/SongCreditsDetails";
