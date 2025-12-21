@@ -17,20 +17,22 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v2
         with:
-          version: 9
+          bun-version: latest
 
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
 
       - name: Apply all pending migrations to the database
-        run: pnpm exec prisma migrate deploy
+        run: bun run db:deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Generate Prisma client
-        run: pnpm exec prisma generate --no-engine
+        run: bun run db:generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
