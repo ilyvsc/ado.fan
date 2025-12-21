@@ -2,8 +2,8 @@
 
 import React, { useDeferredValue, useMemo } from "react";
 
-import { Card, CardContent } from "@/components/ui/card";
 import { NicoNicoPlayer, YouTubePlayer } from "@/components/VideoPlayer";
+import { Card, CardContent } from "@/components/ui/card";
 import { Song } from "@/types/Music";
 
 interface FeaturedSongsClientProps {

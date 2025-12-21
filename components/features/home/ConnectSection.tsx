@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { useMemo, useRef } from "react";
 
-import { linksCategories, SocialLinkGrid } from "@/components/SocialLinks";
+import { SocialLinkGrid, linksCategories } from "@/components/SocialLinks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 gsap.registerPlugin(ScrollTrigger);

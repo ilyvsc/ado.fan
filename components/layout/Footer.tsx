@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import React, { useMemo, useRef } from "react";
 
-import { linksCategories, SocialLinkList } from "@/components/SocialLinks";
+import { SocialLinkList, linksCategories } from "@/components/SocialLinks";
 
 gsap.registerPlugin(ScrollTrigger);
 
