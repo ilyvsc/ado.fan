@@ -107,7 +107,7 @@ export function YouTubePlayer({
 
   return (
     <VideoPlayer
-      src={`https://www.youtube-nocookie.com/embed/${id}?${extraParams}`}
+      src={`https://www.youtube-nocookie.com/embed/${id}?playlist=${id}&rel=0&loop=1&${extraParams}`}
       title={videoTitle}
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       isFullscreenBackground={isFullscreenBackground}
