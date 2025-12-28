@@ -4,197 +4,203 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
-import { timelineStepsDesktop, timelineStepsMobile } from "../helpers";
-import { TimelineItem } from "./TimelineItem";
-import { TimelineNavigation } from "./TimelineNavigation";
+import { SongCard } from "./TimelineCard";
+import { TimelineHeader } from "./TimelineHeader";
 
-import { useIsMobile } from "@/components/ui/use-mobile";
-import { TimelineYear } from "@/types/Music";
+import type { TimelineYear } from "@/types/Music";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function TimelineClient({
   timelineYears,
 }: {
-  readonly timelineYears: readonly TimelineYear[];
+  timelineYears: TimelineYear[];
 }) {
-  const isMobile = useIsMobile();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [activeYear, setActiveYear] = useState(timelineYears[0]?.year ?? null);
 
-  const timelineSteps = useMemo(
-    () =>
-      isMobile
-        ? timelineStepsMobile(timelineYears)
-        : timelineStepsDesktop(timelineYears),
-    [timelineYears, isMobile],
+  useGSAP(
+    () => {
+      const wrapper = wrapperRef.current;
+      const content = contentRef.current;
+      if (!wrapper || !content) return;
+
+      const q = gsap.utils.selector(content);
+      const sections = q("[data-year-section]");
+      const centerX = window.innerWidth / 2;
+
+      const updateActiveYear = () => {
+        for (const el of sections) {
+          const rect = el.getBoundingClientRect();
+          if (rect.left <= centerX && rect.right >= centerX) {
+            const year = parseInt(
+              (el as HTMLElement).dataset.yearSection || "0",
+            );
+            if (year) {
+              setActiveYear(year);
+              break;
+            }
+          }
+        }
+      };
+
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 768px)", () => {
+        wrapper.scrollLeft = 0;
+
+        const getScrollDistance = () => content.offsetWidth - window.innerWidth;
+
+        const scrollTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: wrapper,
+            start: "top top",
+            end: () => `+=${getScrollDistance()}`,
+            pin: true,
+            scrub: true,
+            invalidateOnRefresh: true,
+            onUpdate: updateActiveYear,
+          },
+        });
+
+        gsap.set(content, { willChange: "transform" });
+
+        scrollTl.to(content, {
+          x: () => -getScrollDistance(),
+          ease: "none",
+        });
+
+        const yearLabels = q("[data-year-section]");
+        yearLabels.forEach((label) => {
+          gsap.fromTo(
+            label,
+            { opacity: 0, scale: 0.8 },
+            {
+              opacity: 1,
+              scale: 1,
+              duration: 1,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: label,
+                containerAnimation: scrollTl,
+                start: "left 85%",
+                toggleActions: "play none none none",
+              },
+            },
+          );
+        });
+
+        const cards = q("[data-song-card]");
+        cards.forEach((card) => {
+          gsap.fromTo(
+            card,
+            { opacity: 0, y: 40 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.9,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: card,
+                containerAnimation: scrollTl,
+                start: "left 80%",
+                toggleActions: "play none none none",
+              },
+            },
+          );
+        });
+
+        gsap.set([...yearLabels, ...cards], {
+          willChange: "transform, opacity",
+        });
+      });
+
+      mm.add("(max-width: 767px)", () => {
+        gsap.set(content, { x: 0 });
+
+        ScrollTrigger.create({
+          scroller: wrapper,
+          horizontal: true,
+          trigger: content,
+          start: "top top",
+          end: "max",
+          onUpdate: updateActiveYear,
+        });
+
+        const cards = q("[data-song-card]");
+        cards.forEach((card) => {
+          gsap.fromTo(
+            card,
+            { opacity: 0, x: 30 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.6,
+              ease: "power2.out",
+              scrollTrigger: {
+                scroller: wrapper,
+                horizontal: true,
+                trigger: card,
+                start: "left 100%",
+                toggleActions: "play none none none",
+              },
+            },
+          );
+          gsap.set(card, { willChange: "transform, opacity" });
+        });
+      });
+
+      return () => mm.revert();
+    },
+    { scope: wrapperRef, dependencies: [timelineYears] },
   );
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const sectionsRef = useRef<HTMLElement[]>([]);
-  const cardsRef = useRef<HTMLDivElement[]>([]);
-  const mainRef = useRef<HTMLDivElement>(null);
-
-  const scrollToStep = useCallback((stepIndex: number) => {
-    const section = sectionsRef.current[stepIndex];
-    if (section) {
-      setCurrentIndex(stepIndex);
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "nearest",
-      });
-    }
-  }, []);
-
-  const handlePeriodScroll = useCallback(() => {
-    if (!mainRef.current) return;
-
-    const container = mainRef.current;
-    const offset = isMobile ? container.scrollLeft : container.scrollTop;
-    const size = isMobile
-      ? container.clientWidth
-      : (sectionsRef.current[0]?.getBoundingClientRect().height ?? 1);
-
-    const idx = Math.floor(offset / size);
-    const length = Math.min(idx, timelineSteps.length - 1);
-    const newIndex = Math.max(0, length);
-
-    if (newIndex !== currentIndex) setCurrentIndex(newIndex);
-  }, [isMobile, timelineSteps.length, currentIndex]);
-
-  useEffect(() => {
-    const container = mainRef.current;
-    if (!container) return;
-
-    container.addEventListener("scroll", handlePeriodScroll, { passive: true });
-    return () => container.removeEventListener("scroll", handlePeriodScroll);
-  }, [handlePeriodScroll]);
-
-  useGSAP(() => {
-    if (!sectionsRef.current.length) return;
-
-    const horizontal = isMobile;
-    const triggers: ScrollTrigger[] = [];
-
-    sectionsRef.current.forEach((section) => {
-      if (!section) return;
-
-      const trigger = ScrollTrigger.create({
-        trigger: section,
-        start: horizontal ? "left center" : "top center",
-        end: horizontal ? "right center" : "bottom center",
-        horizontal,
-      });
-
-      triggers.push(trigger);
-    });
-
-    ScrollTrigger.batch(cardsRef.current, {
-      interval: 0.1,
-      batchMax: 6,
-      onEnter: (batch) =>
-        gsap.fromTo(
-          batch,
-          { autoAlpha: 0, y: 20, scale: 0.96 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.6,
-            ease: "power2.out",
-            stagger: 0.05,
-          },
-        ),
-      once: true,
-    });
-    return () => {
-      triggers.forEach((t) => t.kill());
-    };
-  }, [isMobile, timelineSteps.length]);
-
   return (
-    <section
-      className="relative bg-linear-to-br from-ado-secondary/40 via-background/80 to-ado-secondary/40"
-      aria-label={`Music timeline with ${timelineSteps.length} steps from ${timelineYears.length} years`}
-    >
-      <header className="mx-auto max-w-4xl px-6 pt-12 text-center">
-        <h2 className="font-gambarino text-5xl tracking-tight sm:text-4xl lg:text-6xl">
-          Musical Journey
-        </h2>
-        <p className="mt-4 text-base text-muted-foreground sm:text-lg">
-          Explore the evolution of Ado's artistry through{" "}
-          <span className="font-semibold">
-            {timelineSteps.length} milestones
-          </span>{" "}
-          spanning{" "}
-          <span className="font-semibold">{timelineYears.length} years</span>.
-          Scroll through iconic releases, performances, and unforgettable
-          moments that shaped her career.
-        </p>
-      </header>
+    <>
+      <TimelineHeader />
 
-      <div className="relative z-10 my-2 flex justify-center">
-        <TimelineNavigation
-          timelineYears={timelineYears}
-          timelineSteps={timelineSteps}
-          currentIndex={currentIndex}
-          onYearClick={scrollToStep}
-        />
-      </div>
-
-      <main
-        ref={mainRef}
-        className={`w-full scroll-smooth ${
-          isMobile ? "overflow-x-auto" : "overflow-y-auto"
-        }`}
-        style={{
-          scrollSnapType: isMobile ? "x mandatory" : "y mandatory",
-          scrollBehavior: "smooth",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-          WebkitOverflowScrolling: "touch",
-        }}
-        aria-label={
-          timelineSteps[currentIndex]
-            ? `Currently viewing ${timelineSteps[currentIndex].period} ${timelineSteps[currentIndex].year}`
-            : "Timeline content"
-        }
+      <div
+        ref={wrapperRef}
+        className="relative w-full overflow-x-auto bg-background md:h-screen md:overflow-hidden"
       >
         <div
-          className={`relative m-12 ${isMobile ? "flex h-full" : "h-screen lg:h-[28rem]"}`}
+          ref={contentRef}
+          className="flex w-max items-center px-4 pb-32 md:h-screen md:p-24"
         >
-          {timelineSteps.map((step, index) => (
-            <section
-              key={`${step.year}-${step.period}-${step.periodIndex}-${index}`}
-              ref={(el) => {
-                if (el) sectionsRef.current[index] = el;
-              }}
-              className={`relative snap-start pt-20 md:pt-6 ${
-                isMobile ? "w-screen shrink-0" : "h-screen lg:h-[36rem]"
-              }`}
-              aria-label={`${step.period} ${step.year} (Step ${index + 1}): ${step.songs.length} song${step.songs.length > 1 ? "s" : ""}`}
-              aria-current={index === currentIndex ? "step" : undefined}
-            >
+          {timelineYears.map((yearData) => {
+            const isActive = activeYear === yearData.year;
+
+            return (
               <div
-                ref={(el) => {
-                  if (el) cardsRef.current[index] = el;
-                }}
-                className="flex items-center justify-center md:pt-20"
+                key={yearData.year}
+                data-year-section={yearData.year}
+                className="relative flex h-full flex-col justify-center gap-8 px-8 pt-12 md:flex-row md:items-center md:gap-16 md:px-12 md:pt-0"
               >
-                <TimelineItem
-                  timelineYear={{
-                    year: step.year,
-                    songs: step.songs,
-                    totalSongs: step.songs.length,
-                    periods: [step],
-                  }}
-                />
+                <div className="pointer-events-none relative flex shrink-0 justify-center md:h-full md:flex-col md:justify-center">
+                  <div
+                    className={`font-gambarino text-7xl leading-none font-black tracking-tighter text-foreground transition-all duration-500 ease-out md:text-9xl md:[writing-mode:vertical-rl] ${
+                      isActive ? "scale-100 opacity-100" : "scale-95 opacity-10"
+                    }`}
+                  >
+                    {yearData.year}
+                  </div>
+                </div>
+
+                <div className="grid grid-flow-col grid-rows-4 gap-x-2 gap-y-2">
+                  {yearData.songs.map((song) => (
+                    <div key={song.id} data-song-card>
+                      <SongCard song={song} />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </section>
-          ))}
+            );
+          })}
         </div>
-      </main>
-    </section>
+      </div>
+    </>
   );
 }

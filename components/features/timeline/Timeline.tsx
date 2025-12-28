@@ -1,5 +1,3 @@
-import React from "react";
-
 import { TimelineClient } from "./components/TimelineClient";
 
 import { getTimelineSongsByYear } from "@/prisma/queries/songs";
