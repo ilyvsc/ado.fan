@@ -5,146 +5,197 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import Image from "next/image";
-import { memo, useRef } from "react";
+import { useRef } from "react";
 
 import adoAvatar from "@/public/images/ado-avatar.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const AdoDescription = memo(function AdoDescription() {
+function AdoDescription() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    gsap.from(containerRef.current.children, {
-      opacity: 0,
-      y: 20,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 80%",
-        toggleActions: "play none none reverse",
-      },
-    });
-  });
+    const ctx = gsap.context(() => {
+      gsap.from(".ado-desc-content > *", {
+        opacity: 0,
+        x: -30,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="flex flex-col items-center lg:items-start lg:text-left"
-    >
-      <h2 className="font-gambarino text-4xl text-foreground md:text-5xl">
-        A Voice That Shatters Boundaries
-      </h2>
+    <div ref={containerRef} className="flex items-stretch gap-6">
+      <div className="ado-desc-content flex flex-col text-left">
+        <span className="mb-2 text-xs font-medium tracking-widest text-muted-foreground/80 uppercase sm:text-sm">
+          The Artist
+        </span>
+        <h2 className="font-gambarino text-4xl leading-tight font-bold lg:text-5xl">
+          A Voice Built Outside the Spotlight
+        </h2>
+        <p className="sm:text-md mt-3 max-w-3xl text-sm leading-relaxed text-balance text-muted-foreground lg:text-lg">
+          Born in Tokyo in 2002, Ado started sharing song covers online as a
+          teenager, uploading her performances to NicoNico (ニコニコ動画). Where
+          she was heavily influenced by VOCALOID culture, which shaped her early
+          musical taste. She covered songs by popular VOCALOID producers,
+          gradually attracting attention within that community and establishing
+          herself as a utaite.
+        </p>
 
-      <p className="mt-6 text-lg leading-relaxed font-light text-muted-foreground md:text-xl">
-        Ado is a Japanese utaite who began her career covering Vocaloid songs,
-        using a stylized avatar to represent herself. She has since transcended
-        the utaite scene, releasing original music in collaboration with
-        acclaimed composers and lyricists, establishing herself as one of
-        Japan's most distinctive and influential vocalists.
-      </p>
+        <p className="sm:text-md mt-3 max-w-3xl text-sm leading-relaxed text-balance text-muted-foreground lg:text-lg">
+          Her major breakthrough came in 2020 with her debut song{" "}
+          <span className="font-bold italic">Usseewa</span>, a release that
+          quickly pushed her beyond online recognition. Followed by
+          collaborations with some of Japan's most respected composers and
+          lyricists with tracks like{" "}
+          <span className="font-bold italic">Odo</span>
+          {", "}
+          <span className="font-bold italic">Gira Gira</span>
+          {", and "}
+          <span className="font-bold italic">Yoru no Pierrot</span>
+          {". "}
+          These projects led to her debut album{" "}
+          <span className="font-bold italic">Kyōgen</span> and her role as the
+          singing voice of Uta in{" "}
+          <span className="font-bold italic">One Piece Film: Red</span>,
+          including the worldwide hit{" "}
+          <span className="font-bold italic">New Genesis</span> marking a clear
+          expansion on her career.
+        </p>
+      </div>
     </div>
   );
-});
+}
 
-const AdoExtraInfo = memo(function AdoExtraInfo() {
+function AdoExtraInfo() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    gsap.from(containerRef.current.children, {
-      opacity: 0,
-      y: 20,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 80%",
-        toggleActions: "play none none reverse",
-      },
-    });
-  });
+    const ctx = gsap.context(() => {
+      gsap.from(".ado-extra-content > *", {
+        opacity: 0,
+        x: -30,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="flex flex-col items-center lg:items-start lg:text-left"
-    >
-      <h2 className="font-gambarino text-4xl text-foreground md:text-5xl">
-        Beyond the Digital Stage
-      </h2>
+    <div ref={containerRef} className="flex items-stretch gap-6">
+      <div className="ado-extra-content flex flex-col text-left">
+        <span className="mb-2 text-xs font-medium tracking-widest text-muted-foreground/80 uppercase sm:text-sm">
+          The Phenomenon
+        </span>
+        <h2 className="font-gambarino text-4xl leading-tight font-bold lg:text-5xl">
+          Beyond the Digital Stage
+        </h2>
+        <p className="sm:text-md mt-3 max-w-3xl text-sm leading-relaxed text-balance text-muted-foreground lg:text-lg">
+          In recent years, Ado has performed extensively in Japan and overseas,
+          delivering high-profile concerts and achieving sellouts across her
+          live appearances. In late 2025, she reached a major milestone with
+          dome venues performances in Japan, including Tokyo Dome and Kyocera
+          Dome Osaka as part of <span>Ado DOME TOUR 2025「よだか」</span> These
+          shows marked a clear shift in her reputation as a live artist, proving
+          her ability to sustain demanding performances at the highest level of
+          the Japanese concert circuit.
+        </p>
 
-      <p className="mt-6 text-lg leading-relaxed font-light text-muted-foreground md:text-xl">
-        With her signature powerful vocals and emotional depth, Ado has captured
-        millions of hearts worldwide. Her music videos regularly achieve tens of
-        millions of views, and her live performances showcase a rare combination
-        of technical prowess and raw authenticity that defines a new generation
-        of Japanese artists breaking into the global music scene.
-      </p>
+        <p className="sm:text-md mt-3 max-w-3xl text-sm leading-relaxed text-balance text-muted-foreground lg:text-lg">
+          Overseas, her reach expanded through a sequence of tours that steadily
+          increased in scale. Early appearances during Wish (ウィッシュ) in 2022
+          and Mars (マーズ) in 2023 were followed by the more ambitious SPECIAL
+          LIVE 2024 Shinzou (心臓), before ending in the Hibana (火花) world
+          tour in 2025 spanning diozens of cties across Asia, Europe, the
+          Americas, and other regions confirming her position as an artist whose
+          live appeal continues to grow on a global scale.
+        </p>
+      </div>
     </div>
   );
-});
+}
 
 export function WhoIsAdo() {
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const overlayOneRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(() => {
-    if (!sectionRef.current) return;
+  useGSAP(
+    () => {
+      if (!sectionRef.current) return;
 
-    if (imageRef.current) {
-      gsap.from(imageRef.current, {
-        opacity: 0,
-        scale: 0.9,
-        duration: 1.2,
-        ease: "power2.inOut",
-        scrollTrigger: {
-          trigger: imageRef.current,
-          start: "top 80%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse",
-        },
-      });
-    }
+      if (imageRef.current) {
+        gsap.set(imageRef.current, {
+          willChange: "transform, opacity",
+        });
 
-    if (overlayOneRef.current) {
-      gsap.fromTo(
-        overlayOneRef.current,
-        { yPercent: -100 },
-        {
-          yPercent: -100,
-          ease: "none",
+        gsap.from(imageRef.current, {
+          opacity: 0,
+          xPercent: -10,
+          duration: 1.4,
+          ease: "power3.out",
           scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            scrub: true,
+            trigger: imageRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse",
           },
-        },
-      );
-    }
-  }, []);
+        });
+      }
+
+      if (overlayOneRef.current) {
+        gsap.fromTo(
+          overlayOneRef.current,
+          { yPercent: -100 },
+          {
+            yPercent: -100,
+            ease: "none",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top top",
+              scrub: true,
+            },
+          },
+        );
+      }
+    },
+    { scope: sectionRef },
+  );
 
   return (
-    <section ref={sectionRef} className="relative lg:py-24">
-      <div className="mx-auto w-full max-w-none px-0 sm:px-0">
-        {/* Mobile & Tablet Layout */}
+    <section id="who-is-ado" ref={sectionRef} className="relative lg:py-14">
+      <div className="mx-auto w-full max-w-none px-0">
         <div className="block lg:hidden">
           <div className="relative h-[300vh] w-full">
-            <div className="sticky top-0 z-0 h-screen w-full">
+            <div className="sticky top-0 h-screen w-full">
               <Image
                 src={adoAvatar}
                 alt="Ado - Japanese singer and artist character"
-                className="object-cover"
                 aria-hidden="true"
-                priority
                 fill
+                priority
+                className="object-cover"
               />
             </div>
 
@@ -152,46 +203,74 @@ export function WhoIsAdo() {
               ref={overlayOneRef}
               className="sticky top-0 z-10 h-screen w-full bg-background"
             >
-              <div className="flex h-full w-full items-center justify-center px-6 sm:px-8 md:px-12">
+              <div className="flex h-full w-full flex-col justify-between px-6 pt-24 pb-12 sm:px-8 sm:pt-28 sm:pb-16 md:px-12">
+                <div className="flex items-center gap-3">
+                  <div className="h-px w-8 bg-foreground/30" />
+                  <span className="text-xs font-medium tracking-widest text-muted-foreground/60 uppercase">
+                    01
+                  </span>
+                </div>
                 <div className="w-full max-w-2xl">
                   <AdoDescription />
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="h-6 w-px bg-foreground/20" />
+                  <span className="text-xs tracking-wider text-muted-foreground/60 uppercase">
+                    Keep Scrolling
+                  </span>
                 </div>
               </div>
             </div>
 
             <div className="sticky top-0 z-20 h-screen w-full bg-background">
-              <div className="flex h-full w-full items-center justify-center px-6 sm:px-8 md:px-12">
+              <div className="flex h-full w-full flex-col justify-between px-6 pt-24 pb-12 sm:px-8 sm:pt-28 sm:pb-16 md:px-12">
+                <div className="flex items-center gap-3">
+                  <div className="h-px w-8 bg-foreground/30" />
+                  <span className="text-xs font-medium tracking-widest text-muted-foreground/50 uppercase">
+                    02
+                  </span>
+                </div>
                 <div className="w-full max-w-2xl">
                   <AdoExtraInfo />
+                </div>
+                <div className="flex items-center gap-3 opacity-0">
+                  <div className="h-6 w-px bg-foreground/20" />
+                  <span className="text-xs tracking-wider text-muted-foreground/40 uppercase">
+                    End
+                  </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Desktop Layout */}
-        <div className="relative hidden items-start lg:flex">
-          <div className="mx-auto max-w-3xl flex-1 px-8">
-            <div className="mb-16">
-              <AdoDescription />
-            </div>
-            <div>
-              <AdoExtraInfo />
-            </div>
-          </div>
+        <div className="relative hidden lg:block">
+          <div className="flex min-h-screen">
+            <div className="relative z-10 flex w-1/2 flex-col justify-center py-18 md:p-16">
+              <div className="relative">
+                <AdoDescription />
+              </div>
 
-          <div
-            ref={imageRef}
-            className="sticky h-[90vh] w-[45vw] flex-shrink-0 overflow-hidden rounded-l-4xl"
-          >
-            <Image
-              src={adoAvatar}
-              alt="Ado - Japanese singer and artist character"
-              className="object-cover"
-              aria-hidden="true"
-              priority
-              fill
-            />
+              <div className="mt-18">
+                <AdoExtraInfo />
+              </div>
+            </div>
+
+            <div className="relative w-1/2">
+              <div
+                ref={imageRef}
+                className="sticky top-0 h-screen w-full overflow-hidden"
+              >
+                <div className="absolute inset-0 z-10 bg-linear-to-r from-background via-background/5 to-transparent" />
+                <Image
+                  src={adoAvatar}
+                  alt="Ado - Japanese singer and artist character"
+                  aria-hidden="true"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
