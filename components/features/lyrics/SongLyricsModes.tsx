@@ -28,7 +28,7 @@ export function SongLyricsModes({
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [compareLeft, setCompareLeft] = useState<Language>("japanese");
   const [compareRight, setCompareRight] = useState<Language>("english");
-  const [fontSize, setFontSize] = useState(16);
+  const [fontSize, setFontSize] = useState(14);
 
   const tabs = [
     { id: "japanese" as const, label: "日本語", content: japanese },
@@ -94,7 +94,7 @@ export function SongLyricsModes({
   }) => {
     return (
       <p
-        className={`font-sans leading-loose tracking-wide whitespace-pre-wrap text-foreground transition-all duration-300 ${className}`}
+        className={`font-sans leading-loose whitespace-pre-wrap text-foreground transition-all duration-300 ${className}`}
         style={{ fontSize: `${fontSize + 2}px` }}
       >
         {content}
@@ -177,7 +177,7 @@ export function SongLyricsModes({
 
           <div className="flex items-center gap-1 rounded-full border border-foreground/10 bg-background/50 px-2 py-1.5 hover:border-foreground/20 hover:bg-background/70">
             <button
-              onClick={() => setFontSize(Math.max(12, fontSize - 2))}
+              onClick={() => setFontSize(Math.max(10, fontSize - 2))}
               className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
               title="Decrease font size"
             >
@@ -229,7 +229,7 @@ export function SongLyricsModes({
 
       {viewMode === "split" && (
         <div className="relative grid grid-cols-2 gap-2 pb-32 md:gap-8">
-          <div className="absolute top-0 bottom-0 left-1/2 w-px bg-linear-to-b from-foreground/10 via-foreground/20 to-foreground/10" />
+          <div className="absolute top-0 bottom-0 left-1/2 w-px bg-muted-foreground/20" />
 
           {[compareLeft, compareRight].map((languageId, columnIndex) => {
             const selectedTab = tabs.find((tab) => tab.id === languageId)!;
@@ -245,12 +245,11 @@ export function SongLyricsModes({
                   </span>
                 </div>
 
-                <div className="px-1 md:px-8">
+                <div className="px-4 md:px-8">
                   {selectedTab.content ? (
                     <LyricsContent
                       content={selectedTab.content}
                       fontSize={fontSize}
-                      className="text-center text-foreground/90 group-hover:text-foreground md:text-left"
                     />
                   ) : (
                     <EmptyState />
