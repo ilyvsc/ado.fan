@@ -44,7 +44,7 @@ export default async function LyricsSongPage({
     <div className="min-h-screen bg-background">
       <SongLyricsHeader song={song} albums={albums} />
 
-      <div className="container mx-auto px-4 py-8 sm:px-4">
+      <div className="container mx-auto px-2 py-8 sm:px-4">
         <div className="mx-auto mb-8 max-w-5xl">
           <SongLyricsModes
             japanese={song.lyrics.japanese}
