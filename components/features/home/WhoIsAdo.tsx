@@ -44,19 +44,19 @@ function AdoDescription() {
         <h2 className="font-gambarino text-4xl leading-tight font-bold lg:text-5xl">
           A Voice Built Outside the Spotlight
         </h2>
-        <p className="sm:text-md mt-3 max-w-3xl text-sm leading-relaxed text-balance text-muted-foreground lg:text-lg">
+        <p className="sm:text-md mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground lg:text-lg">
           Born in Tokyo in 2002, Ado started sharing song covers online as a
-          teenager, uploading her performances to NicoNico (ニコニコ動画). Where
-          she was heavily influenced by VOCALOID culture, which shaped her early
+          teenager, uploading her performances to NicoNico (ニコニコ動画). Here,
+          she was heavily influenced by VOCALOID culture, shapping her early
           musical taste. She covered songs by popular VOCALOID producers,
           gradually attracting attention within that community and establishing
-          herself as a utaite.
+          herself as an utaite.
         </p>
 
-        <p className="sm:text-md mt-3 max-w-3xl text-sm leading-relaxed text-balance text-muted-foreground lg:text-lg">
+        <p className="sm:text-md mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground lg:text-lg">
           Her major breakthrough came in 2020 with her debut song{" "}
           <span className="font-bold italic">Usseewa</span>, a release that
-          quickly pushed her beyond online recognition. Followed by
+          quickly pushed her beyond online recognition. This was followed by
           collaborations with some of Japan's most respected composers and
           lyricists with tracks like{" "}
           <span className="font-bold italic">Odo</span>
@@ -111,25 +111,28 @@ function AdoExtraInfo() {
         <h2 className="font-gambarino text-4xl leading-tight font-bold lg:text-5xl">
           Beyond the Digital Stage
         </h2>
-        <p className="sm:text-md mt-3 max-w-3xl text-sm leading-relaxed text-balance text-muted-foreground lg:text-lg">
-          In recent years, Ado has performed extensively in Japan and overseas,
-          delivering high-profile concerts and achieving sellouts across her
-          live appearances. In late 2025, she reached a major milestone with
-          dome venues performances in Japan, including Tokyo Dome and Kyocera
-          Dome Osaka as part of <span>Ado DOME TOUR 2025「よだか」</span> These
-          shows marked a clear shift in her reputation as a live artist, proving
-          her ability to sustain demanding performances at the highest level of
-          the Japanese concert circuit.
+        <p className="sm:text-md mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground lg:text-lg">
+          In recent years, Ado has performed widely in Japan and overseas,
+          gradually building a strong live presence through consistent,
+          well-received concerts. In 2024, she presented{" "}
+          <span>Ado SPECIAL LIVE 2024 Shinzou (心臓)</span>, a two-day solo
+          concert at Japan National Stadium that reflected her growing
+          confidence on larger stages. In late 2025, she reached another
+          milestone with dome performances at Tokyo Dome and Kyocera Dome Osaka,
+          as part of <span>Ado DOME TOUR 2025 (よだか)</span>.
         </p>
 
-        <p className="sm:text-md mt-3 max-w-3xl text-sm leading-relaxed text-balance text-muted-foreground lg:text-lg">
-          Overseas, her reach expanded through a sequence of tours that steadily
-          increased in scale. Early appearances during Wish (ウィッシュ) in 2022
-          and Mars (マーズ) in 2023 were followed by the more ambitious SPECIAL
-          LIVE 2024 Shinzou (心臓), before ending in the Hibana (火花) world
-          tour in 2025 spanning diozens of cties across Asia, Europe, the
-          Americas, and other regions confirming her position as an artist whose
-          live appeal continues to grow on a global scale.
+        <p className="sm:text-md mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground lg:text-lg">
+          Overseas, her reach expanded through world tours that steadily grew in
+          scale. Her first world tour, <span>Wish (ウィッシュ)</span> in 2024,
+          brought her music to audiences across Asia, Europe, and North America,
+          with performances in cities from Bangkok to New York. In 2025, Ado
+          continued with the <span>Hibana (火花)</span>, performing in more than
+          30 cities worldwide and reaching countries she hadn't visited during
+          Wish, while presenting a more developed stage production and setlist
+          that reflected her artistic growth. Ado described Hibana as her way of
+          lighting a bigger spark in the world and building on the connections
+          she made during Wish.
         </p>
       </div>
     </div>
