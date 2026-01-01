@@ -127,7 +127,7 @@ function AdoExtraInfo() {
           scale. Her first world tour, <span>Wish (ウィッシュ)</span> in 2024,
           brought her music to audiences across Asia, Europe, and North America,
           with performances in cities from Bangkok to New York. In 2025, Ado
-          continued with the <span>Hibana (火花)</span>, performing in more than
+          continued with <span>Hibana (火花)</span>, performing in more than
           30 cities worldwide and reaching countries she hadn't visited during
           Wish, while presenting a more developed stage production and setlist
           that reflected her artistic growth. Ado described Hibana as her way of
