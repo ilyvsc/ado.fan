@@ -55,7 +55,7 @@ export const linksCategories: Record<SocialCategory, SocialLink[]> = {
     },
     {
       name: "Instagram",
-      url: "https://www.instagram.com/ado_staff_/",
+      url: "https://www.instagram.com/ado_staff_official/",
       icon: <SiInstagram className="h-4 w-4" />,
       description: "Photo highlights, behind-the-scenes moments, and updates",
     },
