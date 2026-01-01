@@ -7,7 +7,7 @@ import { ExternalLink } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useRef } from "react";
+import { useRef } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -115,7 +115,11 @@ export function NewsletterSection() {
   );
 
   return (
-    <section ref={rootRef} className="relative w-full overflow-hidden">
+    <section
+      id="newsletter"
+      ref={rootRef}
+      className="relative w-full overflow-hidden"
+    >
       <div className="relative z-10 container mx-auto grid min-h-3/4 grid-cols-1 items-center gap-8 px-4 py-14 md:grid-cols-2">
         <div className="text-left">
           <Image
@@ -147,16 +151,16 @@ export function NewsletterSection() {
             className="grid grid-cols-2 gap-1.5 text-xs text-muted-foreground/90 sm:gap-2 sm:text-sm"
           >
             <li className="rounded-md border border-foreground/10 bg-card/40 p-2 sm:p-3">
-              • Early announcements
+              Early announcements
             </li>
             <li className="rounded-md border border-foreground/10 bg-card/40 p-2 sm:p-3">
-              • Tour & event alerts
+              Tour & event alerts
             </li>
             <li className="rounded-md border border-foreground/10 bg-card/40 p-2 sm:p-3">
-              • Official merch drops
+              Official merch drops
             </li>
             <li className="rounded-md border border-foreground/10 bg-card/40 p-2 sm:p-3">
-              • Behind-the-scenes notes
+              Behind-the-scenes notes
             </li>
           </ul>
         </div>
@@ -191,7 +195,7 @@ export function NewsletterSection() {
             >
               <Button
                 ref={buttonRef}
-                className="w-full cursor-grab bg-ado-secondary text-base text-white hover:bg-ado-key/70"
+                className="w-full cursor-grab bg-ado-secondary/80 text-base text-white hover:bg-ado-secondary"
               >
                 Subscribe
                 <ExternalLink />
@@ -200,7 +204,7 @@ export function NewsletterSection() {
 
             <p className="mt-6 text-xs text-muted-foreground">
               Powered by{" "}
-              <span className="rounded bg-ado-key/20 px-1 py-1 font-medium text-ado-key">
+              <span className="rounded bg-ado-secondary/20 px-1 py-1 font-medium text-ado-secondary">
                 umusic.jp
               </span>
               {", "} we never collect your email here.
