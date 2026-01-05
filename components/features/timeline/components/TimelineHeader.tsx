@@ -200,7 +200,7 @@ export function TimelineHeader() {
                     100+
                   </div>
                   <p className="text-xs text-muted-foreground md:text-sm">
-                    original songs & covers
+                    Original songs & covers
                   </p>
                 </div>
 
@@ -209,7 +209,7 @@ export function TimelineHeader() {
                     3B+
                   </div>
                   <p className="text-xs text-muted-foreground md:text-sm">
-                    total streams worldwide
+                    Total streams worldwide
                   </p>
                 </div>
 
@@ -218,7 +218,7 @@ export function TimelineHeader() {
                     30+
                   </div>
                   <p className="text-xs text-muted-foreground md:text-sm">
-                    producer collaborations
+                    Producer collaborations
                   </p>
                 </div>
 
@@ -227,7 +227,7 @@ export function TimelineHeader() {
                     #1
                   </div>
                   <p className="text-xs text-muted-foreground md:text-sm">
-                    most-streamed Japanese artist worldwide
+                    Most-streamed Japanese artist worldwide
                   </p>
                 </div>
               </div>
