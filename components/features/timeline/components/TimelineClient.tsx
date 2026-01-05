@@ -2,7 +2,9 @@
 
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowDown } from "lucide-react";
 
 import { useRef, useState } from "react";
 
@@ -11,7 +13,7 @@ import { TimelineHeader } from "./TimelineHeader";
 
 import type { TimelineYear } from "@/types/Music";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export function TimelineClient({
   timelineYears,
@@ -21,6 +23,7 @@ export function TimelineClient({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [activeYear, setActiveYear] = useState(timelineYears[0]?.year ?? null);
+  const [showSkip, setShowSkip] = useState(true);
 
   useGSAP(
     () => {
@@ -56,13 +59,17 @@ export function TimelineClient({
 
         const scrollTl = gsap.timeline({
           scrollTrigger: {
+            id: "timeline-scroll",
             trigger: wrapper,
             start: "top top",
             end: () => `+=${getScrollDistance()}`,
             pin: true,
             scrub: true,
             invalidateOnRefresh: true,
-            onUpdate: updateActiveYear,
+            onUpdate: (self) => {
+              updateActiveYear();
+              setShowSkip(self.progress < 0.95);
+            },
           },
         });
 
@@ -158,6 +165,17 @@ export function TimelineClient({
     { scope: wrapperRef, dependencies: [timelineYears] },
   );
 
+  const handleSkip = () => {
+    const scrollTrigger = ScrollTrigger.getById("timeline-scroll");
+    if (scrollTrigger) {
+      gsap.to(window, {
+        scrollTo: scrollTrigger.end,
+        duration: 1.5,
+        ease: "power2.inOut",
+      });
+    }
+  };
+
   return (
     <>
       <TimelineHeader />
@@ -166,6 +184,16 @@ export function TimelineClient({
         ref={wrapperRef}
         className="relative w-full overflow-x-auto bg-background md:h-screen md:overflow-hidden"
       >
+        {showSkip && (
+          <button
+            onClick={handleSkip}
+            className="absolute right-8 bottom-8 z-50 hidden items-center gap-1 rounded-md bg-foreground/80 p-2 text-background transition-colors duration-300 hover:bg-foreground md:flex"
+          >
+            <span className="text-sm font-medium">Skip Timeline</span>
+            <ArrowDown className="h-4 w-4" />
+          </button>
+        )}
+
         <div
           ref={contentRef}
           className="flex w-max items-center px-4 pb-32 md:h-screen md:p-24"
@@ -179,9 +207,9 @@ export function TimelineClient({
                 data-year-section={yearData.year}
                 className="relative flex h-full flex-col justify-center gap-8 px-8 pt-12 md:flex-row md:items-center md:gap-16 md:px-12 md:pt-0"
               >
-                <div className="pointer-events-none relative flex shrink-0 justify-center md:h-full md:flex-col md:justify-center">
+                <div className="sticky top-4 left-1/2 z-10 flex shrink-0 -translate-x-1/2 justify-center self-start md:pointer-events-none md:static md:h-full md:translate-x-0 md:flex-col md:justify-center md:self-auto">
                   <div
-                    className={`font-gambarino text-7xl leading-none font-black tracking-tighter text-foreground transition-all duration-500 ease-out md:text-9xl md:[writing-mode:vertical-rl] ${
+                    className={`font-gambarino text-7xl leading-none font-black tracking-tight text-foreground transition-all duration-500 ease-out md:text-9xl md:[writing-mode:vertical-rl] ${
                       isActive ? "scale-100 opacity-100" : "scale-95 opacity-10"
                     }`}
                   >
