@@ -51,7 +51,7 @@ export function SocialLinkGrid({ links }: { links: SocialLink[] }) {
             data-social-card
           >
             <div className="relative flex items-start gap-3 rounded-md border border-foreground/5 bg-foreground/5 p-4 transition-all duration-300 hover:border-foreground/20 hover:bg-foreground/10">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-foreground/70  ring-1 ring-foreground/5 transition-colors group-hover:text-foreground">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-foreground/70 ring-1 ring-foreground/5 transition-colors group-hover:text-foreground">
                 {link.icon}
               </span>
 

@@ -148,7 +148,7 @@ export function TimelineHeader() {
         <div className="flex items-start gap-6 md:gap-12">
           <div
             ref={lineRef}
-            className="mt-2 w-0.5 shrink-0 bg-foreground h-56"
+            className="mt-2 h-56 w-0.5 shrink-0 bg-foreground"
           />
 
           <div className="flex flex-col gap-4 md:gap-6">
@@ -168,7 +168,8 @@ export function TimelineHeader() {
               </p>
               <p className="max-w-2xl text-sm md:text-lg">
                 From singing alone in a closet to finding her place on stages
-                around the world, each song carries something worth holding onto.
+                around the world, each song carries something worth holding
+                onto.
               </p>
             </div>
 

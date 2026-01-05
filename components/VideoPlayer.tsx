@@ -24,7 +24,7 @@ const VideoPlayer = ({
         sandbox="allow-scripts allow-same-origin allow-presentation"
         className={
           isFullscreenBackground
-            ? `absolute aspect-video min-h-full min-w-full top-1/2 left-1/2 -translate-1/2`
+            ? `absolute top-1/2 left-1/2 aspect-video min-h-full min-w-full -translate-1/2`
             : "h-full w-full border-0"
         }
       />
