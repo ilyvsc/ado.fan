@@ -16,7 +16,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 export const SongCard = React.memo(function SongCard({ song }: { song: Song }) {
   const [isExpanded, setExpandedState] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [showControls, setShowControls] = useState(true);
+  const mountedRef = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -25,8 +26,17 @@ export const SongCard = React.memo(function SongCard({ song }: { song: Song }) {
   const themeColor = song.themeColor;
 
   useEffect(() => {
-    setMounted(true);
+    mountedRef.current = true;
   }, []);
+
+  useEffect(() => {
+    if (!showControls) return;
+
+    const id = setTimeout(() => setShowControls(false), 3000);
+    return () => clearTimeout(id);
+  }, [showControls]);
+
+  const handleMouseMove = () => setShowControls(true);
 
   useGSAP(
     () => {
@@ -116,14 +126,23 @@ export const SongCard = React.memo(function SongCard({ song }: { song: Song }) {
         </button>
       </div>
 
-      {mounted &&
+      {mountedRef.current &&
         isExpanded &&
         createPortal(
-          <div className="fixed inset-0 flex items-center justify-center p-4 md:p-12">
-            <div className="relative aspect-video w-full max-w-5xl overflow-hidden rounded-lg bg-background/40">
+          <div
+            onClick={() => setExpandedState(false)}
+            onMouseMove={handleMouseMove}
+            className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden p-4 backdrop-blur-sm md:p-12"
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="relative aspect-video w-full max-w-5xl overflow-hidden rounded-lg bg-background/40"
+            >
               <button
                 onClick={() => setExpandedState(false)}
-                className="absolute top-4 right-4 rounded-full p-2 text-white/70 backdrop-blur-md"
+                className={`absolute top-4 right-4 z-10 rounded-full p-2 text-white/70 backdrop-blur-sm transition-opacity duration-300 hover:text-white ${
+                  showControls ? "opacity-100" : "opacity-0"
+                }`}
               >
                 <X className="h-5 w-5" />
               </button>
