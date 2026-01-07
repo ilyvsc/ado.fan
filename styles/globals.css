@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "../fonts/gambarino/font.css";
+@import "./fonts/gambarino/font.css";
 
 /* required for dark mode using tailwindcss@v4 */
 @custom-variant dark (&:where(.dark, .dark *));
