@@ -9,7 +9,7 @@ import { SongCreditsDetails } from "@/features/lyrics/components/SongCreditsDeta
 import { SongLyricsHeader } from "@/features/lyrics/components/SongLyricsHeader";
 import { SongLyricsModes } from "@/features/lyrics/components/SongLyricsModes";
 import { prisma } from "@/prisma/client";
-import { getAlbumsBySongId } from "@/prisma/queries/albums";
+import { getAlbumsBySongId } from "@/prisma/queries/album";
 import { serializeSong, songPrismaSelect } from "@/prisma/serializer";
 
 // export async function generateMetadata({
