@@ -8,10 +8,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useInfiniteScroll } from "./hooks/useInfiniteScroll";
 import { useSongSearch } from "./hooks/useSongSearch";
 
-import { LyricsNavigation } from "@/components/features/lyrics/LyricsNavigation";
-import { LyricsSongDisplay } from "@/components/features/lyrics/LyricsSongDisplay";
-import { RecommendedSongs } from "@/components/features/lyrics/RecommendedSongs";
 import { useIsMobile } from "@/components/ui/use-mobile";
+import { LyricsNavigation } from "@/features/lyrics/LyricsNavigation";
+import { LyricsSongDisplay } from "@/features/lyrics/LyricsSongDisplay";
+import { RecommendedSongs } from "@/features/lyrics/RecommendedSongs";
 import type { SongListItem } from "@/types/Music";
 
 export default function LyricsPage() {

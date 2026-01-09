@@ -5,7 +5,7 @@ import { XIcon } from "lucide-react";
 
 import * as React from "react";
 
-import { cn } from "@/utils/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 function Dialog({
   ...props

@@ -6,7 +6,7 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-import { SocialLink, categories } from "@/utils/lib/social-data";
+import { SocialLink, categories } from "@/shared/lib/social-data";
 
 export function SocialLinkGrid({ links }: { links: SocialLink[] }) {
   const containerRef = React.useRef<HTMLDivElement>(null);

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { cn } from "@/utils/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 interface LoadingSpinnerProps {
   className?: string;

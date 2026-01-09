@@ -3,11 +3,11 @@ import { notFound } from "next/navigation";
 
 // import { buildLyricsMetadata } from "./metadata";
 
-import { RelatedAlbumSongs } from "@/components/features/lyrics/RelatedAlbumSongs";
-import { SongCreditsDetails } from "@/components/features/lyrics/SongCreditsDetails";
-import { SongLyricsHeader } from "@/components/features/lyrics/SongLyricsHeader";
-import { SongLyricsModes } from "@/components/features/lyrics/SongLyricsModes";
 import { Footer } from "@/components/layout/Footer";
+import { RelatedAlbumSongs } from "@/features/lyrics/RelatedAlbumSongs";
+import { SongCreditsDetails } from "@/features/lyrics/SongCreditsDetails";
+import { SongLyricsHeader } from "@/features/lyrics/SongLyricsHeader";
+import { SongLyricsModes } from "@/features/lyrics/SongLyricsModes";
 import { prisma } from "@/prisma/client";
 import { getAlbumsBySongId } from "@/prisma/queries/albums";
 import { serializeSong, songPrismaSelect } from "@/prisma/serializer";

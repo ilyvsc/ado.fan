@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef, useState } from "react";
 
 import { SocialLinkGrid } from "@/components/SocialLinks";
-import { categories } from "@/utils/lib/social-data";
+import { categories } from "@/shared/lib/social-data";
 
 gsap.registerPlugin(ScrollTrigger);
 
