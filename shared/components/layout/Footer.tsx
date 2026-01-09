@@ -6,7 +6,8 @@ import gsap from "gsap";
 import { usePathname } from "next/navigation";
 import { useMemo, useRef } from "react";
 
-import { SocialLinkList, linksCategories } from "@/components/SocialLinks";
+import { useSocialLinks } from "@/hooks/useSocialLinks";
+import { linksCategories } from "@/lib/socialLinks";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -65,10 +66,10 @@ export function Footer() {
                   Social Media
                 </h4>
                 <div className="flex flex-wrap gap-x-4">
-                  <SocialLinkList
-                    links={socialMedia}
-                    className={`py-1 text-sm hover:underline hover:underline-offset-4 md:text-base`}
-                  />
+                  {useSocialLinks({
+                    links: socialMedia,
+                    className: `py-1 text-sm hover:underline hover:underline-offset-4 md:text-base`,
+                  })}
                 </div>
               </section>
 
@@ -77,10 +78,10 @@ export function Footer() {
                   Music Platforms
                 </h4>
                 <div className="flex flex-wrap gap-x-4">
-                  <SocialLinkList
-                    links={musicPlatforms}
-                    className={`py-1 text-sm hover:underline hover:underline-offset-4 md:text-base`}
-                  />
+                  {useSocialLinks({
+                    links: musicPlatforms,
+                    className: `py-1 text-sm hover:underline hover:underline-offset-4 md:text-base`,
+                  })}
                 </div>
               </section>
             </nav>

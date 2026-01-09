@@ -9,9 +9,9 @@ import { ChevronsDown } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
 
-import { linksCategories } from "@/components/SocialLinks";
 import { YouTubePlayer } from "@/components/VideoPlayer";
 import { useIsMobile } from "@/components/ui/use-mobile";
+import { linksCategories } from "@/lib/socialLinks";
 
 const socialLinks = linksCategories["social-media"];
 

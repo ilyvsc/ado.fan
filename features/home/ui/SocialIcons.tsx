@@ -1,14 +1,13 @@
 import { useGSAP } from "@gsap/react";
-import clsx from "clsx";
 import { gsap } from "gsap";
 import { ArrowUpRight } from "lucide-react";
 
 import Link from "next/link";
 import React from "react";
 
-import { SocialLink, categories } from "@/shared/lib/social-data";
+import type { SocialLink } from "@/types/Social";
 
-export function SocialLinkGrid({ links }: { links: SocialLink[] }) {
+export function SocialIcons({ links }: { links: SocialLink[] }) {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -73,38 +72,3 @@ export function SocialLinkGrid({ links }: { links: SocialLink[] }) {
     </div>
   );
 }
-
-export function SocialLinkList({
-  links,
-  className,
-}: {
-  links: ReadonlyArray<SocialLink>;
-  className?: string;
-}) {
-  return (
-    <>
-      {links.map(({ url, description, icon, name }) => {
-        return (
-          <Link
-            key={url}
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={description}
-            title={description}
-            className={clsx("flex items-center gap-2", className)}
-          >
-            {icon}
-            <span>{name}</span>
-          </Link>
-        );
-      })}
-    </>
-  );
-}
-
-export const links = categories.flatMap((cat) => cat.data);
-
-export const linksCategories = Object.fromEntries(
-  categories.map((cat) => [cat.id, cat.data]),
-) as Record<string, SocialLink[]>;

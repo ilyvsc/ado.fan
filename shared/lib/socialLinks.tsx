@@ -19,19 +19,7 @@ import {
   Music4,
 } from "lucide-react";
 
-export interface SocialLink {
-  name: string;
-  url: string;
-  icon: React.ReactNode;
-  description: string;
-}
-
-export interface Category {
-  id: string;
-  label: string;
-  description: string;
-  data: SocialLink[];
-}
+import type { Category, SocialLink } from "@/types/Social";
 
 export const categories: Category[] = [
   {
@@ -193,3 +181,7 @@ export const categories: Category[] = [
     ],
   },
 ];
+
+export const linksCategories = Object.fromEntries(
+  categories.map((cat) => [cat.id, cat.data]),
+) as Record<string, SocialLink[]>;

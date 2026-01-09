@@ -6,8 +6,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { useRef, useState } from "react";
 
-import { SocialLinkGrid } from "@/components/SocialLinks";
-import { categories } from "@/shared/lib/social-data";
+import { SocialIcons } from "../ui/SocialIcons";
+
+import { categories } from "@/lib/socialLinks";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -148,7 +149,7 @@ export function ConnectSection() {
             </div>
 
             <div ref={contentRef}>
-              <SocialLinkGrid links={activeCategory.data} />
+              <SocialIcons links={activeCategory.data} />
             </div>
           </main>
         </div>
