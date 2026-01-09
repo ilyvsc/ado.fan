@@ -1,4 +1,4 @@
-import type { Song } from "@/types/Music";
+import type { Song } from "@/types/song";
 
 interface VideoPlayerProps {
   src: string;

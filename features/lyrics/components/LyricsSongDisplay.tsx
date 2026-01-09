@@ -8,7 +8,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 
-import { SearchResult, SongListItem } from "@/types/Music";
+import type { SearchResult } from "@/types/search";
+import type { SongListItem } from "@/types/song";
 
 type ViewMode = "grid" | "list";
 

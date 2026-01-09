@@ -5,7 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-import type { SocialLink } from "@/types/Social";
+import type { SocialLink } from "@/types/social";
 
 export function SocialIcons({ links }: { links: SocialLink[] }) {
   const containerRef = React.useRef<HTMLDivElement>(null);

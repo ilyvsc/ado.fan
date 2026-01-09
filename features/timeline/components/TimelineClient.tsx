@@ -11,7 +11,7 @@ import { useRef, useState } from "react";
 import { SongCard } from "./TimelineCard";
 import { TimelineHeader } from "./TimelineHeader";
 
-import type { TimelineYear } from "@/types/Music";
+import type { TimelineYear } from "@/types/timeline";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 

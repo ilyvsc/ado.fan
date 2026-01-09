@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useIsMobile } from "@/components/ui/use-mobile";
-import type { SongListItem } from "@/types/Music";
+import type { SongListItem } from "@/types/song";
 
 const INITIAL_SIZE = 12;
 const BATCH_SIZE = 4;

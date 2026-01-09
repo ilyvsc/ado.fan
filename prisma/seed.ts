@@ -5,7 +5,8 @@ import { prisma } from "./client";
 import { AlbumType, Prisma } from "./generated/client";
 import { serializeSongInput } from "./serializer";
 
-import { AlbumDefinition, SectionDefinition, Song } from "@/types/Music";
+import type { AlbumDefinition } from "@/types/album";
+import type { SectionDefinition, Song } from "@/types/song";
 
 const seedConfig: { sections: SectionDefinition[] } = {
   sections: [

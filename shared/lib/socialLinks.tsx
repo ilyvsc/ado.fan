@@ -19,7 +19,7 @@ import {
   Music4,
 } from "lucide-react";
 
-import type { Category, SocialLink } from "@/types/Social";
+import type { Category, SocialLink } from "@/types/social";
 
 export const categories: Category[] = [
   {

@@ -5,13 +5,9 @@ import {
   songListPrismaSelect,
   songPrismaSelect,
 } from "@/prisma/serializer";
-import {
-  SearchResult,
-  Song,
-  SongListItem,
-  TimelinePeriod,
-  TimelineYear,
-} from "@/types/Music";
+import type { SearchResult } from "@/types/search";
+import type { Song, SongListItem } from "@/types/song";
+import type { TimelinePeriod, TimelineYear } from "@/types/timeline";
 
 /**
  * Fetch all songs for listing (lightweight, excludes lyrics content).

@@ -11,7 +11,7 @@ import { LyricsSongDisplay } from "@/features/lyrics/components/LyricsSongDispla
 import { RecommendedSongs } from "@/features/lyrics/components/RecommendedSongs";
 import { useInfiniteScroll } from "@/features/lyrics/hooks/useInfiniteScroll";
 import { useSongSearch } from "@/features/lyrics/hooks/useSongSearch";
-import type { SongListItem } from "@/types/Music";
+import type { SongListItem } from "@/types/song";
 
 export default function LyricsPage() {
   const router = useRouter();

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import type { SongListItem } from "@/types/Music";
+import type { SongListItem } from "@/types/song";
 
 const SEARCH_DEBOUNCE_MS = 300;
 

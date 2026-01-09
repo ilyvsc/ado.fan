@@ -1,6 +1,6 @@
 import { prisma } from "@/prisma/client";
 import { albumPrismaSelect, serializeAlbum } from "@/prisma/serializer";
-import { Album } from "@/types/Music";
+import { Album } from "@/types/album";
 
 /**
  * Fetch all albums with their tracks.

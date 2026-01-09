@@ -1,6 +1,6 @@
 import { Quote } from "lucide-react";
 
-import { Song } from "@/types/Music";
+import type { Song } from "@/types/song";
 
 export function SongCreditsDetails({ song }: { song: Song }) {
   if (!song.description) return null;

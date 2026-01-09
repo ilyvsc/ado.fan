@@ -4,7 +4,8 @@ import { ArrowLeft, Calendar, Clock, Mic, Music } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Album, Song } from "@/types/Music";
+import type { Album } from "@/types/album";
+import type { Song } from "@/types/song";
 
 export function SongLyricsHeader({
   song,

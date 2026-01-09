@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Album } from "@/types/Music";
+import type { Album } from "@/types/album";
 
 export function RelatedAlbumSongs({
   albums,

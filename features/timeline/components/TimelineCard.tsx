@@ -10,7 +10,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { NicoNicoPlayer, YouTubePlayer } from "@/components/VideoPlayer";
-import { Song } from "@/types/Music";
+import type { Song } from "@/types/song";
 
 gsap.registerPlugin(ScrollTrigger);
 

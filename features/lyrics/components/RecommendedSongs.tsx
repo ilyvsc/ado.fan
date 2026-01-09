@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useRef } from "react";
 
-import type { SongListItem } from "@/types/Music";
+import type { SongListItem } from "@/types/song";
 
 interface RecommendedSongsProps {
   latest: SongListItem[];

@@ -1,6 +1,7 @@
 import { Prisma } from "./generated/client";
 
-import { Album, Song, SongListItem } from "@/types/Music";
+import type { Album } from "@/types/album";
+import type { Song, SongListItem } from "@/types/song";
 
 /**
  * Fields to fetch from the database for a Song.
