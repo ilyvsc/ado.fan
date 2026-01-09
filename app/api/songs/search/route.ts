@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { searchSongsUniversal } from "@/prisma/queries/songs";
+import { searchSongsUniversal } from "@/prisma/queries/search";
 
 export async function GET(request: NextRequest) {
   try {
