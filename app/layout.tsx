@@ -3,10 +3,9 @@ import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
-import React from "react";
 
 import NoScriptError from "@/app/no-script";
-import { ThemeProvider } from "@/utils/providers/ThemeProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 
 import "@/styles/globals.css";
 

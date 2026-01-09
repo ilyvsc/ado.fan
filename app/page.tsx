@@ -1,11 +1,9 @@
-import React from "react";
-
 import { Footer } from "@/components/layout/Footer";
-import { FanAppreciation } from "@/features/home/AppreciationNote";
-import { ConnectSection } from "@/features/home/ConnectSection";
-import { HeroSection } from "@/features/home/HeroSection";
-import { NewsletterSection } from "@/features/home/Newsletter";
-import { WhoIsAdo } from "@/features/home/WhoIsAdo";
+import { FanAppreciation } from "@/features/home/components/AppreciationNote";
+import { ConnectSection } from "@/features/home/components/ConnectSection";
+import { HeroSection } from "@/features/home/components/HeroSection";
+import { NewsletterSection } from "@/features/home/components/Newsletter";
+import { WhoIsAdo } from "@/features/home/components/WhoIsAdo";
 import { DiscographyTimeline } from "@/features/timeline/Timeline";
 
 export const dynamic = "force-dynamic";

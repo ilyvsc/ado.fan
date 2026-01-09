@@ -14,7 +14,10 @@
     "incremental": true,
     "paths": {
       "@/*": ["./*"],
-      "@/features/*": ["./components/features/*"]
+      "@/components/*": ["./shared/components/*"],
+      "@/providers/*": ["./shared/providers/*"],
+      "@/lib/*": ["./shared/lib/*"],
+      "@/hooks/*": ["./shared/hooks/*"]
     },
     "noEmit": true,
     "plugins": [
