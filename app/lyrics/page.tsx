@@ -5,13 +5,12 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { useInfiniteScroll } from "./hooks/useInfiniteScroll";
-import { useSongSearch } from "./hooks/useSongSearch";
-
 import { useIsMobile } from "@/components/ui/use-mobile";
-import { LyricsNavigation } from "@/features/lyrics/LyricsNavigation";
-import { LyricsSongDisplay } from "@/features/lyrics/LyricsSongDisplay";
-import { RecommendedSongs } from "@/features/lyrics/RecommendedSongs";
+import { LyricsNavigation } from "@/features/lyrics/components/LyricsNavigation";
+import { LyricsSongDisplay } from "@/features/lyrics/components/LyricsSongDisplay";
+import { RecommendedSongs } from "@/features/lyrics/components/RecommendedSongs";
+import { useInfiniteScroll } from "@/features/lyrics/hooks/useInfiniteScroll";
+import { useSongSearch } from "@/features/lyrics/hooks/useSongSearch";
 import type { SongListItem } from "@/types/Music";
 
 export default function LyricsPage() {

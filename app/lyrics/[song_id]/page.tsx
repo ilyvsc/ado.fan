@@ -4,10 +4,10 @@ import { notFound } from "next/navigation";
 // import { buildLyricsMetadata } from "./metadata";
 
 import { Footer } from "@/components/layout/Footer";
-import { RelatedAlbumSongs } from "@/features/lyrics/RelatedAlbumSongs";
-import { SongCreditsDetails } from "@/features/lyrics/SongCreditsDetails";
-import { SongLyricsHeader } from "@/features/lyrics/SongLyricsHeader";
-import { SongLyricsModes } from "@/features/lyrics/SongLyricsModes";
+import { RelatedAlbumSongs } from "@/features/lyrics/components/RelatedAlbumSongs";
+import { SongCreditsDetails } from "@/features/lyrics/components/SongCreditsDetails";
+import { SongLyricsHeader } from "@/features/lyrics/components/SongLyricsHeader";
+import { SongLyricsModes } from "@/features/lyrics/components/SongLyricsModes";
 import { prisma } from "@/prisma/client";
 import { getAlbumsBySongId } from "@/prisma/queries/albums";
 import { serializeSong, songPrismaSelect } from "@/prisma/serializer";
