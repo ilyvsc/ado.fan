@@ -41,7 +41,6 @@ export async function searchSongsByTitle(
       japanese: song.titleJapanese,
     },
     length: song.length,
-    year: song.year,
     releaseDate: song.releaseDate.toISOString().slice(0, 10),
     coverArt: song.coverArt,
     themeColor: song.themeColor ?? undefined,

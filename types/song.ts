@@ -10,7 +10,6 @@ export type Song = {
     english: string;
   };
   length: string;
-  year: number;
   releaseDate: string;
   description: string;
   nicoId?: string | null;
@@ -40,7 +39,6 @@ export type SongListItem = {
     japanese: string;
   };
   length: string;
-  year: number;
   releaseDate: string;
   coverArt: string;
   themeColor?: string;
