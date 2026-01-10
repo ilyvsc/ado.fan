@@ -16,7 +16,10 @@ export function RelatedAlbumSongs({
 
   const mainAlbum = albums[0];
   const referenceAlbums = albums.filter((a) => a.id !== mainAlbum.id);
-  const songs = mainAlbum.tracks.map((t) => t.song);
+  const songs = mainAlbum.tracks.map((t) => ({
+    song: t.song,
+    trackNumber: t.trackNumber,
+  }));
 
   return (
     <div className="space-y-4 py-8">
@@ -40,7 +43,7 @@ export function RelatedAlbumSongs({
       </div>
 
       <div className={`gap-2 ${songs.length > 5 ? "columns-2" : "columns-1"}`}>
-        {songs.map((song) => {
+        {songs.map(({ song, trackNumber }) => {
           const isCurrentSong = song.id === currentSongId;
           return (
             <Link
@@ -56,7 +59,7 @@ export function RelatedAlbumSongs({
               <span
                 className={`${isCurrentSong ? "text-white" : "text-white/50"}`}
               >
-                {song.albumTrack?.trackNumber}.
+                {trackNumber}.
               </span>
               <span
                 className={`${isCurrentSong ? "font-bold text-white" : "text-white/80 group-hover:text-white"}`}
