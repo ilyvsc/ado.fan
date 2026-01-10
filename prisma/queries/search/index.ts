@@ -1,21 +1,23 @@
 import { prisma } from "@/prisma/client";
-import { songListPrismaSelect } from "@/prisma/serializer";
+import { songListPrismaSelect } from "@/prisma/select";
 import type { SearchResult } from "@/types/search";
 
 /**
- * Universal search for songs by title OR lyrics content.
- * Returns lightweight results with match context showing where the query matched.
+ * Search for songs by title (English or Japanese).
+ * Returns lightweight results without lyrics content.
  *
  * @param query - Search query string
- * @returns Promise resolving to an array of SearchResult with match context
+ * @returns Promise resolving to an array of SearchResult
  *
  * @example
  * ```typescript
- * const results = await searchSongsUniversal('usseewa');
- * results.forEach(r => console.log(r.matchType, r.matchContext));
+ * const results = await searchSongsByTitle('usseewa');
+ * results.forEach(r => console.log(r.title.english));
  * ```
+ *
+ * @note This search only matches against song titles, not lyrics content
  */
-export async function searchSongsUniversal(
+export async function searchSongsByTitle(
   query: string,
 ): Promise<SearchResult[]> {
   const q = query.trim();

@@ -30,3 +30,5 @@ export type AlbumDefinition = {
     trackNumber: number;
   }>;
 };
+
+export type AlbumMinimal = Omit<Album, "tracks">;

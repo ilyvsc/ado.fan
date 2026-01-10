@@ -1,5 +1,6 @@
 import { prisma } from "@/prisma/client";
-import { serializeSong, songPrismaSelect } from "@/prisma/serializer";
+import { songPrismaSelect } from "@/prisma/select";
+import { serializeSong } from "@/prisma/serializer";
 import type { Song } from "@/types/song";
 import type { TimelinePeriod, TimelineYear } from "@/types/timeline";
 
@@ -8,14 +9,14 @@ import type { TimelinePeriod, TimelineYear } from "@/types/timeline";
  *
  * @example
  * ```typescript
- * const featuredSongs = await getSongsBySection('featuredSongs');
  * const timelineSongs = await getSongsBySection('timelineSongs');
- * console.log(`Featured: ${featuredSongs.length}, Timeline: ${timelineSongs.length}`);
+ * console.log(`Timeline: ${timelineSongs.length}`);
  * ```
  *
  * @throws {Error} If database connection fails or query execution fails
  *
  * @note Returns an empty array if no songs are found for the given section
+ * @note Lyrics and AlbumTrack fields will be empty strings in the returned Song objects
  */
 export async function getSongsBySection(id: string): Promise<Song[]> {
   const section = await prisma.section.findMany({

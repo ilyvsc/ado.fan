@@ -1,8 +1,6 @@
 import { prisma } from "@/prisma/client";
-import {
-  serializeSongListItem,
-  songListPrismaSelect,
-} from "@/prisma/serializer";
+import { songListPrismaSelect } from "@/prisma/select";
+import { serializeSongListItem } from "@/prisma/serializer";
 import type { SongListItem } from "@/types/song";
 
 /**

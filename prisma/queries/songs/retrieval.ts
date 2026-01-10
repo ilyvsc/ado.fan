@@ -1,51 +1,41 @@
 import { prisma } from "@/prisma/client";
+import { songListPrismaSelect, songLyricsPrismaSelect } from "@/prisma/select";
 import {
-  serializeSong,
   serializeSongListItem,
-  songListPrismaSelect,
-  songPrismaSelect,
+  serializeSongWithLyrics,
 } from "@/prisma/serializer";
 import type { Song, SongListItem } from "@/types/song";
 
 /**
- * Fetch specific songs by their IDs, preserving the given order.
+ * Fetch a single song with lyrics by its ID.
  *
- * Retrieves songs from the database by their unique identifiers and returns
- * them in the exact order specified in the input array. This is useful for
- * maintaining specific ordering requirements (e.g., playlist order, featured songs).
- *
- * @param ids - Array of song IDs to fetch
- * @returns Promise resolving to an array of songs in the same order as the input IDs
+ * @param id - Song ID to fetch
+ * @returns Promise resolving to the song with lyrics, or null if not found
  *
  * @example
  * ```typescript
- * const songIds = ['song1', 'song3', 'song2'];
- * const songs = await getSongsByIds(songIds);
- * console.log(songs.map(s => s.id)); // ['song1', 'song3', 'song2']
+ * const song = await getSongWithLyrics("usseewa");
+ * console.log(song.lyrics.english);
  * ```
  *
- * @throws {Error} If any of the requested song IDs are not found in the database
  * @throws {Error} If database connection fails or query execution fails
+ * @note This function returns FULL LYRICS. Only use for lyrics pages.
  */
-export async function getSongsByIds(ids: string[]): Promise<Song[]> {
-  const songs = await prisma.song.findMany({
-    where: { id: { in: ids } },
-    select: songPrismaSelect,
+export async function getSongWithLyrics(id: string): Promise<Song | null> {
+  const song = await prisma.song.findUnique({
+    where: { id },
+    select: songLyricsPrismaSelect,
   });
-  return ids
-    .map((id) => songs.find((s) => s.id === id))
-    .filter((s): s is NonNullable<typeof s> => !!s)
-    .map(serializeSong);
+
+  if (!song) return null;
+
+  return serializeSongWithLyrics(song);
 }
 
 /**
- * Fetch all songs for listing (lightweight, excludes lyrics content).
+ * Fetch all songs for listing.
  *
- * Used for the lyrics search page and other listing views where full lyrics
- * are not needed. This is a security improvement to avoid exposing full
- * lyrics content when only metadata is required.
- *
- * @returns Promise resolving to an array of SongListItem (no lyrics content)
+ * @returns Promise resolving to a tiny array of SongListItem
  */
 export async function getAllSongsForListing(): Promise<SongListItem[]> {
   const songs = await prisma.song.findMany({

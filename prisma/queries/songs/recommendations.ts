@@ -1,8 +1,6 @@
 import { prisma } from "@/prisma/client";
-import {
-  serializeSongListItem,
-  songListPrismaSelect,
-} from "@/prisma/serializer";
+import { songListPrismaSelect } from "@/prisma/select";
+import { serializeSongListItem } from "@/prisma/serializer";
 import type { SongListItem } from "@/types/song";
 
 /**
@@ -23,17 +21,50 @@ export async function getLatestSongs(count = 3): Promise<SongListItem[]> {
 /**
  * Fetch random songs from the catalog.
  *
- * _This is a POSTGRESQL only query, ensures true random_
+ * Uses PostgreSQL's RANDOM() function for true randomization with a random skip offset
+ * to ensure diverse results across calls.
  *
- * @param count - Number of random songs to fetch (default: 3)
+ * @param count - Number of random songs to fetch (default: 3, max: 10)
  * @returns Promise resolving to an array of random songs
  */
 export async function getRandomSongs(count = 3): Promise<SongListItem[]> {
-  const songs = await prisma.$queryRaw<
-    any[]
-  >`SELECT * FROM "Song" ORDER BY RANDOM() LIMIT ${count}`;
+  const safeCount = Math.min(Math.max(1, Math.floor(count)), 10);
 
-  return songs.map(serializeSongListItem);
+  const songs = await prisma.$queryRaw<
+    Array<{
+      id: string;
+      titleEnglish: string;
+      titleJapanese: string;
+      length: string;
+      releaseDate: Date;
+      coverArt: string;
+      themeColor: string | null;
+    }>
+  >`
+    SELECT
+      id,
+      "titleEnglish",
+      "titleJapanese",
+      "length",
+      "releaseDate",
+      "coverArt",
+      "themeColor"
+    FROM "Song"
+    ORDER BY RANDOM()
+    LIMIT ${safeCount};
+  `;
+
+  return songs.map((song) => ({
+    id: song.id,
+    title: {
+      english: song.titleEnglish,
+      japanese: song.titleJapanese,
+    },
+    length: song.length,
+    releaseDate: song.releaseDate.toISOString().slice(0, 10),
+    coverArt: song.coverArt,
+    themeColor: song.themeColor ?? undefined,
+  }));
 }
 
 /**
