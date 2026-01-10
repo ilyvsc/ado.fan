@@ -11,18 +11,18 @@ import { useRef, useState } from "react";
 import { SongCard } from "./TimelineCard";
 import { TimelineHeader } from "./TimelineHeader";
 
-import type { TimelineYear } from "@/types/timeline";
+import type { timelineGroups } from "@/types/timeline";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export function TimelineClient({
-  timelineYears,
+  timelineGroups,
 }: {
-  timelineYears: TimelineYear[];
+  timelineGroups: timelineGroups[];
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [activeYear, setActiveYear] = useState(timelineYears[0]?.year ?? null);
+  const [activeYear, setActiveYear] = useState(timelineGroups[0]?.year ?? null);
   const [showSkip, setShowSkip] = useState(true);
 
   useGSAP(
@@ -162,7 +162,7 @@ export function TimelineClient({
 
       return () => mm.revert();
     },
-    { scope: wrapperRef, dependencies: [timelineYears] },
+    { scope: wrapperRef, dependencies: [timelineGroups] },
   );
 
   const handleSkip = () => {
@@ -198,7 +198,7 @@ export function TimelineClient({
           ref={contentRef}
           className="flex w-max items-center px-4 pb-32 md:h-screen md:p-24"
         >
-          {timelineYears.map((yearData) => {
+          {timelineGroups.map((yearData) => {
             const isActive = activeYear === yearData.year;
 
             return (

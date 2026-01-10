@@ -2,7 +2,7 @@ import { prisma } from "@/prisma/client";
 import { songPrismaSelect } from "@/prisma/select";
 import { serializeSong } from "@/prisma/serializer";
 import type { Song } from "@/types/song";
-import type { TimelinePeriod, TimelineYear } from "@/types/timeline";
+import type { TimelineYear } from "@/types/timeline";
 
 /**
  * Fetches songs belonging to a specific section.
@@ -30,80 +30,29 @@ export async function getSongsBySection(id: string): Promise<Song[]> {
 /**
  * Fetch the timeline songs grouped by year.
  *
- * Retrieves timeline songs and organizes them into year-based groups with
- * additional categorization by release period (early/mid/late year). This
- * provides structured data for timeline visualization with detailed metadata.
- *
- * Each year group includes:
- * - All songs released in that year, sorted by release date
- * - Songs categorized by release period (early: Jan-Apr, mid: May-Aug, late: Sep-Dec)
- * - Metadata about the year's release patterns
+ * Retrieves timeline songs and organizes them into year-based groups.
  *
  * @returns Promise resolving to an array of TimelineYear objects, sorted by year (ascending)
  *
- * @example
- * ```typescript
- * const yearGroups = await getTimelineSongsByYear();
- * yearGroups.forEach(yearGroup => {
- *   console.log(`${yearGroup.year}: ${yearGroup.totalSongs} songs`);
- *   console.log(`  Early: ${yearGroup.categorized.early.length}`);
- *   console.log(`  Mid: ${yearGroup.categorized.mid.length}`);
- *   console.log(`  Late: ${yearGroup.categorized.late.length}`);
- * });
- * ```
- *
  * @throws {Error} If database connection fails or query execution fails
  *
- * @note Period categorization: early (Jan-Apr), mid (May-Aug), late (Sep-Dec)
- * @note Years are sorted in ascending order (oldest first)
  * @note Songs within each year are sorted by release date (earliest first)
  */
-export async function getTimelineSongsByYear(): Promise<TimelineYear[]> {
-  const songs = await getTimelineSongs();
+export async function getTimelineSongs(): Promise<TimelineYear[]> {
+  const songs = await getSongsBySection("timelineSongs");
 
-  const byYear = songs.reduce<Record<number, Song[]>>((groupedSongs, song) => {
-    (groupedSongs[song.year] ||= []).push(song);
-    return groupedSongs;
+  const songsByYear = songs.reduce<Record<number, Song[]>>((group, song) => {
+    const year = new Date(song.releaseDate).getFullYear();
+    (group[year] ??= []).push(song);
+    return group;
   }, {});
 
-  return Object.entries(byYear)
-    .map(([year, songs]) => {
-      const sorted = songs.toSorted((a, b) =>
+  return Object.entries(songsByYear)
+    .map(([year, yearSongs]) => ({
+      year: Number(year),
+      songs: yearSongs.toSorted((a, b) =>
         a.releaseDate.localeCompare(b.releaseDate),
-      );
-
-      const periods: TimelinePeriod[] = [
-        {
-          period: "early" as const,
-          label: `EARLY ${year}`,
-          year: +year,
-          songs: sorted.filter((s) => new Date(s.releaseDate).getMonth() < 4),
-        },
-        {
-          period: "mid" as const,
-          label: `MID ${year}`,
-          year: +year,
-          songs: sorted.filter((s) => {
-            const month = new Date(s.releaseDate).getMonth();
-            return month >= 4 && month < 8;
-          }),
-        },
-        {
-          period: "late" as const,
-          label: `LATE ${year}`,
-          year: +year,
-          songs: sorted.filter((s) => new Date(s.releaseDate).getMonth() >= 8),
-        },
-      ].filter((p) => p.songs.length);
-
-      return {
-        year: +year,
-        songs: sorted,
-        totalSongs: sorted.length,
-        periods,
-      };
-    })
-    .sort((a, b) => a.year - b.year);
+      ),
+    }))
+    .toSorted((a, b) => a.year - b.year);
 }
-
-export const getTimelineSongs = () => getSongsBySection("timelineSongs");
