@@ -14,6 +14,10 @@ export function SongLyricsHeader({
   song: Song;
   albums: Album[];
 }) {
+  const trackNumber = albums[0]?.tracks.find(
+    (t) => t.song.id === song.id,
+  )?.trackNumber;
+
   const themeColor = song.themeColor;
 
   return (
@@ -64,7 +68,7 @@ export function SongLyricsHeader({
                 <Music className="h-4 w-4" />
                 <span className="text-white/70">
                   {albums.length === 1
-                    ? `Track ${song.albumTrack?.trackNumber} on `
+                    ? `Track ${trackNumber} on `
                     : "Featured on "}
                 </span>
 

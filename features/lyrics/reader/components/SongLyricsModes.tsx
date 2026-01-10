@@ -13,8 +13,8 @@ import {
 import { Suspense, useState } from "react";
 
 import { useLyricsUrlState } from "../hooks/useLyricsUrlState";
-import type { LyricsSearchParams } from "../types/states";
 
+import type { LyricsSearchParams } from "@/features/lyrics/types/states";
 import type { Language } from "@/types/lyrics";
 
 function SongLyricsModesInner({

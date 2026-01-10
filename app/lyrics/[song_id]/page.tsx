@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 
 import { Footer } from "@/components/layout/Footer";
-import { RelatedAlbumSongs } from "@/features/lyrics/components/RelatedAlbumSongs";
-import { SongCreditsDetails } from "@/features/lyrics/components/SongCreditsDetails";
-import { SongLyricsHeader } from "@/features/lyrics/components/SongLyricsHeader";
-import { SongLyricsModes } from "@/features/lyrics/components/SongLyricsModes";
+import { RelatedAlbumSongs } from "@/features/lyrics/reader/components/RelatedAlbumSongs";
+import { SongCreditsDetails } from "@/features/lyrics/reader/components/SongCreditsDetails";
+import { SongLyricsHeader } from "@/features/lyrics/reader/components/SongLyricsHeader";
+import { SongLyricsModes } from "@/features/lyrics/reader/components/SongLyricsModes";
 import { serializeLyricsToLanguages } from "@/features/lyrics/utils/serializeLyrics";
 import { getAlbumsBySongId } from "@/prisma/queries/album";
 import { getSongById, getSongLyricsById } from "@/prisma/queries/songs";

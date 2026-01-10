@@ -3,8 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
-import type { LyricsUrlState } from "../types/states";
-
+import type { LyricsUrlState } from "@/features/lyrics/types/states";
 import type { Language } from "@/types/lyrics";
 
 export function useLyricsUrlState({
