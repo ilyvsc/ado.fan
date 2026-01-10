@@ -3,7 +3,7 @@ import { join } from "path";
 
 import { prisma } from "./client";
 import { AlbumType, Prisma } from "./generated/client";
-import { serializeSongInput } from "./serializer";
+import { serializeSongSeed } from "./serializer";
 
 import type { AlbumDefinition } from "@/types/album";
 import type { SectionDefinition, Song } from "@/types/song";
@@ -204,7 +204,7 @@ async function main() {
     const rawSongs = loadAllSongsFromFixtures(path);
     const rawAlbums = loadJsonFromFile(join(path, "albums.json"));
 
-    await seedSongs(serializeSongInput(rawSongs));
+    await seedSongs(serializeSongSeed(rawSongs));
     await seedAlbums(rawAlbums as AlbumDefinition[]);
     await seedSections(seedConfig.sections);
 

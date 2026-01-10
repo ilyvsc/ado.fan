@@ -108,3 +108,18 @@ export function serializeSongWithLyrics(
     themeColor: song.themeColor ?? undefined,
   };
 }
+
+export function serializeSongSeed(songs: Song[]): Prisma.SongCreateInput[] {
+  return songs.map((song) => ({
+    id: song.id,
+    titleEnglish: song.title.english,
+    titleJapanese: song.title.japanese,
+    length: song.length,
+    releaseDate: new Date(song.releaseDate),
+    description: song.description,
+    nicoId: song.nicoId ?? null,
+    youtubeId: song.youtubeId ?? null,
+    coverArt: song.coverArt,
+    themeColor: song.themeColor ?? null,
+  }));
+}
