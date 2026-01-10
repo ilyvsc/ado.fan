@@ -2,7 +2,6 @@ import { Prisma } from "../generated/client";
 import {
   songAlbumPrismaSelect,
   songListPrismaSelect,
-  songLyricsPrismaSelect,
   songPrismaSelect,
 } from "../select/songSelect";
 
@@ -33,7 +32,6 @@ export function serializeSong(
       english: song.titleEnglish,
       japanese: song.titleJapanese,
     },
-    lyrics: { japanese: "", romaji: "", english: "" },
     length: song.length,
     releaseDate: song.releaseDate.toISOString().slice(0, 10),
     description: song.description,
@@ -56,7 +54,6 @@ export function serializeSongWithAlbum(
       english: song.titleEnglish,
       japanese: song.titleJapanese,
     },
-    lyrics: { japanese: "", romaji: "", english: "" },
     length: song.length,
     releaseDate: song.releaseDate.toISOString().slice(0, 10),
     description: song.description,
@@ -76,32 +73,6 @@ export function serializeSongWithAlbum(
           },
         }
       : undefined,
-  };
-}
-
-export function serializeSongWithLyrics(
-  song: Prisma.SongGetPayload<{ select: typeof songLyricsPrismaSelect }>,
-): Song {
-  const lyrics = song.lyrics?.[0];
-
-  return {
-    id: song.id,
-    title: {
-      english: song.titleEnglish,
-      japanese: song.titleJapanese,
-    },
-    lyrics: {
-      japanese: lyrics?.lyricsJapanese ?? "",
-      romaji: lyrics?.lyricsRomaji ?? "",
-      english: lyrics?.lyricsEnglish ?? "",
-    },
-    length: song.length,
-    releaseDate: song.releaseDate.toISOString().slice(0, 10),
-    description: song.description,
-    nicoId: song.nicoId,
-    youtubeId: song.youtubeId,
-    coverArt: song.coverArt,
-    themeColor: song.themeColor ?? undefined,
   };
 }
 

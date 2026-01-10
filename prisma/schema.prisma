@@ -30,13 +30,14 @@ model Song {
 }
 
 model Lyrics {
-  songId         String  @id @unique
-  lyricsJapanese String?
-  lyricsRomaji   String?
-  lyricsEnglish  String?
-  song           Song    @relation(fields: [songId], references: [id], onDelete: Cascade)
+  songId     String
+  language   String
+  translator String?
+  lines      String[]
+  song       Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
 
-  @@index([songId], name: "lyrics_song_id_idx")
+  @@id([songId, language])
+  @@index([songId])
 }
 
 model Album {

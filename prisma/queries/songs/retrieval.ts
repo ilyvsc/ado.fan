@@ -1,35 +1,55 @@
 import { prisma } from "@/prisma/client";
-import { songListPrismaSelect, songLyricsPrismaSelect } from "@/prisma/select";
 import {
+  lyricsPrismaSelect,
+  songListPrismaSelect,
+  songPrismaSelect,
+} from "@/prisma/select";
+import {
+  serializeLyrics,
+  serializeSong,
   serializeSongListItem,
-  serializeSongWithLyrics,
 } from "@/prisma/serializer";
+import type { Lyrics } from "@/types/lyrics";
 import type { Song, SongListItem } from "@/types/song";
 
 /**
- * Fetch a single song with lyrics by its ID.
+ * Fetch a single song by its ID.
  *
  * @param id - Song ID to fetch
- * @returns Promise resolving to the song with lyrics, or null if not found
+ * @returns Promise resolving to the song, or null if not found
  *
  * @example
  * ```typescript
- * const song = await getSongWithLyrics("usseewa");
- * console.log(song.lyrics.english);
+ * const song = await getSongById("usseewa");
+ * console.log(song.title.english);
  * ```
- *
- * @throws {Error} If database connection fails or query execution fails
- * @note This function returns FULL LYRICS. Only use for lyrics pages.
  */
-export async function getSongWithLyrics(id: string): Promise<Song | null> {
+export async function getSongById(id: string): Promise<Song | null> {
   const song = await prisma.song.findUnique({
     where: { id },
-    select: songLyricsPrismaSelect,
+    select: songPrismaSelect,
   });
 
   if (!song) return null;
 
-  return serializeSongWithLyrics(song);
+  return serializeSong(song);
+}
+
+/**
+ * Fetches all lyrics associated with a given song.
+ *
+ * @param songId - The ID of the song whose lyrics should be retrieved
+ * @returns An array of lyrics for the song (empty if none exist)
+ *
+ * @note This function returns FULL LYRICS. Only use for lyrics pages.
+ */
+export async function getSongLyricsById(songId: string): Promise<Lyrics[]> {
+  const lyrics = await prisma.lyrics.findMany({
+    where: { songId },
+    select: lyricsPrismaSelect,
+  });
+
+  return lyrics.map(serializeLyrics);
 }
 
 /**
