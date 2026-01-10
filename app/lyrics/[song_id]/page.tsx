@@ -8,9 +8,8 @@ import { RelatedAlbumSongs } from "@/features/lyrics/components/RelatedAlbumSong
 import { SongCreditsDetails } from "@/features/lyrics/components/SongCreditsDetails";
 import { SongLyricsHeader } from "@/features/lyrics/components/SongLyricsHeader";
 import { SongLyricsModes } from "@/features/lyrics/components/SongLyricsModes";
-import { prisma } from "@/prisma/client";
 import { getAlbumsBySongId } from "@/prisma/queries/album";
-import { serializeSong, songPrismaSelect } from "@/prisma/serializer";
+import { getSongWithLyrics } from "@/prisma/queries/songs";
 
 // export async function generateMetadata({
 //   params,
@@ -27,16 +26,12 @@ export default async function LyricsSongPage({
 }) {
   const { song_id } = await params;
 
-  const songData = await prisma.song.findUnique({
-    where: { id: song_id },
-    select: songPrismaSelect,
-  });
+  const song = await getSongWithLyrics(song_id);
 
-  if (!songData) {
+  if (!song) {
     notFound();
   }
 
-  const song = serializeSong(songData);
   const albums = await getAlbumsBySongId(song.id);
   const themeColor = song.themeColor;
 
