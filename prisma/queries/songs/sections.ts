@@ -2,7 +2,7 @@ import { prisma } from "@/prisma/client";
 import { songPrismaSelect } from "@/prisma/select";
 import { serializeSong } from "@/prisma/serializer";
 import type { Song } from "@/types/song";
-import type { TimelineYear } from "@/types/timeline";
+import type { TimelineGroups } from "@/types/timeline";
 
 /**
  * Fetches songs belonging to a specific section.
@@ -32,13 +32,13 @@ export async function getSongsBySection(id: string): Promise<Song[]> {
  *
  * Retrieves timeline songs and organizes them into year-based groups.
  *
- * @returns Promise resolving to an array of TimelineYear objects, sorted by year (ascending)
+ * @returns Promise resolving to an array of TimelineGroups objects, sorted by year (ascending)
  *
  * @throws {Error} If database connection fails or query execution fails
  *
  * @note Songs within each year are sorted by release date (earliest first)
  */
-export async function getTimelineSongs(): Promise<TimelineYear[]> {
+export async function getTimelineSongs(): Promise<TimelineGroups[]> {
   const songs = await getSongsBySection("timelineSongs");
 
   const songsByYear = songs.reduce<Record<number, Song[]>>((group, song) => {

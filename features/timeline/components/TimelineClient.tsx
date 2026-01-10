@@ -11,14 +11,14 @@ import { useRef, useState } from "react";
 import { SongCard } from "./TimelineCard";
 import { TimelineHeader } from "./TimelineHeader";
 
-import type { timelineGroups } from "@/types/timeline";
+import type { TimelineGroups } from "@/types/timeline";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export function TimelineClient({
   timelineGroups,
 }: {
-  timelineGroups: timelineGroups[];
+  timelineGroups: TimelineGroups[];
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
