@@ -1,17 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { searchSongsUniversal } from "@/prisma/queries/search";
+import { searchSongsByTitle } from "@/prisma/queries/search";
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const query = searchParams.get("q") ?? "";
 
-    if (!query.trim()) {
+    const trimmedQuery = query.trim();
+
+    if (!trimmedQuery) {
       return NextResponse.json([]);
     }
 
-    const results = await searchSongsUniversal(query);
+    if (trimmedQuery.length > 50) {
+      return NextResponse.json(
+        { error: "Search query too long. Maximum 50 characters." },
+        { status: 400 },
+      );
+    }
+
+    const results = await searchSongsByTitle(trimmedQuery);
     return NextResponse.json(results);
   } catch (error) {
     console.error("Failed to search songs:", error);
