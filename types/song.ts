@@ -4,11 +4,6 @@ export type Song = {
     english: string;
     japanese: string;
   };
-  lyrics: {
-    japanese: string;
-    romaji: string;
-    english: string;
-  };
   length: string;
   releaseDate: string;
   description: string;

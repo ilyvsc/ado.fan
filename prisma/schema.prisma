@@ -22,7 +22,6 @@ model Song {
   themeColor    String?
   lyrics        Lyrics[]
   albumTracks   AlbumTrack[]
-  Section       Section[]
 
   @@index([releaseDate(sort: Desc)], name: "song_release_date_idx")
   @@index([titleEnglish], name: "song_title_english_idx")
@@ -30,13 +29,14 @@ model Song {
 }
 
 model Lyrics {
-  songId         String  @id @unique
-  lyricsJapanese String?
-  lyricsRomaji   String?
-  lyricsEnglish  String?
-  song           Song    @relation(fields: [songId], references: [id], onDelete: Cascade)
+  songId     String
+  language   String
+  translator String?
+  lines      String[]
+  song       Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
 
-  @@index([songId], name: "lyrics_song_id_idx")
+  @@id([songId, language])
+  @@index([songId])
 }
 
 model Album {
@@ -63,15 +63,6 @@ model AlbumTrack {
   @@id([albumId, songId])
   @@unique([albumId, trackNumber])
   @@index([albumId, trackNumber], name: "album_track_order_idx")
-}
-
-model Section {
-  name   String
-  songId String
-  song   Song   @relation(fields: [songId], references: [id])
-
-  @@id([name, songId])
-  @@index([songId])
 }
 
 enum AlbumType {

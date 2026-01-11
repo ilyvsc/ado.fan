@@ -1,128 +1,103 @@
-import { readFileSync, readdirSync } from "fs";
-import { join } from "path";
+import { existsSync, readFileSync, readdirSync } from "fs";
+import { basename, dirname, join } from "path";
+import matter from "gray-matter";
+import { z } from "zod";
 
 import { prisma } from "./client";
 import { AlbumType, Prisma } from "./generated/client";
 import { serializeSongSeed } from "./serializer";
 
 import type { AlbumDefinition } from "@/types/album";
-import type { SectionDefinition, Song } from "@/types/song";
+import type { Lyrics } from "@/types/lyrics";
+import type { Song } from "@/types/song";
 
-const seedConfig: { sections: SectionDefinition[] } = {
-  sections: [
-    {
-      id: "featuredSongs",
-      items: ["readymade", "gira-gira", "new-genesis"],
-    },
-    {
-      id: "timelineSongs",
-      items: [
-        // 2017
-        "kimi-no-taion",
-        "star-night-show",
-        "strangers",
-        "shinkonsui",
-        // 2018
-        "watashino-aru",
-        "kirai-kirai",
-        "uminaoshi",
-        "renai-saiban",
-        "akushidento-coordinator",
-        "merutirando-nightmare",
-        "adishonaru-memory",
-        "ego-rock-short",
-        // 2019
-        "otome-kaibou",
-        "secret-answer",
-        "nounai-kakumei-girl",
-        "jama",
-        "hungry-nicole",
-        "bin",
-        "basket-worm",
-        // 2020
-        "last-resort",
-        "bokkaderaberita",
-        "baka",
-        "hanshoku-no-kansho",
-        "sunny-wave",
-        "usseewa",
-        // 2021
-        "gira-gira",
-        "kimi-no-taion-2021",
-        "daze",
-        "odo",
-        "aitakute",
-        "yokubari",
-        "adam-to-eve",
-        "readymade",
-        "snow-song-show",
-        // 2022
-        "new-genesis",
-        "fireworks",
-        "lucky-bruto",
-        "tokyo-wa-yoru",
-        "godish",
-        "buriki-no-dance",
-        "domestic-violence",
-        // 2023
-        "atashi-wa-mondaisaku",
-        "ibara",
-        "himawari",
-        "dignity",
-        "kura-kura",
-        "interviewer",
-        "show",
-        // 2024
-        "value",
-        "mirror",
-        "rule",
-        "chocolat-cadabra",
-        "sakura-biyori-time-machine",
-        "shoka",
-        "episode-x",
-        // 2025
-        "elf",
-        "bouquet-for-me",
-        "rockstar",
-        "cats-eye",
-      ],
-    },
-  ],
-};
-
-function loadJsonFromFile<T>(jsonPath: string): T {
-  return JSON.parse(readFileSync(jsonPath, "utf-8"));
+function loadJsonFile<T>(path: string): T {
+  return JSON.parse(readFileSync(path, "utf-8"));
 }
 
-function loadAllSongsFromFixtures(path: string): Song[] {
-  const songsPath = join(path, "songs");
-  const files = readdirSync(songsPath).filter((f) => f.endsWith(".json"));
+function loadJsonFilesFromDir<T>(path: string): T[] {
+  return readdirSync(path)
+    .filter((f) => f.endsWith(".json"))
+    .map((file) => loadJsonFile<T>(join(path, file)));
+}
 
-  const allSongs: Song[] = [];
-  for (const f of files) {
-    const fileSongs = loadJsonFromFile<Song[]>(join(songsPath, f));
-    allSongs.push(...fileSongs);
-    console.log(`- Songs from "${f}" loaded.`);
+function loadSongs(path: string): Song[] {
+  const songsPath = join(path, "songs");
+  const songs = readdirSync(songsPath)
+    .map((slug) => join(songsPath, slug, "meta.json"))
+    .filter(existsSync)
+    .map((file) => loadJsonFile<Song>(file));
+
+  console.log(`Loaded ${songs.length} songs.`);
+  return songs;
+}
+
+function loadAlbums(path: string): AlbumDefinition[] {
+  const albums = loadJsonFilesFromDir<AlbumDefinition>(join(path, "albums"));
+  console.log(`Loaded ${albums.length} albums`);
+  return albums;
+}
+
+function findLyricsFiles(path: string): string[] {
+  return readdirSync(path)
+    .map((slug) => join(path, slug, "lyrics"))
+    .filter(existsSync)
+    .flatMap((lyricsDir) =>
+      readdirSync(lyricsDir)
+        .filter((f) => f.endsWith(".md"))
+        .map((f) => join(lyricsDir, f)),
+    );
+}
+
+function parseLyricsFromMarkdown(path: string): Lyrics {
+  const lyricsSchema = z.object({
+    songId: z.string().min(1).optional(),
+    language: z.string().min(1).optional(),
+    translator: z.string().optional(),
+  });
+
+  const raw = readFileSync(path, "utf-8");
+  const { data, content } = matter(raw);
+  const schema = lyricsSchema.parse(data);
+
+  const songId = schema.songId || basename(dirname(dirname(path)));
+  const language = schema.language || basename(path, ".md");
+
+  const lines = content
+    .trim()
+    .split("\n")
+    .map((line) => line.trim());
+
+  return {
+    songId,
+    language,
+    translator: schema.translator ?? null,
+    lines,
+  };
+}
+
+function loadLyrics(path: string): Lyrics[] {
+  const songsPath = join(path, "songs");
+  const files = findLyricsFiles(songsPath);
+
+  const pathSongId = new Set(
+    files.map((file) => basename(dirname(dirname(file)))),
+  );
+
+  const lyrics = files.map(parseLyricsFromMarkdown);
+
+  for (const lyric of lyrics) {
+    if (!pathSongId.has(lyric.songId)) {
+      throw new Error(`Lyrics songId mismatch for "${lyric.songId}"`);
+    }
   }
 
-  console.log(`Total of ${allSongs.length} songs loaded.`);
-
-  return allSongs;
+  console.log(`Loaded ${lyrics.length} lyrics.`);
+  return lyrics;
 }
 
-async function clearDatabase() {
-  console.log("🧹 Clearing database...");
-
-  await prisma.albumTrack.deleteMany();
-  await prisma.section.deleteMany();
-  await prisma.song.deleteMany();
-  await prisma.album.deleteMany();
-}
-
-async function seedSongs(songs: Prisma.SongCreateInput[]) {
-  console.log(`Seeding ${songs.length} songs…`);
-
-  const normalized = songs.map((song) => ({
+function normalizeSongs(songs: Song[]): Prisma.SongCreateInput[] {
+  return serializeSongSeed(songs).map((song) => ({
     ...song,
     description: Array.isArray(song.description)
       ? song.description
@@ -130,83 +105,88 @@ async function seedSongs(songs: Prisma.SongCreateInput[]) {
           .join("\n")
       : (song.description ?? ""),
   }));
-
-  await Promise.all(
-    normalized.map((song) =>
-      prisma.song.upsert({
-        where: { id: song.id },
-        update: song,
-        create: song,
-      }),
-    ),
-  );
-
-  console.log("✅ Songs seeded!");
 }
 
-async function seedAlbums(albumDefinitions: AlbumDefinition[]) {
-  console.log(`Seeding ${albumDefinitions.length} albums…`);
+async function clearDatabase() {
+  console.log("🧹 Clearing database...");
 
-  for (const { tracks, ...albumData } of albumDefinitions) {
-    const album = {
-      ...albumData,
-      type: albumData.type as AlbumType,
-      releaseDate: new Date(albumData.releaseDate),
-    };
+  await prisma.$transaction([
+    prisma.albumTrack.deleteMany(),
+    prisma.lyrics.deleteMany(),
+    prisma.song.deleteMany(),
+    prisma.album.deleteMany(),
+  ]);
+}
 
-    await prisma.album.upsert({
-      where: { id: album.id },
-      create: album,
-      update: album,
+async function seedSongs(songs: Prisma.SongCreateInput[]) {
+  await prisma.song.createMany({ data: songs });
+  console.log(`✅ Seeded ${songs.length} songs.`);
+}
+
+async function seedAlbums(
+  albums: AlbumDefinition[],
+  seededSongIds: Set<string>,
+) {
+  for (const album of albums) {
+    const { tracks, ...data } = album;
+
+    await prisma.album.create({
+      data: {
+        ...data,
+        type: data.type as AlbumType,
+        releaseDate: new Date(data.releaseDate),
+      },
     });
 
-    await prisma.albumTrack.deleteMany({ where: { albumId: album.id } });
+    const validTracks = tracks.filter((t) => seededSongIds.has(t.songId));
 
-    if (tracks.length > 0) {
+    if (validTracks.length > 0) {
       await prisma.albumTrack.createMany({
-        data: tracks.map((t) => ({
-          albumId: album.id,
+        data: validTracks.map((t) => ({
+          albumId: data.id,
           songId: t.songId,
           trackNumber: t.trackNumber,
         })),
-        skipDuplicates: true,
       });
     }
+
     console.log(
-      `- Album "${albumData.titleEnglish}" seeded with ${tracks.length} tracks.`,
+      `✅ Seeded album "${data.titleEnglish}" (${validTracks.length}/${tracks.length} tracks).`,
     );
   }
-
-  console.log("✅ Albums seeded!");
 }
 
-async function seedSections(sections: SectionDefinition[]) {
-  console.log(`Seeding ${sections.length} sections…`);
+async function seedLyrics(lyrics: Lyrics[], seededSongIds: Set<string>) {
+  const validLyrics = lyrics.filter((l) => seededSongIds.has(l.songId));
 
-  for (const section of sections) {
-    await prisma.section.createMany({
-      data: section.items.map((songId) => ({
-        name: section.id,
-        songId,
+  if (validLyrics.length > 0) {
+    await prisma.lyrics.createMany({
+      data: validLyrics.map((l) => ({
+        songId: l.songId,
+        language: l.language,
+        translator: l.translator,
+        lines: l.lines,
       })),
-      skipDuplicates: true,
     });
   }
-  console.log("✅ Sections seeded!");
+
+  console.log(`✅ Seeded ${validLyrics.length}/${lyrics.length} lyrics.`);
 }
 
 async function main() {
+  await prisma.$connect();
+
   try {
-    await prisma.$connect();
     await clearDatabase();
 
     const path = join(import.meta.dirname, "fixtures");
-    const rawSongs = loadAllSongsFromFixtures(path);
-    const rawAlbums = loadJsonFromFile(join(path, "albums.json"));
 
-    await seedSongs(serializeSongSeed(rawSongs));
-    await seedAlbums(rawAlbums as AlbumDefinition[]);
-    await seedSections(seedConfig.sections);
+    const songs = normalizeSongs(loadSongs(path));
+    const seededSongIds = new Set(songs.map((s) => s.id));
+
+    await seedSongs(songs);
+    await seedAlbums(loadAlbums(path), seededSongIds);
+    await seedLyrics(loadLyrics(path), seededSongIds);
 
     console.log("\n🎉 Database seeding completed successfully!");
   } catch (error) {

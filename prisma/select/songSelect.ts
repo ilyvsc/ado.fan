@@ -25,17 +25,6 @@ export const songListPrismaSelect = {
   themeColor: true,
 };
 
-export const songLyricsPrismaSelect = {
-  ...songBaseSelect,
-  lyrics: {
-    select: {
-      lyricsJapanese: true,
-      lyricsRomaji: true,
-      lyricsEnglish: true,
-    },
-  },
-};
-
 export const songAlbumPrismaSelect = {
   ...songBaseSelect,
   albumTracks: {

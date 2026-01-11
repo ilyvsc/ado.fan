@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useIsMobile } from "@/components/ui/use-mobile";
-import { LyricsNavigation } from "@/features/lyrics/components/LyricsNavigation";
-import { LyricsSongDisplay } from "@/features/lyrics/components/LyricsSongDisplay";
-import { RecommendedSongs } from "@/features/lyrics/components/RecommendedSongs";
-import { useInfiniteScroll } from "@/features/lyrics/hooks/useInfiniteScroll";
-import { useSongSearch } from "@/features/lyrics/hooks/useSongSearch";
+import { LyricsNavigation } from "@/features/lyrics/search/components/LyricsNavigation";
+import { LyricsSongDisplay } from "@/features/lyrics/search/components/LyricsSongDisplay";
+import { RecommendedSongs } from "@/features/lyrics/search/components/RecommendedSongs";
+import { useInfiniteScroll } from "@/features/lyrics/search/hooks/useInfiniteScroll";
+import { useSongSearch } from "@/features/lyrics/search/hooks/useSongSearch";
 import type { SongListItem } from "@/types/song";
 
 export default function LyricsPage() {
