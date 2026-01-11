@@ -17,14 +17,23 @@ import type { TimelineGroups } from "@/types/timeline";
  * @note Songs within each year are sorted by release date (earliest first)
  */
 export async function getTimelineSongs(): Promise<TimelineGroups[]> {
+  const currentYear = new Date(Date.now()).getFullYear();
+  const start = new Date(currentYear, 0, 1);
+  const end = new Date(currentYear + 1, 0, 1);
+
   const songs = await prisma.song.findMany({
     where: {
-      id: { in: timelineConfig },
+      OR: [
+        { id: { in: timelineConfig } },
+        {
+          releaseDate: { gte: start, lt: end },
+          id: { notIn: timelineConfig },
+        },
+      ],
     },
+    take: timelineConfig.length + 8,
     select: songPrismaSelect,
-    orderBy: {
-      releaseDate: "asc",
-    },
+    orderBy: { releaseDate: "asc" },
   });
 
   const grouped: Record<number, Song[]> = {};

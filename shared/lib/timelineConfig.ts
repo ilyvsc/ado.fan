@@ -14,7 +14,6 @@ export const timelineConfig = [
   "akushidento-coordinator",
   "merutirando-nightmare",
   "adishonaru-memory",
-  "ego-rock-short",
 
   // 2019
   "otome-kaibou",
@@ -35,7 +34,6 @@ export const timelineConfig = [
   "hanshoku-no-kansho",
   "limbo",
   "sunny-wave",
-  "black-rock-shooter",
 
   // 2021
   "readymade",
@@ -43,40 +41,19 @@ export const timelineConfig = [
   "odo",
   "yoru-no-pierrot",
   "anti-system",
-  "aitakute",
-  "snow-song-show",
   "ashura-chan",
-  "kimi-no-taion-2021",
   "renai-senso",
-  "16-bit-girl",
-  "daze",
   "zaneri",
-  "yokubari",
-  "adam-to-eve",
-  "shizahands",
 
   // 2022
-  "motherland",
   "lucky-bruto",
   "new-genesis",
-  "backlight",
   "im-invincible",
-  "fleeting-lullaby",
-  "binkusuno-sake",
-  "world-continuation",
-  "tot-musica",
-  "where-wind-blows",
-  "rebellion",
-  "missing",
-  "freedom",
   "wonderful-cat-life",
   "love-and-destroy",
   "kokoro-fukakai",
-  "fireworks",
   "darling-dance",
   "tokyo-wa-yoru",
-  "birthday-song-for-miku",
-  "inojinaroshi",
 
   // 2023
   "atashi-wa-mondaisaku",
@@ -86,22 +63,16 @@ export const timelineConfig = [
   "dignity",
   "kura-kura",
   "all-night-radio",
-  "hello-signals",
   "atashi-i-my-risoron",
-  "shinjinrui",
-  "interviewer",
 
   // 2024
   "value",
   "mirror",
   "rule",
-  "zero",
   "chocolat-cadabra",
   "sakura-biyori-time-machine",
   "shoka",
-  "episode-x",
   "nukegara",
-  "lazy-cruise",
   "sugarvine",
 
   // 2025
@@ -109,4 +80,8 @@ export const timelineConfig = [
   "bouquet-for-me",
   "rockstar",
   "cats-eye",
+  "stay-gold",
+  "charles",
+  "magic",
+  "odoru-ponpokorin",
 ];
