@@ -123,7 +123,10 @@ async function seedSongs(songs: Prisma.SongCreateInput[]) {
   console.log(`✅ Seeded ${songs.length} songs.`);
 }
 
-async function seedAlbums(albums: AlbumDefinition[]) {
+async function seedAlbums(
+  albums: AlbumDefinition[],
+  seededSongIds: Set<string>,
+) {
   for (const album of albums) {
     const { tracks, ...data } = album;
 
@@ -135,9 +138,11 @@ async function seedAlbums(albums: AlbumDefinition[]) {
       },
     });
 
-    if (tracks.length > 0) {
+    const validTracks = tracks.filter((t) => seededSongIds.has(t.songId));
+
+    if (validTracks.length > 0) {
       await prisma.albumTrack.createMany({
-        data: tracks.map((t) => ({
+        data: validTracks.map((t) => ({
           albumId: data.id,
           songId: t.songId,
           trackNumber: t.trackNumber,
@@ -146,22 +151,26 @@ async function seedAlbums(albums: AlbumDefinition[]) {
     }
 
     console.log(
-      `✅ Seeded album "${data.titleEnglish}" (${tracks.length} tracks).`,
+      `✅ Seeded album "${data.titleEnglish}" (${validTracks.length}/${tracks.length} tracks).`,
     );
   }
 }
 
-async function seedLyrics(lyrics: Lyrics[]) {
-  await prisma.lyrics.createMany({
-    data: lyrics.map((l) => ({
-      songId: l.songId,
-      language: l.language,
-      translator: l.translator,
-      lines: l.lines,
-    })),
-  });
+async function seedLyrics(lyrics: Lyrics[], seededSongIds: Set<string>) {
+  const validLyrics = lyrics.filter((l) => seededSongIds.has(l.songId));
 
-  console.log(`✅ Seeded ${lyrics.length} lyrics.`);
+  if (validLyrics.length > 0) {
+    await prisma.lyrics.createMany({
+      data: validLyrics.map((l) => ({
+        songId: l.songId,
+        language: l.language,
+        translator: l.translator,
+        lines: l.lines,
+      })),
+    });
+  }
+
+  console.log(`✅ Seeded ${validLyrics.length}/${lyrics.length} lyrics.`);
 }
 
 async function main() {
@@ -172,9 +181,12 @@ async function main() {
 
     const path = join(import.meta.dirname, "fixtures");
 
-    await seedSongs(normalizeSongs(loadSongs(path)));
-    await seedAlbums(loadAlbums(path));
-    await seedLyrics(loadLyrics(path));
+    const songs = normalizeSongs(loadSongs(path));
+    const seededSongIds = new Set(songs.map((s) => s.id));
+
+    await seedSongs(songs);
+    await seedAlbums(loadAlbums(path), seededSongIds);
+    await seedLyrics(loadLyrics(path), seededSongIds);
 
     console.log("\n🎉 Database seeding completed successfully!");
   } catch (error) {
