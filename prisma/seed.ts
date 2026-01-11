@@ -1,4 +1,4 @@
-import { existsSync, globSync, readFileSync, readdirSync } from "fs";
+import { globSync, readFileSync, readdirSync } from "fs";
 import { basename, dirname, join } from "path";
 import matter from "gray-matter";
 import { z } from "zod";
