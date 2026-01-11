@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, readdirSync } from "fs";
+import { existsSync, globSync, readFileSync, readdirSync } from "fs";
 import { basename, dirname, join } from "path";
 import matter from "gray-matter";
 import { z } from "zod";
@@ -22,11 +22,8 @@ function loadJsonFilesFromDir<T>(path: string): T[] {
 }
 
 function loadSongs(path: string): Song[] {
-  const songsPath = join(path, "songs");
-  const songs = readdirSync(songsPath)
-    .map((slug) => join(songsPath, slug, "meta.json"))
-    .filter(existsSync)
-    .map((file) => loadJsonFile<Song>(file));
+  const files = globSync(join(path, "songs/**/meta.json"));
+  const songs = files.map((file) => loadJsonFile<Song>(file));
 
   console.log(`Loaded ${songs.length} songs.`);
   return songs;
@@ -36,17 +33,6 @@ function loadAlbums(path: string): AlbumDefinition[] {
   const albums = loadJsonFilesFromDir<AlbumDefinition>(join(path, "albums"));
   console.log(`Loaded ${albums.length} albums`);
   return albums;
-}
-
-function findLyricsFiles(path: string): string[] {
-  return readdirSync(path)
-    .map((slug) => join(path, slug, "lyrics"))
-    .filter(existsSync)
-    .flatMap((lyricsDir) =>
-      readdirSync(lyricsDir)
-        .filter((f) => f.endsWith(".md"))
-        .map((f) => join(lyricsDir, f)),
-    );
 }
 
 function parseLyricsFromMarkdown(path: string): Lyrics {
@@ -60,8 +46,8 @@ function parseLyricsFromMarkdown(path: string): Lyrics {
   const { data, content } = matter(raw);
   const schema = lyricsSchema.parse(data);
 
-  const songId = schema.songId || basename(dirname(dirname(path)));
-  const language = schema.language || basename(path, ".md");
+  const songId = schema.songId ?? basename(dirname(dirname(path)));
+  const language = schema.language ?? basename(path, ".md");
 
   const lines = content
     .trim()
@@ -77,20 +63,20 @@ function parseLyricsFromMarkdown(path: string): Lyrics {
 }
 
 function loadLyrics(path: string): Lyrics[] {
-  const songsPath = join(path, "songs");
-  const files = findLyricsFiles(songsPath);
+  const files = globSync(join(path, "songs/**/lyrics/**/*.md"));
 
-  const pathSongId = new Set(
-    files.map((file) => basename(dirname(dirname(file)))),
-  );
+  const lyrics = files.map((file) => {
+    const songId = basename(dirname(dirname(file)));
+    const lyric = parseLyricsFromMarkdown(file);
 
-  const lyrics = files.map(parseLyricsFromMarkdown);
-
-  for (const lyric of lyrics) {
-    if (!pathSongId.has(lyric.songId)) {
-      throw new Error(`Lyrics songId mismatch for "${lyric.songId}"`);
+    if (lyric.songId !== songId) {
+      throw new Error(
+        `Lyrics songId mismatch: path=${songId}, frontmatter=${lyric.songId}`,
+      );
     }
-  }
+
+    return lyric;
+  });
 
   console.log(`Loaded ${lyrics.length} lyrics.`);
   return lyrics;
