@@ -1,0 +1,3 @@
+[submodule "prisma/fixtures"]
+	path = prisma/fixtures
+	url = git@github.com:ilyvsc/ado-fan-fixtures.git
