@@ -1,3 +1,7 @@
+import type { ExternalLinkDefinition } from "./externalLink";
+
+import type { SongCreateInput } from "@/prisma/generated/models";
+
 export type Song = {
   id: string;
   title: {
@@ -11,6 +15,7 @@ export type Song = {
   youtubeId?: string | null;
   coverArt: string;
   themeColor?: string;
+  externalLinks?: ExternalLinkDefinition[];
   albumTrack?: {
     trackNumber: number;
     album: {
@@ -45,3 +50,7 @@ export type SectionDefinition = {
 };
 
 export type SongsByYear = Record<number, Song[]>;
+
+export type SongSeedInput = SongCreateInput & {
+  externalLinks?: ExternalLinkDefinition[];
+};

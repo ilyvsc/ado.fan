@@ -70,3 +70,25 @@ enum AlbumType {
   ep
   album
 }
+
+model ExternalLink {
+  relationId   String
+  relationType String
+
+  type        ExternalLinkType
+  value       String
+  title       String?
+  description String?
+  createdAt   DateTime         @default(now())
+
+  @@id([relationType, relationId, type, value])
+  @@index([relationType, relationId], name: "external_link_relation_idx")
+  @@index([type], name: "external_link_type_idx")
+}
+
+enum ExternalLinkType {
+  youtubeVideo
+  nicoVideo
+  link
+  embed
+}

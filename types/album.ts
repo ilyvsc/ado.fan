@@ -1,3 +1,4 @@
+import type { ExternalLinkDefinition } from "./externalLink";
 import type { Song } from "./song";
 
 export type Album = {
@@ -10,6 +11,7 @@ export type Album = {
   type: "single" | "ep" | "album";
   tracks: AlbumTrack[];
   coverArt: string;
+  externalLinks?: ExternalLinkDefinition[];
 };
 
 export type AlbumTrack = {
@@ -29,6 +31,7 @@ export type AlbumDefinition = {
     songId: string;
     trackNumber: number;
   }>;
+  externalLinks: ExternalLinkDefinition[];
 };
 
 export type AlbumMinimal = Omit<Album, "tracks">;

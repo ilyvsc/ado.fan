@@ -5,7 +5,7 @@ import {
   songPrismaSelect,
 } from "../select/songSelect";
 
-import type { Song, SongListItem } from "@/types/song";
+import type { Song, SongListItem, SongSeedInput } from "@/types/song";
 
 export function serializeSongListItem(
   song: Prisma.SongGetPayload<{ select: typeof songListPrismaSelect }>,
@@ -76,7 +76,7 @@ export function serializeSongWithAlbum(
   };
 }
 
-export function serializeSongSeed(songs: Song[]): Prisma.SongCreateInput[] {
+export function serializeSongSeed(songs: Song[]): SongSeedInput[] {
   return songs.map((song) => ({
     id: song.id,
     titleEnglish: song.title.english,
@@ -88,5 +88,6 @@ export function serializeSongSeed(songs: Song[]): Prisma.SongCreateInput[] {
     youtubeId: song.youtubeId ?? null,
     coverArt: song.coverArt,
     themeColor: song.themeColor ?? null,
+    externalLinks: song.externalLinks,
   }));
 }

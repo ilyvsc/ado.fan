@@ -4,12 +4,12 @@ import matter from "gray-matter";
 import { z } from "zod";
 
 import { prisma } from "./client";
-import { AlbumType, Prisma } from "./generated/client";
+import { AlbumType } from "./generated/client";
 import { serializeSongSeed } from "./serializer";
 
 import type { AlbumDefinition } from "@/types/album";
 import type { Lyrics } from "@/types/lyrics";
-import type { Song } from "@/types/song";
+import type { Song, SongSeedInput } from "@/types/song";
 
 function loadJsonFile<T>(path: string): T {
   return JSON.parse(readFileSync(path, "utf-8"));
@@ -82,7 +82,7 @@ function loadLyrics(path: string): Lyrics[] {
   return lyrics;
 }
 
-function normalizeSongs(songs: Song[]): Prisma.SongCreateInput[] {
+function normalizeSongs(songs: Song[]): SongSeedInput[] {
   return serializeSongSeed(songs).map((song) => ({
     ...song,
     description: Array.isArray(song.description)
@@ -98,15 +98,42 @@ async function clearDatabase() {
 
   await prisma.$transaction([
     prisma.albumTrack.deleteMany(),
+    prisma.externalLink.deleteMany(),
     prisma.lyrics.deleteMany(),
     prisma.song.deleteMany(),
     prisma.album.deleteMany(),
   ]);
 }
 
-async function seedSongs(songs: Prisma.SongCreateInput[]) {
-  await prisma.song.createMany({ data: songs });
+async function seedExternalLinks(
+  entity: AlbumDefinition | SongSeedInput,
+  relationType: string,
+  relationId: string,
+) {
+  const externalLinks = entity.externalLinks;
+  if (!externalLinks?.length) return;
+
+  await prisma.externalLink.createMany({
+    data: externalLinks.map((link) => ({
+      relationType,
+      relationId,
+      type: link.type,
+      value: link.value,
+      title: link.title,
+      description: link.description,
+    })),
+  });
+}
+
+async function seedSongs(songs: SongSeedInput[]) {
+  const data = songs.map(({ externalLinks, ...song }) => song);
+  await prisma.song.createMany({ data });
+
   console.log(`✅ Seeded ${songs.length} songs.`);
+
+  for (const song of songs) {
+    await seedExternalLinks(song, "song", song.id);
+  }
 }
 
 async function seedAlbums(
@@ -114,7 +141,7 @@ async function seedAlbums(
   seededSongIds: Set<string>,
 ) {
   for (const album of albums) {
-    const { tracks, ...data } = album;
+    const { tracks, externalLinks, ...data } = album;
 
     await prisma.album.create({
       data: {
@@ -135,6 +162,8 @@ async function seedAlbums(
         })),
       });
     }
+
+    await seedExternalLinks(album, "album", data.id);
 
     console.log(
       `✅ Seeded album "${data.titleEnglish}" (${validTracks.length}/${tracks.length} tracks).`,
