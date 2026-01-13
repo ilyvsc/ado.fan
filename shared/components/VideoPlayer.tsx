@@ -22,6 +22,7 @@ const VideoPlayer = ({
         allowFullScreen
         loading="lazy"
         sandbox="allow-scripts allow-same-origin allow-presentation"
+        referrerPolicy="strict-origin-when-cross-origin"
         className={
           isFullscreenBackground
             ? `absolute top-1/2 left-1/2 aspect-video min-h-full min-w-full -translate-1/2`
