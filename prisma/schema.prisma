@@ -72,6 +72,7 @@ enum AlbumType {
 }
 
 model ExternalLink {
+  id           Int    @id @default(autoincrement())
   relationId   String
   relationType String
 
@@ -81,7 +82,6 @@ model ExternalLink {
   description String?
   createdAt   DateTime         @default(now())
 
-  @@id([relationType, relationId, type, value])
   @@index([relationType, relationId], name: "external_link_relation_idx")
   @@index([type], name: "external_link_type_idx")
 }

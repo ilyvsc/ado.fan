@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { ExternalLinks } from "@/components/ExternalLinks";
 import { Footer } from "@/components/layout/Footer";
 import { RelatedAlbumSongs } from "@/features/lyrics/reader/components/RelatedAlbumSongs";
 import { SongCreditsDetails } from "@/features/lyrics/reader/components/SongCreditsDetails";
@@ -7,6 +8,7 @@ import { SongLyricsHeader } from "@/features/lyrics/reader/components/SongLyrics
 import { SongLyricsModes } from "@/features/lyrics/reader/components/SongLyricsModes";
 import { serializeLyricsToLanguages } from "@/features/lyrics/utils/serializeLyrics";
 import { getAlbumsBySongId } from "@/prisma/queries/album";
+import { getExternalLinks } from "@/prisma/queries/externalLinks";
 import { getSongById, getSongLyricsById } from "@/prisma/queries/songs";
 
 export default async function LyricsSongPage({
@@ -19,9 +21,10 @@ export default async function LyricsSongPage({
 
   if (!song) notFound();
 
-  const [rawLyrics, albums] = await Promise.all([
+  const [rawLyrics, albums, externalLinks] = await Promise.all([
     getSongLyricsById(song_id),
     getAlbumsBySongId(song.id),
+    getExternalLinks("song", song.id),
   ]);
 
   const availableLanguages = serializeLyricsToLanguages(rawLyrics);
@@ -46,8 +49,9 @@ export default async function LyricsSongPage({
           <div className="flex justify-center">
             <SongCreditsDetails song={song} />
           </div>
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
+          <div className="grid lg:grid-cols-2 lg:items-start lg:gap-6">
             <RelatedAlbumSongs albums={albums} currentSongId={song.id} />
+            <ExternalLinks links={externalLinks} />
           </div>
         </div>
       </div>
