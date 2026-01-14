@@ -1,6 +1,8 @@
 import type { ExternalLinkDefinition } from "./externalLink";
 import type { Song } from "./song";
 
+import { AlbumCredits } from "@/shared/schemas/credits";
+
 export type Album = {
   id: string;
   title: {
@@ -32,6 +34,7 @@ export type AlbumDefinition = {
     trackNumber: number;
   }>;
   externalLinks: ExternalLinkDefinition[];
+  credits?: AlbumCredits;
 };
 
 export type AlbumMinimal = Omit<Album, "tracks">;

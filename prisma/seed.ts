@@ -7,6 +7,10 @@ import { prisma } from "./client";
 import { AlbumType } from "./generated/client";
 import { serializeSongSeed } from "./serializer";
 
+import {
+  assertAlbumCredits,
+  assertSongCredits,
+} from "@/shared/schemas/credits";
 import type { AlbumDefinition } from "@/types/album";
 import type { Lyrics } from "@/types/lyrics";
 import type { Song, SongSeedInput } from "@/types/song";
@@ -90,6 +94,7 @@ function normalizeSongs(songs: Song[]): SongSeedInput[] {
           .map((item) => (Array.isArray(item) ? item.join("\n") : item))
           .join("\n")
       : (song.description ?? ""),
+    credits: song.credits ? assertSongCredits(song.credits) : "",
   }));
 }
 
@@ -148,6 +153,7 @@ async function seedAlbums(
         ...data,
         type: data.type as AlbumType,
         releaseDate: new Date(data.releaseDate),
+        credits: album.credits ? assertAlbumCredits(album.credits) : "",
       },
     });
 
