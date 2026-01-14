@@ -24,20 +24,3 @@ export const songListPrismaSelect = {
   coverArt: true,
   themeColor: true,
 };
-
-export const songAlbumPrismaSelect = {
-  ...songBaseSelect,
-  albumTracks: {
-    select: {
-      trackNumber: true,
-      album: {
-        select: {
-          id: true,
-          titleEnglish: true,
-          titleJapanese: true,
-        },
-      },
-    },
-    take: 1,
-  },
-};
