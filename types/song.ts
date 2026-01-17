@@ -1,6 +1,7 @@
 import type { ExternalLinkDefinition } from "./externalLink";
 
 import type { SongCreateInput } from "@/prisma/generated/models";
+import type { Credits } from "@/shared/schemas/credits";
 
 export type Song = {
   id: string;
@@ -15,6 +16,7 @@ export type Song = {
   youtubeId?: string | null;
   coverArt: string;
   themeColor?: string;
+  credits?: Credits | null;
   externalLinks?: ExternalLinkDefinition[];
   albumTrack?: {
     trackNumber: number;

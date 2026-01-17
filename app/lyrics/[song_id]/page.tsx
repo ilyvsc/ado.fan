@@ -41,9 +41,7 @@ export default async function LyricsSongPage({
 
       <div
         className="relative overflow-hidden"
-        style={{
-          background: `linear-gradient(180deg, ${song.themeColor} 0%, ${song.themeColor}dd 100%)`,
-        }}
+        style={{ background: song.themeColor }}
       >
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex justify-center">

@@ -7,10 +7,7 @@ import { prisma } from "./client";
 import { AlbumType } from "./generated/client";
 import { serializeSongSeed } from "./serializer";
 
-import {
-  assertAlbumCredits,
-  assertSongCredits,
-} from "@/shared/schemas/credits";
+import { Credits, assertCredits } from "@/shared/schemas/credits";
 import type { AlbumDefinition } from "@/types/album";
 import type { Lyrics } from "@/types/lyrics";
 import type { Song, SongSeedInput } from "@/types/song";
@@ -86,15 +83,31 @@ function loadLyrics(path: string): Lyrics[] {
   return lyrics;
 }
 
-function normalizeSongs(songs: Song[]): SongSeedInput[] {
+function normalizeDescription(
+  description: SongSeedInput["description"],
+): string {
+  if (!description) return "";
+
+  if (Array.isArray(description)) {
+    return description
+      .map((item) => (Array.isArray(item) ? item.join("\n") : item))
+      .join("\n");
+  }
+
+  return description;
+}
+
+function normalizeCredits(credits: unknown): Credits | "" {
+  if (!credits) return "";
+  const normalized = Array.isArray(credits) ? { credits } : credits;
+  return assertCredits(normalized);
+}
+
+export function normalizeSongs(songs: Song[]): SongSeedInput[] {
   return serializeSongSeed(songs).map((song) => ({
     ...song,
-    description: Array.isArray(song.description)
-      ? song.description
-          .map((item) => (Array.isArray(item) ? item.join("\n") : item))
-          .join("\n")
-      : (song.description ?? ""),
-    credits: song.credits ? assertSongCredits(song.credits) : "",
+    description: normalizeDescription(song.description),
+    credits: normalizeCredits(song.credits),
   }));
 }
 
@@ -153,7 +166,7 @@ async function seedAlbums(
         ...data,
         type: data.type as AlbumType,
         releaseDate: new Date(data.releaseDate),
-        credits: album.credits ? assertAlbumCredits(album.credits) : "",
+        credits: album.credits ? assertCredits(album.credits) : "",
       },
     });
 
