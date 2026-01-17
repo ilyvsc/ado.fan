@@ -1,6 +1,7 @@
 import { Prisma } from "../generated/client";
 import { songListPrismaSelect, songPrismaSelect } from "../select/songSelect";
 
+import { parseCredits } from "@/shared/schemas/credits";
 import type { Song, SongListItem, SongSeedInput } from "@/types/song";
 
 export function serializeSongListItem(
@@ -35,6 +36,7 @@ export function serializeSong(
     youtubeId: song.youtubeId,
     coverArt: song.coverArt,
     themeColor: song.themeColor ?? undefined,
+    credits: parseCredits(song.credits),
     albumTrack: undefined,
   };
 }
@@ -51,6 +53,7 @@ export function serializeSongSeed(songs: Song[]): SongSeedInput[] {
     youtubeId: song.youtubeId ?? null,
     coverArt: song.coverArt,
     themeColor: song.themeColor ?? null,
+    credits: song.credits ?? undefined,
     externalLinks: song.externalLinks,
   }));
 }

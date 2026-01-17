@@ -13,6 +13,7 @@ const songBaseSelect = {
 
 export const songPrismaSelect = {
   ...songBaseSelect,
+  credits: true,
 };
 
 export const songListPrismaSelect = {
