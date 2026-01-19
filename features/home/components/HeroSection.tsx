@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ChevronsDown } from "lucide-react";
 
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { YouTubePlayer } from "@/components/VideoPlayer";
 import { useIsMobile } from "@/components/ui/use-mobile";
@@ -35,8 +35,21 @@ export function HeroSection() {
   const navContainerRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
+  const [isVideoPaused, setIsVideoPaused] = useState(false);
+
   const isMobile = useIsMobile();
   const scrollEnd = isMobile ? "+=40%" : "+=60%";
+
+  useEffect(() => {
+    if (!bgRef.current) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsVideoPaused(!entry.isIntersecting);
+    });
+
+    observer.observe(bgRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   useGSAP(
     () => {
@@ -142,8 +155,10 @@ export function HeroSection() {
       >
         <YouTubePlayer
           youtubeId="_RAffg8JQ6g"
-          extraParams="mute=1&controls=0&start=45&end=80&autoplay=1&loop=1"
+          extraParams="mute=1&controls=0&autoplay=1"
           isFullscreenBackground
+          isPaused={isVideoPaused}
+          loop={{ start: 45, end: 80 }}
         />
       </div>
 
