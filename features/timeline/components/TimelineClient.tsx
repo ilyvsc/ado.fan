@@ -191,7 +191,11 @@ export function TimelineClient({
         {showSkip && (
           <button
             onClick={handleSkip}
-            className="absolute right-8 bottom-8 z-50 hidden items-center gap-1 rounded-md bg-foreground/80 p-2 text-background transition-colors duration-300 hover:bg-foreground md:flex"
+            className={`absolute right-8 bottom-8 z-50 hidden items-center gap-1 rounded-md p-2 transition-colors duration-300 md:flex ${
+              isPastMiddle
+                ? "bg-background/90 text-foreground hover:bg-background"
+                : "bg-foreground/90 text-background hover:bg-foreground"
+            }`}
           >
             <span className="text-sm font-medium">Skip Timeline</span>
             <ArrowDown className="h-4 w-4" />
