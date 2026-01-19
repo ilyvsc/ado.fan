@@ -24,6 +24,7 @@ export function TimelineClient({
   const contentRef = useRef<HTMLDivElement>(null);
   const [activeYear, setActiveYear] = useState(timelineGroups[0]?.year ?? null);
   const [showSkip, setShowSkip] = useState(true);
+  const [isPastMiddle, setIsPastMiddle] = useState(false);
 
   useGSAP(
     () => {
@@ -69,6 +70,7 @@ export function TimelineClient({
             onUpdate: (self) => {
               updateActiveYear();
               setShowSkip(self.progress < 0.95);
+              setIsPastMiddle(self.progress >= 0.5);
             },
           },
         });
@@ -182,7 +184,9 @@ export function TimelineClient({
 
       <div
         ref={wrapperRef}
-        className="relative w-full overflow-x-auto bg-background md:h-screen md:overflow-hidden"
+        className={`relative w-full overflow-x-auto transition-colors duration-700 ease-in-out md:h-screen md:overflow-hidden ${
+          isPastMiddle ? "bg-foreground" : "bg-background"
+        }`}
       >
         {showSkip && (
           <button
@@ -209,9 +213,7 @@ export function TimelineClient({
               >
                 <div className="sticky top-4 left-1/2 z-10 flex shrink-0 -translate-x-1/2 justify-center self-start md:pointer-events-none md:static md:h-full md:translate-x-0 md:flex-col md:justify-center md:self-auto">
                   <div
-                    className={`font-gambarino text-7xl leading-none font-black tracking-tight text-foreground transition-all duration-500 ease-out md:text-9xl md:[writing-mode:vertical-rl] ${
-                      isActive ? "scale-100 opacity-100" : "scale-95 opacity-10"
-                    }`}
+                    className={`font-gambarino text-7xl leading-none font-black tracking-tight transition-all duration-500 ease-out md:text-9xl md:[writing-mode:vertical-rl] ${isActive ? "scale-100 opacity-100" : "scale-95 opacity-10"} ${isPastMiddle ? "text-background" : "text-foreground"} `}
                   >
                     {yearData.year}
                   </div>
@@ -220,7 +222,7 @@ export function TimelineClient({
                 <div className="grid grid-flow-col grid-rows-4 gap-x-2 gap-y-2">
                   {yearData.songs.map((song) => (
                     <div key={song.id} data-song-card>
-                      <SongCard song={song} />
+                      <SongCard song={song} isPastMiddle={isPastMiddle} />
                     </div>
                   ))}
                 </div>

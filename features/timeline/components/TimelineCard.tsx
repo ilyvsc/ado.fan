@@ -14,7 +14,13 @@ import type { Song } from "@/types/song";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export const SongCard = React.memo(function SongCard({ song }: { song: Song }) {
+export const SongCard = React.memo(function SongCard({
+  song,
+  isPastMiddle = false,
+}: {
+  song: Song;
+  isPastMiddle?: boolean;
+}) {
   const [isExpanded, setExpandedState] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const mountedRef = useRef(false);
@@ -99,8 +105,12 @@ export const SongCard = React.memo(function SongCard({ song }: { song: Song }) {
                 </div>
               )}
 
-              <div className="absolute inset-0 flex items-center justify-center bg-background/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <Play className="h-8 w-8 fill-current text-foreground drop-shadow-md" />
+              <div
+                className={`absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-300 group-hover:opacity-100 ${isPastMiddle ? "bg-foreground/40" : "bg-background/40"}`}
+              >
+                <Play
+                  className={`h-8 w-8 fill-current drop-shadow-md transition-colors duration-700 ${isPastMiddle ? "text-background" : "text-foreground"}`}
+                />
               </div>
             </div>
           </div>
@@ -108,7 +118,7 @@ export const SongCard = React.memo(function SongCard({ song }: { song: Song }) {
           <div className="flex min-w-0 flex-1 flex-col justify-center">
             <h3
               ref={titleRef}
-              className="font-gambarino text-3xl leading-none font-bold tracking-tight text-foreground md:text-4xl"
+              className={`font-gambarino text-3xl leading-none font-bold tracking-tight transition-colors duration-700 md:text-4xl ${isPastMiddle ? "text-background" : "text-foreground"}`}
             >
               {song.title.english}
             </h3>
