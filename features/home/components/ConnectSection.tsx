@@ -61,11 +61,11 @@ export function ConnectSection() {
 
   return (
     <section id="connect" className="relative w-full bg-ado-secondary/20 py-14">
-      <div ref={containerRef} className="container mx-auto px-4 sm:px-0">
+      <div ref={containerRef} className="container mx-auto px-4 md:px-2">
         <div className="flex flex-col gap-8 lg:flex-row">
           <aside
             ref={sidebarRef}
-            className="flex flex-col gap-6 lg:w-80 lg:shrink-0"
+            className="flex flex-col gap-6 md:w-64 lg:shrink-0 xl:w-80"
           >
             <div>
               <h2 className="font-gambarino text-4xl tracking-wide text-foreground uppercase">
