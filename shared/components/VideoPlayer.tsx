@@ -33,7 +33,7 @@ const VideoPlayer = forwardRef<HTMLIFrameElement, VideoPlayerProps>(
 
 interface YouTubePlayerProps {
   song?: Song;
-  youtubeId: string;
+  youtubeId?: string;
   title?: string;
   extraParams?: string;
   isFullscreenBackground?: boolean;
