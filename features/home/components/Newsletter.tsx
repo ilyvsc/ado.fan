@@ -150,16 +150,16 @@ export function NewsletterSection() {
             ref={listWrapperRef}
             className="grid grid-cols-2 gap-1.5 text-xs text-muted-foreground/90 sm:gap-2 sm:text-sm"
           >
-            <li className="rounded-md border border-foreground/10 bg-card/40 p-2 sm:p-3">
+            <li className="rounded-md border border-foreground/10 bg-background/40 p-2 sm:p-3">
               Early announcements
             </li>
-            <li className="rounded-md border border-foreground/10 bg-card/40 p-2 sm:p-3">
+            <li className="rounded-md border border-foreground/10 bg-background/40 p-2 sm:p-3">
               Tour & event alerts
             </li>
-            <li className="rounded-md border border-foreground/10 bg-card/40 p-2 sm:p-3">
+            <li className="rounded-md border border-foreground/10 bg-background/40 p-2 sm:p-3">
               Official merch drops
             </li>
-            <li className="rounded-md border border-foreground/10 bg-card/40 p-2 sm:p-3">
+            <li className="rounded-md border border-foreground/10 bg-background/40 p-2 sm:p-3">
               Behind-the-scenes notes
             </li>
           </ul>
@@ -167,7 +167,7 @@ export function NewsletterSection() {
 
         <Card
           ref={cardRef}
-          className="mx-auto w-full max-w-md rounded-lg border border-foreground/10 bg-card/40 will-change-transform"
+          className="mx-auto w-full max-w-md rounded-lg border border-foreground/10 bg-background/40 will-change-transform"
           aria-label="Subscribe card"
         >
           <CardHeader>
@@ -195,7 +195,7 @@ export function NewsletterSection() {
             >
               <Button
                 ref={buttonRef}
-                className="w-full cursor-grab bg-ado-secondary/80 text-base text-white hover:bg-ado-secondary"
+                className="w-full cursor-grab bg-ado-primary/80 text-base text-white hover:bg-ado-primary"
               >
                 Subscribe
                 <ExternalLink />
@@ -204,7 +204,7 @@ export function NewsletterSection() {
 
             <p className="mt-6 text-xs text-muted-foreground">
               Powered by{" "}
-              <span className="rounded bg-ado-secondary/20 px-1 py-1 font-medium text-ado-secondary">
+              <span className="rounded bg-ado-primary/20 px-1 py-1 font-medium text-ado-primary">
                 umusic.jp
               </span>
               {", "} we never collect your email here.

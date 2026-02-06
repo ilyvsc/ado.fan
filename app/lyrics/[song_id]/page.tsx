@@ -30,7 +30,10 @@ export default async function LyricsSongPage({
   const availableLanguages = serializeLyricsToLanguages(rawLyrics);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div
+      className="min-h-screen bg-background"
+      style={{ "--theme-color": song.themeColor } as React.CSSProperties}
+    >
       <SongLyricsHeader song={song} albums={albums} />
 
       <div className="container mx-auto px-2 py-8 sm:px-4">
@@ -39,10 +42,7 @@ export default async function LyricsSongPage({
         </div>
       </div>
 
-      <div
-        className="relative overflow-hidden"
-        style={{ background: song.themeColor }}
-      >
+      <div className="relative overflow-hidden bg-(--theme-color)">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex justify-center">
             <SongCreditsDetails song={song} />

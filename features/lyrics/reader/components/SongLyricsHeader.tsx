@@ -18,15 +18,8 @@ export function SongLyricsHeader({
     (t) => t.song.id === song.id,
   )?.trackNumber;
 
-  const themeColor = song.themeColor;
-
   return (
-    <div
-      className="relative overflow-hidden"
-      style={{
-        background: `linear-gradient(180deg, ${themeColor} 0%)`,
-      }}
-    >
+    <div className="relative overflow-hidden bg-(--theme-color)">
       <div className="relative container mx-auto px-4 py-8 sm:px-6 sm:py-12">
         <Link
           href="/lyrics"
@@ -38,7 +31,7 @@ export function SongLyricsHeader({
 
         <div className="flex flex-col gap-6 md:flex-row md:gap-8 lg:gap-12">
           {song.coverArt ? (
-            <div className="relative h-48 w-48 shrink-0 overflow-hidden rounded-lg shadow-2xl md:h-56 md:w-56 lg:h-64 lg:w-64">
+            <div className="relative h-48 w-48 shrink-0 overflow-hidden rounded-lg md:h-56 md:w-56 lg:h-64 lg:w-64">
               <Image
                 src={song.coverArt}
                 alt={
@@ -74,7 +67,7 @@ export function SongLyricsHeader({
 
                 <div className="flex flex-wrap items-center">
                   {albums.map((album, index) => (
-                    <span key={album.id} className="max-w-[200px] truncate">
+                    <span key={album.id} className="max-w-50 truncate">
                       <Link
                         href={`/album/${album.id}`}
                         className="truncate underline decoration-white/30 underline-offset-2 transition-colors hover:text-white hover:decoration-white/60"

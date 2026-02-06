@@ -6,8 +6,6 @@ import { NewsletterSection } from "@/features/home/components/Newsletter";
 import { WhoIsAdo } from "@/features/home/components/WhoIsAdo";
 import { DiscographyTimeline } from "@/features/timeline/Timeline";
 
-export const dynamic = "force-dynamic";
-
 export default function Home() {
   return (
     <main className="min-h-screen bg-background">

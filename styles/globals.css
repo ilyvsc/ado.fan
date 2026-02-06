@@ -6,20 +6,6 @@
 
 /* Theme Colors for TailwindCSS v4 */
 @theme {
-  /* CUSTOM COLORS */
-  --color-ado-blue-600: hsl(220 100% 50%);
-  --color-ado-blue-700: hsl(220 100% 38%);
-  --color-ado-blue-800: hsl(222 100% 26%); /* or -> hsl(227 100% 50%) */
-  --color-ado-blue-900: hsl(224 100% 17%);
-
-  --color-ado-red-600: hsl(0 92.3% 54.1%);
-  --color-ado-red-700: hsl(0 81.2% 39.6%);
-  --color-ado-red-800: hsl(0 85.4% 26.9%);
-  --color-ado-red-900: hsl(0 92.3% 15.3%);
-
-  --color-ado-key: var(--color-ado-blue-600);
-  --color-ado-secondary: hsl(200, 100%, 25%); /* or -> hsl(214 95% 60%) */
-
   /* Font and Screen customazations */
   --breakpoint-xs: 420px;
   --breakpoint-2xl: 1536px;
@@ -28,42 +14,40 @@
 
   --font-gambarino: "Gambarino-Regular";
 
+  --color-ado-primary: hsl(195.79, 98%, 19%);
+  --color-ado-secondary: hsl(233, 91%, 9%);
+
   /* General purpose colors -> texts */
   --color-background: hsl(0 0% 100%);
   --color-foreground: hsl(240 10% 3.9%);
-  --color-muted-foreground: hsl(274 5% 40%);
-
-  /* Colors that affect components -> for now */
-  --color-card: hsl(0 0% 100%);
-  --color-card-foreground: hsl(240 10% 3.9%);
+  --color-muted-foreground: hsl(260 6% 55%);
 }
 
 @layer base {
-  .dark {
-    --color-background: hsl(0, 0%, 0%);
-    --color-foreground: hsl(0 0% 100%);
-    --color-muted-foreground: hsl(274 10% 80%);
-    --color-card: hsl(240 10% 10%);
-    --color-card-foreground: hsl(0 0% 100%);
+  :root.dark,
+  :root[data-theme].dark {
+    --color-background: hsl(240 10% 4%);
+    --color-foreground: hsl(0 0% 98%);
+    --color-muted-foreground: hsl(274 10% 90%);
   }
 }
 
 :root[data-theme="uta"] {
-  --color-ado-key: hsl(324 91% 70%); /* or -> hsl(315 64% 61%) */
+  --color-ado-primary: hsl(324 91% 70%); /* or -> hsl(315 64% 61%) */
   --color-ado-secondary: hsl(32 44% 84%);
 }
 
 :root[data-theme="himawari"] {
-  --color-ado-key: hsl(53 93% 59%);
+  --color-ado-primary: hsl(53 93% 59%);
   --color-ado-secondary: hsl(190 56% 78%);
 }
 
 :root[data-theme="shoka"] {
-  --color-ado-key: hsl(360 96% 37%);
+  --color-ado-primary: hsl(360 96% 37%);
   --color-ado-secondary: hsl(360 79% 15%);
 }
 
 :root[data-theme="sakura-biyori-time-machine"] {
-  --color-ado-key: hsl(343 72% 79%);
+  --color-ado-primary: hsl(343 72% 79%);
   --color-ado-secondary: hsl(180 26% 35%);
 }

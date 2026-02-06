@@ -58,24 +58,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="h-full">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="color-scheme" content="dark light" />
       </head>
 
-      <body className={`${inter.className}`} suppressHydrationWarning>
-        <NoScriptError />
+      <body className={inter.className}>
+        <noscript>
+          <style>{`body > :not(noscript) { display: none; }`}</style>
+          <NoScriptError />
+        </noscript>
 
-        <div className="js-required">
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
-          <Analytics />
-        </div>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

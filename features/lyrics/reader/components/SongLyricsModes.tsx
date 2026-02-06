@@ -129,7 +129,7 @@ function SongLyricsModesInner({
                   onClick={() => setMode(mode)}
                   className={`flex items-center gap-1 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-300 ${
                     viewMode === mode
-                      ? "bg-foreground/10 text-foreground shadow-lg shadow-background/2"
+                      ? "bg-foreground/10 text-foreground"
                       : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
                   }`}
                 >
