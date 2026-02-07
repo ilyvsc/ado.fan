@@ -16,11 +16,9 @@ export function useInfiniteScroll(enabled: boolean) {
 
   const offsetRef = useRef(0);
   const isLoadingRef = useRef(false);
-
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const loadMoreRef = useRef<(() => Promise<void>) | undefined>(undefined);
 
-  loadMoreRef.current = async () => {
+  const loadMore = useCallback(async () => {
     if (isLoadingRef.current || !hasMore || !enabled) return;
 
     isLoadingRef.current = true;
@@ -48,7 +46,7 @@ export function useInfiniteScroll(enabled: boolean) {
       isLoadingRef.current = false;
       setLoadingMore(false);
     }
-  };
+  }, [enabled, hasMore]);
 
   useEffect(() => {
     async function init() {
@@ -81,8 +79,8 @@ export function useInfiniteScroll(enabled: boolean) {
       const rootMargin = isMobile ? "100px" : "50px";
       observerRef.current = new IntersectionObserver(
         (entries) => {
-          if (entries[0].isIntersecting && loadMoreRef.current) {
-            void loadMoreRef.current();
+          if (entries[0].isIntersecting) {
+            void loadMore();
           }
         },
         { rootMargin, threshold: 0.1 },
@@ -90,7 +88,7 @@ export function useInfiniteScroll(enabled: boolean) {
 
       observerRef.current.observe(element);
     },
-    [enabled, hasMore, isMobile],
+    [enabled, hasMore, isMobile, loadMore],
   );
 
   return {
