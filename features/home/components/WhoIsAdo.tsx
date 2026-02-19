@@ -285,6 +285,7 @@ export function WhoIsAdo() {
                   aria-hidden="true"
                   fill
                   priority
+                  sizes="100vw"
                   className="object-cover"
                 />
               </div>
@@ -323,6 +324,7 @@ export function WhoIsAdo() {
                   alt="Ado - Japanese singer and artist character"
                   fill
                   priority
+                  sizes="50vw"
                   className="object-cover"
                 />
               </div>

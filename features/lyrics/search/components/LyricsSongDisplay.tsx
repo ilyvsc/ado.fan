@@ -95,6 +95,7 @@ export function LyricsSongDisplay({
                     src={song.coverArt}
                     alt={song.title.english}
                     fill
+                    sizes="64px"
                     className="object-cover"
                     loading="lazy"
                   />
@@ -150,6 +151,7 @@ export function LyricsSongDisplay({
                     src={song.coverArt}
                     alt={song.title.english}
                     fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
                     className="object-cover"
                     loading="lazy"
                   />

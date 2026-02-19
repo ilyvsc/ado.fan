@@ -40,6 +40,7 @@ export function SongLyricsHeader({
                     : song.title.english
                 }
                 fill
+                sizes="(max-width: 768px) 192px, (max-width: 1024px) 224px, 256px"
                 className="object-cover"
                 priority
               />

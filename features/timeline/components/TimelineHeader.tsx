@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import Image from "next/image";
 import { useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -240,9 +241,11 @@ export function TimelineHeader() {
         ref={indicatorRef}
         className="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 md:bottom-20"
       >
-        <img
+        <Image
           src="/images/roses-crown.svg"
           alt=""
+          width={40}
+          height={40}
           className="h-8 w-auto opacity-80 md:h-10"
         />
         <span className="text-xs tracking-widest text-foreground/40 uppercase">

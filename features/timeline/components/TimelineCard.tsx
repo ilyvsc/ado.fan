@@ -96,6 +96,7 @@ export const SongCard = React.memo(function SongCard({
                   src={song.coverArt}
                   alt={song.title.english}
                   fill
+                  sizes="96px"
                   className="object-cover"
                   loading="lazy"
                 />

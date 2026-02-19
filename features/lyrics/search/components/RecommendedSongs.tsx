@@ -82,6 +82,7 @@ export function RecommendedSongs({ latest, random }: RecommendedSongsProps) {
                     src={song.coverArt}
                     alt={song.title.english}
                     fill
+                    sizes="152px"
                     className="object-cover"
                     loading="lazy"
                   />

@@ -29,6 +29,7 @@ export function RelatedAlbumSongs({
             src={mainAlbum.coverArt}
             alt={`${mainAlbum.title.english} (${mainAlbum.title.japanese})`}
             fill
+            sizes="(max-width: 640px) 128px, 160px"
             className="object-cover"
           />
         </div>
@@ -88,6 +89,7 @@ export function RelatedAlbumSongs({
                     src={album.coverArt}
                     alt={`${album.title.english} (${album.title.japanese})`}
                     fill
+                    sizes="64px"
                     className="object-cover"
                   />
                 </div>
