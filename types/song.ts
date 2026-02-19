@@ -46,8 +46,6 @@ export type SongListItem = {
   themeColor?: string;
 };
 
-export type SongsByYear = Record<number, Song[]>;
-
 export type SongSeedInput = SongCreateInput & {
   externalLinks?: ExternalLinkDefinition[];
 };
