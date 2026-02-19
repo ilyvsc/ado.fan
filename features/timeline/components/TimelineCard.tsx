@@ -141,11 +141,16 @@ export const SongCard = React.memo(function SongCard({
         isExpanded &&
         createPortal(
           <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${song.title.english} video player`}
             onClick={() => setExpandedState(false)}
+            onKeyDown={(e) => e.key === "Escape" && setExpandedState(false)}
             onMouseMove={handleMouseMove}
             className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden p-4 backdrop-blur-sm md:p-12"
           >
             <div
+              role="presentation"
               onClick={(e) => e.stopPropagation()}
               className="relative aspect-video w-full max-w-5xl overflow-hidden rounded-lg bg-background/40"
             >
