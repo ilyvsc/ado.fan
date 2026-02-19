@@ -17,26 +17,16 @@ import { useLyricsUrlState } from "../hooks/useLyricsUrlState";
 import type { LyricsSearchParams } from "@/features/lyrics/types/states";
 import type { Language } from "@/types/lyrics";
 
-function SongLyricsModesInner({
-  availableLanguages,
+function LanguageSelect({
+  value,
+  onChange,
+  languages,
 }: {
-  availableLanguages: Language[];
+  value: string;
+  onChange: (code: string) => void;
+  languages: Language[];
 }) {
-  const { state, languages, setMode, setLeft, setRight, swapLanguages } =
-    useLyricsUrlState({ availableLanguages });
-
-  const [fontSize, setFontSize] = useState(14);
-
-  const getLanguageByCode = (code: string) =>
-    languages.find((l) => l.code === code);
-
-  const LanguageSelect = ({
-    value,
-    onChange,
-  }: {
-    value: string;
-    onChange: (code: string) => void;
-  }) => (
+  return (
     <div className="relative">
       <select
         value={value}
@@ -54,21 +44,25 @@ function SongLyricsModesInner({
       </div>
     </div>
   );
+}
 
-  const EmptyState = () => (
+function EmptyState() {
+  return (
     <div className="flex min-h-[40vh] flex-col items-center justify-center gap-6 text-muted-foreground/60">
       <LayoutGrid className="h-12 w-12 opacity-50" />
       <p className="text-xl font-light tracking-widest uppercase">No lyrics</p>
     </div>
   );
+}
 
-  const LyricsContent = ({
-    content,
-    fontSize,
-  }: {
-    content: string;
-    fontSize: number;
-  }) => (
+function LyricsContent({
+  content,
+  fontSize,
+}: {
+  content: string;
+  fontSize: number;
+}) {
+  return (
     <p
       className="font-sans leading-loose whitespace-pre-wrap text-foreground transition-all duration-300"
       style={{ fontSize: `${fontSize + 2}px` }}
@@ -76,6 +70,20 @@ function SongLyricsModesInner({
       {content}
     </p>
   );
+}
+
+function SongLyricsModesInner({
+  availableLanguages,
+}: {
+  availableLanguages: Language[];
+}) {
+  const { state, languages, setMode, setLeft, setRight, swapLanguages } =
+    useLyricsUrlState({ availableLanguages });
+
+  const [fontSize, setFontSize] = useState(14);
+
+  const getLanguageByCode = (code: string) =>
+    languages.find((l) => l.code === code);
 
   if (languages.length === 0) return <EmptyState />;
 
@@ -91,7 +99,11 @@ function SongLyricsModesInner({
         <div className="flex flex-wrap items-center gap-2">
           {viewMode === "compare" && languages.length > 1 && (
             <div className="group flex items-center gap-1 rounded-full border border-foreground/10 bg-background/50 p-1.5 transition-all hover:border-foreground/20 hover:bg-background/70">
-              <LanguageSelect value={state.left} onChange={setLeft} />
+              <LanguageSelect
+                value={state.left}
+                onChange={setLeft}
+                languages={languages}
+              />
               <button
                 onClick={swapLanguages}
                 className="group/swap rounded-full p-2 text-muted-foreground transition-all hover:bg-foreground/10 hover:text-foreground"
@@ -99,7 +111,11 @@ function SongLyricsModesInner({
               >
                 <ArrowRightLeft className="h-4 w-4 transition-transform duration-300 group-hover/swap:rotate-180" />
               </button>
-              <LanguageSelect value={state.right} onChange={setRight} />
+              <LanguageSelect
+                value={state.right}
+                onChange={setRight}
+                languages={languages}
+              />
             </div>
           )}
 
@@ -198,18 +214,19 @@ function SongLyricsModesInner({
         <div className="relative grid grid-cols-2 gap-2 pb-32 md:gap-8">
           <div className="absolute top-0 bottom-0 left-1/2 w-px bg-muted-foreground/20" />
 
-          {[state.left, state.right].map((languageCode, idx) => {
+          {(["left", "right"] as const).map((side) => {
+            const languageCode = side === "left" ? state.left : state.right;
             const lang = getLanguageByCode(languageCode);
 
             if (!lang)
               return (
-                <div key={`empty-${idx}`} className="group relative">
+                <div key={`empty-${side}`} className="group relative">
                   <EmptyState />
                 </div>
               );
 
             return (
-              <div key={`${languageCode}-${idx}`} className="group relative">
+              <div key={`${side}-${languageCode}`} className="group relative">
                 <div className="mb-8 flex justify-center">
                   <span className="max-w-full truncate text-sm font-bold tracking-widest text-muted-foreground uppercase">
                     {lang.label}

@@ -76,15 +76,15 @@ export function SongCreditsDetails({ song }: { song: Song }) {
           </div>
 
           <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
-            {song.credits!.credits.map((credit, index) => (
-              <div key={index} className="group">
+            {song.credits!.credits.map((credit) => (
+              <div key={credit.role} className="group">
                 <span className="mb-1 block text-xs font-semibold text-white/50 capitalize">
                   {credit.role}
                 </span>
                 <div className="space-y-px">
-                  {credit.entities.map((entity, entityIndex) => (
+                  {credit.entities.map((entity) => (
                     <div
-                      key={entityIndex}
+                      key={entity.name}
                       className="flex items-baseline gap-2"
                     >
                       <span className="text-sm text-white/85">

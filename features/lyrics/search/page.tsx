@@ -35,15 +35,15 @@ export function LyricsPageClient({ recommended }: LyricsPageClientProps) {
   const loadingRef = useRef<HTMLDivElement>(null);
   const [isPending, startTransition] = useTransition();
 
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [viewModeOverride, setViewModeOverride] = useState<
+    "grid" | "list" | null
+  >(null);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const viewMode = viewModeOverride ?? (isMobile ? "list" : "grid");
 
   const search = useSongSearch(searchQuery);
   const scroll = useInfiniteScroll(!searchQuery);
-
-  useEffect(() => {
-    setViewMode(isMobile ? "list" : "grid");
-  }, [isMobile]);
 
   useEffect(() => {
     const element = loadingRef.current;
@@ -71,7 +71,7 @@ export function LyricsPageClient({ recommended }: LyricsPageClientProps) {
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
         viewMode={viewMode}
-        onViewModeChange={setViewMode}
+        onViewModeChange={setViewModeOverride}
         onRandomClick={handleRandomClick}
         resultCount={searchQuery ? search.results.length : undefined}
       />
