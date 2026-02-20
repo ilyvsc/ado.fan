@@ -27,23 +27,29 @@ interface LyricsPageClientProps {
     latest: SongListItem[];
     random: SongListItem[];
   };
+  initialSongs: {
+    songs: SongListItem[];
+    hasMore: boolean;
+  };
 }
 
-export function LyricsPageClient({ recommended }: LyricsPageClientProps) {
+export function LyricsPageClient({
+  recommended,
+  initialSongs,
+}: LyricsPageClientProps) {
   const router = useRouter();
   const isMobile = useIsMobile();
   const loadingRef = useRef<HTMLDivElement>(null);
   const [isPending, startTransition] = useTransition();
 
-  const [viewModeOverride, setViewModeOverride] = useState<
-    "grid" | "list" | null
-  >(null);
+  const [viewModeOverride, setViewMode] = useState<"grid" | "list" | null>(
+    null,
+  );
   const [searchQuery, setSearchQuery] = useState("");
 
-  const viewMode = viewModeOverride ?? (isMobile ? "list" : "grid");
-
   const search = useSongSearch(searchQuery);
-  const scroll = useInfiniteScroll(!searchQuery);
+  const scroll = useInfiniteScroll(!searchQuery, initialSongs);
+  const viewMode = viewModeOverride ?? (isMobile ? "list" : "grid");
 
   useEffect(() => {
     const element = loadingRef.current;
@@ -53,16 +59,12 @@ export function LyricsPageClient({ recommended }: LyricsPageClientProps) {
   }, [scroll, scroll.setupObserver, scroll.hasMore, searchQuery]);
 
   const handleSearchChange = useCallback((query: string) => {
-    startTransition(() => {
-      setSearchQuery(query);
-    });
+    startTransition(() => setSearchQuery(query));
   }, []);
 
   const handleRandomClick = useCallback(async () => {
     const songId = await getRandomSongId();
-    if (songId) {
-      router.push(`/lyrics/${songId}`);
-    }
+    if (songId) router.push(`/lyrics/${songId}`);
   }, [router]);
 
   return (
@@ -71,7 +73,7 @@ export function LyricsPageClient({ recommended }: LyricsPageClientProps) {
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
         viewMode={viewMode}
-        onViewModeChange={setViewModeOverride}
+        onViewModeChange={setViewMode}
         onRandomClick={handleRandomClick}
         resultCount={searchQuery ? search.results.length : undefined}
       />
@@ -83,12 +85,7 @@ export function LyricsPageClient({ recommended }: LyricsPageClientProps) {
             random={recommended.random}
           />
 
-          {scroll.loading ? (
-            <div className="flex flex-col items-center py-20 text-muted-foreground">
-              <Loader2 className="h-6 w-6 animate-spin" />
-              <p className="mt-3 text-sm">Loading songs...</p>
-            </div>
-          ) : scroll.songs.length === 0 ? (
+          {scroll.songs.length === 0 ? (
             <div className="py-20 text-center text-muted-foreground">
               No songs
             </div>

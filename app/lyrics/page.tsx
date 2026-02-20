@@ -1,8 +1,16 @@
 import { LyricsPageClient } from "@/features/lyrics/search/page";
-import { getRecommendedSongs } from "@/prisma/queries/songs";
+import {
+  getPaginatedSongsForListing,
+  getRecommendedSongs,
+} from "@/prisma/queries/songs";
 
 export default async function LyricsPage() {
-  const recommended = await getRecommendedSongs();
+  const [recommended, initialSongs] = await Promise.all([
+    getRecommendedSongs(),
+    getPaginatedSongsForListing(12, 0),
+  ]);
 
-  return <LyricsPageClient recommended={recommended} />;
+  return (
+    <LyricsPageClient recommended={recommended} initialSongs={initialSongs} />
+  );
 }
