@@ -21,6 +21,7 @@
     "@icons-pack/react-simple-icons": "^13.8.0",
     "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.3.0",
+    "@radix-ui/react-dialog": "^1.1.15",
     "@vercel/analytics": "^1.6.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

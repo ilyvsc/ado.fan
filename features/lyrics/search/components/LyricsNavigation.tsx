@@ -4,7 +4,10 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Grid, List, Search, Shuffle, X } from "lucide-react";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { ThemeSelectorButton } from "@/shared/components/themes/ThemeButton";
+import { ThemeSelectorDialog } from "@/shared/components/themes/ThemeSelector";
 
 interface LyricsNavigationProps {
   searchQuery: string;
@@ -25,6 +28,7 @@ export function LyricsNavigation({
 }: LyricsNavigationProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
+  const [themeDialogOpen, setThemeDialogOpen] = useState(false);
 
   useGSAP(
     () => {
@@ -120,8 +124,13 @@ export function LyricsNavigation({
               <List className="h-4 w-4" />
             </button>
           </div>
+          <ThemeSelectorButton onClick={() => setThemeDialogOpen(true)} />
         </div>
       </div>
+      <ThemeSelectorDialog
+        open={themeDialogOpen}
+        onOpenChange={setThemeDialogOpen}
+      />
     </nav>
   );
 }

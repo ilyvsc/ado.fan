@@ -6,6 +6,7 @@ import Script from "next/script";
 import type { ReactNode } from "react";
 
 import NoScriptError from "@/app/no-script";
+import { SongThemeProvider } from "@/providers/SongThemeProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 
 import "@/styles/globals.css";
@@ -117,7 +118,7 @@ export default function RootLayout({
         </noscript>
 
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
+          <SongThemeProvider>{children}</SongThemeProvider>
         </ThemeProvider>
         <Analytics />
       </body>
