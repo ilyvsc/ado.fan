@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/react";
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import type { ReactNode } from "react";
 
 import NoScriptError from "@/app/no-script";
@@ -35,6 +36,24 @@ const sameAs = [
   ...(linksCategories["music-platforms"] ?? []).map((l) => l.url),
 ];
 
+const schema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://ado.fan/#website",
+      name: "ado.fan",
+      url: "https://ado.fan",
+      description: description,
+      about: {
+        "@type": "MusicGroup",
+        name: "Ado",
+        sameAs: sameAs,
+      },
+    },
+  ],
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://ado.fan"),
   title: {
@@ -55,6 +74,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "https://ado.fan" },
   authors: [{ name: "ilyvsc", url: "https://github.com/ilyvsc" }],
+  robots: { index: true, follow: true },
   openGraph: {
     title: "Ado's Fan Tribute: Japan's Anonymous Superstar",
     description:
@@ -78,31 +98,15 @@ export default function RootLayout({
 }: {
   readonly children: ReactNode;
 }) {
-  const schema = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        "@id": "https://ado.fan/#website",
-        name: "ado.fan",
-        url: "https://ado.fan",
-        description: description,
-        about: {
-          "@type": "MusicGroup",
-          name: "Ado",
-          sameAs: sameAs,
-        },
-      },
-    ],
-  };
-
   return (
     <html lang="en" suppressHydrationWarning className="h-full">
       <head>
         <meta name="color-scheme" content="dark light" />
-        <script
+        <Script
+          id="schema-org"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: schema }}
         />
       </head>
 
