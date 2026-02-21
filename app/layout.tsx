@@ -9,6 +9,8 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 
 import "@/styles/globals.css";
 
+import { linksCategories } from "@/shared/lib/socialLinks";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -27,16 +29,37 @@ const inter = Inter({
   weight: ["400", "500", "600", "700"],
 });
 
+const sameAs = [
+  "https://en.wikipedia.org/wiki/Ado_(singer)",
+  ...(linksCategories["social-media"] ?? []).map((l) => l.url),
+  ...(linksCategories["music-platforms"] ?? []).map((l) => l.url),
+];
+
 export const metadata: Metadata = {
-  title: "Ado's Fan Tribute: Japan's Anonymous Superstar",
+  metadataBase: new URL("https://ado.fan"),
+  title: {
+    default: "ado.fan — A Fan Tribute to Ado",
+    template: "%s — ado.fan",
+  },
   description:
     "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.",
-  keywords: ["Ado", "Ado Fan Site", "Ado Music", "Japanese Singer", "Utaite"],
+  keywords: [
+    "Ado",
+    "Ado fan site",
+    "Ado music",
+    "Ado lyrics",
+    "Japanese singer",
+    "Utaite",
+    "Japanese pop",
+    "anime music",
+  ],
+  alternates: { canonical: "https://ado.fan" },
   authors: [{ name: "ilyvsc", url: "https://github.com/ilyvsc" }],
   openGraph: {
     title: "Ado's Fan Tribute: Japan's Anonymous Superstar",
     description:
-      "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.",
+    url: "https://ado.fan",
+    siteName: "ado.fan",
     type: "website",
     locale: "en_US",
     siteName: "Ado Fan Tribute",
@@ -55,10 +78,32 @@ export default function RootLayout({
 }: {
   readonly children: ReactNode;
 }) {
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://ado.fan/#website",
+        name: "ado.fan",
+        url: "https://ado.fan",
+        description: description,
+        about: {
+          "@type": "MusicGroup",
+          name: "Ado",
+          sameAs: sameAs,
+        },
+      },
+    ],
+  };
+
   return (
     <html lang="en" suppressHydrationWarning className="h-full">
       <head>
         <meta name="color-scheme" content="dark light" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
       </head>
 
       <body className={inter.className}>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ExternalLinks } from "@/components/ExternalLinks";
@@ -10,6 +11,53 @@ import { serializeLyricsToLanguages } from "@/features/lyrics/utils/serializeLyr
 import { getAlbumsBySongId } from "@/prisma/queries/album";
 import { getExternalLinks } from "@/prisma/queries/externalLinks";
 import { getSongById, getSongLyricsById } from "@/prisma/queries/songs";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ song_id: string }>;
+}): Promise<Metadata> {
+  const { song_id } = await params;
+  const song = await getSongById(song_id);
+  if (!song) return {};
+
+  const titleDisplay = song.title.japanese
+    ? `${song.title.english} (${song.title.japanese})`
+    : song.title.english;
+
+  const description =
+    song.description ||
+    `Read ${song.title.english} lyrics by Ado in Japanese, English, and romanized text.`;
+
+  return {
+    title: `${titleDisplay} Lyrics`,
+    description,
+    keywords: [
+      song.title.english,
+      song.title.japanese,
+      "Ado",
+      "lyrics",
+      "Japanese lyrics",
+    ].filter(Boolean),
+    alternates: {
+      canonical: `https://ado.fan/lyrics/${song_id}`,
+    },
+    openGraph: {
+      title: `${titleDisplay} — ado.fan`,
+      siteName: "ado.fan",
+      description,
+      url: `https://ado.fan/lyrics/${song_id}`,
+      type: "music.song",
+      images: [{ url: song.coverArt, alt: `${song.title.english} cover art` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${titleDisplay} Lyrics — ado.fan`,
+      description,
+      images: [song.coverArt],
+    },
+  };
+}
 
 export default async function LyricsSongPage({
   params,
