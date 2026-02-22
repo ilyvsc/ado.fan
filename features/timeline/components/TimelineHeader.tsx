@@ -2,141 +2,65 @@
 
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import Image from "next/image";
 import { useRef } from "react";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export function TimelineHeader() {
   const sectionRef = useRef<HTMLElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const introRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
-  const indicatorRef = useRef<HTMLDivElement>(null);
-  const transitionRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      gsap.set(
-        [
-          lineRef.current,
-          titleRef.current,
-          introRef.current,
-          statsRef.current,
-          indicatorRef.current,
-        ],
-        { opacity: 0 },
-      );
-      gsap.set(lineRef.current, { scaleY: 0, transformOrigin: "top" });
-      gsap.set(titleRef.current, { y: 80 });
-      gsap.set([introRef.current, statsRef.current], { y: 40 });
+      const section = sectionRef.current;
+      if (!section) return;
+
+      const q = gsap.utils.selector(section);
 
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: section,
           start: "top 80%",
           once: true,
         },
         defaults: { ease: "power2.out" },
       });
 
-      tl.to(lineRef.current, {
-        scaleY: 1,
-        opacity: 1,
+      tl.from(q("[data-header-line]"), {
+        scaleY: 0,
+        opacity: 0,
+        transformOrigin: "top",
         duration: 1.4,
       })
-        .to(
-          titleRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1.2,
-            ease: "power3.out",
-          },
+        .from(
+          q("[data-header-title]"),
+          { opacity: 0, y: 80, duration: 1.2, ease: "power3.out" },
           "-=0.8",
         )
-        .to(
-          [introRef.current, statsRef.current],
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            stagger: 0.2,
-          },
+        .from(
+          q("[data-header-fade]"),
+          { opacity: 0, y: 40, duration: 1, stagger: 0.2 },
           "-=0.5",
         )
-        .to(
-          indicatorRef.current,
-          {
-            opacity: 1,
-            duration: 0.6,
-          },
+        .from(
+          q("[data-header-indicator]"),
+          { opacity: 0, duration: 0.6 },
           "-=0.4",
-        )
-        .to(
-          indicatorRef.current,
-          {
-            y: 12,
-            repeat: -1,
-            yoyo: true,
-            duration: 1.2,
-            ease: "power1.inOut",
-          },
-          "-=0.2",
         );
-
-      gsap
-        .timeline({
+      const transitionEl = q("[data-header-transition]");
+      if (transitionEl.length) {
+        gsap.to(transitionEl, {
+          scaleX: 1,
+          ease: "none",
           scrollTrigger: {
-            trigger: transitionRef.current,
+            trigger: transitionEl,
             start: "top 80%",
             end: "bottom 20%",
             scrub: 1,
           },
-        })
-        .to(transitionRef.current, {
-          scaleX: 1,
-          ease: "none",
         });
-
-      const mm = gsap.matchMedia();
-      const elements = [titleRef.current, introRef.current, statsRef.current];
-
-      mm.add("(min-width: 768px)", () => {
-        ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom 60%",
-          scrub: 1,
-          onUpdate: (self) => {
-            const progress = self.progress;
-            gsap.set(elements, {
-              opacity: 1 - progress,
-              y: -50 * progress,
-            });
-          },
-        });
-      });
-
-      mm.add("(max-width: 767px)", () => {
-        ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: "60% top",
-          end: "bottom 30%",
-          scrub: 1,
-          onUpdate: (self) => {
-            const progress = self.progress;
-            gsap.set(elements, {
-              opacity: 1 - progress,
-              y: -30 * progress,
-            });
-          },
-        });
-      });
+      }
     },
+
     { scope: sectionRef },
   );
 
@@ -148,23 +72,23 @@ export function TimelineHeader() {
       <div className="mx-auto w-full max-w-6xl flex-1">
         <div className="flex items-start gap-6 md:gap-12">
           <div
-            ref={lineRef}
+            data-header-line
             className="mt-2 h-56 w-0.5 shrink-0 bg-foreground"
           />
 
           <div className="flex flex-col gap-4 md:gap-6">
             <h1
-              ref={titleRef}
-              className="font-gambarino text-7xl font-black tracking-wide text-foreground uppercase md:text-8xl"
+              data-header-title
+              className="font-gambarino text-5xl leading-6 font-black tracking-wide text-foreground uppercase md:text-6xl"
             >
               Timeline
             </h1>
 
             <div
-              ref={introRef}
+              data-header-fade
               className="max-w-3xl space-y-2 text-foreground/90"
             >
-              <p className="font-gambarino text-3xl tracking-wide md:text-4xl">
+              <p className="font-gambarino text-2xl tracking-wide md:text-3xl">
                 Rooted in Vocaloid and Utaite culture
               </p>
               <p className="max-w-2xl text-sm md:text-lg">
@@ -175,7 +99,7 @@ export function TimelineHeader() {
             </div>
 
             <div
-              ref={statsRef}
+              data-header-fade
               className="mt-4 flex flex-col gap-8 md:mt-8 md:flex-row"
             >
               <div className="flex gap-8 md:gap-12">
@@ -237,10 +161,7 @@ export function TimelineHeader() {
         </div>
       </div>
 
-      <div
-        ref={indicatorRef}
-        className="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 md:bottom-20"
-      >
+      <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 md:bottom-20">
         <Image
           src="/images/roses-crown.svg"
           alt=""
@@ -255,8 +176,8 @@ export function TimelineHeader() {
       </div>
 
       <div
-        ref={transitionRef}
-        className="absolute bottom-0 left-0 hidden h-1 w-full origin-left scale-x-0 bg-foreground md:block"
+        data-header-transition
+        className="absolute bottom-0 left-0 hidden h-1 w-full origin-left scale-x-0 bg-ado-primary md:block"
       />
     </section>
   );

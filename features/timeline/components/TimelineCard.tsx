@@ -2,19 +2,23 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Music, Play, X } from "lucide-react";
 
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import { createPortal } from "react-dom";
 
 import { NicoNicoPlayer, YouTubePlayer } from "@/components/VideoPlayer";
+import { cn } from "@/lib/utils";
 import type { Song } from "@/types/song";
 
-gsap.registerPlugin(ScrollTrigger);
-
-export const SongCard = React.memo(function SongCard({
+export function SongCard({
   song,
   isPastMiddle = false,
 }: {
@@ -23,33 +27,20 @@ export const SongCard = React.memo(function SongCard({
 }) {
   const [isExpanded, setExpandedState] = useState(false);
   const [showControls, setShowControls] = useState(true);
-  const mountedRef = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const japaneseRef = useRef<HTMLSpanElement>(null);
-
-  const themeColor = song.themeColor;
-
-  useEffect(() => {
-    mountedRef.current = true;
-  }, []);
-
-  useEffect(() => {
-    if (!showControls) return;
-
-    const id = setTimeout(() => setShowControls(false), 3000);
-    return () => clearTimeout(id);
-  }, [showControls]);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = () => setShowControls(true);
 
   useGSAP(
     () => {
+      if (!imageRef.current) return;
       gsap.to(imageRef.current, {
         scale: isExpanded ? 0.95 : 1,
         opacity: isExpanded ? 0.8 : 1,
         duration: 0.4,
+        ease: "power2.out",
       });
     },
     { scope: containerRef, dependencies: [isExpanded] },
@@ -61,26 +52,47 @@ export const SongCard = React.memo(function SongCard({
         new CustomEvent("timeline-play", { detail: song.id }),
       );
     }
-    setExpandedState(!isExpanded);
+    setExpandedState((prev) => !prev);
   };
 
   useEffect(() => {
+    if (!isExpanded || !showControls) return;
+
+    const timeoutId = setTimeout(() => {
+      setShowControls(false);
+    }, 3000);
+
+    return () => clearTimeout(timeoutId);
+  }, [isExpanded, showControls]);
+
+  useLayoutEffect(() => {
+    if (!isExpanded) return;
+    dialogRef.current?.focus();
+    setShowControls(true);
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isExpanded]);
+
+  useEffect(() => {
     const handlePlay = (e: Event) => {
-      if ((e as CustomEvent).detail !== song.id) {
-        setExpandedState(false);
-      }
+      if ((e as CustomEvent).detail !== song.id) setExpandedState(false);
     };
     window.addEventListener("timeline-play", handlePlay);
-    return () => {
-      window.removeEventListener("timeline-play", handlePlay);
-    };
+    return () => window.removeEventListener("timeline-play", handlePlay);
   }, [song.id]);
 
   return (
     <>
       <div
         ref={containerRef}
+        data-song-card
         className="group relative isolate flex w-full flex-col items-start md:w-2xl"
+        style={{ "--theme-color": song.themeColor } as CSSProperties}
       >
         <button
           onClick={toggleOpen}
@@ -107,10 +119,16 @@ export const SongCard = React.memo(function SongCard({
               )}
 
               <div
-                className={`absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-300 group-hover:opacity-100 ${isPastMiddle ? "bg-foreground/40" : "bg-background/40"}`}
+                className={cn(
+                  "absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100",
+                  isPastMiddle ? "bg-foreground/40" : "bg-background/40",
+                )}
               >
                 <Play
-                  className={`h-8 w-8 fill-current drop-shadow-md transition-colors duration-700 ${isPastMiddle ? "text-background" : "text-foreground"}`}
+                  className={cn(
+                    "h-8 w-8 fill-current transition-colors duration-700",
+                    isPastMiddle ? "text-background" : "text-foreground",
+                  )}
                 />
               </div>
             </div>
@@ -118,18 +136,16 @@ export const SongCard = React.memo(function SongCard({
 
           <div className="flex min-w-0 flex-1 flex-col justify-center">
             <h3
-              ref={titleRef}
-              className={`font-gambarino text-3xl leading-none font-bold tracking-tight transition-colors duration-700 md:text-4xl ${isPastMiddle ? "text-background" : "text-foreground"}`}
+              className={cn(
+                "font-gambarino text-3xl leading-none font-bold tracking-tight transition-colors duration-700 md:text-4xl",
+                isPastMiddle ? "text-background" : "text-foreground",
+              )}
             >
               {song.title.english}
             </h3>
 
             {song.title.japanese && (
-              <span
-                ref={japaneseRef}
-                className="mt-1 truncate font-sans text-lg font-medium tracking-wide"
-                style={{ color: themeColor }}
-              >
+              <span className="mt-1 truncate font-sans text-lg font-medium tracking-wide text-(--theme-color)">
                 {song.title.japanese}
               </span>
             )}
@@ -137,17 +153,20 @@ export const SongCard = React.memo(function SongCard({
         </button>
       </div>
 
-      {mountedRef.current &&
-        isExpanded &&
+      {isExpanded &&
         createPortal(
           <div
+            ref={dialogRef}
+            tabIndex={-1}
             role="dialog"
             aria-modal="true"
             aria-label={`${song.title.english} video player`}
             onClick={() => setExpandedState(false)}
-            onKeyDown={(e) => e.key === "Escape" && setExpandedState(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") setExpandedState(false);
+            }}
             onMouseMove={handleMouseMove}
-            className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden p-4 backdrop-blur-sm md:p-12"
+            className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black/60 p-4 backdrop-blur-sm outline-none md:p-12"
           >
             <div
               role="presentation"
@@ -156,9 +175,10 @@ export const SongCard = React.memo(function SongCard({
             >
               <button
                 onClick={() => setExpandedState(false)}
-                className={`absolute top-4 right-4 z-10 rounded-full p-2 text-white/70 backdrop-blur-sm transition-opacity duration-300 hover:text-white ${
-                  showControls ? "opacity-100" : "opacity-0"
-                }`}
+                className={cn(
+                  "absolute top-4 right-4 z-10 rounded-full p-2 text-white/70 backdrop-blur-sm transition-opacity duration-300 hover:text-white",
+                  showControls ? "opacity-100" : "opacity-0",
+                )}
               >
                 <X className="h-5 w-5" />
               </button>
@@ -181,4 +201,4 @@ export const SongCard = React.memo(function SongCard({
         )}
     </>
   );
-});
+}
