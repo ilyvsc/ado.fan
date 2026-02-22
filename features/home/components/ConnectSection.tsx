@@ -9,11 +9,13 @@ import { useRef, useState } from "react";
 import { SocialIcons } from "../ui/SocialIcons";
 
 import { categories } from "@/lib/socialLinks";
+import { cn } from "@/shared/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function ConnectSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -21,116 +23,141 @@ export function ConnectSection() {
 
   const activeCategory =
     categories.find((c) => c.id === activeId) ?? categories[0];
-
   const activeIndex = categories.findIndex((c) => c.id === activeId);
 
-  useGSAP(() => {
-    if (!sidebarRef.current) return;
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          once: true,
+        },
+        defaults: { ease: "power3.out" },
+      });
 
-    gsap.from(sidebarRef.current.children, {
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 80%",
-        once: true,
-      },
-      x: -16,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.08,
-      ease: "power2.out",
-    });
-  }, []);
+      tl.fromTo(
+        headerRef.current,
+        { autoAlpha: 0, y: 24 },
+        { autoAlpha: 1, y: 0, duration: 0.65 },
+      )
+        .fromTo(
+          gsap.utils.toArray("[data-cat-tab]"),
+          { autoAlpha: 0, x: -16 },
+          { autoAlpha: 1, x: 0, duration: 0.5, stagger: 0.08 },
+          "-=0.4",
+        )
+        .fromTo(
+          contentRef.current,
+          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 1, y: 0, duration: 0.5 },
+          "-=0.3",
+        );
+    },
+    { scope: sectionRef },
+  );
 
   useGSAP(
     () => {
       if (!contentRef.current) return;
-
       gsap.fromTo(
         contentRef.current,
-        { opacity: 0, y: 8 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.25,
-          ease: "power2.out",
-        },
+        { autoAlpha: 0, y: 8 },
+        { autoAlpha: 1, y: 0, duration: 0.25, ease: "power2.out" },
       );
     },
     { dependencies: [activeId] },
   );
 
   return (
-    <section id="connect" className="relative w-full bg-ado-secondary/20 py-14">
-      <div ref={containerRef} className="container mx-auto px-4 md:px-2">
+    <section
+      id="connect"
+      ref={sectionRef}
+      className="relative w-full bg-ado-secondary/40 py-14"
+    >
+      <div className="container mx-auto px-4 md:px-2">
+        <div ref={headerRef} className="mb-10 flex flex-col items-start gap-3">
+          <div className="flex items-center gap-3">
+            <div className="h-px w-12 bg-ado-primary/70" />
+            <span className="text-xs font-medium tracking-widest text-ado-primary uppercase">
+              Official Channels
+            </span>
+            <div className="h-px flex-1 bg-ado-primary/30" />
+          </div>
+          <h2 className="font-gambarino text-4xl tracking-wide text-foreground uppercase">
+            Adomination
+          </h2>
+          <p className="text-sm leading-relaxed font-light text-muted-foreground">
+            Explore the complete ecosystem of official channels, music, and
+            community.
+          </p>
+        </div>
+
         <div className="flex flex-col gap-8 lg:flex-row">
           <aside
             ref={sidebarRef}
-            className="flex flex-col gap-6 md:w-64 lg:shrink-0 xl:w-80"
+            className="flex w-full flex-col gap-2 lg:w-64 lg:shrink-0 xl:w-80"
           >
-            <div>
-              <h2 className="font-gambarino text-4xl tracking-wide text-foreground uppercase">
-                Adomination
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed font-light text-muted-foreground">
-                Explore the complete ecosystem of official channels, music, and
-                community.
-              </p>
-            </div>
-
-            <nav className="hidden lg:flex lg:flex-col lg:gap-2">
+            <nav className="hidden lg:flex lg:flex-col lg:gap-1">
               {categories.map((cat, i) => (
                 <button
                   key={cat.id}
+                  data-cat-tab
                   onClick={() => setActiveId(cat.id)}
-                  className={`group flex flex-col gap-1 rounded p-3 text-left transition-all duration-300 ${
+                  className={cn(
+                    "group relative flex flex-col gap-1 rounded p-3 text-left transition-all duration-300 outline-none",
                     activeId === cat.id
                       ? "bg-foreground/10 text-foreground"
-                      : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
-                  }`}
+                      : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground",
+                  )}
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-bold tracking-wide uppercase">
                       {cat.label}
                     </span>
                     <span
-                      className={`font-mono text-xs font-bold transition-all ${
+                      className={cn(
+                        "font-mono text-xs font-bold transition-all",
                         activeId === cat.id
                           ? "text-foreground/40"
-                          : "text-muted-foreground/30 group-hover:text-foreground/30"
-                      }`}
+                          : "text-muted-foreground/30 group-hover:text-foreground/30",
+                      )}
                     >
                       {String(i + 1).padStart(2, "0")}
                     </span>
                   </div>
                   <p
-                    className={`text-xs leading-snug transition-all ${
+                    className={cn(
+                      "text-xs leading-snug transition-all",
                       activeId === cat.id
                         ? "text-foreground/60"
-                        : "text-muted-foreground/60 group-hover:text-foreground/50"
-                    }`}
+                        : "text-muted-foreground/60 group-hover:text-foreground/50",
+                    )}
                   >
                     {cat.description}
                   </p>
                 </button>
               ))}
             </nav>
-          </aside>
 
-          <nav className="grid w-full grid-cols-2 gap-2 lg:hidden">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveId(cat.id)}
-                className={`border p-2 text-center text-xs font-bold tracking-wider uppercase transition-all ${
-                  activeId === cat.id
-                    ? "border-foreground bg-foreground text-background"
-                    : "border-foreground/10 text-muted-foreground hover:border-foreground/30 hover:text-foreground"
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </nav>
+            <nav className="grid w-full grid-cols-2 gap-2 lg:hidden">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  data-cat-tab
+                  onClick={() => setActiveId(cat.id)}
+                  className={cn(
+                    "border p-2 text-center text-xs font-bold tracking-wider uppercase transition-all",
+                    activeId === cat.id
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-foreground/10 text-muted-foreground hover:border-foreground/30 hover:text-foreground",
+                  )}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </nav>
+          </aside>
 
           <main className="flex flex-1 flex-col gap-6">
             <div className="flex items-baseline justify-between border-b border-foreground/10 pb-3">
