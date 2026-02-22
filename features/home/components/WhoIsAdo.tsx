@@ -8,6 +8,7 @@ import Image from "next/image";
 import { createContext, useContext, useRef, useState } from "react";
 
 import adoAvatar from "@/public/images/ado-avatar.jpg";
+import { cn } from "@/shared/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,11 +24,13 @@ function Highlight({
   const isPastMiddle = useContext(ThemeContext);
   return (
     <span
-      className={`inline cursor-pointer rounded-sm px-1 py-0.5 font-semibold transition-all duration-300 md:p-1 md:whitespace-nowrap ${
+      className={cn(
+        "inline cursor-pointer rounded-sm px-1 py-0.5 font-semibold text-ado-primary-foreground transition-all duration-300 md:p-1 md:whitespace-nowrap",
         isPastMiddle
-          ? "bg-white/10 text-white hover:bg-white/20"
-          : "bg-ado-primary/60 text-muted-foreground hover:bg-ado-primary/80"
-      } ${italic ? "italic" : ""} `}
+          ? "bg-ado-primary-foreground/20 hover:bg-ado-primary-foreground/30"
+          : "bg-ado-primary/80 hover:bg-ado-primary",
+        italic && "italic",
+      )}
     >
       {children}
     </span>
@@ -37,7 +40,6 @@ function Highlight({
 function AdoDescription() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isPastMiddle = useContext(ThemeContext);
-  const backgroundLine = `transition-colors duration-700 ${isPastMiddle ? "bg-white/70" : "bg-ado-primary/70"}`;
 
   useGSAP(() => {
     if (!containerRef.current) return;
@@ -64,29 +66,50 @@ function AdoDescription() {
     <div ref={containerRef} className="flex items-stretch gap-6">
       <div className="ado-desc-content flex flex-col text-left">
         <div className="mb-4 flex items-center gap-3">
-          <div className={`h-px w-12 ${backgroundLine}`} />
+          <div
+            className={cn(
+              "h-px w-12 transition-colors duration-700",
+              isPastMiddle
+                ? "bg-ado-primary-foreground/70"
+                : "bg-ado-primary/70",
+            )}
+          />
           <span
-            className={`text-xs font-medium tracking-widest uppercase transition-colors duration-700 sm:text-sm ${
-              isPastMiddle ? "text-white/80" : "text-ado-primary"
-            }`}
+            className={cn(
+              "text-xs font-medium tracking-widest uppercase transition-colors duration-700 sm:text-sm",
+              isPastMiddle
+                ? "text-ado-primary-foreground/80"
+                : "text-ado-primary",
+            )}
           >
             The Artist
           </span>
-          <div className={`h-px flex-1 ${backgroundLine}`} />
+          <div
+            className={cn(
+              "h-px flex-1 transition-colors duration-700",
+              isPastMiddle
+                ? "bg-ado-primary-foreground/70"
+                : "bg-ado-primary/70",
+            )}
+          />
         </div>
 
         <h2
-          className={`font-gambarino text-4xl leading-tight font-bold transition-colors duration-700 lg:text-5xl ${
-            isPastMiddle ? "text-white" : "text-foreground"
-          }`}
+          className={cn(
+            "font-gambarino text-4xl leading-tight font-bold transition-colors duration-700 lg:text-5xl",
+            isPastMiddle ? "text-ado-primary-foreground" : "text-foreground",
+          )}
         >
           A Voice Built Outside the Spotlight
         </h2>
 
         <p
-          className={`mt-4 max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg ${
-            isPastMiddle ? "text-white/80" : "text-muted-foreground"
-          }`}
+          className={cn(
+            "mt-4 max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg",
+            isPastMiddle
+              ? "text-ado-primary-foreground/80"
+              : "text-muted-foreground",
+          )}
         >
           Born in Tokyo in 2002, Ado began sharing song covers online as a
           teenager, uploading her performances to NicoNico. She emerged from
@@ -98,21 +121,32 @@ function AdoDescription() {
         </p>
 
         <blockquote
-          className={`relative my-6 border-l-2 pl-4 ${isPastMiddle ? "border-white/50" : "border-ado-primary/50"}`}
+          className={cn(
+            "relative my-6 border-l-2 pl-4",
+            isPastMiddle
+              ? "border-ado-primary-foreground/50"
+              : "border-ado-primary/50",
+          )}
         >
           <p
-            className={`text-md font-gambarino italic transition-colors duration-700 md:text-xl ${
-              isPastMiddle ? "text-white/90" : "text-foreground/90"
-            }`}
+            className={cn(
+              "text-md font-gambarino italic transition-colors duration-700 md:text-xl",
+              isPastMiddle
+                ? "text-ado-primary-foreground/90"
+                : "text-foreground/90",
+            )}
           >
             Her major breakthrough came in 2020 with her debut song
           </p>
         </blockquote>
 
         <p
-          className={`max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg ${
-            isPastMiddle ? "text-white/80" : "text-muted-foreground"
-          }`}
+          className={cn(
+            "max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg",
+            isPastMiddle
+              ? "text-ado-primary-foreground/80"
+              : "text-muted-foreground",
+          )}
         >
           <Highlight italic>Usseewa</Highlight>, a release that quickly pushed
           her beyond online recognition, marked a decisive turning point in her
@@ -138,7 +172,6 @@ function AdoDescription() {
 function AdoExtraInfo() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isPastMiddle = useContext(ThemeContext);
-  const backgroundLine = `transition-colors duration-700 ${isPastMiddle ? "bg-white/70" : "bg-ado-primary/70"}`;
 
   useGSAP(() => {
     if (!containerRef.current) return;
@@ -165,28 +198,49 @@ function AdoExtraInfo() {
     <div ref={containerRef} className="flex items-stretch gap-6">
       <div className="ado-extra-content flex flex-col text-left">
         <div className="mb-4 flex items-center gap-3">
-          <div className={`h-px w-12 ${backgroundLine}`} />
+          <div
+            className={cn(
+              "h-px w-12 transition-colors duration-700",
+              isPastMiddle
+                ? "bg-ado-primary-foreground/70"
+                : "bg-ado-primary/70",
+            )}
+          />
           <span
-            className={`text-xs font-medium tracking-widest uppercase transition-colors duration-700 sm:text-sm ${
-              isPastMiddle ? "text-white/80" : "text-ado-primary"
-            }`}
+            className={cn(
+              "text-xs font-medium tracking-widest uppercase transition-colors duration-700 sm:text-sm",
+              isPastMiddle
+                ? "text-ado-primary-foreground/80"
+                : "text-ado-primary",
+            )}
           >
             The Phenomenon
           </span>
-          <div className={`h-px flex-1 ${backgroundLine}`} />
+          <div
+            className={cn(
+              "h-px flex-1 transition-colors duration-700",
+              isPastMiddle
+                ? "bg-ado-primary-foreground/70"
+                : "bg-ado-primary/70",
+            )}
+          />
         </div>
 
         <h2
-          className={`font-gambarino text-4xl leading-tight font-bold transition-colors duration-700 lg:text-5xl ${
-            isPastMiddle ? "text-white" : "text-foreground"
-          }`}
+          className={cn(
+            "font-gambarino text-4xl leading-tight font-bold transition-colors duration-700 lg:text-5xl",
+            isPastMiddle ? "text-ado-primary-foreground" : "text-foreground",
+          )}
         >
           Beyond the Digital Stage
         </h2>
         <p
-          className={`mt-4 max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg ${
-            isPastMiddle ? "text-white/80" : "text-muted-foreground"
-          }`}
+          className={cn(
+            "mt-4 max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg",
+            isPastMiddle
+              ? "text-ado-primary-foreground/80"
+              : "text-muted-foreground",
+          )}
         >
           In recent years, Ado has centered her career around live performances,
           gradually expanding its scale and presence of her shows both in Japan
@@ -202,9 +256,12 @@ function AdoExtraInfo() {
         </p>
 
         <p
-          className={`mt-4 max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg ${
-            isPastMiddle ? "text-white/80" : "text-muted-foreground"
-          }`}
+          className={cn(
+            "mt-4 max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg",
+            isPastMiddle
+              ? "text-ado-primary-foreground/80"
+              : "text-muted-foreground",
+          )}
         >
           Overseas, her reach expanded through world tours that steadily grew in
           scale. Her first world tour, <Highlight>Wish (ウィッシュ)</Highlight>{" "}
@@ -215,9 +272,12 @@ function AdoExtraInfo() {
         </p>
 
         <p
-          className={`mt-4 max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg ${
-            isPastMiddle ? "text-white/80" : "text-muted-foreground"
-          }`}
+          className={cn(
+            "mt-4 max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg",
+            isPastMiddle
+              ? "text-ado-primary-foreground/80"
+              : "text-muted-foreground",
+          )}
         >
           In late 2025, following the success of her overseas tours, she
           returned to Japan for her first dome tour,{" "}
@@ -273,7 +333,10 @@ export function WhoIsAdo() {
       <section
         id="who-is-ado"
         ref={sectionRef}
-        className={`relative transition-colors duration-700 ease-in-out ${isPastMiddle ? "bg-ado-primary" : "bg-background"}`}
+        className={cn(
+          "relative transition-colors duration-700 ease-in-out",
+          isPastMiddle ? "bg-ado-primary" : "bg-background",
+        )}
       >
         <div className="mx-auto w-full max-w-none px-0">
           <div className="block lg:hidden">
@@ -300,9 +363,10 @@ export function WhoIsAdo() {
               </div>
 
               <div
-                className={`sticky top-0 z-20 h-screen w-full transition-colors duration-700 ${
-                  isPastMiddle ? "bg-ado-primary" : "bg-background"
-                }`}
+                className={cn(
+                  "sticky top-0 z-20 h-screen w-full transition-colors duration-700",
+                  isPastMiddle ? "bg-ado-primary" : "bg-background",
+                )}
               >
                 <div className="flex h-full w-full flex-col justify-center px-6">
                   <AdoExtraInfo />
@@ -312,9 +376,10 @@ export function WhoIsAdo() {
           </div>
 
           <div
-            className={`relative hidden py-24 transition-colors duration-700 lg:block ${
-              isPastMiddle ? "bg-ado-primary" : "bg-background"
-            }`}
+            className={cn(
+              "relative hidden py-24 transition-colors duration-700 lg:block",
+              isPastMiddle ? "bg-ado-primary" : "bg-background",
+            )}
           >
             <div className="mx-auto mb-10 grid max-w-9/12 grid-cols-2 items-center gap-10">
               <AdoDescription />

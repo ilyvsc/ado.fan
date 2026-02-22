@@ -14,13 +14,16 @@
 
   --font-gambarino: "Gambarino-Regular";
 
+  /* Default theme colors */
   --color-ado-primary: hsl(195.79, 98%, 19%);
-  --color-ado-secondary: hsl(233, 91%, 9%);
+  --color-ado-primary-foreground: hsl(0 0% 98%);
+  --color-ado-secondary: var(--color-ado-primary);
+  --color-ado-secondary-foreground: var(--color-ado-primary-foreground);
 
-  /* General purpose colors -> texts */
+  /* General purpose colors */
   --color-background: hsl(0 0% 100%);
   --color-foreground: hsl(240 10% 3.9%);
-  --color-muted-foreground: hsl(260 6% 55%);
+  --color-muted-foreground: hsl(240 10% 15%);
 }
 
 @layer base {
@@ -28,26 +31,34 @@
   :root[data-theme].dark {
     --color-background: hsl(240 10% 4%);
     --color-foreground: hsl(0 0% 98%);
-    --color-muted-foreground: hsl(274 10% 90%);
+    --color-muted-foreground: hsl(0 0% 85%);
   }
 }
 
 :root[data-theme="uta"] {
-  --color-ado-primary: hsl(324 91% 70%); /* or -> hsl(315 64% 61%) */
-  --color-ado-secondary: hsl(32 44% 84%);
+  --color-ado-primary: hsl(324 48% 56%);
+  --color-ado-primary-foreground: hsl(0 0% 98%);
+  --color-ado-secondary: hsl(16 40% 76%);
+  --color-ado-secondary-foreground: hsl(240 10% 3.9%);
 }
 
 :root[data-theme="himawari"] {
-  --color-ado-primary: hsl(53 93% 59%);
-  --color-ado-secondary: hsl(190 56% 78%);
+  --color-ado-primary: hsl(53, 93%, 59%);
+  --color-ado-primary-foreground: hsl(240 10% 3.9%);
+  --color-ado-secondary: hsl(205 63% 44%);
+  --color-ado-secondary-foreground: hsl(0 0% 98%);
 }
 
 :root[data-theme="shoka"] {
-  --color-ado-primary: hsl(360 96% 37%);
-  --color-ado-secondary: hsl(360 79% 15%);
+  --color-ado-primary: hsl(0 100% 39%);
+  --color-ado-primary-foreground: hsl(0 0% 98%);
+  --color-ado-secondary: hsl(240 10% 4%);
+  --color-ado-secondary-foreground: var(--color-ado-primary-foreground);
 }
 
 :root[data-theme="sakura-biyori-time-machine"] {
-  --color-ado-primary: hsl(343 72% 79%);
-  --color-ado-secondary: hsl(180 26% 35%);
+  --color-ado-primary: hsl(343, 79%, 82%);
+  --color-ado-primary-foreground: hsl(240 10% 4%);
+  --color-ado-secondary: hsl(182, 14%, 48%);
+  --color-ado-secondary-foreground: hsl(0 0% 98%);
 }

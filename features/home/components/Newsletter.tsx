@@ -195,7 +195,7 @@ export function NewsletterSection() {
             >
               <Button
                 ref={buttonRef}
-                className="w-full cursor-grab bg-ado-primary/80 text-base text-white hover:bg-ado-primary"
+                className="w-full cursor-grab bg-ado-primary/80 text-base text-ado-primary-foreground hover:bg-ado-primary"
               >
                 Subscribe
                 <ExternalLink />
