@@ -31,6 +31,9 @@ const inter = Inter({
   weight: ["400", "500", "600", "700"],
 });
 
+const description =
+  "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.";
+
 const sameAs = [
   "https://en.wikipedia.org/wiki/Ado_(singer)",
   ...(linksCategories["social-media"] ?? []).map((l) => l.url),
@@ -61,8 +64,7 @@ export const metadata: Metadata = {
     default: "ado.fan — A Fan Tribute to Ado",
     template: "%s — ado.fan",
   },
-  description:
-    "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.",
+  description: description,
   keywords: [
     "Ado",
     "Ado fan site",
@@ -78,13 +80,11 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   openGraph: {
     title: "Ado's Fan Tribute: Japan's Anonymous Superstar",
-    description:
+    description: description,
     url: "https://ado.fan",
     siteName: "ado.fan",
     type: "website",
     locale: "en_US",
-    siteName: "Ado Fan Tribute",
-    url: "https://ado.fan",
   },
   twitter: {
     card: "summary_large_image",
