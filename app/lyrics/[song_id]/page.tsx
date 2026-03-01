@@ -8,6 +8,7 @@ import { SongCreditsDetails } from "@/features/lyrics/reader/components/SongCred
 import { SongLyricsHeader } from "@/features/lyrics/reader/components/SongLyricsHeader";
 import { SongLyricsModes } from "@/features/lyrics/reader/components/SongLyricsModes";
 import { serializeLyricsToLanguages } from "@/features/lyrics/utils/serializeLyrics";
+import { getContrastColor } from "@/lib/color";
 import { getAlbumsBySongId } from "@/prisma/queries/album";
 import { getSongById, getSongLyricsById } from "@/prisma/queries/songs";
 
@@ -78,7 +79,14 @@ export default async function LyricsSongPage({
   return (
     <div
       className="min-h-screen bg-background"
-      style={{ "--theme-color": song.themeColor } as React.CSSProperties}
+      style={
+        {
+          "--theme-color": song.themeColor,
+          "--theme-contrast": song.themeColor
+            ? getContrastColor(song.themeColor)
+            : "white",
+        } as React.CSSProperties
+      }
     >
       <SongLyricsHeader song={song} albums={albums} />
 

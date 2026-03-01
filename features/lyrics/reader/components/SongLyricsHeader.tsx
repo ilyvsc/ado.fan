@@ -23,7 +23,7 @@ export function SongLyricsHeader({
       <div className="relative container mx-auto px-4 py-8 sm:px-6 sm:py-12">
         <Link
           href="/lyrics"
-          className="mb-6 inline-flex items-center gap-2 text-white/90 transition-colors hover:text-white"
+          className="mb-6 inline-flex items-center gap-2 text-(--theme-contrast)/90 transition-colors hover:text-(--theme-contrast)"
         >
           <ArrowLeft className="h-4 w-4" />
           <span className="text-sm font-medium">Back to Lyrics</span>
@@ -47,7 +47,7 @@ export function SongLyricsHeader({
             </div>
           ) : null}
 
-          <div className="flex flex-col justify-end pb-2 text-white">
+          <div className="flex flex-col justify-end pb-2 text-(--theme-contrast)">
             <h1 className="mb-2 font-gambarino text-4xl leading-tight font-black md:text-5xl lg:text-6xl">
               {song.title.english}
             </h1>
@@ -58,9 +58,9 @@ export function SongLyricsHeader({
             )}
 
             {albums.length > 0 && (
-              <div className="mb-3 flex flex-wrap items-center gap-2 text-sm font-medium text-white/90">
+              <div className="mb-3 flex flex-wrap items-center gap-2 text-sm font-medium text-(--theme-contrast)/90">
                 <Music className="h-4 w-4" />
-                <span className="text-white/70">
+                <span className="text-(--theme-contrast)/70">
                   {albums.length === 1
                     ? `Track ${trackNumber} on `
                     : "Featured on "}
@@ -71,14 +71,14 @@ export function SongLyricsHeader({
                     <span key={album.id} className="max-w-50 truncate">
                       <Link
                         href={`/album/${album.id}`}
-                        className="truncate underline decoration-white/30 underline-offset-2 transition-colors hover:text-white hover:decoration-white/60"
+                        className="truncate underline decoration-(--theme-contrast)/30 underline-offset-2 transition-colors hover:text-(--theme-contrast) hover:decoration-(--theme-contrast)/60"
                         title={`${album.title.english} (${album.title.japanese})`}
                       >
                         {album.title.english} ({album.title.japanese})
                       </Link>
 
                       {index < albums.length - 1 && (
-                        <span className="text-white/40 select-none">
+                        <span className="text-(--theme-contrast)/40 select-none">
                           &nbsp;•&nbsp;
                         </span>
                       )}

@@ -42,18 +42,20 @@ export function SongCreditsDetails({ song }: { song: Song }) {
       {hasDescription && (
         <div className="relative my-6">
           <div className="mb-6 flex items-center gap-4">
-            <div className="h-px flex-1 bg-linear-to-r from-transparent to-white/15" />
+            <div className="h-px flex-1 bg-linear-to-r from-transparent to-(--theme-contrast)/15" />
             <div className="flex flex-col items-center">
-              <BookOpen className="mb-2 size-4 text-white/50" />
-              <h3 className="text-xs font-medium tracking-wide text-white/70 uppercase">
+              <BookOpen className="mb-2 size-4 text-(--theme-contrast)/50" />
+              <h3 className="text-xs font-medium tracking-wide text-(--theme-contrast)/70 uppercase">
                 About this Song
               </h3>
-              <p className="mt-1 text-xs text-white/50">Background & Context</p>
+              <p className="mt-1 text-xs text-(--theme-contrast)/50">
+                Background & Context
+              </p>
             </div>
-            <div className="h-px flex-1 bg-linear-to-l from-transparent to-white/15" />
+            <div className="h-px flex-1 bg-linear-to-l from-transparent to-(--theme-contrast)/15" />
           </div>
 
-          <p className="text-sm leading-relaxed whitespace-pre-wrap text-white/70 sm:text-base sm:leading-loose">
+          <p className="text-sm leading-relaxed whitespace-pre-wrap text-(--theme-contrast)/70 sm:text-base sm:leading-loose">
             {song.description}
           </p>
         </div>
@@ -62,23 +64,23 @@ export function SongCreditsDetails({ song }: { song: Song }) {
       {hasCredits && (
         <div className="relative mt-4">
           <div className="mb-6 flex items-center gap-4">
-            <div className="h-px flex-1 bg-linear-to-r from-transparent to-white/15" />
+            <div className="h-px flex-1 bg-linear-to-r from-transparent to-(--theme-contrast)/15" />
             <div className="flex flex-col items-center">
-              <Sparkle className="mb-2 size-4 text-white/50" />
-              <h3 className="text-xs font-medium tracking-wide text-white/70 uppercase">
+              <Sparkle className="mb-2 size-4 text-(--theme-contrast)/50" />
+              <h3 className="text-xs font-medium tracking-wide text-(--theme-contrast)/70 uppercase">
                 Credits
               </h3>
-              <p className="mt-1 text-xs text-white/50">
+              <p className="mt-1 text-xs text-(--theme-contrast)/50">
                 Artists & Contributors
               </p>
             </div>
-            <div className="h-px flex-1 bg-linear-to-l from-transparent to-white/15" />
+            <div className="h-px flex-1 bg-linear-to-l from-transparent to-(--theme-contrast)/15" />
           </div>
 
           <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
             {song.credits!.credits.map((credit) => (
               <div key={credit.role} className="group">
-                <span className="mb-1 block text-xs font-semibold text-white/50 capitalize">
+                <span className="mb-1 block text-xs font-semibold text-(--theme-contrast)/50 capitalize">
                   {credit.role}
                 </span>
                 <div className="space-y-px">
@@ -87,11 +89,11 @@ export function SongCreditsDetails({ song }: { song: Song }) {
                       key={entity.name}
                       className="flex items-baseline gap-2"
                     >
-                      <span className="text-sm text-white/85">
+                      <span className="text-sm text-(--theme-contrast)/85">
                         {entity.name}
                       </span>
                       {entity.romanizedName && (
-                        <span className="text-xs text-white/50">
+                        <span className="text-xs text-(--theme-contrast)/50">
                           {entity.romanizedName}
                         </span>
                       )}
@@ -104,7 +106,7 @@ export function SongCreditsDetails({ song }: { song: Song }) {
         </div>
       )}
 
-      <div className="mt-8 h-px w-full bg-linear-to-r from-transparent via-white/15 to-transparent" />
+      <div className="mt-8 h-px w-full bg-linear-to-r from-transparent via-(--theme-contrast)/15 to-transparent" />
     </section>
   );
 }

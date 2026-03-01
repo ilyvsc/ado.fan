@@ -34,16 +34,18 @@ export function RelatedAlbumSongs({
           />
         </div>
         <div className="min-w-0 flex-1">
-          <h2 className="text-xl font-bold text-white sm:text-2xl">
+          <h2 className="text-xl font-bold text-(--theme-contrast) sm:text-2xl">
             {mainAlbum.title.english}
           </h2>
-          <h3 className="text-lg text-white/80 sm:text-xl">
+          <h3 className="text-lg text-(--theme-contrast)/80 sm:text-xl">
             {mainAlbum.title.japanese}
           </h3>
         </div>
       </div>
 
-      <div className={`gap-2 ${songs.length > 5 ? "columns-2" : "columns-1"}`}>
+      <div
+        className={`max-w-fit gap-2 ${songs.length > 5 ? "columns-2" : "columns-1"}`}
+      >
         {songs.map(({ song, trackNumber }) => {
           const isCurrentSong = song.id === currentSongId;
           return (
@@ -52,18 +54,18 @@ export function RelatedAlbumSongs({
               href={`/lyrics/${song.id}`}
               className={`group mb-0.5 flex items-center gap-2 rounded px-2 py-1.5 text-xs text-balance transition-all sm:text-sm ${
                 isCurrentSong
-                  ? "cursor-default border-l-2 border-white bg-white/20"
-                  : "hover:bg-white/10"
+                  ? "cursor-default border-l-2 border-(--theme-contrast) bg-(--theme-contrast)/10"
+                  : "hover:bg-(--theme-contrast)/10"
               }`}
               onClick={(e) => isCurrentSong && e.preventDefault()}
             >
               <span
-                className={`${isCurrentSong ? "text-white" : "text-white/50"}`}
+                className={`${isCurrentSong ? "text-(--theme-contrast)" : "text-(--theme-contrast)/50"}`}
               >
                 {trackNumber}.
               </span>
               <span
-                className={`${isCurrentSong ? "font-bold text-white" : "text-white/80 group-hover:text-white"}`}
+                className={`${isCurrentSong ? "font-bold text-(--theme-contrast)" : "text-(--theme-contrast)/80 group-hover:text-(--theme-contrast)"}`}
               >
                 {song.title.english}
               </span>
@@ -74,7 +76,7 @@ export function RelatedAlbumSongs({
 
       {referenceAlbums.length > 0 && (
         <div className="space-y-2">
-          <h3 className="text-lg font-bold text-white sm:text-xl">
+          <h3 className="text-lg font-bold text-(--theme-contrast) sm:text-xl">
             Also appears in
           </h3>
           <div className="grid grid-cols-2 gap-2">
@@ -82,7 +84,7 @@ export function RelatedAlbumSongs({
               <Link
                 key={album.id}
                 href={`/album/${album.id}`}
-                className="group flex items-center gap-3 rounded-lg bg-white/5 p-3 transition-all hover:bg-white/10"
+                className="group flex items-center gap-3 rounded-lg bg-(--theme-contrast)/5 p-3 transition-all hover:bg-(--theme-contrast)/10"
               >
                 <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded shadow-md">
                   <Image
@@ -94,13 +96,13 @@ export function RelatedAlbumSongs({
                   />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-white group-hover:underline">
+                  <p className="truncate text-sm font-semibold text-(--theme-contrast) group-hover:underline">
                     {album.title.english}
                   </p>
-                  <p className="truncate text-xs text-white/70">
+                  <p className="truncate text-xs text-(--theme-contrast)/70">
                     {album.title.japanese}
                   </p>
-                  <p className="mt-1 text-xs font-medium text-white/50 uppercase">
+                  <p className="mt-1 text-xs font-medium text-(--theme-contrast)/50 uppercase">
                     {album.type}
                   </p>
                 </div>
