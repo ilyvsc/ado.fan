@@ -14,6 +14,7 @@ const songBaseSelect = {
 export const songPrismaSelect = {
   ...songBaseSelect,
   credits: true,
+  externalLinks: true,
 };
 
 export const songListPrismaSelect = {

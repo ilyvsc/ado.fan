@@ -116,42 +116,15 @@ async function clearDatabase() {
 
   await prisma.$transaction([
     prisma.albumTrack.deleteMany(),
-    prisma.externalLink.deleteMany(),
     prisma.lyrics.deleteMany(),
     prisma.song.deleteMany(),
     prisma.album.deleteMany(),
   ]);
 }
 
-async function seedExternalLinks(
-  entity: AlbumDefinition | SongSeedInput,
-  relationType: string,
-  relationId: string,
-) {
-  const externalLinks = entity.externalLinks;
-  if (!externalLinks?.length) return;
-
-  await prisma.externalLink.createMany({
-    data: externalLinks.map((link) => ({
-      relationType,
-      relationId,
-      type: link.type,
-      value: link.value,
-      title: link.title,
-      description: link.description,
-    })),
-  });
-}
-
 async function seedSongs(songs: SongSeedInput[]) {
-  const data = songs.map(({ externalLinks, ...song }) => song);
-  await prisma.song.createMany({ data });
-
+  await prisma.song.createMany({ data: songs });
   console.log(`✅ Seeded ${songs.length} songs.`);
-
-  for (const song of songs) {
-    await seedExternalLinks(song, "song", song.id);
-  }
 }
 
 async function seedAlbums(
@@ -159,7 +132,7 @@ async function seedAlbums(
   seededSongIds: Set<string>,
 ) {
   for (const album of albums) {
-    const { tracks, externalLinks, ...data } = album;
+    const { tracks, ...data } = album;
 
     await prisma.album.create({
       data: {
@@ -167,6 +140,7 @@ async function seedAlbums(
         type: data.type as AlbumType,
         releaseDate: new Date(data.releaseDate),
         credits: album.credits ? assertCredits(album.credits) : "",
+        externalLinks: album.externalLinks ?? [],
       },
     });
 
@@ -181,8 +155,6 @@ async function seedAlbums(
         })),
       });
     }
-
-    await seedExternalLinks(album, "album", data.id);
 
     console.log(
       `✅ Seeded album "${data.titleEnglish}" (${validTracks.length}/${tracks.length} tracks).`,

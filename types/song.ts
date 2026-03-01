@@ -1,7 +1,6 @@
-import type { ExternalLinkDefinition } from "./externalLink";
-
 import type { SongCreateInput } from "@/prisma/generated/models";
 import type { Credits } from "@/shared/schemas/credits";
+import type { ExternalLinks } from "@/shared/schemas/externalLinks";
 
 export type Song = {
   id: string;
@@ -17,7 +16,7 @@ export type Song = {
   coverArt: string;
   themeColor?: string;
   credits?: Credits | null;
-  externalLinks?: ExternalLinkDefinition[];
+  externalLinks?: ExternalLinks;
   albumTrack?: {
     trackNumber: number;
     album: {
@@ -30,10 +29,6 @@ export type Song = {
   };
 };
 
-/**
- * Lightweight song type for listings (excludes lyrics content).
- * Used by the /api/songs endpoint to avoid exposing full lyrics.
- */
 export type SongListItem = {
   id: string;
   title: {
@@ -46,6 +41,4 @@ export type SongListItem = {
   themeColor?: string;
 };
 
-export type SongSeedInput = SongCreateInput & {
-  externalLinks?: ExternalLinkDefinition[];
-};
+export type SongSeedInput = SongCreateInput;

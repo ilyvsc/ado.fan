@@ -9,7 +9,6 @@ import { SongLyricsHeader } from "@/features/lyrics/reader/components/SongLyrics
 import { SongLyricsModes } from "@/features/lyrics/reader/components/SongLyricsModes";
 import { serializeLyricsToLanguages } from "@/features/lyrics/utils/serializeLyrics";
 import { getAlbumsBySongId } from "@/prisma/queries/album";
-import { getExternalLinks } from "@/prisma/queries/externalLinks";
 import { getSongById, getSongLyricsById } from "@/prisma/queries/songs";
 
 export async function generateMetadata({
@@ -69,10 +68,9 @@ export default async function LyricsSongPage({
 
   if (!song) notFound();
 
-  const [rawLyrics, albums, externalLinks] = await Promise.all([
+  const [rawLyrics, albums] = await Promise.all([
     getSongLyricsById(song_id),
     getAlbumsBySongId(song.id),
-    getExternalLinks("song", song.id),
   ]);
 
   const availableLanguages = serializeLyricsToLanguages(rawLyrics);
@@ -97,7 +95,7 @@ export default async function LyricsSongPage({
           </div>
           <div className="grid lg:grid-cols-2 lg:items-start lg:gap-6">
             <RelatedAlbumSongs albums={albums} currentSongId={song.id} />
-            <ExternalLinks links={externalLinks} />
+            <ExternalLinks links={song.externalLinks ?? []} />
           </div>
         </div>
       </div>

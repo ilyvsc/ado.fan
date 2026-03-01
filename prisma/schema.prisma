@@ -10,7 +10,7 @@ datasource db {
 }
 
 model Song {
-  id            String   @id @unique
+  id            String   @id
   titleEnglish  String
   titleJapanese String
   length        String
@@ -21,9 +21,10 @@ model Song {
   coverArt      String
   themeColor    String?
 
-  credits     Json?
-  lyrics      Lyrics[]
-  albumTracks AlbumTrack[]
+  credits        Json?
+  externalLinks  Json?
+  lyrics         Lyrics[]
+  albumTracks    AlbumTrack[]
 
   @@index([releaseDate(sort: Desc)], name: "song_release_date_idx")
   @@index([titleEnglish], name: "song_title_english_idx")
@@ -43,15 +44,16 @@ model Lyrics {
 }
 
 model Album {
-  id            String    @id @unique
+  id            String    @id
   titleEnglish  String
   titleJapanese String
   releaseDate   DateTime
   type          AlbumType
   coverArt      String
 
-  credits Json?
-  tracks  AlbumTrack[]
+  credits       Json?
+  externalLinks Json?
+  tracks        AlbumTrack[]
 
   @@index([releaseDate(sort: Desc)], name: "album_release_date_idx")
   @@index([type], name: "album_type_idx")
@@ -63,8 +65,8 @@ model AlbumTrack {
   trackNumber  Int
   isBonusTrack Boolean @default(false)
 
-  album Album @relation(fields: [albumId], references: [id])
-  song  Song  @relation(fields: [songId], references: [id])
+  album Album @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  song  Song  @relation(fields: [songId], references: [id], onDelete: Cascade)
 
   @@id([albumId, songId])
   @@unique([albumId, trackNumber])
@@ -77,24 +79,3 @@ enum AlbumType {
   album
 }
 
-model ExternalLink {
-  id           Int    @id @default(autoincrement())
-  relationId   String
-  relationType String
-
-  type        ExternalLinkType
-  value       String
-  title       String?
-  description String?
-  createdAt   DateTime         @default(now())
-
-  @@index([relationType, relationId], name: "external_link_relation_idx")
-  @@index([type], name: "external_link_type_idx")
-}
-
-enum ExternalLinkType {
-  youtubeVideo
-  nicoVideo
-  link
-  embed
-}

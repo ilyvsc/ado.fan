@@ -1,7 +1,7 @@
-import type { ExternalLinkDefinition } from "./externalLink";
 import type { Song } from "./song";
 
 import { Credits } from "@/shared/schemas/credits";
+import type { ExternalLinks } from "@/shared/schemas/externalLinks";
 
 export type Album = {
   id: string;
@@ -13,7 +13,7 @@ export type Album = {
   type: "single" | "ep" | "album";
   tracks: AlbumTrack[];
   coverArt: string;
-  externalLinks?: ExternalLinkDefinition[];
+  externalLinks?: ExternalLinks;
 };
 
 export type AlbumTrack = {
@@ -33,7 +33,7 @@ export type AlbumDefinition = {
     songId: string;
     trackNumber: number;
   }>;
-  externalLinks: ExternalLinkDefinition[];
+  externalLinks?: ExternalLinks;
   credits?: Credits;
 };
 

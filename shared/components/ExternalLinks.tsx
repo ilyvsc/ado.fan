@@ -8,14 +8,14 @@ import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 import { NicoNicoPlayer, YouTubePlayer } from "@/shared/components/VideoPlayer";
-import type { ExternalLinkDefinition } from "@/types/externalLink";
+import type { ExternalLinks } from "@/shared/schemas/externalLinks";
 
 function ExternalLinkItem({
   link,
   isOpen,
   onToggle,
 }: {
-  link: ExternalLinkDefinition;
+  link: ExternalLinks[number];
   isOpen: boolean;
   onToggle: () => void;
 }) {
@@ -164,7 +164,7 @@ function ExternalLinkItem({
   );
 }
 
-export function ExternalLinks({ links }: { links: ExternalLinkDefinition[] }) {
+export function ExternalLinks({ links }: { links: ExternalLinks }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const handleToggle = useCallback((index: number) => {
