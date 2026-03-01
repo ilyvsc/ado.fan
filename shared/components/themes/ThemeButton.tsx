@@ -9,11 +9,20 @@ import { ThemeSelectorDialog } from "./ThemeSelector";
 
 import { cn } from "@/lib/utils";
 
-export function ThemeSelectorButton({ onClick }: { onClick: () => void }) {
+export function ThemeSelectorButton({
+  onClick,
+  className,
+}: {
+  onClick: () => void;
+  className?: string;
+}) {
   return (
     <button
       onClick={onClick}
-      className="flex h-10 w-10 items-center justify-center rounded-lg border border-foreground/10 bg-foreground/15 text-foreground transition-all hover:bg-foreground/10"
+      className={cn(
+        "flex h-10 w-10 items-center justify-center rounded-lg border border-foreground/10 bg-foreground/5 text-foreground transition-all hover:bg-foreground/10",
+        className,
+      )}
       aria-label="Open theme selector"
       title="Theme selector"
     >
