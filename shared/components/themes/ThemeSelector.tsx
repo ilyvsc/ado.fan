@@ -132,7 +132,7 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
 
   const visibleThemes = isMobile
     ? SONG_THEMES
-    : SONG_THEMES.filter((t) => t.id !== currentTheme);
+    : SONG_THEMES.filter((t) => t.id !== activeTheme.id);
 
   function clearHoverTimer() {
     if (hoverTimer.current) {
