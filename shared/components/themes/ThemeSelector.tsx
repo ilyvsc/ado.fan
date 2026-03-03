@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { useIsMobile } from "../ui/use-mobile";
@@ -94,8 +94,6 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
   const isMobile = useIsMobile();
   const activeTheme =
     SONG_THEMES.find((t) => t.id === currentTheme) ?? SONG_THEMES[0];
-  const [hoveredTheme, setHoveredTheme] = useState<SongTheme | null>(null);
-  const stagedTheme = hoveredTheme ?? activeTheme;
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -147,7 +145,6 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
     if (isMobile) return;
     clearHoverTimer();
     hoverTimer.current = setTimeout(() => {
-      setHoveredTheme(theme);
       previewTheme(theme.id);
     }, 60);
   }
@@ -155,13 +152,12 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
   function handleHoverEnd() {
     if (isMobile) return;
     clearHoverTimer();
-    setHoveredTheme(null);
     previewTheme(currentTheme);
   }
 
   return (
     <div ref={containerRef} className="flex h-full flex-col md:flex-row">
-      <StagePanel theme={stagedTheme} />
+      <StagePanel theme={activeTheme} />
 
       <div className="flex flex-1 flex-col gap-5 p-6">
         <div className="content-header flex flex-col gap-1">
