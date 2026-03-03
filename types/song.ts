@@ -42,3 +42,5 @@ export type SongListItem = {
 };
 
 export type SongSeedInput = SongCreateInput;
+
+export type SongSortOption = "az" | "za" | "newest" | "oldest";

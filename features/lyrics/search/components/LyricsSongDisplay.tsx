@@ -2,12 +2,13 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { Music } from "lucide-react";
+import { Heart, Music } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 
+import { cn } from "@/shared/lib/utils";
 import type { SearchResult } from "@/types/search";
 import type { SongListItem } from "@/types/song";
 
@@ -16,54 +17,71 @@ type ViewMode = "grid" | "list";
 export function LyricsSongDisplay({
   songs,
   viewMode,
+  totalCount,
+  showLetterGroups,
+  favorites,
+  onToggleFavorite,
 }: {
   songs: (SongListItem | SearchResult)[];
   viewMode?: ViewMode;
+  totalCount?: number;
+  showLetterGroups?: boolean;
+  favorites?: Set<string>;
+  onToggleFavorite?: (id: string) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const animatedIds = useRef<Set<string>>(new Set());
+  const animatedLetters = useRef<Set<string>>(new Set());
 
   useGSAP(
     () => {
       const container = containerRef.current;
       if (!container) return;
 
-      requestAnimationFrame(() => {
-        const allItems =
-          container.querySelectorAll<HTMLElement>("[data-song-id]");
+      const allItems =
+        container.querySelectorAll<HTMLElement>("[data-song-id]");
+      const allHeadings = container.querySelectorAll<HTMLElement>(
+        "[data-letter-heading]",
+      );
 
-        if (!allItems.length) return;
+      const newItems: HTMLElement[] = [];
+      const newHeadings: HTMLElement[] = [];
 
-        const newItems: HTMLElement[] = [];
-
-        allItems.forEach((item) => {
-          const id = item.dataset.songId;
-          if (!id) return;
-
-          if (!animatedIds.current.has(id)) {
-            animatedIds.current.add(id);
-            newItems.push(item);
-          }
-        });
-
-        if (!newItems.length) return;
-
-        gsap.fromTo(
-          newItems,
-          {
-            opacity: 0,
-            y: 30,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            stagger: 0.04,
-            ease: "power3.out",
-            clearProps: "all",
-          },
-        );
+      allItems.forEach((item) => {
+        const id = item.dataset.songId;
+        if (!id || animatedIds.current.has(id)) return;
+        animatedIds.current.add(id);
+        newItems.push(item);
       });
+
+      allHeadings.forEach((el) => {
+        const letter = el.dataset.letterHeading;
+        if (!letter || animatedLetters.current.has(letter)) return;
+        animatedLetters.current.add(letter);
+        newHeadings.push(el);
+      });
+
+      if (newHeadings.length) {
+        gsap.set(newHeadings, { opacity: 0 });
+        gsap.to(newHeadings, {
+          opacity: 1,
+          duration: 0.4,
+          stagger: 0.04,
+          ease: "power2.out",
+        });
+      }
+
+      if (newItems.length) {
+        gsap.set(newItems, { opacity: 0, y: 20 });
+        gsap.to(newItems, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          stagger: 0.03,
+          ease: "power3.out",
+          clearProps: "all",
+        });
+      }
     },
     {
       scope: containerRef,
@@ -73,114 +91,261 @@ export function LyricsSongDisplay({
 
   if (songs.length === 0) return null;
 
-  if (viewMode === "list") {
-    return (
-      <div ref={containerRef} className="flex flex-col">
-        <div className="mb-3 flex items-center gap-2">
-          <Music className="h-5 w-5 text-foreground" />
-          <h3 className="text-lg font-semibold text-foreground">All Songs</h3>
-        </div>
+  const displayCount = totalCount ?? songs.length;
 
-        {songs.map((song) => (
-          <Link
-            key={song.id}
-            href={`/lyrics/${song.id}`}
-            data-song-id={song.id}
-            className="group"
-          >
-            <div className="flex items-center gap-4 rounded-md p-2 transition-all duration-200 hover:bg-foreground/5">
-              <div className="relative h-16 w-16 shrink-0 overflow-hidden">
-                {song.coverArt ? (
-                  <Image
-                    src={song.coverArt}
-                    alt={song.title.english}
-                    fill
-                    sizes="64px"
-                    className="object-cover"
-                    loading="lazy"
+  const heading = (
+    <div className="mb-4 flex items-center gap-2">
+      <h3 className="text-sm font-semibold tracking-widest text-ado-primary uppercase">
+        All Songs
+      </h3>
+      <span className="h-1 w-1 rounded-full bg-muted-foreground" />
+      <span className="font-mono text-sm text-muted-foreground">
+        {displayCount}
+      </span>
+    </div>
+  );
+
+  if (showLetterGroups) {
+    const groups = songs.reduce<
+      Record<string, (SongListItem | SearchResult)[]>
+    >((acc, song) => {
+      const first = song.title.english[0];
+      const letter =
+        first && /\d/.test(first) ? "#" : (first?.toUpperCase() ?? "#");
+      if (!acc[letter]) acc[letter] = [];
+      acc[letter].push(song);
+      return acc;
+    }, {});
+
+    if (viewMode === "list") {
+      return (
+        <div ref={containerRef}>
+          {heading}
+          {Object.entries(groups).map(([letter, grouped], index) => (
+            <div key={letter} className={index > 0 ? "mt-2" : undefined}>
+              <div
+                id={`letter-${letter}`}
+                data-letter-heading={letter}
+                style={{ opacity: 0 }}
+                className="mb-2 text-xs font-bold tracking-widest text-muted-foreground/30 uppercase"
+              >
+                {letter}
+              </div>
+              <div className="flex flex-col divide-y divide-foreground/5">
+                {grouped.map((song) => (
+                  <ListRow
+                    key={song.id}
+                    song={song}
+                    isFavorite={favorites?.has(song.id) ?? false}
+                    onToggleFavorite={onToggleFavorite}
                   />
-                ) : (
-                  <div className="flex h-full items-center justify-center bg-muted-foreground/10">
-                    <Music className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                )}
+                ))}
               </div>
-
-              <div className="min-w-0 flex-1">
-                <h3 className="line-clamp-1 text-sm font-medium text-foreground">
-                  {song.title.english}
-                </h3>
-                <p
-                  className="line-clamp-1 text-xs"
-                  style={{ color: song.themeColor }}
-                >
-                  {song.title.japanese}
-                </p>
-              </div>
-              <span className="shrink-0 text-xs text-muted-foreground/60">
-                {new Date(song.releaseDate).getFullYear()}
-              </span>
             </div>
-          </Link>
+          ))}
+        </div>
+      );
+    }
+
+    return (
+      <div ref={containerRef}>
+        {heading}
+        {Object.entries(groups).map(([letter, grouped], index) => (
+          <div key={letter} className={index > 0 ? "mt-6" : undefined}>
+            <div
+              id={`letter-${letter}`}
+              data-letter-heading={letter}
+              style={{ opacity: 0 }}
+              className="mb-3 text-xs font-bold tracking-widest text-muted-foreground/30 uppercase"
+            >
+              {letter}
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+              {grouped.map((song) => (
+                <GridCard
+                  key={song.id}
+                  song={song}
+                  isFavorite={favorites?.has(song.id) ?? false}
+                  onToggleFavorite={onToggleFavorite}
+                />
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     );
   }
 
-  return (
-    <div>
-      <div className="mb-3 flex items-center gap-2">
-        <Music className="h-5 w-5 text-foreground" />
-        <h3 className="text-lg font-semibold text-foreground">All Songs</h3>
+  if (viewMode === "list") {
+    return (
+      <div ref={containerRef}>
+        {heading}
+        <div className="flex flex-col divide-y divide-foreground/5">
+          {songs.map((song) => (
+            <ListRow
+              key={song.id}
+              song={song}
+              isFavorite={favorites?.has(song.id) ?? false}
+              onToggleFavorite={onToggleFavorite}
+            />
+          ))}
+        </div>
       </div>
-      <div
-        ref={containerRef}
-        className="grid grid-cols-2 gap-x-2 gap-y-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
-      >
+    );
+  }
+
+  return (
+    <div ref={containerRef}>
+      {heading}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {songs.map((song) => (
-          <Link
+          <GridCard
             key={song.id}
-            href={`/lyrics/${song.id}`}
-            data-song-id={song.id}
-            className="group"
-          >
-            <div className="overflow-hidden rounded-md border border-foreground/10 transition-all duration-200 hover:scale-105 hover:border-foreground/20">
-              <div className="relative aspect-square overflow-hidden">
-                {song.coverArt ? (
-                  <Image
-                    src={song.coverArt}
-                    alt={song.title.english}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
-                    className="object-cover"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center bg-muted-foreground/10">
-                    <Music className="h-12 w-12 text-muted-foreground" />
-                  </div>
-                )}
-              </div>
-              <div className="p-3">
-                <h3 className="line-clamp-1 text-sm font-medium text-foreground">
-                  {song.title.english}
-                </h3>
-                <span
-                  className="line-clamp-1 text-xs"
-                  style={{ color: song.themeColor }}
-                >
-                  {song.title.japanese}
-                </span>
-                <div className="mt-1">
-                  <span className="text-xs text-muted-foreground/60">
-                    {new Date(song.releaseDate).getFullYear()}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </Link>
+            song={song}
+            isFavorite={favorites?.has(song.id) ?? false}
+            onToggleFavorite={onToggleFavorite}
+          />
         ))}
       </div>
     </div>
+  );
+}
+
+function GridCard({
+  song,
+  isFavorite,
+  onToggleFavorite,
+}: {
+  song: SongListItem | SearchResult;
+  isFavorite: boolean;
+  onToggleFavorite?: (id: string) => void;
+}) {
+  const year = new Date(song.releaseDate).getFullYear();
+
+  return (
+    <Link
+      href={`/lyrics/${song.id}`}
+      data-song-id={song.id}
+      className="group flex flex-col gap-2"
+    >
+      <div className="relative aspect-square overflow-hidden rounded-lg bg-muted-foreground/5">
+        {song.coverArt ? (
+          <Image
+            src={song.coverArt}
+            alt={song.title.english}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <Music className="h-10 w-10 text-muted-foreground/30" />
+          </div>
+        )}
+        {onToggleFavorite && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              onToggleFavorite(song.id);
+            }}
+            className={cn(
+              "absolute top-1.5 right-1.5 flex h-6 w-6 items-center justify-center rounded-full opacity-0 transition-opacity group-hover:opacity-100",
+              isFavorite && "opacity-100",
+            )}
+          >
+            <Heart
+              className={cn(
+                "h-4 w-4 transition-colors",
+                isFavorite
+                  ? "fill-ado-primary text-ado-primary"
+                  : "text-ado-primary",
+              )}
+            />
+          </button>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-0.5 px-0.5">
+        <p className="line-clamp-1 text-sm font-medium text-foreground transition-colors group-hover:text-ado-primary">
+          {song.title.english}
+        </p>
+        {song.title.japanese && (
+          <p className="line-clamp-1 text-xs text-muted-foreground">
+            {song.title.japanese}
+          </p>
+        )}
+        <p className="text-xs text-muted-foreground/50 tabular-nums">{year}</p>
+      </div>
+    </Link>
+  );
+}
+
+function ListRow({
+  song,
+  isFavorite,
+  onToggleFavorite,
+}: {
+  song: SongListItem | SearchResult;
+  isFavorite: boolean;
+  onToggleFavorite?: (id: string) => void;
+}) {
+  return (
+    <Link
+      href={`/lyrics/${song.id}`}
+      data-song-id={song.id}
+      className="group flex items-center gap-4 px-1 py-3 transition-opacity hover:bg-foreground/3"
+    >
+      <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-none">
+        {song.coverArt ? (
+          <Image
+            src={song.coverArt}
+            alt={song.title.english}
+            fill
+            sizes="44px"
+            className="object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center bg-muted-foreground/10">
+            <Music className="h-5 w-5 text-muted-foreground" />
+          </div>
+        )}
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <p className="line-clamp-1 text-sm font-medium text-foreground">
+          {song.title.english}
+        </p>
+        {song.title.japanese && (
+          <p className="line-clamp-1 text-xs text-muted-foreground">
+            {song.title.japanese}
+          </p>
+        )}
+      </div>
+
+      <div className="flex shrink-0 items-center gap-3">
+        {onToggleFavorite && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              onToggleFavorite(song.id);
+            }}
+          >
+            <Heart
+              className={cn(
+                "h-4 w-4 transition-colors",
+                isFavorite
+                  ? "fill-ado-primary text-ado-primary opacity-100"
+                  : "text-ado-primary opacity-0 group-hover:opacity-100",
+              )}
+            />
+          </button>
+        )}
+        <span className="text-xs text-muted-foreground/50 tabular-nums">
+          {new Date(song.releaseDate).getFullYear()}
+        </span>
+      </div>
+    </Link>
   );
 }

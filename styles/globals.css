@@ -52,7 +52,7 @@
 :root[data-theme="shoka"] {
   --color-ado-primary: hsl(0 100% 39%);
   --color-ado-primary-foreground: hsl(0 0% 98%);
-  --color-ado-secondary: hsl(240 10% 4%);
+  --color-ado-secondary: var(--color-ado-primary);
   --color-ado-secondary-foreground: var(--color-ado-primary-foreground);
 }
 

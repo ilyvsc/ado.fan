@@ -7,6 +7,7 @@ import { RelatedAlbumSongs } from "@/features/lyrics/reader/components/RelatedAl
 import { SongCreditsDetails } from "@/features/lyrics/reader/components/SongCreditsDetails";
 import { SongLyricsHeader } from "@/features/lyrics/reader/components/SongLyricsHeader";
 import { SongLyricsModes } from "@/features/lyrics/reader/components/SongLyricsModes";
+import { TrackRecentlyViewed } from "@/features/lyrics/reader/components/TrackRecentlyViewed";
 import { serializeLyricsToLanguages } from "@/features/lyrics/utils/serializeLyrics";
 import { getContrastColor } from "@/lib/color";
 import { getAlbumsBySongId } from "@/prisma/queries/album";
@@ -88,6 +89,7 @@ export default async function LyricsSongPage({
         } as React.CSSProperties
       }
     >
+      <TrackRecentlyViewed songId={song.id} />
       <SongLyricsHeader song={song} albums={albums} />
 
       <div className="container mx-auto px-2 py-8 sm:px-4">

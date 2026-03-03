@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { LyricsPageClient } from "@/features/lyrics/search/page";
 import {
-  getPaginatedSongsForListing,
+  getAllSongsForListing,
   getRecommendedSongs,
 } from "@/prisma/queries/songs";
 
@@ -26,12 +26,10 @@ export const metadata: Metadata = {
 };
 
 export default async function LyricsPage() {
-  const [recommended, initialSongs] = await Promise.all([
+  const [recommended, allSongs] = await Promise.all([
     getRecommendedSongs(),
-    getPaginatedSongsForListing(12, 0),
+    getAllSongsForListing(),
   ]);
 
-  return (
-    <LyricsPageClient recommended={recommended} initialSongs={initialSongs} />
-  );
+  return <LyricsPageClient recommended={recommended} allSongs={allSongs} />;
 }

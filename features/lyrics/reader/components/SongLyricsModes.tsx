@@ -6,6 +6,9 @@ import {
   ChevronDown,
   Columns2,
   LayoutGrid,
+  Minus,
+  Plus,
+  Type,
 } from "lucide-react";
 
 import { Suspense, useMemo, useState } from "react";
@@ -105,7 +108,7 @@ function LanguageSelect({
 
 function EmptyState() {
   return (
-    <div className="flex min-h-[40vh] flex-col items-center justify-center gap-4 text-muted-foreground/40">
+    <div className="flex min-h-80 flex-col items-center justify-center gap-4 text-muted-foreground/40">
       <LayoutGrid className="h-10 w-10" />
       <p className="text-sm font-medium tracking-widest uppercase">No lyrics</p>
     </div>
@@ -222,7 +225,7 @@ function LinedView({
       {pairs
         .filter((pair) => pair.left || pair.right)
         .map((pair, i) => (
-          <div key={i} className="space-y-1">
+          <div key={`${leftCode}-${i}`} className="space-y-1">
             {pair.left && (
               <div className="flex items-baseline gap-4">
                 <span className="w-7 shrink-0 text-right text-xs font-bold tracking-widest text-(--theme-color)/60 uppercase select-none">
@@ -317,19 +320,24 @@ function LyricsModes({
             <button
               onClick={() => setFontSize((s) => Math.max(10, s - 2))}
               aria-label="Decrease font size"
-              className="rounded-full px-2 py-1 text-sm font-bold text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
+              className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
             >
-              A-
+              <Minus className="h-4 w-4" />
             </button>
-            <span className="min-w-6 text-center text-xs font-medium text-muted-foreground tabular-nums select-none">
-              {fontSize}
-            </span>
+
+            <div className="flex items-center gap-1 px-1">
+              <Type className="h-3 w-3 text-muted-foreground" />
+              <span className="min-w-6 text-center text-xs font-medium text-muted-foreground tabular-nums select-none">
+                {fontSize}
+              </span>
+            </div>
+
             <button
               onClick={() => setFontSize((s) => Math.min(32, s + 2))}
               aria-label="Increase font size"
-              className="rounded-full px-2 py-1 text-sm font-bold text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
+              className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
             >
-              A+
+              <Plus className="h-4 w-4" />
             </button>
           </ControlPill>
 
@@ -345,7 +353,7 @@ function LyricsModes({
                 aria-label="Swap languages"
                 className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
               >
-                <ArrowRightLeft className="h-3.5 w-3.5" />
+                <ArrowRightLeft className="h-3.5 w-3.5 transition-transform duration-200 active:rotate-180" />
               </button>
               <LanguageSelect
                 value={state.right}
@@ -386,7 +394,7 @@ export function SongLyricsModes({
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground/40">
+        <div className="flex min-h-80 items-center justify-center text-muted-foreground/40">
           Loading lyrics...
         </div>
       }
