@@ -9,6 +9,7 @@ export type Language = {
   code: string;
   label: string;
   content: string;
+  lines: string[];
 };
 
 const LANGUAGE_LABELS: Record<string, { label: string }> = {

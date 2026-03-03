@@ -1,5 +1,7 @@
+export type LyricsViewMode = "tabs" | "compare" | "lined";
+
 export type LyricsUrlState = {
-  mode: "tabs" | "compare";
+  mode: LyricsViewMode;
   left: string;
   right: string;
 };

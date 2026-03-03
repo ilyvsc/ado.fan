@@ -81,10 +81,10 @@ export default async function LyricsSongPage({
       className="min-h-screen bg-background"
       style={
         {
-          "--theme-color": song.themeColor,
+          "--theme-color": song.themeColor || "var(--color-background)",
           "--theme-contrast": song.themeColor
             ? getContrastColor(song.themeColor)
-            : "white",
+            : "var(--color-foreground)",
         } as React.CSSProperties
       }
     >

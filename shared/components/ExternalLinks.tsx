@@ -60,8 +60,8 @@ function ExternalLinkItem({
 
   return (
     <div
-      className={`border-b border-foreground/10 transition-colors duration-300 last:border-b-0 ${
-        isOpen ? "bg-foreground/5" : "hover:bg-foreground/10"
+      className={`border-b border-(--theme-contrast)/10 transition-colors duration-300 last:border-b-0 ${
+        isOpen ? "bg-(--theme-contrast)/5" : "hover:bg-(--theme-contrast)/10"
       }`}
     >
       <button
@@ -76,8 +76,8 @@ function ExternalLinkItem({
                 <SiYoutube
                   className={`h-4 w-4 transition-all duration-300 ${
                     isOpen
-                      ? "text-foreground/80"
-                      : "text-foreground/50 group-hover:text-foreground/70"
+                      ? "text-(--theme-contrast)/80"
+                      : "text-(--theme-contrast)/50 group-hover:text-(--theme-contrast)/70"
                   }`}
                 />
               )}
@@ -86,8 +86,8 @@ function ExternalLinkItem({
                 <SiNiconico
                   className={`h-4 w-4 transition-all duration-300 ${
                     isOpen
-                      ? "text-foreground/80"
-                      : "text-foreground/50 group-hover:text-foreground/70"
+                      ? "text-(--theme-contrast)/80"
+                      : "text-(--theme-contrast)/50 group-hover:text-(--theme-contrast)/70"
                   }`}
                 />
               )}
@@ -96,8 +96,8 @@ function ExternalLinkItem({
                 <ArrowUpRight
                   className={`h-5 w-5 transition-all duration-300 ${
                     isOpen
-                      ? "text-foreground/60"
-                      : "text-foreground/30 group-hover:text-foreground/50"
+                      ? "text-(--theme-contrast)/60"
+                      : "text-(--theme-contrast)/30 group-hover:text-(--theme-contrast)/50"
                   }`}
                 />
               )}
@@ -106,8 +106,8 @@ function ExternalLinkItem({
             <span
               className={`truncate text-xs font-medium transition-all duration-300 sm:text-sm ${
                 isOpen
-                  ? "text-foreground"
-                  : "text-foreground/80 group-hover:text-foreground"
+                  ? "text-(--theme-contrast)"
+                  : "text-(--theme-contrast)/80 group-hover:text-(--theme-contrast)"
               }`}
             >
               {title}
@@ -117,8 +117,8 @@ function ExternalLinkItem({
           <ChevronDown
             className={`h-4 w-4 shrink-0 transition-all duration-300 ${
               isOpen
-                ? "rotate-180 text-foreground/50"
-                : "text-foreground/30 group-hover:text-foreground/40"
+                ? "rotate-180 text-(--theme-contrast)/50"
+                : "text-(--theme-contrast)/30 group-hover:text-(--theme-contrast)/40"
             }`}
           />
         </div>
@@ -127,7 +127,7 @@ function ExternalLinkItem({
       <div ref={contentRef} className="h-0 overflow-hidden opacity-0">
         <div className="space-y-3 px-3 pb-3 pl-8 sm:px-4 sm:pl-9">
           {isVideo && hasOpened && (
-            <div className="aspect-video overflow-hidden border border-foreground/5 bg-foreground/10 transition-colors duration-300 hover:border-foreground/10">
+            <div className="aspect-video overflow-hidden border border-(--theme-contrast)/5 bg-(--theme-contrast)/10 transition-colors duration-300 hover:border-(--theme-contrast)/10">
               {isYouTube ? (
                 <YouTubePlayer
                   youtubeId={link.value}
@@ -143,7 +143,7 @@ function ExternalLinkItem({
           )}
 
           {link.description && (
-            <p className="text-sm leading-relaxed text-balance text-foreground">
+            <p className="text-sm leading-relaxed text-balance text-(--theme-contrast)">
               {link.description}
             </p>
           )}
@@ -153,7 +153,7 @@ function ExternalLinkItem({
               href={link.value}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block text-xs text-foreground/60 underline underline-offset-2 transition-all duration-300 hover:text-foreground/80 hover:underline-offset-3"
+              className="inline-block text-xs text-(--theme-contrast)/60 underline underline-offset-2 transition-all duration-300 hover:text-(--theme-contrast)/80 hover:underline-offset-3"
             >
               {link.value}
             </a>
@@ -175,11 +175,11 @@ export function ExternalLinks({ links }: { links: ExternalLinks }) {
 
   return (
     <div className="mb-8 w-full space-y-2 py-4">
-      <h3 className="font-gambarino text-lg font-bold tracking-wide text-foreground">
+      <h3 className="font-gambarino text-lg font-bold tracking-wide text-(--theme-contrast)">
         Related Links
       </h3>
 
-      <div className="w-full divide-y divide-foreground/10 border-y border-foreground/10">
+      <div className="w-full divide-y divide-(--theme-contrast)/10 border-y border-(--theme-contrast)/10">
         {links.map((link, i) => (
           <ExternalLinkItem
             key={`${link.type}-${link.value}`}

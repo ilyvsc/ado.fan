@@ -1,21 +1,78 @@
 "use client";
 
 import {
+  AlignLeft,
   ArrowRightLeft,
   ChevronDown,
   Columns2,
   LayoutGrid,
-  Minus,
-  Plus,
-  Type,
 } from "lucide-react";
 
-import { Suspense, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 
 import { useLyricsUrlState } from "../hooks/useLyricsUrlState";
 
-import type { LyricsSearchParams } from "@/features/lyrics/types/states";
+import type { LyricsViewMode } from "@/features/lyrics/types/states";
+import { cn } from "@/lib/utils";
 import type { Language } from "@/types/lyrics";
+
+const MODE_CONFIG: {
+  mode: LyricsViewMode;
+  label: string;
+  icon: typeof LayoutGrid;
+}[] = [
+  { mode: "tabs", label: "Tabs", icon: LayoutGrid },
+  { mode: "compare", label: "Compare", icon: Columns2 },
+  { mode: "lined", label: "Lined", icon: AlignLeft },
+];
+
+function ControlPill({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex items-center rounded-full border border-(--theme-color)/25 bg-background/80",
+        "p-1 backdrop-blur-sm transition-colors hover:border-(--theme-color)/40",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+function PillButton({
+  active,
+  onClick,
+  children,
+  title,
+}: {
+  active?: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+  title?: string;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      title={title}
+      aria-pressed={active}
+      className={cn(
+        "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold tracking-wide transition-all duration-200",
+        active
+          ? "bg-(--theme-color) text-(--theme-contrast)"
+          : "text-muted-foreground hover:bg-(--theme-color)/10 hover:text-foreground",
+      )}
+    >
+      {children}
+    </button>
+  );
+}
 
 function LanguageSelect({
   value,
@@ -31,7 +88,7 @@ function LanguageSelect({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="appearance-none rounded-full bg-foreground/5 py-1.5 pr-8 pl-4 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10"
+        className="cursor-pointer appearance-none rounded-full bg-transparent py-1.5 pr-7 pl-3 text-xs font-semibold text-foreground transition-colors hover:bg-(--theme-color)/10"
       >
         {languages.map((lang) => (
           <option key={lang.code} value={lang.code}>
@@ -39,8 +96,8 @@ function LanguageSelect({
           </option>
         ))}
       </select>
-      <div className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 opacity-50">
-        <ChevronDown className="h-4 w-4" />
+      <div className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 opacity-40">
+        <ChevronDown className="h-3 w-3" />
       </div>
     </div>
   );
@@ -48,9 +105,9 @@ function LanguageSelect({
 
 function EmptyState() {
   return (
-    <div className="flex min-h-[40vh] flex-col items-center justify-center gap-6 text-muted-foreground/60">
-      <LayoutGrid className="h-12 w-12 opacity-50" />
-      <p className="text-xl font-light tracking-widest uppercase">No lyrics</p>
+    <div className="flex min-h-[40vh] flex-col items-center justify-center gap-4 text-muted-foreground/40">
+      <LayoutGrid className="h-10 w-10" />
+      <p className="text-sm font-medium tracking-widest uppercase">No lyrics</p>
     </div>
   );
 }
@@ -64,6 +121,7 @@ function LyricsContent({
 }) {
   return (
     <p
+      aria-live="polite"
       className="font-sans leading-loose whitespace-pre-wrap text-foreground transition-all duration-300"
       style={{ fontSize: `${fontSize + 2}px` }}
     >
@@ -72,33 +130,211 @@ function LyricsContent({
   );
 }
 
-function SongLyricsModesInner({
+function TabsView({
+  activeLang,
+  fontSize,
+}: {
+  activeLang?: Language;
+  fontSize: number;
+}) {
+  if (!activeLang?.content) return <EmptyState />;
+
+  return (
+    <div className="mx-auto max-w-3xl text-center">
+      <LyricsContent content={activeLang.content} fontSize={fontSize} />
+    </div>
+  );
+}
+
+function CompareView({
+  leftLang,
+  rightLang,
+  fontSize,
+}: {
+  leftLang?: Language;
+  rightLang?: Language;
+  fontSize: number;
+}) {
+  return (
+    <div className="grid grid-cols-2 gap-8 pb-20">
+      <div className="border-r border-(--theme-color)/25 px-6">
+        {leftLang?.content ? (
+          <>
+            <div className="mb-8 flex items-center gap-2">
+              <span className="h-px flex-1 bg-(--theme-color)/20" />
+              <span className="text-xs font-semibold tracking-widest text-(--theme-color)/70 uppercase">
+                {leftLang.label}
+              </span>
+              <span className="h-px flex-1 bg-(--theme-color)/20" />
+            </div>
+            <LyricsContent content={leftLang.content} fontSize={fontSize} />
+          </>
+        ) : (
+          <EmptyState />
+        )}
+      </div>
+
+      <div className="px-6">
+        {rightLang?.content ? (
+          <>
+            <div className="mb-8 flex items-center gap-2">
+              <span className="h-px flex-1 bg-(--theme-color)/20" />
+              <span className="text-xs font-semibold tracking-widest text-(--theme-color)/70 uppercase">
+                {rightLang.label}
+              </span>
+              <span className="h-px flex-1 bg-(--theme-color)/20" />
+            </div>
+            <LyricsContent content={rightLang.content} fontSize={fontSize} />
+          </>
+        ) : (
+          <EmptyState />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function LinedView({
+  leftLang,
+  rightLang,
+  fontSize,
+}: {
+  leftLang?: Language;
+  rightLang?: Language;
+  fontSize: number;
+}) {
+  const pairs = useMemo(() => {
+    if (!leftLang?.lines.length || !rightLang?.lines.length) return [];
+    const max = Math.max(leftLang.lines.length, rightLang.lines.length);
+    return Array.from({ length: max }, (_, i) => ({
+      left: leftLang.lines[i] ?? "",
+      right: rightLang.lines[i] ?? "",
+    }));
+  }, [leftLang, rightLang]);
+
+  if (!leftLang || !rightLang || !pairs.length) return <EmptyState />;
+
+  const leftCode = leftLang.code.slice(0, 2).toUpperCase();
+  const rightCode = rightLang.code.slice(0, 2).toUpperCase();
+
+  return (
+    <div className="mx-auto max-w-3xl space-y-8">
+      {pairs
+        .filter((pair) => pair.left || pair.right)
+        .map((pair, i) => (
+          <div key={i} className="space-y-1">
+            {pair.left && (
+              <div className="flex items-baseline gap-4">
+                <span className="w-7 shrink-0 text-right text-xs font-bold tracking-widest text-(--theme-color)/60 uppercase select-none">
+                  {leftCode}
+                </span>
+                <p
+                  className="leading-relaxed text-foreground"
+                  style={{ fontSize: `${fontSize + 2}px` }}
+                >
+                  {pair.left}
+                </p>
+              </div>
+            )}
+            {pair.right && (
+              <div className="flex items-baseline gap-4">
+                <span className="w-7 shrink-0 text-right text-xs font-bold tracking-widest text-(--theme-color)/60 uppercase select-none">
+                  {rightCode}
+                </span>
+                <p
+                  className="leading-relaxed text-muted-foreground"
+                  style={{ fontSize: `${fontSize + 2}px` }}
+                >
+                  {pair.right}
+                </p>
+              </div>
+            )}
+          </div>
+        ))}
+    </div>
+  );
+}
+
+function LyricsModes({
   availableLanguages,
 }: {
   availableLanguages: Language[];
 }) {
+  const [fontSize, setFontSize] = useState(14);
   const { state, languages, setMode, setLeft, setRight, swapLanguages } =
     useLyricsUrlState({ availableLanguages });
 
-  const [fontSize, setFontSize] = useState(14);
+  if (!languages.length) return <EmptyState />;
 
-  const getLanguageByCode = (code: string) =>
-    languages.find((l) => l.code === code);
+  const viewMode: LyricsViewMode = languages.length === 1 ? "tabs" : state.mode;
 
-  if (languages.length === 0) return <EmptyState />;
+  const leftLang = languages.find((l) => l.code === state.left);
+  const rightLang = languages.find((l) => l.code === state.right);
+  const activeLang = leftLang;
 
-  const viewMode = languages.length === 1 ? "tabs" : state.mode;
+  const ModeComponent = {
+    tabs: <TabsView activeLang={activeLang} fontSize={fontSize} />,
+    compare: (
+      <CompareView
+        leftLang={leftLang}
+        rightLang={rightLang}
+        fontSize={fontSize}
+      />
+    ),
+    lined: (
+      <LinedView
+        leftLang={leftLang}
+        rightLang={rightLang}
+        fontSize={fontSize}
+      />
+    ),
+  }[viewMode];
 
   return (
     <div className="relative">
-      <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-10 flex flex-wrap items-center justify-between gap-3 border-b border-(--theme-color)/25 pb-6">
         <h3 className="text-3xl font-bold tracking-tight text-foreground">
           Lyrics
         </h3>
 
         <div className="flex flex-wrap items-center gap-2">
-          {viewMode === "compare" && languages.length > 1 && (
-            <div className="group flex items-center gap-1 rounded-full border border-foreground/10 bg-background/50 p-1.5 transition-all hover:border-foreground/20 hover:bg-background/70">
+          {languages.length > 1 && (
+            <ControlPill>
+              {MODE_CONFIG.map(({ mode, label, icon: Icon }) => (
+                <PillButton
+                  key={mode}
+                  active={viewMode === mode}
+                  onClick={() => setMode(mode)}
+                >
+                  <Icon className="h-4 w-4" />
+                  {viewMode === mode && <span>{label}</span>}
+                </PillButton>
+              ))}
+            </ControlPill>
+          )}
+
+          <ControlPill>
+            <button
+              onClick={() => setFontSize((s) => Math.max(10, s - 2))}
+              aria-label="Decrease font size"
+              className="rounded-full px-2 py-1 text-sm font-bold text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
+            >
+              A-
+            </button>
+            <span className="min-w-6 text-center text-xs font-medium text-muted-foreground tabular-nums select-none">
+              {fontSize}
+            </span>
+            <button
+              onClick={() => setFontSize((s) => Math.min(32, s + 2))}
+              aria-label="Increase font size"
+              className="rounded-full px-2 py-1 text-sm font-bold text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
+            >
+              A+
+            </button>
+          </ControlPill>
+
+          {viewMode !== "tabs" && languages.length > 1 && (
+            <ControlPill>
               <LanguageSelect
                 value={state.left}
                 onChange={setLeft}
@@ -106,144 +342,38 @@ function SongLyricsModesInner({
               />
               <button
                 onClick={swapLanguages}
-                className="group/swap rounded-full p-2 text-muted-foreground transition-all hover:bg-foreground/10 hover:text-foreground"
-                title="Swap languages"
+                aria-label="Swap languages"
+                className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
               >
-                <ArrowRightLeft className="h-4 w-4 transition-transform duration-300 group-hover/swap:rotate-180" />
+                <ArrowRightLeft className="h-3.5 w-3.5" />
               </button>
               <LanguageSelect
                 value={state.right}
                 onChange={setRight}
                 languages={languages}
               />
-            </div>
+            </ControlPill>
           )}
 
           {viewMode === "tabs" && (
-            <div className="flex items-center gap-1 rounded-full border border-foreground/10 bg-background/50 p-1.5 hover:border-foreground/20 hover:bg-background/70">
+            <ControlPill>
               {languages.map((lang) => (
-                <button
+                <PillButton
                   key={lang.code}
+                  active={state.left === lang.code}
                   onClick={() => setLeft(lang.code)}
-                  className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-300 ${
-                    state.left === lang.code
-                      ? "bg-foreground/10 text-foreground"
-                      : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
-                  }`}
                 >
                   {lang.label}
-                </button>
+                </PillButton>
               ))}
-            </div>
+            </ControlPill>
           )}
-
-          {languages.length > 1 && (
-            <div className="flex gap-1 rounded-full border border-foreground/10 bg-background/50 px-2 py-1.5 hover:border-foreground/20 hover:bg-background/70">
-              {(["tabs", "compare"] as const).map((mode) => (
-                <button
-                  key={mode}
-                  onClick={() => setMode(mode)}
-                  className={`flex items-center gap-1 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-300 ${
-                    viewMode === mode
-                      ? "bg-foreground/10 text-foreground"
-                      : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
-                  }`}
-                >
-                  {mode === "tabs" ? (
-                    <LayoutGrid className="h-4 w-4" />
-                  ) : (
-                    <Columns2 className="h-4 w-4" />
-                  )}
-                  <span>{mode === "tabs" ? "Tabs" : "Compare"}</span>
-                </button>
-              ))}
-            </div>
-          )}
-
-          <div className="flex items-center gap-1 rounded-full border border-foreground/10 bg-background/50 px-2 py-1.5 hover:border-foreground/20 hover:bg-background/70">
-            <button
-              onClick={() => setFontSize(Math.max(10, fontSize - 2))}
-              className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
-              title="Decrease font size"
-            >
-              <Minus className="h-4 w-4" />
-            </button>
-            <div className="flex items-center gap-1">
-              <Type className="h-4 w-4 text-muted-foreground" />
-              <span className="text-center text-sm font-medium text-muted-foreground">
-                {fontSize}
-              </span>
-            </div>
-            <button
-              onClick={() => setFontSize(Math.min(32, fontSize + 2))}
-              className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
-              title="Increase font size"
-            >
-              <Plus className="h-4 w-4" />
-            </button>
-          </div>
         </div>
       </div>
 
-      {viewMode === "tabs" && (
-        <div className="relative">
-          {languages.map((lang) => (
-            <div
-              key={lang.code}
-              className={
-                state.left === lang.code
-                  ? "relative z-10 opacity-100"
-                  : "pointer-events-none absolute top-0 left-0 w-full opacity-0"
-              }
-            >
-              {lang.content ? (
-                <div className="mx-auto max-w-3xl text-center">
-                  <div className="relative inline-block w-full">
-                    <LyricsContent content={lang.content} fontSize={fontSize} />
-                  </div>
-                </div>
-              ) : (
-                <EmptyState />
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {viewMode === "compare" && (
-        <div className="relative grid grid-cols-2 gap-2 pb-32 md:gap-8">
-          <div className="absolute top-0 bottom-0 left-1/2 w-px bg-muted-foreground/20" />
-
-          {(["left", "right"] as const).map((side) => {
-            const languageCode = side === "left" ? state.left : state.right;
-            const lang = getLanguageByCode(languageCode);
-
-            if (!lang)
-              return (
-                <div key={`empty-${side}`} className="group relative">
-                  <EmptyState />
-                </div>
-              );
-
-            return (
-              <div key={`${side}-${languageCode}`} className="group relative">
-                <div className="mb-8 flex justify-center">
-                  <span className="max-w-full truncate text-sm font-bold tracking-widest text-muted-foreground uppercase">
-                    {lang.label}
-                  </span>
-                </div>
-                <div className="px-4 md:px-8">
-                  {lang.content ? (
-                    <LyricsContent content={lang.content} fontSize={fontSize} />
-                  ) : (
-                    <EmptyState />
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      <div key={viewMode} className="transition-opacity duration-300">
+        {ModeComponent}
+      </div>
     </div>
   );
 }
@@ -252,19 +382,16 @@ export function SongLyricsModes({
   availableLanguages,
 }: {
   availableLanguages: Language[];
-  initialSearchParams?: LyricsSearchParams;
 }) {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-[40vh] items-center justify-center">
-          <div className="animate-pulse text-muted-foreground">
-            Loading lyrics...
-          </div>
+        <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground/40">
+          Loading lyrics...
         </div>
       }
     >
-      <SongLyricsModesInner availableLanguages={availableLanguages} />
+      <LyricsModes availableLanguages={availableLanguages} />
     </Suspense>
   );
 }
