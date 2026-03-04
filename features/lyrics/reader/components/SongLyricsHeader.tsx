@@ -7,6 +7,13 @@ import Link from "next/link";
 import type { Album } from "@/types/album";
 import type { Song } from "@/types/song";
 
+function getCreditsForRoles(credits: Song["credits"], roles: string[]) {
+  if (!credits?.credits.length) return [];
+  return credits.credits.filter((c) =>
+    roles.some((r) => c.role.toLowerCase().includes(r)),
+  );
+}
+
 export function SongLyricsHeader({
   song,
   albums,
@@ -14,16 +21,23 @@ export function SongLyricsHeader({
   song: Song;
   albums: Album[];
 }) {
-  const trackNumber = albums[0]?.tracks.find(
+  const mainAlbum = albums[0];
+  const trackNumber = mainAlbum?.tracks.find(
     (t) => t.song.id === song.id,
   )?.trackNumber;
+
+  const featured = getCreditsForRoles(song.credits, ["feat", "featuring"]);
+  const featuredNames = featured
+    .flatMap((c) => c.entities)
+    .map((e) => e.romanizedName ?? e.name)
+    .join(", ");
 
   return (
     <div className="relative overflow-hidden bg-(--theme-color)">
       <div className="relative container mx-auto px-4 py-8 sm:px-6 sm:py-12">
         <Link
           href="/lyrics"
-          className="mb-6 inline-flex items-center gap-2 text-(--theme-contrast)/90 transition-colors hover:text-(--theme-contrast)"
+          className="mb-6 inline-flex items-center gap-2 text-(--theme-contrast)/60 transition-colors hover:text-(--theme-contrast)/90"
         >
           <ArrowLeft className="h-4 w-4" />
           <span className="text-sm font-medium">Back to Lyrics</span>
@@ -52,34 +66,30 @@ export function SongLyricsHeader({
               {song.title.english}
             </h1>
             {song.title.japanese && (
-              <h2 className="mb-4 text-xl font-medium opacity-90 md:text-2xl">
+              <h2 className="mb-4 text-xl font-medium opacity-75 md:text-2xl">
                 {song.title.japanese}
               </h2>
             )}
 
-            {albums.length > 0 && (
-              <div className="mb-3 flex flex-wrap items-center gap-2 text-sm font-medium text-(--theme-contrast)/90">
-                <Music className="h-4 w-4" />
-                <span className="text-(--theme-contrast)/70">
-                  {albums.length === 1
-                    ? `Track ${trackNumber} on `
-                    : "Featured on "}
+            {mainAlbum && (
+              <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-(--theme-contrast)/80">
+                <Music className="h-4 w-4 shrink-0" />
+                <span className="text-(--theme-contrast)/60">
+                  {trackNumber ? `Track ${trackNumber} on ` : "Featured on "}
                 </span>
-
-                <div className="flex flex-wrap items-center">
+                <div className="flex flex-wrap items-center gap-1">
                   {albums.map((album, index) => (
-                    <span key={album.id} className="max-w-50 truncate">
+                    <span key={album.id} className="flex items-center gap-1">
                       <Link
                         href={`/album/${album.id}`}
-                        className="truncate underline decoration-(--theme-contrast)/30 underline-offset-2 transition-colors hover:text-(--theme-contrast) hover:decoration-(--theme-contrast)/60"
+                        className="underline decoration-(--theme-contrast)/30 underline-offset-2 transition-colors hover:text-(--theme-contrast) hover:decoration-(--theme-contrast)/60"
                         title={`${album.title.english} (${album.title.japanese})`}
                       >
-                        {album.title.english} ({album.title.japanese})
+                        {album.title.english}
                       </Link>
-
                       {index < albums.length - 1 && (
                         <span className="text-(--theme-contrast)/40 select-none">
-                          &nbsp;•&nbsp;
+                          •
                         </span>
                       )}
                     </span>
@@ -88,15 +98,22 @@ export function SongLyricsHeader({
               </div>
             )}
 
-            <div className="mb-4 flex flex-wrap items-center gap-3 text-sm font-medium opacity-90">
+            <div className="mb-4 flex flex-wrap items-center gap-3 text-sm font-medium">
               <div className="flex items-center gap-2">
-                <Mic className="h-4 w-4" />
-                <span>Ado</span>
+                <Mic className="h-4 w-4 shrink-0" />
+                <span className="text-(--theme-contrast)/50">Vocals</span>
+                <span className="text-(--theme-contrast)">Ado</span>
+                {featuredNames && (
+                  <>
+                    <span className="text-(--theme-contrast)/50">feat.</span>
+                    <span>{featuredNames}</span>
+                  </>
+                )}
               </div>
-
-              <span className="opacity-60 select-none">•</span>
+              <span className="select-nowne opacity-40">•</span>
               <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
+                <Calendar className="h-4 w-4 shrink-0" />
+                <span className="text-(--theme-contrast)/50">Released</span>
                 <span>
                   {new Intl.DateTimeFormat("en", {
                     year: "numeric",
@@ -105,10 +122,10 @@ export function SongLyricsHeader({
                   }).format(new Date(song.releaseDate))}
                 </span>
               </div>
-
-              <span className="opacity-60 select-none">•</span>
+              <span className="opacity-40 select-none">•</span>
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
+                <Clock className="h-4 w-4 shrink-0" />
+                <span className="text-(--theme-contrast)/50">Runtime</span>
                 <span>{song.length}</span>
               </div>
             </div>
@@ -121,7 +138,7 @@ export function SongLyricsHeader({
                     target="_blank"
                     aria-label="Open on YouTube"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-md bg-red-600 px-3 py-1.5 text-white transition-all hover:bg-red-700"
+                    className="inline-flex items-center gap-2 rounded-md bg-red-600 px-3 py-1.5 text-white transition-colors hover:bg-red-700"
                   >
                     <SiYoutube className="h-4 w-4" />
                     <span>YouTube</span>
@@ -133,7 +150,7 @@ export function SongLyricsHeader({
                     target="_blank"
                     aria-label="Open on NicoNico"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-md bg-white px-3 py-1.5 text-black transition-all hover:bg-gray-300"
+                    className="inline-flex items-center gap-2 rounded-md border border-(--theme-contrast)/20 bg-(--theme-contrast)/10 px-3 py-1.5 text-(--theme-contrast) transition-colors hover:bg-(--theme-contrast)/20"
                   >
                     <SiNiconico className="h-4 w-4" />
                     <span>NicoNico</span>
