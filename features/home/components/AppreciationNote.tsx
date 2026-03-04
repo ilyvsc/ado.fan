@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useRef } from "react";
 
 import rosesCrownSVG from "@/public/images/roses-crown.svg";
+import { RosesCrown } from "@/shared/components/icons/RosesCrown";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -74,14 +75,7 @@ export function FanAppreciation() {
       className="relative overflow-hidden bg-ado-secondary/15 py-20"
     >
       <div className="relative mx-auto px-4 text-center">
-        <Image
-          src={rosesCrownSVG}
-          alt="Blue roses tribute to Ado"
-          width={300}
-          height={300}
-          className="mx-auto mb-8"
-          priority
-        />
+        <RosesCrown className="mx-auto mb-6 h-20 w-auto text-ado-secondary md:h-32" />
 
         <h2
           ref={titleRef}

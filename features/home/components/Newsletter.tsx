@@ -17,6 +17,7 @@ import { useMemo, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
 import rosesCrownSVG from "@/public/images/roses-crown.svg";
+import { RosesCrown } from "@/shared/components/icons/RosesCrown";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,7 +30,7 @@ const newsletterBenefits = [
 
 export function NewsletterSection() {
   const rootRef = useRef<HTMLElement>(null);
-  const iconRef = useRef<HTMLImageElement>(null);
+  const iconRef = useRef<SVGSVGElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -122,15 +123,10 @@ export function NewsletterSection() {
     >
       <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 md:grid-cols-2">
         <div className="flex flex-col justify-between bg-background px-6 py-12 md:px-12">
-          <div className="flex flex-col">
-            <Image
+          <div className="flex flex-col items-start">
+            <RosesCrown
               ref={iconRef}
-              src={rosesCrownSVG}
-              alt="Blue roses tribute to Ado"
-              width={200}
-              height={200}
-              className="mb-4 h-auto w-44"
-              loading="lazy"
+              className="mb-2 h-20 w-auto text-ado-secondary md:h-24"
             />
             <h2
               ref={titleRef}

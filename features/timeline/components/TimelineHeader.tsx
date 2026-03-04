@@ -3,8 +3,9 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 
-import Image from "next/image";
 import { useRef } from "react";
+
+import { RosesCrown } from "@/shared/components/icons/RosesCrown";
 
 export function TimelineHeader() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -163,13 +164,7 @@ export function TimelineHeader() {
         data-header-indicator
         className="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 md:bottom-20"
       >
-        <Image
-          src="/images/roses-crown.svg"
-          alt=""
-          width={40}
-          height={40}
-          className="h-8 w-auto opacity-40 md:h-10"
-        />
+        <RosesCrown className="h-8 w-auto text-ado-secondary-foreground/60 md:h-10" />
         <span className="text-xs tracking-widest text-ado-secondary-foreground/80 uppercase">
           Scroll to explore
         </span>
