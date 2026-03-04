@@ -294,7 +294,7 @@ function ListRow({
     <Link
       href={`/lyrics/${song.id}`}
       data-song-id={song.id}
-      className="group flex items-center gap-4 px-1 py-3 transition-opacity hover:bg-foreground/3"
+      className="group flex items-center gap-4 px-2 py-3 transition-opacity hover:bg-foreground/3"
     >
       <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-none">
         {song.coverArt ? (
