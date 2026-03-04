@@ -66,23 +66,35 @@ function ThemeCard({
           : "border-foreground/10 hover:border-ado-primary/50",
       )}
     >
-      <div className="relative aspect-square overflow-hidden lg:aspect-2/3">
-        <Image
-          src={theme.coverArt}
-          alt={`${theme.songTitle.english} cover art`}
-          fill
-          sizes="(max-width: 640px) 50vw, 25vw"
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 flex flex-col p-2">
-          <span className="relative text-left font-gambarino text-sm leading-tight font-black text-white md:text-lg">
+      <div className="flex items-center gap-3 p-2 sm:block sm:p-0">
+        <div className="relative size-16 shrink-0 overflow-hidden rounded sm:aspect-square sm:size-auto sm:rounded-none lg:aspect-2/3">
+          <Image
+            src={theme.coverArt}
+            alt={`${theme.songTitle.english} cover art`}
+            fill
+            sizes="(max-width: 640px) 56px, 25vw"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 hidden bg-linear-to-t from-black/60 via-black/10 to-transparent sm:block" />
+          <div className="absolute inset-x-0 bottom-0 hidden flex-col p-2 sm:flex">
+            <span className="relative text-left font-gambarino text-sm leading-tight font-black text-white md:text-lg">
+              {theme.songTitle.english}
+            </span>
+            <span className="relative text-left text-xs leading-tight text-white/50">
+              {theme.songTitle.japanese}
+            </span>
+          </div>
+        </div>
+        <div className="flex flex-col sm:hidden">
+          <span className="text-left font-gambarino text-base leading-tight font-black text-foreground">
             {theme.songTitle.english}
           </span>
-          <span className="relative text-left text-xs leading-tight text-white/50">
-            {theme.songTitle.japanese}
-          </span>
+          {theme.songTitle.japanese && (
+            <span className="text-left text-xs leading-tight text-muted-foreground">
+              {theme.songTitle.japanese}
+            </span>
+          )}
         </div>
       </div>
     </button>
@@ -159,17 +171,17 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
     <div ref={containerRef} className="flex h-full flex-col md:flex-row">
       <StagePanel theme={activeTheme} />
 
-      <div className="flex flex-1 flex-col gap-5 p-6">
-        <div className="content-header flex flex-col gap-1">
-          <span className="font-gambarino text-3xl leading-none text-foreground">
+      <div className="flex flex-1 flex-col gap-4 p-4 sm:gap-5 sm:p-6">
+        <div className="content-header flex flex-col gap-0.5">
+          <span className="font-gambarino text-2xl leading-none text-foreground sm:text-3xl">
             Choose Your Theme
           </span>
-          <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+          <p className="max-w-md text-xs leading-relaxed text-muted-foreground sm:text-sm">
             See the whole site dressed in your favorite Ado song palette.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2 sm:gap-2 md:grid-cols-2 lg:grid-cols-4">
           {visibleThemes.map((theme) => (
             <div key={theme.id} className="theme-card">
               <ThemeCard
@@ -186,7 +198,7 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
           ))}
         </div>
 
-        <div className="appearance-section mt-auto flex flex-col gap-2 sm:max-w-xs">
+        <div className="appearance-section flex flex-col gap-2 sm:max-w-xs">
           <div className="flex flex-col gap-0.5">
             <span className="text-xs font-medium text-foreground">
               Appearance
@@ -211,7 +223,7 @@ export function ThemeSelectorDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-dvh max-w-2xl gap-0 overflow-hidden overflow-y-auto rounded-xl border border-foreground/10 bg-background p-0 sm:max-h-fit lg:max-w-5xl">
+      <DialogContent className="max-w-2xl gap-0 overflow-hidden rounded-xl border border-foreground/10 bg-background p-0 sm:max-h-fit lg:max-w-5xl">
         <DialogTitle className="sr-only">Choose Your Theme</DialogTitle>
         <ThemeSelectorContent
           key={open ? "open" : "closed"}
