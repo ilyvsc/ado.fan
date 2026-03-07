@@ -41,10 +41,8 @@ function AdoDescription() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isPastMiddle = useContext(ThemeContext);
 
-  useGSAP(() => {
-    if (!containerRef.current) return;
-
-    const ctx = gsap.context(() => {
+  useGSAP(
+    () => {
       gsap.from(".ado-desc-content > *", {
         opacity: 0,
         x: -30,
@@ -57,10 +55,9 @@ function AdoDescription() {
           toggleActions: "play none none reverse",
         },
       });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
+    },
+    { scope: containerRef },
+  );
 
   return (
     <div ref={containerRef} className="flex items-stretch gap-6">
@@ -173,10 +170,8 @@ function AdoExtraInfo() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isPastMiddle = useContext(ThemeContext);
 
-  useGSAP(() => {
-    if (!containerRef.current) return;
-
-    const ctx = gsap.context(() => {
+  useGSAP(
+    () => {
       gsap.from(".ado-extra-content > *", {
         opacity: 0,
         x: -30,
@@ -189,10 +184,9 @@ function AdoExtraInfo() {
           toggleActions: "play none none reverse",
         },
       });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
+    },
+    { scope: containerRef },
+  );
 
   return (
     <div ref={containerRef} className="flex items-stretch gap-6">
@@ -319,6 +313,7 @@ export function WhoIsAdo() {
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top top",
+              end: "50% top",
               scrub: true,
             },
           },
