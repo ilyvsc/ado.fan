@@ -26,6 +26,7 @@
     "^(next/(.*)$)|^(next$)",
     "^(react/(.*)$)|^(react$)",
     "^(react-dom/(.*)$)|^(react-dom$)",
+    "^(react-hook-form$)",
     "",
     "^[./]",
     "",

@@ -223,8 +223,9 @@ function LinedView({
   return (
     <div className="mx-auto max-w-3xl space-y-8">
       {pairs
-        .filter((pair) => pair.left || pair.right)
-        .map((pair, i) => (
+        .map((pair, i) => ({ pair, i }))
+        .filter(({ pair }) => pair.left || pair.right)
+        .map(({ pair, i }) => (
           <div key={`${leftCode}-${i}`} className="space-y-1">
             {pair.left && (
               <div className="flex items-baseline gap-4">

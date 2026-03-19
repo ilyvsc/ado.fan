@@ -12,12 +12,13 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "incremental": true,
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@/components/*": ["./shared/components/*"],
-      "@/providers/*": ["./shared/providers/*"],
-      "@/lib/*": ["./shared/lib/*"],
-      "@/hooks/*": ["./shared/hooks/*"]
+      "@/*": ["*"],
+      "@/components/*": ["shared/components/*"],
+      "@/providers/*": ["shared/providers/*"],
+      "@/lib/*": ["shared/lib/*"],
+      "@/hooks/*": ["shared/hooks/*"]
     },
     "noEmit": true,
     "plugins": [
