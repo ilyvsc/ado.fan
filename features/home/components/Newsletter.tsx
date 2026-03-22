@@ -155,7 +155,7 @@ export function NewsletterSection() {
             <div ref={marqueeTrackRef} className="flex w-max gap-6">
               {benefits.map(({ label, Icon }, i) => (
                 <span
-                  key={label}
+                  key={`${i}-${label}`}
                   className="flex shrink-0 items-center gap-2 text-sm text-muted-foreground"
                   aria-hidden={i >= newsletterBenefits.length}
                 >
