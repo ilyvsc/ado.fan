@@ -27,6 +27,16 @@
 }
 
 @layer base {
+  ::selection {
+    background-color: var(--color-ado-primary);
+    color: var(--color-ado-primary-foreground);
+  }
+
+  .bg-ado-primary ::selection {
+    background-color: var(--color-ado-secondary);
+    color: var(--color-ado-secondary-foreground);
+  }
+
   :root.dark,
   :root[data-theme].dark {
     --color-background: hsl(240 10% 4%);
