@@ -37,7 +37,15 @@ export function FloatingThemeButton() {
   return (
     <>
       <div className="fixed bottom-6 left-6 z-40 md:bottom-8 md:left-8">
-        <ThemeSelectorButton onClick={() => setOpen(true)} />
+        <button
+          onClick={() => setOpen(true)}
+          className="relative flex h-10 w-10 items-center justify-center rounded-md border border-foreground/10 bg-background text-foreground transition-colors hover:border-ado-primary/70"
+          aria-label="Open theme selector"
+          title="Theme selector"
+        >
+          <Palette className="size-4" />
+          <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-ado-primary" />
+        </button>
       </div>
       <ThemeSelectorDialog open={open} onOpenChange={setOpen} />
     </>
