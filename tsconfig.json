@@ -34,7 +34,8 @@
     "**/*.mjs",
     ".next/types/**/*.ts",
     "next-env.d.ts",
-    "eslint.config.mjs"
+    "eslint.config.mjs",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules", ".next", "prisma/generated"]
 }
