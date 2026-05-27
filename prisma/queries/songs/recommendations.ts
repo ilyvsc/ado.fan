@@ -1,6 +1,7 @@
 import { prisma } from "@/prisma/client";
 import { songListPrismaSelect } from "@/prisma/select";
 import { serializeSongListItem } from "@/prisma/serializer";
+
 import type { SongListItem } from "@/types/song";
 
 /**
@@ -31,7 +32,7 @@ export async function getRandomSongs(count = 3): Promise<SongListItem[]> {
   const safeCount = Math.min(Math.max(1, Math.floor(count)), 10);
 
   const songs = await prisma.$queryRaw<
-    Array<{
+    {
       id: string;
       titleEnglish: string;
       titleJapanese: string;
@@ -39,7 +40,7 @@ export async function getRandomSongs(count = 3): Promise<SongListItem[]> {
       releaseDate: Date;
       coverArt: string;
       themeColor: string | null;
-    }>
+    }[]
   >`
     SELECT
       id,

@@ -39,7 +39,7 @@ export function AlphabetStrip({
     } else {
       onShowAll();
       requestAnimationFrame(() =>
-        requestAnimationFrame(() => doScroll(letter)),
+        requestAnimationFrame(() => { doScroll(letter); }),
       );
     }
   }
@@ -52,7 +52,7 @@ export function AlphabetStrip({
           <button
             key={letter}
             disabled={!active}
-            onClick={() => handleClick(letter)}
+            onClick={() => { handleClick(letter); }}
             className={cn(
               "flex h-5 w-5 items-center justify-center rounded text-xs font-medium transition-colors",
               active

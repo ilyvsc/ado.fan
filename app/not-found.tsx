@@ -55,7 +55,7 @@ export default function NotFound() {
             <div className="flex flex-col gap-4 pt-4 sm:flex-row md:pt-2">
               <Button
                 className="h-12 flex-1 bg-ado-primary text-base font-semibold text-foreground hover:bg-ado-primary/80"
-                onClick={() => router.back()}
+                onClick={() => { router.back(); }}
               >
                 vanish away from here
               </Button>

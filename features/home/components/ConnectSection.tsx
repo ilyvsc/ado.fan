@@ -6,10 +6,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { useRef, useState } from "react";
 
-import { SocialIcons } from "../ui/SocialIcons";
-
 import { categories } from "@/lib/socialLinks";
 import { cn } from "@/shared/lib/utils";
+
+import { SocialIcons } from "../ui/SocialIcons";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -103,7 +103,7 @@ export function ConnectSection() {
                 <button
                   key={cat.id}
                   data-cat-tab
-                  onClick={() => setActiveId(cat.id)}
+                  onClick={() => { setActiveId(cat.id); }}
                   className={cn(
                     "group relative flex flex-col gap-1 rounded p-3 text-left transition-all duration-300 outline-none",
                     activeId === cat.id
@@ -145,7 +145,7 @@ export function ConnectSection() {
                 <button
                   key={cat.id}
                   data-cat-tab
-                  onClick={() => setActiveId(cat.id)}
+                  onClick={() => { setActiveId(cat.id); }}
                   className={cn(
                     "border p-2 text-center text-xs font-bold tracking-wider uppercase transition-all",
                     activeId === cat.id

@@ -15,8 +15,6 @@ import {
   useTransition,
 } from "react";
 
-import { getRandomSongId } from "./actions";
-
 import { useIsMobile } from "@/components/ui/use-mobile";
 import { AlphabetStrip } from "@/features/lyrics/search/components/AlphabetStrip";
 import { LyricsNavigation } from "@/features/lyrics/search/components/LyricsNavigation";
@@ -28,6 +26,9 @@ import { useFavorites } from "@/features/lyrics/search/hooks/useFavorites";
 import { useRecentlyViewed } from "@/features/lyrics/search/hooks/useRecentlyViewed";
 import { useSongSearch } from "@/features/lyrics/search/hooks/useSongSearch";
 import { cn } from "@/shared/lib/utils";
+
+import { getRandomSongId } from "./actions";
+
 import type { SongListItem, SongSortOption } from "@/types/song";
 
 gsap.registerPlugin(ScrollToPlugin);
@@ -106,7 +107,7 @@ export function LyricsPageClient({
       setScrollY(window.scrollY);
     }
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => { window.removeEventListener("scroll", onScroll); };
   }, []);
 
   const availableYears = useMemo(
@@ -162,7 +163,7 @@ export function LyricsPageClient({
   }, [display, display.hasMore, searchQuery]);
 
   const handleSearchChange = useCallback((query: string) => {
-    startTransition(() => setSearchQuery(query));
+    startTransition(() => { setSearchQuery(query); });
   }, []);
 
   const handleRandomClick = useCallback(async () => {
@@ -186,7 +187,7 @@ export function LyricsPageClient({
         selectedYear={selectedYear}
         onYearChange={setSelectedYear}
         showSaved={showSaved}
-        onToggleSaved={() => setShowSaved((v) => !v)}
+        onToggleSaved={() => { setShowSaved((v) => !v); }}
         savedCount={favoriteIds.size}
       />
 
@@ -257,7 +258,7 @@ export function LyricsPageClient({
                 No results for &quot;{searchQuery}&quot;
               </p>
               <button
-                onClick={() => handleSearchChange("")}
+                onClick={() => { handleSearchChange(""); }}
                 className="mt-3 text-xs text-ado-primary hover:underline"
               >
                 Clear search

@@ -1,6 +1,6 @@
-import type { MetadataRoute } from "next";
-
 import { prisma } from "@/prisma/client";
+
+import type { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const songs = await prisma.song.findMany({

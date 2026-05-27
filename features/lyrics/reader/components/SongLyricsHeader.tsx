@@ -130,7 +130,7 @@ export function SongLyricsHeader({
               </div>
             </div>
 
-            {(song.youtubeId || song.nicoId) && (
+            {(song.youtubeId ?? song.nicoId) && (
               <div className="flex flex-wrap gap-2 text-xs font-semibold">
                 {song.youtubeId && (
                   <a

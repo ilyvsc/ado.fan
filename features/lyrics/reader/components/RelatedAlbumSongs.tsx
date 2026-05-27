@@ -60,12 +60,12 @@ export function RelatedAlbumSongs({
               onClick={(e) => isCurrentSong && e.preventDefault()}
             >
               <span
-                className={`${isCurrentSong ? "text-(--theme-contrast)" : "text-(--theme-contrast)/50"}`}
+                className={isCurrentSong ? "text-(--theme-contrast)" : "text-(--theme-contrast)/50"}
               >
                 {trackNumber}.
               </span>
               <span
-                className={`${isCurrentSong ? "font-bold text-(--theme-contrast)" : "text-(--theme-contrast)/80 group-hover:text-(--theme-contrast)"}`}
+                className={isCurrentSong ? "font-bold text-(--theme-contrast)" : "text-(--theme-contrast)/80 group-hover:text-(--theme-contrast)"}
               >
                 {song.title.english}
               </span>

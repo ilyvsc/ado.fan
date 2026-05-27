@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 
 import { HorizontalSongScroller } from "@/features/lyrics/search/components/HorizontalSongScroller";
+
 import type { SongListItem } from "@/types/song";
 
 interface RecommendedSongsProps {

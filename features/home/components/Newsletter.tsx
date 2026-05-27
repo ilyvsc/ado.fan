@@ -88,7 +88,7 @@ export function NewsletterSection() {
           "-=0.5",
         );
 
-      let singleWidth = track.scrollWidth / 2;
+      const singleWidth = track.scrollWidth / 2;
 
       const marqueeTween = gsap.to(track, {
         x: -singleWidth,

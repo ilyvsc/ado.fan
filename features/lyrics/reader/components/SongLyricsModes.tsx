@@ -13,10 +13,11 @@ import {
 
 import { Suspense, useMemo, useState } from "react";
 
+import { cn } from "@/lib/utils";
+
 import { useLyricsUrlState } from "../hooks/useLyricsUrlState";
 
 import type { LyricsViewMode } from "@/features/lyrics/types/states";
-import { cn } from "@/lib/utils";
 import type { Language } from "@/types/lyrics";
 
 const MODE_CONFIG: {
@@ -90,7 +91,7 @@ function LanguageSelect({
     <div className="relative">
       <select
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => { onChange(e.target.value); }}
         className="cursor-pointer appearance-none rounded-full bg-transparent py-1.5 pr-7 pl-3 text-xs font-semibold text-foreground transition-colors hover:bg-(--theme-color)/10"
       >
         {languages.map((lang) => (
@@ -308,7 +309,7 @@ function LyricsModes({
                 <PillButton
                   key={mode}
                   active={viewMode === mode}
-                  onClick={() => setMode(mode)}
+                  onClick={() => { setMode(mode); }}
                 >
                   <Icon className="h-4 w-4" />
                   {viewMode === mode && <span>{label}</span>}
@@ -319,7 +320,7 @@ function LyricsModes({
 
           <ControlPill>
             <button
-              onClick={() => setFontSize((s) => Math.max(10, s - 2))}
+              onClick={() => { setFontSize((s) => Math.max(10, s - 2)); }}
               aria-label="Decrease font size"
               className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
             >
@@ -334,7 +335,7 @@ function LyricsModes({
             </div>
 
             <button
-              onClick={() => setFontSize((s) => Math.min(32, s + 2))}
+              onClick={() => { setFontSize((s) => Math.min(32, s + 2)); }}
               aria-label="Increase font size"
               className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
             >

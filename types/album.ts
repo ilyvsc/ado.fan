@@ -1,6 +1,7 @@
+import { Credits } from "@/shared/schemas/credits";
+
 import type { Song } from "./song";
 
-import { Credits } from "@/shared/schemas/credits";
 import type { ExternalLinks } from "@/shared/schemas/externalLinks";
 
 export type Album = {

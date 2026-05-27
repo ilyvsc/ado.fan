@@ -1,9 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
-import type { ReactNode } from "react";
 
 import NoScriptError from "@/app/no-script";
 import { SongThemeProvider } from "@/providers/SongThemeProvider";
@@ -12,6 +10,9 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import "@/styles/globals.css";
 
 import { linksCategories } from "@/shared/lib/socialLinks";
+
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 const inter = Inter({
   subsets: ["latin"],

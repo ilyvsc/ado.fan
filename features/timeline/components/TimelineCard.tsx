@@ -16,6 +16,7 @@ import { createPortal } from "react-dom";
 
 import { NicoNicoPlayer, YouTubePlayer } from "@/components/VideoPlayer";
 import { cn } from "@/lib/utils";
+
 import type { Song } from "@/types/song";
 
 export function SongCard({
@@ -31,7 +32,7 @@ export function SongCard({
   const imageRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = () => setShowControls(true);
+  const handleMouseMove = () => { setShowControls(true); };
 
   useGSAP(
     () => {
@@ -62,7 +63,7 @@ export function SongCard({
       setShowControls(false);
     }, 3000);
 
-    return () => clearTimeout(timeoutId);
+    return () => { clearTimeout(timeoutId); };
   }, [isExpanded, showControls]);
 
   useLayoutEffect(() => {
@@ -83,7 +84,7 @@ export function SongCard({
       if ((e as CustomEvent).detail !== song.id) setExpandedState(false);
     };
     window.addEventListener("timeline-play", handlePlay);
-    return () => window.removeEventListener("timeline-play", handlePlay);
+    return () => { window.removeEventListener("timeline-play", handlePlay); };
   }, [song.id]);
 
   return (
@@ -161,7 +162,7 @@ export function SongCard({
             role="dialog"
             aria-modal="true"
             aria-label={`${song.title.english} video player`}
-            onClick={() => setExpandedState(false)}
+            onClick={() => { setExpandedState(false); }}
             onKeyDown={(e) => {
               if (e.key === "Escape") setExpandedState(false);
             }}
@@ -170,11 +171,11 @@ export function SongCard({
           >
             <div
               role="presentation"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => { e.stopPropagation(); }}
               className="relative aspect-video w-full max-w-5xl overflow-hidden rounded-lg bg-background/40"
             >
               <button
-                onClick={() => setExpandedState(false)}
+                onClick={() => { setExpandedState(false); }}
                 className={cn(
                   "absolute top-4 right-4 z-10 rounded-full p-2 text-white/70 backdrop-blur-sm transition-opacity duration-300 hover:text-white",
                   showControls ? "opacity-100" : "opacity-0",

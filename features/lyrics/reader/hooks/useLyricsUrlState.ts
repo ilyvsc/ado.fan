@@ -50,7 +50,7 @@ export function useLyricsUrlState({
         };
       }
 
-      let left = leftParam ?? defaults.left;
+      const left = leftParam ?? defaults.left;
       let right = rightParam ?? defaults.right;
 
       if (left === right && codes.length > 1) {
@@ -99,7 +99,7 @@ export function useLyricsUrlState({
   return {
     state,
     languages: availableLanguages,
-    setMode: (mode: LyricsViewMode) => updateUrl({ mode }),
+    setMode: (mode: LyricsViewMode) => { updateUrl({ mode }); },
     setLeft: (code: string) =>
       codes.includes(code) &&
       updateUrl(

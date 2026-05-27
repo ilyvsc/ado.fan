@@ -8,10 +8,11 @@ import { ArrowDown } from "lucide-react";
 
 import { useRef, useState } from "react";
 
+import { cn } from "@/lib/utils";
+
 import { SongCard } from "./TimelineCard";
 import { TimelineHeader } from "./TimelineHeader";
 
-import { cn } from "@/lib/utils";
 import type { TimelineGroups } from "@/types/timeline";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);

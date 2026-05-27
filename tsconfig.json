@@ -3,7 +3,7 @@
     "target": "ES2023",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "jsx": "react-jsx",
     "allowJs": true,
@@ -12,13 +12,12 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "incremental": true,
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["*"],
-      "@/components/*": ["shared/components/*"],
-      "@/providers/*": ["shared/providers/*"],
-      "@/lib/*": ["shared/lib/*"],
-      "@/hooks/*": ["shared/hooks/*"]
+      "@/*": ["./*"],
+      "@/components/*": ["./shared/components/*"],
+      "@/providers/*": ["./shared/providers/*"],
+      "@/lib/*": ["./shared/lib/*"],
+      "@/hooks/*": ["./shared/hooks/*"]
     },
     "noEmit": true,
     "plugins": [
@@ -30,8 +29,12 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.mjs",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    "next-env.d.ts",
+    "eslint.config.mjs"
   ],
   "exclude": ["node_modules", ".next", "prisma/generated"]
 }

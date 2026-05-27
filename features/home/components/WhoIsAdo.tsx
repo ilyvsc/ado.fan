@@ -300,7 +300,7 @@ export function WhoIsAdo() {
         trigger: sectionRef.current,
         start: "top top",
         end: "bottom bottom",
-        onUpdate: (self) => setIsPastMiddle(self.progress >= 0.5),
+        onUpdate: (self) => { setIsPastMiddle(self.progress >= 0.5); },
       });
 
       if (overlayOneRef.current) {

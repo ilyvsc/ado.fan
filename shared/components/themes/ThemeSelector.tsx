@@ -3,6 +3,11 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
+import { SONG_THEMES, type SongTheme } from "@/shared/constants/themes";
+import { cn } from "@/shared/lib/utils";
+import { useSongTheme } from "@/shared/providers/SongThemeProvider";
+
+import { ThemeToggleButton } from "./ThemeButton";
 import {
   Dialog,
   DialogContent,
@@ -10,11 +15,6 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { useIsMobile } from "../ui/use-mobile";
-import { ThemeToggleButton } from "./ThemeButton";
-
-import { SONG_THEMES, type SongTheme } from "@/shared/constants/themes";
-import { cn } from "@/shared/lib/utils";
-import { useSongTheme } from "@/shared/providers/SongThemeProvider";
 
 function ThemeCard({
   theme,
@@ -93,7 +93,7 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
   const isMobile = useIsMobile();
 
   const hoverTimer = useRef<number | null>(null);
-  useEffect(() => () => clearHoverTimer(), []);
+  useEffect(() => () => { clearHoverTimer(); }, []);
 
   function clearHoverTimer() {
     if (hoverTimer.current) {
@@ -167,7 +167,7 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
                 setTheme(theme.id);
                 onClose();
               }}
-              onHoverStart={() => handleHoverStart(theme)}
+              onHoverStart={() => { handleHoverStart(theme); }}
               onHoverEnd={handleHoverEnd}
               className="last:odd:col-span-2 sm:last:odd:col-span-1"
             />
@@ -204,7 +204,7 @@ export function ThemeSelectorDialog({
         <DialogDescription className="sr-only">
           See the whole site dressed in your favorite Ado song palette.
         </DialogDescription>
-        <ThemeSelectorContent onClose={() => onOpenChange(false)} />
+        <ThemeSelectorContent onClose={() => { onOpenChange(false); }} />
       </DialogContent>
     </Dialog>
   );

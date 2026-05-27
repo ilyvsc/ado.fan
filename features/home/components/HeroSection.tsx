@@ -32,7 +32,7 @@ export function HeroSection() {
         .timeline({
           defaults: { ease: "power2.out" },
           delay: 0.3,
-          onComplete: () => ScrollTrigger.refresh(),
+          onComplete: () => { ScrollTrigger.refresh(); },
         })
         .fromTo(
           ".hero-title",
@@ -126,7 +126,7 @@ export function HeroSection() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={(e) => handleSmoothScroll(e, link.href)}
+                  onClick={(e) => { handleSmoothScroll(e, link.href); }}
                   className="group relative font-gambarino text-sm tracking-wide text-white/60 transition-colors duration-300 hover:text-white sm:text-base"
                 >
                   {link.label}

@@ -1,9 +1,9 @@
+import { serializeSong } from "./songSerialize";
 import { Prisma } from "../generated/client";
 import {
   albumListPrismaSelect,
   albumMinimalPrismaSelect,
 } from "../select/albumSelect";
-import { serializeSong } from "./songSerialize";
 
 import type { Album, AlbumMinimal } from "@/types/album";
 
@@ -22,7 +22,7 @@ export function serializeAlbumWithoutLyrics(
     tracks: album.tracks.map((track) => ({
       song: serializeSong(track.song),
       trackNumber: track.trackNumber,
-      isBonusTrack: track.isBonusTrack ?? undefined,
+      isBonusTrack: track.isBonusTrack,
     })),
   };
 }

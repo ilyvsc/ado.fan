@@ -53,7 +53,7 @@ export function HorizontalSongScroller({
       </div>
 
       <div className="relative">
-        <div className="flex gap-4 overflow-x-auto pb-1 [scrollbar-width:none]">
+        <div className="flex scrollbar-none gap-4 overflow-x-auto pb-1">
           {songs.map((song) => (
             <Link
               key={song.id}

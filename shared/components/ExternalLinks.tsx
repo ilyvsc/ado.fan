@@ -8,6 +8,7 @@ import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 import { NicoNicoPlayer, YouTubePlayer } from "@/shared/components/VideoPlayer";
+
 import type { ExternalLinks } from "@/shared/schemas/externalLinks";
 
 function ExternalLinkItem({
@@ -31,7 +32,7 @@ function ExternalLinkItem({
       if (!contentRef.current) return;
 
       const ctx = gsap.context(() => {
-        gsap.to(contentRef.current!, {
+        gsap.to(contentRef.current, {
           height: isOpen ? "auto" : 0,
           opacity: isOpen ? 1 : 0,
           duration: 0.35,
@@ -39,7 +40,7 @@ function ExternalLinkItem({
         });
       }, contentRef);
 
-      return () => ctx.revert();
+      return () => { ctx.revert(); };
     },
     { dependencies: [isOpen] },
   );
@@ -185,7 +186,7 @@ export function ExternalLinks({ links }: { links: ExternalLinks }) {
             key={`${link.type}-${link.value}`}
             link={link}
             isOpen={openIndex === i}
-            onToggle={() => handleToggle(i)}
+            onToggle={() => { handleToggle(i); }}
           />
         ))}
       </div>

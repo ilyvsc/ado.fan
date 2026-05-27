@@ -1,48 +1,64 @@
-import tsPlugin from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
-import nextPlugin from "eslint-config-next";
+import nextPlugin from "@next/eslint-plugin-next";
+import { defineConfig } from "eslint/config";
 import importPlugin from "eslint-plugin-import";
-import nPlugin from "eslint-plugin-n";
-import promisePlugin from "eslint-plugin-promise";
-import reactHooks from "eslint-plugin-react-hooks";
+import reactPlugin from "eslint-plugin-react";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
+import * as tseslint from "typescript-eslint";
 
-export default [
+export default defineConfig([
   {
-    ignores: ["dist", ".next", "node_modules", "prisma/generated"],
-  },
+    ignores: [
+      "**/dist/**",
+      "**/.next/**",
+      "**/node_modules/**",
+      "**/prisma/generated/**",
+    ],
+  }, // WTF? must stay isolated; otherwise it won't ignore the matches (eslint v9)
   {
-    files: ["**/*.{ts,tsx,js,jsx}"],
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: {
-        project: "./tsconfig.json",
-      },
-    },
+    files: ["**/*.{ts,tsx,js,jsx,mjs}"],
     plugins: {
-      "@typescript-eslint": tsPlugin,
-      import: importPlugin,
-      n: nPlugin,
-      promise: promisePlugin,
-      "react-hooks": reactHooks,
-      next: nextPlugin,
+      react: reactPlugin,
+      "typescript-eslint": tseslint,
     },
-    settings: {
-      "import/resolver": {
-        typescript: {
-          project: "./tsconfig.json",
-        },
+    extends: [
+      tseslint.configs.strictTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+      importPlugin.flatConfigs.recommended,
+      importPlugin.flatConfigs.typescript,
+      reactHooksPlugin.configs.flat["recommended-latest"],
+      nextPlugin.configs.recommended,
+      nextPlugin.configs["core-web-vitals"],
+    ],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
     rules: {
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
-      "import/no-unresolved": "error",
-      "import/order": ["warn", { alphabetize: { order: "asc" } }],
-      "promise/always-return": "warn",
-      "promise/no-return-wrap": "error",
-      "n/no-unsupported-features/es-syntax": "off",
-      "@typescript-eslint/no-unused-vars": "off",
       "no-debugger": "error",
+      "@typescript-eslint/no-unused-vars": "off",
+      "import/no-named-as-default": "off",
+      "import/no-unresolved": "warn",
+      "import/order": [
+        "warn",
+        {
+          alphabetize: { order: "asc", caseInsensitive: true },
+          groups: [
+            "builtin",
+            "external",
+            "internal",
+            ["parent", "sibling"],
+            "index",
+            "object",
+            "type",
+          ],
+          "newlines-between": "always-and-inside-groups",
+        },
+      ], // unsupported on eslint v10 for now waiting merge -> https://github.com/import-js/eslint-plugin-import/pull/3230
+    },
+    settings: {
+      "import/resolver": { typescript: { project: "./tsconfig.json" } },
     },
   },
-];
+]);

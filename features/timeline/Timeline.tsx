@@ -1,6 +1,6 @@
-import { TimelineClient } from "./components/TimelineClient";
-
 import { getTimelineSongs } from "@/prisma/queries/songs";
+
+import { TimelineClient } from "./components/TimelineClient";
 
 export async function DiscographyTimeline() {
   try {

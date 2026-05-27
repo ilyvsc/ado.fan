@@ -23,6 +23,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ThemeSelectorButton } from "@/shared/components/themes/ThemeButton";
 import { ThemeSelectorDialog } from "@/shared/components/themes/ThemeSelector";
 import { cn } from "@/shared/lib/utils";
+
 import type { SongSortOption } from "@/types/song";
 
 const SORT_OPTIONS: {
@@ -49,7 +50,7 @@ function useClickOutside(
       }
     }
     document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    return () => { document.removeEventListener("mousedown", handler); };
   }, [ref, open, onClose]);
 }
 
@@ -70,7 +71,7 @@ function ViewModeToggle({
       )}
     >
       <button
-        onClick={() => onViewModeChange("grid")}
+        onClick={() => { onViewModeChange("grid"); }}
         className={cn(
           "flex h-7 w-7 items-center justify-center rounded-md transition-all",
           viewMode === "grid"
@@ -82,7 +83,7 @@ function ViewModeToggle({
         <Grid className="h-3.5 w-3.5" />
       </button>
       <button
-        onClick={() => onViewModeChange("list")}
+        onClick={() => { onViewModeChange("list"); }}
         className={cn(
           "flex h-7 w-7 items-center justify-center rounded-md transition-all",
           viewMode === "list"
@@ -140,8 +141,8 @@ export function LyricsNavigation({
   const [sortOpen, setSortOpen] = useState(false);
   const [yearOpen, setYearOpen] = useState(false);
 
-  const closeSortMenu = useCallback(() => setSortOpen(false), []);
-  const closeYearMenu = useCallback(() => setYearOpen(false), []);
+  const closeSortMenu = useCallback(() => { setSortOpen(false); }, []);
+  const closeYearMenu = useCallback(() => { setYearOpen(false); }, []);
 
   useGSAP(
     () => {
@@ -176,7 +177,7 @@ export function LyricsNavigation({
       }
     }
     window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    return () => { window.removeEventListener("keydown", handler); };
   }, [searchQuery, onSearchChange, onRandomClick]);
 
   useClickOutside(sortRef, sortOpen, closeSortMenu);
@@ -200,13 +201,13 @@ export function LyricsNavigation({
               ref={inputRef}
               type="text"
               value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
+              onChange={(e) => { onSearchChange(e.target.value); }}
               placeholder="Search songs…"
               className="h-8 w-full rounded-lg border border-foreground/8 bg-foreground/4 px-10 text-sm text-foreground transition-all placeholder:text-muted-foreground/40 hover:border-foreground/12 focus:border-foreground/20 focus:bg-background focus:ring-2 focus:ring-ado-primary/10 focus:outline-none md:h-10"
             />
             {searchQuery ? (
               <button
-                onClick={() => onSearchChange("")}
+                onClick={() => { onSearchChange(""); }}
                 className="absolute top-1/2 right-2.5 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-foreground/8 hover:text-foreground"
               >
                 <X className="h-3.5 w-3.5" />
@@ -225,7 +226,7 @@ export function LyricsNavigation({
             />
 
             <ThemeSelectorButton
-              onClick={() => setThemeDialogOpen(true)}
+              onClick={() => { setThemeDialogOpen(true); }}
               className="h-8 w-8 border-foreground/8 bg-foreground/4 hover:bg-foreground/8"
             />
           </div>
@@ -286,7 +287,7 @@ export function LyricsNavigation({
               }}
             >
               <button
-                onClick={() => setYearOpen((o) => !o)}
+                onClick={() => { setYearOpen((o) => !o); }}
                 aria-expanded={yearOpen}
                 aria-haspopup="listbox"
                 className={cn(
@@ -374,7 +375,7 @@ export function LyricsNavigation({
               }}
             >
               <button
-                onClick={() => setSortOpen((o) => !o)}
+                onClick={() => { setSortOpen((o) => !o); }}
                 aria-expanded={sortOpen}
                 aria-haspopup="listbox"
                 className="flex h-8 items-center gap-1 rounded-lg px-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-foreground/6 hover:text-foreground"
@@ -446,7 +447,7 @@ export function LyricsNavigation({
             />
 
             <ThemeSelectorButton
-              onClick={() => setThemeDialogOpen(true)}
+              onClick={() => { setThemeDialogOpen(true); }}
               className="hidden h-8 w-8 border-foreground/8 bg-foreground/4 hover:bg-foreground/8 sm:flex"
             />
           </div>

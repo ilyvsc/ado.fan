@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ExternalLinks } from "@/components/ExternalLinks";
@@ -12,6 +11,8 @@ import { serializeLyricsToLanguages } from "@/features/lyrics/utils/serializeLyr
 import { getContrastColor } from "@/lib/color";
 import { getAlbumsBySongId } from "@/prisma/queries/album";
 import { getSongById, getSongLyricsById } from "@/prisma/queries/songs";
+
+import type { Metadata } from "next";
 
 export async function generateMetadata({
   params,
@@ -82,7 +83,7 @@ export default async function LyricsSongPage({
       className="min-h-screen bg-background"
       style={
         {
-          "--theme-color": song.themeColor || "var(--color-background)",
+          "--theme-color": song.themeColor ?? "var(--color-background)",
           "--theme-contrast": song.themeColor
             ? getContrastColor(song.themeColor)
             : "var(--color-foreground)",

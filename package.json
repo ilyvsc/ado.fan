@@ -39,21 +39,17 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
+    "@next/eslint-plugin-next": "^16.2.6",
     "@tailwindcss/postcss": "^4.3.0",
     "@types/node": "^25.9.1",
     "@types/pg": "^8.20.0",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
-    "@typescript-eslint/eslint-plugin": "^8.59.4",
     "@typescript-eslint/parser": "^8.59.4",
     "autoprefixer": "^10.5.0",
-    "eslint": "^10.4.0",
-    "eslint-config-next": "^16.2.6",
-    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint": "^9.4.0",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-n": "^18.0.1",
-    "eslint-plugin-promise": "^7.3.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "postcss": "^8.5.15",
@@ -61,6 +57,7 @@
     "prettier-plugin-tailwindcss": "^0.8.0",
     "prisma": "^7.8.0",
     "tailwindcss": "^4.3.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.60.0"
   }
 }

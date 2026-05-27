@@ -5,9 +5,9 @@ import { useTheme } from "next-themes";
 
 import { useState } from "react";
 
-import { ThemeSelectorDialog } from "./ThemeSelector";
-
 import { cn } from "@/lib/utils";
+
+import { ThemeSelectorDialog } from "./ThemeSelector";
 
 export function ThemeSelectorButton({
   onClick,
@@ -38,7 +38,7 @@ export function FloatingThemeButton() {
     <>
       <div className="fixed bottom-6 left-6 z-40 md:bottom-8 md:left-8">
         <button
-          onClick={() => setOpen(true)}
+          onClick={() => { setOpen(true); }}
           className="relative flex h-10 w-10 items-center justify-center rounded-md border border-foreground/10 bg-background text-foreground transition-colors hover:border-ado-primary/70"
           aria-label="Open theme selector"
           title="Theme selector"
@@ -66,7 +66,7 @@ export function ThemeToggleButton() {
         return (
           <button
             key={value}
-            onClick={() => setTheme(value)}
+            onClick={() => { setTheme(value); }}
             className={cn(
               "flex flex-1 items-center justify-center gap-1.5 border-r border-foreground/10 px-3 py-2 text-xs font-medium transition-colors duration-200 last:border-r-0",
               isActive

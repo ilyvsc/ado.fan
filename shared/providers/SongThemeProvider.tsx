@@ -46,7 +46,7 @@ export function SongThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const previewTheme = useCallback(
-    (themeId: string | null) => applyTheme(themeId ?? currentTheme),
+    (themeId: string | null) => { applyTheme(themeId ?? currentTheme); },
     [currentTheme],
   );
 

@@ -1,8 +1,10 @@
+import { parseCredits } from "@/shared/schemas/credits";
+
+import { parseExternalLinks } from "@/shared/schemas/externalLinks";
+
 import { Prisma } from "../generated/client";
 import { songListPrismaSelect, songPrismaSelect } from "../select/songSelect";
 
-import { parseCredits } from "@/shared/schemas/credits";
-import { parseExternalLinks } from "@/shared/schemas/externalLinks";
 import type { Song, SongListItem, SongSeedInput } from "@/types/song";
 
 export function serializeSongListItem(

@@ -8,7 +8,7 @@ export function useSocialLinks({
   links,
   className,
 }: {
-  links: ReadonlyArray<SocialLink>;
+  links: readonly SocialLink[];
   className?: string;
 }) {
   return links.map(({ url, description, icon, name }) => {
