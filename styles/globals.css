@@ -6,11 +6,16 @@
 
 /* Theme Colors for TailwindCSS v4 */
 @theme {
-  /* Font and Screen customazations */
+  /* Screen customazations */
   --breakpoint-xs: 420px;
   --breakpoint-2xl: 1536px;
   --breakpoint-3xl: 1920px;
   --breakpoint-4xl: 2560px;
+
+  /* Custom Fonts */
+  --font-sans: var(--font-inter);
+  --font-jp-sans: var(--font-jp-sans);
+  --font-jp-serif: var(--font-jp-serif);
 
   --font-gambarino: "Gambarino-Regular";
 
@@ -27,6 +32,14 @@
 }
 
 @layer base {
+  /* Defaults Japanese locale */
+  :lang(ja) {
+    font-family: var(--font-jp-sans);
+    line-height: 1.9;
+  }
+
+  /* Custom colors on selection */
+  /* note: works really bad on some themes, leaving as-is for now */
   ::selection {
     background-color: var(--color-ado-primary);
     color: var(--color-ado-primary-foreground);
@@ -37,6 +50,7 @@
     color: var(--color-ado-secondary-foreground);
   }
 
+  /* Dark Mode customazations */
   :root.dark,
   :root[data-theme].dark {
     --color-background: hsl(240 10% 4%);
@@ -45,6 +59,7 @@
   }
 }
 
+/* Color customazations for Song Themes */
 :root[data-theme="uta"] {
   --color-ado-primary: hsl(324 48% 56%);
   --color-ado-primary-foreground: hsl(0 0% 98%);
@@ -71,4 +86,15 @@
   --color-ado-primary-foreground: hsl(240 10% 4%);
   --color-ado-secondary: hsl(182, 14%, 48%);
   --color-ado-secondary-foreground: hsl(0 0% 98%);
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }

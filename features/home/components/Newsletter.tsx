@@ -3,15 +3,8 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-  ArrowUpRightSquare,
-  Bell,
-  Calendar,
-  ShoppingBag,
-  Video,
-} from "lucide-react";
+import { ArrowUpRightSquare, Bell, Calendar, ShoppingBag, Video } from "lucide-react";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useRef } from "react";
 
@@ -38,10 +31,7 @@ export function NewsletterSection() {
   const marqueeViewportRef = useRef<HTMLDivElement>(null);
   const marqueeTrackRef = useRef<HTMLDivElement>(null);
 
-  const benefits = useMemo(
-    () => [...newsletterBenefits, ...newsletterBenefits],
-    [],
-  );
+  const benefits = useMemo(() => [...newsletterBenefits, ...newsletterBenefits], []);
 
   useGSAP(
     () => {
@@ -97,7 +87,7 @@ export function NewsletterSection() {
         repeat: -1,
         paused: true,
         modifiers: {
-          x: gsap.utils.unitize((x) => parseFloat(x) % singleWidth),
+          x: gsap.utils.unitize((x: string) => parseFloat(x) % singleWidth),
         },
       });
 
@@ -138,9 +128,9 @@ export function NewsletterSection() {
               ref={descRef}
               className="mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground md:text-base"
             >
-              Keep up with official news and updates. Be the first to hear about
-              new music, upcoming live shows, tour dates, and special
-              announcements as they're released.
+              Keep up with official news and updates. Be the first to hear about new
+              music, upcoming live shows, tour dates, and special announcements as
+              they're released.
             </p>
           </div>
 
@@ -174,12 +164,11 @@ export function NewsletterSection() {
         >
           <div className="flex flex-col gap-2">
             <h3 className="font-gambarino text-3xl tracking-wide text-ado-primary-foreground sm:text-4xl">
-              Ado's Newsletter
+              Feel free to join!
             </h3>
             <p className="text-sm leading-relaxed text-ado-primary-foreground/80 md:text-base">
-              Subscription takes place exclusively on the official page. This
-              website never collects or has access to your email or personal
-              information.
+              Subscription takes place exclusively on the official page. This website
+              never collects or has access to your email or personal information.
             </p>
           </div>
 
@@ -204,9 +193,7 @@ export function NewsletterSection() {
 
           <p className="text-center text-xs text-ado-primary-foreground/80 md:text-sm">
             via{" "}
-            <span className="font-medium text-ado-primary-foreground">
-              umusic.jp
-            </span>{" "}
+            <span className="font-medium text-ado-primary-foreground">umusic.jp</span>{" "}
             Ado's official newsletter platform
           </p>
         </div>

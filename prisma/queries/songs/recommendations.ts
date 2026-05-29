@@ -77,10 +77,7 @@ export async function getRecommendedSongs(): Promise<{
   latest: SongListItem[];
   random: SongListItem[];
 }> {
-  const [latest, random] = await Promise.all([
-    getLatestSongs(1),
-    getRandomSongs(5),
-  ]);
+  const [latest, random] = await Promise.all([getLatestSongs(1), getRandomSongs(5)]);
 
   return { latest, random };
 }

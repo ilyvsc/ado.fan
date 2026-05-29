@@ -41,15 +41,14 @@ interface LyricsPageClientProps {
   allSongs: SongListItem[];
 }
 
-function sortSongs<
-  T extends { title: { english: string }; releaseDate: string },
->(songs: T[], sort: SongSortOption): T[] {
+function sortSongs<T extends { title: { english: string }; releaseDate: string }>(
+  songs: T[],
+  sort: SongSortOption,
+): T[] {
   const copy = [...songs];
   switch (sort) {
     case "za":
-      return copy.sort((a, b) =>
-        b.title.english.localeCompare(a.title.english),
-      );
+      return copy.sort((a, b) => b.title.english.localeCompare(a.title.english));
     case "newest":
       return copy.sort(
         (a, b) =>
@@ -61,9 +60,7 @@ function sortSongs<
           new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime(),
       );
     default:
-      return copy.sort((a, b) =>
-        a.title.english.localeCompare(b.title.english),
-      );
+      return copy.sort((a, b) => a.title.english.localeCompare(b.title.english));
   }
 }
 
@@ -78,19 +75,14 @@ function applySortAndFilter(
   return sortSongs(filtered, sort);
 }
 
-export function LyricsPageClient({
-  recommended,
-  allSongs,
-}: LyricsPageClientProps) {
+export function LyricsPageClient({ recommended, allSongs }: LyricsPageClientProps) {
   const router = useRouter();
   const isMobile = useIsMobile();
   const loadingRef = useRef<HTMLDivElement>(null);
   const [isPending, startTransition] = useTransition();
   const [scrollY, setScrollY] = useState(0);
 
-  const [viewModeOverride, setViewMode] = useState<"grid" | "list" | null>(
-    null,
-  );
+  const [viewModeOverride, setViewMode] = useState<"grid" | "list" | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sort, setSort] = useState<SongSortOption>("az");
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
@@ -107,14 +99,16 @@ export function LyricsPageClient({
       setScrollY(window.scrollY);
     }
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => { window.removeEventListener("scroll", onScroll); };
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   const availableYears = useMemo(
     () =>
-      [
-        ...new Set(allSongs.map((s) => new Date(s.releaseDate).getFullYear())),
-      ].sort((a, b) => a - b),
+      [...new Set(allSongs.map((s) => new Date(s.releaseDate).getFullYear()))].sort(
+        (a, b) => a - b,
+      ),
     [allSongs],
   );
 
@@ -127,8 +121,7 @@ export function LyricsPageClient({
   );
 
   const baseList = useMemo(
-    () =>
-      showSaved ? allSongs.filter((s) => favoriteIds.has(s.id)) : allSongs,
+    () => (showSaved ? allSongs.filter((s) => favoriteIds.has(s.id)) : allSongs),
     [allSongs, showSaved, favoriteIds],
   );
 
@@ -163,7 +156,9 @@ export function LyricsPageClient({
   }, [display, display.hasMore, searchQuery]);
 
   const handleSearchChange = useCallback((query: string) => {
-    startTransition(() => { setSearchQuery(query); });
+    startTransition(() => {
+      setSearchQuery(query);
+    });
   }, []);
 
   const handleRandomClick = useCallback(async () => {
@@ -178,7 +173,9 @@ export function LyricsPageClient({
         onSearchChange={handleSearchChange}
         viewMode={viewMode}
         onViewModeChange={setViewMode}
-        onRandomClick={handleRandomClick}
+        onRandomClick={() => {
+          void handleRandomClick();
+        }}
         resultCount={searchQuery ? sortedSearchResults.length : undefined}
         sort={sort}
         onSortChange={setSort}
@@ -187,15 +184,14 @@ export function LyricsPageClient({
         selectedYear={selectedYear}
         onYearChange={setSelectedYear}
         showSaved={showSaved}
-        onToggleSaved={() => { setShowSaved((v) => !v); }}
+        onToggleSaved={() => {
+          setShowSaved((v) => !v);
+        }}
         savedCount={favoriteIds.size}
       />
 
       {showLetterGroups && (
-        <AlphabetStrip
-          activeLetters={activeLetters}
-          onShowAll={display.showAll}
-        />
+        <AlphabetStrip activeLetters={activeLetters} onShowAll={display.showAll} />
       )}
 
       <main
@@ -207,10 +203,7 @@ export function LyricsPageClient({
         <Activity mode={searchQuery ? "hidden" : "visible"}>
           <RecentlyViewed songs={recentSongs} />
 
-          <RecommendedSongs
-            latest={recommended.latest}
-            random={recommended.random}
-          />
+          <RecommendedSongs latest={recommended.latest} random={recommended.random} />
 
           {display.visible.length === 0 ? (
             <div className="flex flex-col items-center py-20 text-muted-foreground">
@@ -226,9 +219,7 @@ export function LyricsPageClient({
                 songs={display.visible}
                 viewMode={viewMode}
                 totalCount={
-                  selectedYear || showSaved
-                    ? filteredSongs.length
-                    : allSongs.length
+                  selectedYear || showSaved ? filteredSongs.length : allSongs.length
                 }
                 showLetterGroups={showLetterGroups}
                 favorites={favoriteIds}
@@ -236,10 +227,7 @@ export function LyricsPageClient({
               />
 
               {display.hasMore && (
-                <div
-                  ref={loadingRef}
-                  className="flex min-h-20 justify-center py-8"
-                />
+                <div ref={loadingRef} className="flex min-h-20 justify-center py-8" />
               )}
             </>
           )}
@@ -254,11 +242,11 @@ export function LyricsPageClient({
           ) : sortedSearchResults.length === 0 ? (
             <div className="flex flex-col items-center py-20 text-muted-foreground">
               <Search className="mb-4 h-10 w-10 opacity-20" />
-              <p className="text-sm">
-                No results for &quot;{searchQuery}&quot;
-              </p>
+              <p className="text-sm">No results for &quot;{searchQuery}&quot;</p>
               <button
-                onClick={() => { handleSearchChange(""); }}
+                onClick={() => {
+                  handleSearchChange("");
+                }}
                 className="mt-3 text-xs text-ado-primary hover:underline"
               >
                 Clear search
@@ -278,13 +266,13 @@ export function LyricsPageClient({
 
       {scrollY > 300 && (
         <button
-          onClick={() =>
+          onClick={() => {
             gsap.to(window, {
               scrollTo: { y: 0, autoKill: false },
               duration: 0.6,
               ease: "power3.out",
-            })
-          }
+            });
+          }}
           aria-label="Scroll to top"
           className="fixed right-6 bottom-6 flex h-9 w-9 items-center justify-center rounded-full bg-foreground/8 text-muted-foreground shadow-sm backdrop-blur-sm transition-colors hover:bg-foreground/12 hover:text-foreground"
         >

@@ -6,10 +6,7 @@ import * as React from "react";
 
 import type { ThemeProviderProps } from "next-themes";
 
-export function ThemeProvider({
-  children,
-  ...props
-}: Readonly<ThemeProviderProps>) {
+export function ThemeProvider({ children, ...props }: Readonly<ThemeProviderProps>) {
   return (
     <NextThemesProvider
       attribute="class"

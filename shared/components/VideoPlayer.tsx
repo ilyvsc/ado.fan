@@ -76,7 +76,9 @@ export function YouTubePlayer({
       postCommand(ref.current, "seekTo", [loop.start, true]);
     }, duration);
 
-    return () => { clearInterval(interval); };
+    return () => {
+      clearInterval(interval);
+    };
   }, [loop, isPaused]);
 
   const id = song?.youtubeId ?? youtubeId;

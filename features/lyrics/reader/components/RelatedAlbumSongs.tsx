@@ -12,9 +12,10 @@ export function RelatedAlbumSongs({
   albums: Album[];
   currentSongId: string;
 }) {
-  if (!albums || albums.length === 0) return null;
-
   const mainAlbum = albums[0];
+
+  if (!mainAlbum) return null;
+
   const referenceAlbums = albums.filter((a) => a.id !== mainAlbum.id);
   const songs = mainAlbum.tracks.map((t) => ({
     song: t.song,
@@ -57,15 +58,25 @@ export function RelatedAlbumSongs({
                   ? "cursor-default border-l-2 border-(--theme-contrast) bg-(--theme-contrast)/10"
                   : "hover:bg-(--theme-contrast)/10"
               }`}
-              onClick={(e) => isCurrentSong && e.preventDefault()}
+              onClick={(e) => {
+                if (isCurrentSong) e.preventDefault();
+              }}
             >
               <span
-                className={isCurrentSong ? "text-(--theme-contrast)" : "text-(--theme-contrast)/50"}
+                className={
+                  isCurrentSong
+                    ? "text-(--theme-contrast)"
+                    : "text-(--theme-contrast)/50"
+                }
               >
                 {trackNumber}.
               </span>
               <span
-                className={isCurrentSong ? "font-bold text-(--theme-contrast)" : "text-(--theme-contrast)/80 group-hover:text-(--theme-contrast)"}
+                className={
+                  isCurrentSong
+                    ? "font-bold text-(--theme-contrast)"
+                    : "text-(--theme-contrast)/80 group-hover:text-(--theme-contrast)"
+                }
               >
                 {song.title.english}
               </span>

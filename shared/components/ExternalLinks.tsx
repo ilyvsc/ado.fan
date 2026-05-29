@@ -40,7 +40,9 @@ function ExternalLinkItem({
         });
       }, contentRef);
 
-      return () => { ctx.revert(); };
+      return () => {
+        ctx.revert();
+      };
     },
     { dependencies: [isOpen] },
   );
@@ -135,10 +137,7 @@ function ExternalLinkItem({
                   title={link.title ?? undefined}
                 />
               ) : (
-                <NicoNicoPlayer
-                  nicoId={link.value}
-                  title={link.title ?? undefined}
-                />
+                <NicoNicoPlayer nicoId={link.value} title={link.title ?? undefined} />
               )}
             </div>
           )}
@@ -172,7 +171,7 @@ export function ExternalLinks({ links }: { links: ExternalLinks }) {
     setOpenIndex((current) => (current === index ? null : index));
   }, []);
 
-  if (!links?.length) return null;
+  if (!links.length) return null;
 
   return (
     <div className="mb-8 w-full space-y-2 py-4">
@@ -186,7 +185,9 @@ export function ExternalLinks({ links }: { links: ExternalLinks }) {
             key={`${link.type}-${link.value}`}
             link={link}
             isOpen={openIndex === i}
-            onToggle={() => { handleToggle(i); }}
+            onToggle={() => {
+              handleToggle(i);
+            }}
           />
         ))}
       </div>

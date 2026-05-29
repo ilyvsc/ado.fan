@@ -24,9 +24,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(results);
   } catch (error) {
     console.error("Failed to search songs:", error);
-    return NextResponse.json(
-      { error: "Failed to search songs" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Failed to search songs" }, { status: 500 });
   }
 }

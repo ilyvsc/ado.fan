@@ -163,8 +163,7 @@ export const categories: Category[] = [
   {
     id: "fan-communities",
     label: "Fan Communities",
-    description:
-      "Fan spaces for discussion, sharing, and community interaction.",
+    description: "Fan spaces for discussion, sharing, and community interaction.",
     data: [
       {
         name: "Reddit",

@@ -37,8 +37,8 @@ export default function NotFound() {
                 You interrupted 404-chan!!!
               </CardTitle>
               <CardDescription className="max-w-xl text-center text-base text-muted-foreground md:text-2xl">
-                <strong>Mou~!</strong> 404-chan was peacefully enjoying Ado's
-                music when you suddenly appeared!
+                <strong>Mou~!</strong> 404-chan was peacefully enjoying Ado's music
+                when you suddenly appeared!
               </CardDescription>
             </div>
           </CardHeader>
@@ -46,16 +46,18 @@ export default function NotFound() {
           <CardContent className="space-y-2 px-6 pb-8 md:space-y-4 md:px-8 md:pb-10">
             <div className="rounded-lg border border-ado-primary/50 bg-ado-primary/5 p-4 transition-transform hover:scale-105 md:p-6">
               <p className="text-center text-base leading-relaxed text-foreground italic md:text-lg">
-                <strong>404-chan:</strong> I was having such a great time
-                listening to Ado-sama's songs and you just... UGGGHHHHH!!! Go
-                find your own page!! Shoo shoo! 🔪
+                <strong>404-chan:</strong> I was having such a great time listening to
+                Ado-sama's songs and you just... UGGGHHHHH!!! Go find your own page!!
+                Shoo shoo! 🔪
               </p>
             </div>
 
             <div className="flex flex-col gap-4 pt-4 sm:flex-row md:pt-2">
               <Button
                 className="h-12 flex-1 bg-ado-primary text-base font-semibold text-foreground hover:bg-ado-primary/80"
-                onClick={() => { router.back(); }}
+                onClick={() => {
+                  router.back();
+                }}
               >
                 vanish away from here
               </Button>

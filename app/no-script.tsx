@@ -70,8 +70,8 @@ const NoScriptError: FC = () => {
 
           <footer className="space-y-2 text-center">
             <p className="text-xs text-white/60">
-              Some ad blockers may block JavaScript. This page has absolutely no
-              ads, so you can safely disable your ad blocker here.
+              Some ad blockers may block JavaScript. This page has absolutely no ads,
+              so you can safely disable your ad blocker here.
             </p>
             <div className="flex items-center justify-center gap-2 text-xs text-white/40">
               <RefreshCcw className="h-3 w-3" />

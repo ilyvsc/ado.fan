@@ -1,7 +1,12 @@
 import { prisma } from "@/prisma/client";
+import { Prisma } from "@/prisma/generated/client";
 import { albumListPrismaSelect } from "@/prisma/select";
 import { serializeAlbumWithoutLyrics } from "@/prisma/serializer";
 import { Album } from "@/types/album";
+
+type AlbumWithTracks = Prisma.AlbumGetPayload<{
+  select: typeof albumListPrismaSelect;
+}>;
 
 /**
  * Fetch all albums that contain a specific song (without lyrics).
@@ -27,7 +32,7 @@ import { Album } from "@/types/album";
  * @note This query excludes lyrics to reduce payload size. Songs in tracks will have empty lyrics fields.
  */
 export async function getAlbumsBySongId(songId: string): Promise<Album[]> {
-  const albums = await prisma.album.findMany({
+  const albums = (await prisma.album.findMany({
     where: {
       tracks: {
         some: {
@@ -37,7 +42,7 @@ export async function getAlbumsBySongId(songId: string): Promise<Album[]> {
     },
     select: albumListPrismaSelect,
     orderBy: { releaseDate: "desc" },
-  });
+  })) as unknown as AlbumWithTracks[];
 
   return albums.map(serializeAlbumWithoutLyrics);
 }

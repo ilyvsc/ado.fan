@@ -14,13 +14,7 @@ function getCreditsForRoles(credits: Song["credits"], roles: string[]) {
   );
 }
 
-export function SongLyricsHeader({
-  song,
-  albums,
-}: {
-  song: Song;
-  albums: Album[];
-}) {
+export function SongLyricsHeader({ song, albums }: { song: Song; albums: Album[] }) {
   const mainAlbum = albums[0];
   const trackNumber = mainAlbum?.tracks.find(
     (t) => t.song.id === song.id,
@@ -66,7 +60,7 @@ export function SongLyricsHeader({
               {song.title.english}
             </h1>
             {song.title.japanese && (
-              <h2 className="mb-4 text-xl font-medium opacity-75 md:text-2xl">
+              <h2 className="mb-4 font-jp-sans text-xl font-semibold opacity-75 md:text-2xl">
                 {song.title.japanese}
               </h2>
             )}

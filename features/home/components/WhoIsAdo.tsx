@@ -66,17 +66,13 @@ function AdoDescription() {
           <div
             className={cn(
               "h-px w-12 transition-colors duration-700",
-              isPastMiddle
-                ? "bg-ado-primary-foreground/70"
-                : "bg-ado-primary/70",
+              isPastMiddle ? "bg-ado-primary-foreground/70" : "bg-ado-primary/70",
             )}
           />
           <span
             className={cn(
               "text-xs font-medium tracking-widest uppercase transition-colors duration-700 sm:text-sm",
-              isPastMiddle
-                ? "text-ado-primary-foreground/80"
-                : "text-ado-primary",
+              isPastMiddle ? "text-ado-primary-foreground/80" : "text-ado-primary",
             )}
           >
             The Artist
@@ -84,9 +80,7 @@ function AdoDescription() {
           <div
             className={cn(
               "h-px flex-1 transition-colors duration-700",
-              isPastMiddle
-                ? "bg-ado-primary-foreground/70"
-                : "bg-ado-primary/70",
+              isPastMiddle ? "bg-ado-primary-foreground/70" : "bg-ado-primary/70",
             )}
           />
         </div>
@@ -103,18 +97,16 @@ function AdoDescription() {
         <p
           className={cn(
             "mt-4 max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg",
-            isPastMiddle
-              ? "text-ado-primary-foreground/80"
-              : "text-muted-foreground",
+            isPastMiddle ? "text-ado-primary-foreground/80" : "text-muted-foreground",
           )}
         >
-          Born in Tokyo in 2002, Ado began sharing song covers online as a
-          teenager, uploading her performances to NicoNico. She emerged from
-          Japan's utaite scene, a community of singers known for giving their
-          own voice to songs originally created within VOCALOID culture. By
-          consistently covering works from popular producers, she built
-          recognition through vocal performance alone, establishing herself as
-          an utaite before moving into mainstream releases.
+          Born in Tokyo in 2002, Ado began sharing song covers online as a teenager,
+          uploading her performances to NicoNico. She emerged from Japan's utaite
+          scene, a community of singers known for giving their own voice to songs
+          originally created within VOCALOID culture. By consistently covering works
+          from popular producers, she built recognition through vocal performance
+          alone, establishing herself as an utaite before moving into mainstream
+          releases.
         </p>
 
         <blockquote
@@ -128,9 +120,7 @@ function AdoDescription() {
           <p
             className={cn(
               "text-md font-gambarino italic transition-colors duration-700 md:text-xl",
-              isPastMiddle
-                ? "text-ado-primary-foreground/90"
-                : "text-foreground/90",
+              isPastMiddle ? "text-ado-primary-foreground/90" : "text-foreground/90",
             )}
           >
             Her major breakthrough came in 2020 with her debut song
@@ -140,26 +130,23 @@ function AdoDescription() {
         <p
           className={cn(
             "max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg",
-            isPastMiddle
-              ? "text-ado-primary-foreground/80"
-              : "text-muted-foreground",
+            isPastMiddle ? "text-ado-primary-foreground/80" : "text-muted-foreground",
           )}
         >
-          <Highlight italic>Usseewa</Highlight>, a release that quickly pushed
-          her beyond online recognition, marked a decisive turning point in her
-          career. Its impact was followed by collaborations with some of Japan's
-          most respected composers and lyricists with tracks like{" "}
-          <Highlight italic>Odo</Highlight>,{" "}
-          <Highlight italic>Gira Gira</Highlight>, and{" "}
-          <Highlight italic>Yoru no Pierrot</Highlight>. These projects led to
-          her debut album <Highlight italic>Kyōgen</Highlight> and her role as
-          the singing voice of Uta in{" "}
-          <Highlight italic>One Piece Film: Red</Highlight>
+          <Highlight italic>Usseewa</Highlight>, a release that quickly pushed her
+          beyond online recognition, marked a decisive turning point in her career.
+          Its impact was followed by collaborations with some of Japan's most
+          respected composers and lyricists with tracks like{" "}
+          <Highlight italic>Odo</Highlight>, <Highlight italic>Gira Gira</Highlight>,
+          and <Highlight italic>Yoru no Pierrot</Highlight>. These projects led to her
+          debut album <Highlight italic>Kyōgen</Highlight> and her role as the singing
+          voice of Uta in <Highlight italic>One Piece Film: Red</Highlight>
           {". "}
-          The music from the film, including{" "}
-          <Highlight italic>New Genesis</Highlight> introduced her voice to a
-          much wider audience, carrying her beyond the boundaries of Japan and
-          into a new phase of her career.
+          The music from the film, including <Highlight italic>
+            New Genesis
+          </Highlight>{" "}
+          introduced her voice to a much wider audience, carrying her beyond the
+          boundaries of Japan and into a new phase of her career.
         </p>
       </div>
     </div>
@@ -195,17 +182,13 @@ function AdoExtraInfo() {
           <div
             className={cn(
               "h-px w-12 transition-colors duration-700",
-              isPastMiddle
-                ? "bg-ado-primary-foreground/70"
-                : "bg-ado-primary/70",
+              isPastMiddle ? "bg-ado-primary-foreground/70" : "bg-ado-primary/70",
             )}
           />
           <span
             className={cn(
               "text-xs font-medium tracking-widest uppercase transition-colors duration-700 sm:text-sm",
-              isPastMiddle
-                ? "text-ado-primary-foreground/80"
-                : "text-ado-primary",
+              isPastMiddle ? "text-ado-primary-foreground/80" : "text-ado-primary",
             )}
           >
             The Phenomenon
@@ -213,9 +196,7 @@ function AdoExtraInfo() {
           <div
             className={cn(
               "h-px flex-1 transition-colors duration-700",
-              isPastMiddle
-                ? "bg-ado-primary-foreground/70"
-                : "bg-ado-primary/70",
+              isPastMiddle ? "bg-ado-primary-foreground/70" : "bg-ado-primary/70",
             )}
           />
         </div>
@@ -231,56 +212,50 @@ function AdoExtraInfo() {
         <p
           className={cn(
             "mt-4 max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg",
-            isPastMiddle
-              ? "text-ado-primary-foreground/80"
-              : "text-muted-foreground",
+            isPastMiddle ? "text-ado-primary-foreground/80" : "text-muted-foreground",
           )}
         >
           In recent years, Ado has centered her career around live performances,
-          gradually expanding its scale and presence of her shows both in Japan
-          and overseas. In 2024, she presented{" "}
-          <Highlight>Ado SPECIAL LIVE 2024 "Shinzou (心臓)"</Highlight>, a
-          two-day solo concert at Japan National Stadium, where she was the
-          first female artist ever to perform at the venue. On{" "}
+          gradually expanding its scale and presence of her shows both in Japan and
+          overseas. In 2024, she presented{" "}
+          <Highlight>Ado SPECIAL LIVE 2024 "Shinzou (心臓)"</Highlight>, a two-day
+          solo concert at Japan National Stadium, where she was the first female
+          artist ever to perform at the venue. On{" "}
           <Highlight>Ado JAPAN LIVE TOUR 2024 "Profile of Mona Lisa"</Highlight>
           {", "}
-          her performances adopted a more personal side of her live work,
-          including the first onstage performance of her self-written song{" "}
+          her performances adopted a more personal side of her live work, including
+          the first onstage performance of her self-written song{" "}
           <Highlight italic>Shoka</Highlight>.
         </p>
 
         <p
           className={cn(
             "mt-4 max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg",
-            isPastMiddle
-              ? "text-ado-primary-foreground/80"
-              : "text-muted-foreground",
+            isPastMiddle ? "text-ado-primary-foreground/80" : "text-muted-foreground",
           )}
         >
           Overseas, her reach expanded through world tours that steadily grew in
-          scale. Her first world tour, <Highlight>Wish (ウィッシュ)</Highlight>{" "}
-          in 2024, brought her music to audiences across Asia, Europe, and North
-          America, with performances in cities from Bangkok to New York. In
-          2025, Ado continued with <Highlight>Hibana (火花)</Highlight>, one of
-          the largest world tours in history by a Japanese artist.
+          scale. Her first world tour, <Highlight>Wish (ウィッシュ)</Highlight> in
+          2024, brought her music to audiences across Asia, Europe, and North America,
+          with performances in cities from Bangkok to New York. In 2025, Ado continued
+          with <Highlight>Hibana (火花)</Highlight>, one of the largest world tours in
+          history by a Japanese artist.
         </p>
 
         <p
           className={cn(
             "mt-4 max-w-3xl text-sm leading-relaxed transition-colors duration-700 md:text-justify md:text-lg",
-            isPastMiddle
-              ? "text-ado-primary-foreground/80"
-              : "text-muted-foreground",
+            isPastMiddle ? "text-ado-primary-foreground/80" : "text-muted-foreground",
           )}
         >
-          In late 2025, following the success of her overseas tours, she
-          returned to Japan for her first dome tour,{" "}
+          In late 2025, following the success of her overseas tours, she returned to
+          Japan for her first dome tour,{" "}
           <Highlight>Ado DOME TOUR 2025 "Yodaka (よだか)"</Highlight>
           {". "}
-          The tour featured four large scale performances at Tokyo Dome and
-          Kyocera Dome Osaka. Presented as a culmination of her fifth
-          anniversary year, reflecting the momentum she built through Hibana and
-          her growing presence on Japan's largest stages.
+          The tour featured four large scale performances at Tokyo Dome and Kyocera
+          Dome Osaka. Presented as a culmination of her fifth anniversary year,
+          reflecting the momentum she built through Hibana and her growing presence on
+          Japan's largest stages.
         </p>
       </div>
     </div>
@@ -300,7 +275,9 @@ export function WhoIsAdo() {
         trigger: sectionRef.current,
         start: "top top",
         end: "bottom bottom",
-        onUpdate: (self) => { setIsPastMiddle(self.progress >= 0.5); },
+        onUpdate: (self) => {
+          setIsPastMiddle(self.progress >= 0.5);
+        },
       });
 
       if (overlayOneRef.current) {

@@ -18,9 +18,7 @@ import type { SearchResult } from "@/types/search";
  *
  * @note This search only matches against song titles, not lyrics content
  */
-export async function searchSongsByTitle(
-  query: string,
-): Promise<SearchResult[]> {
+export async function searchSongsByTitle(query: string): Promise<SearchResult[]> {
   const q = query.trim();
   if (!q) return [];
 

@@ -10,9 +10,10 @@ import Link from "next/link";
 import { useRef } from "react";
 
 import { linksCategories } from "@/lib/socialLinks";
+
 import VivariumInterview from "@/public/images/vivarium_interview.png";
 
-const socialLinks = linksCategories["social-media"];
+const socialLinks = linksCategories["social-media"] ?? [];
 
 gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
 
@@ -32,7 +33,9 @@ export function HeroSection() {
         .timeline({
           defaults: { ease: "power2.out" },
           delay: 0.3,
-          onComplete: () => { ScrollTrigger.refresh(); },
+          onComplete: () => {
+            ScrollTrigger.refresh();
+          },
         })
         .fromTo(
           ".hero-title",
@@ -91,6 +94,7 @@ export function HeroSection() {
           sizes="100vw"
           className="object-cover object-center"
           priority
+          fetchPriority="high"
         />
       </div>
 
@@ -126,7 +130,9 @@ export function HeroSection() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={(e) => { handleSmoothScroll(e, link.href); }}
+                  onClick={(e) => {
+                    handleSmoothScroll(e, link.href);
+                  }}
                   className="group relative font-gambarino text-sm tracking-wide text-white/60 transition-colors duration-300 hover:text-white sm:text-base"
                 >
                   {link.label}

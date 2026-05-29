@@ -1,8 +1,5 @@
 import { LyricsPageClient } from "@/features/lyrics/search/page";
-import {
-  getAllSongsForListing,
-  getRecommendedSongs,
-} from "@/prisma/queries/songs";
+import { getAllSongsForListing, getRecommendedSongs } from "@/prisma/queries/songs";
 
 import type { Metadata } from "next";
 

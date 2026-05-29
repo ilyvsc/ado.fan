@@ -83,7 +83,7 @@ export function HorizontalSongScroller({
                   {song.title.english}
                 </p>
                 {song.title.japanese && (
-                  <p className="line-clamp-1 text-xs text-muted-foreground">
+                  <p className="line-clamp-1 font-jp-sans text-xs text-muted-foreground">
                     {song.title.japanese}
                   </p>
                 )}

@@ -1,4 +1,5 @@
 import { songPrismaSelect } from "./songSelect";
+import { Prisma } from "../generated/client";
 
 export const albumListPrismaSelect = {
   id: true,
@@ -17,7 +18,7 @@ export const albumListPrismaSelect = {
     },
     orderBy: { trackNumber: "asc" as const },
   },
-};
+} satisfies Prisma.AlbumSelect;
 
 export const albumMinimalPrismaSelect = {
   id: true,

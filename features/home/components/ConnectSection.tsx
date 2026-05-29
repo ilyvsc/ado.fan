@@ -21,8 +21,7 @@ export function ConnectSection() {
 
   const [activeId, setActiveId] = useState("social-media");
 
-  const activeCategory =
-    categories.find((c) => c.id === activeId) ?? categories[0];
+  const activeCategory = categories.find((c) => c.id === activeId) ?? categories[0];
   const activeIndex = categories.findIndex((c) => c.id === activeId);
 
   useGSAP(
@@ -69,6 +68,8 @@ export function ConnectSection() {
     { dependencies: [activeId] },
   );
 
+  if (!activeCategory) return null;
+
   return (
     <section
       id="connect"
@@ -88,8 +89,7 @@ export function ConnectSection() {
             Adomination
           </h2>
           <p className="text-sm leading-relaxed font-light text-muted-foreground">
-            Explore the complete ecosystem of official channels, music, and
-            community.
+            Explore the complete ecosystem of official channels, music, and community.
           </p>
         </div>
 
@@ -103,7 +103,9 @@ export function ConnectSection() {
                 <button
                   key={cat.id}
                   data-cat-tab
-                  onClick={() => { setActiveId(cat.id); }}
+                  onClick={() => {
+                    setActiveId(cat.id);
+                  }}
                   className={cn(
                     "group relative flex flex-col gap-1 rounded p-3 text-left transition-all duration-300 outline-none",
                     activeId === cat.id
@@ -145,7 +147,9 @@ export function ConnectSection() {
                 <button
                   key={cat.id}
                   data-cat-tab
-                  onClick={() => { setActiveId(cat.id); }}
+                  onClick={() => {
+                    setActiveId(cat.id);
+                  }}
                   className={cn(
                     "border p-2 text-center text-xs font-bold tracking-wider uppercase transition-all",
                     activeId === cat.id
