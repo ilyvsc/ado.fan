@@ -39,8 +39,7 @@ export function LyricsSongDisplay({
       const container = containerRef.current;
       if (!container) return;
 
-      const allItems =
-        container.querySelectorAll<HTMLElement>("[data-song-id]");
+      const allItems = container.querySelectorAll<HTMLElement>("[data-song-id]");
       const allHeadings = container.querySelectorAll<HTMLElement>(
         "[data-letter-heading]",
       );
@@ -100,23 +99,23 @@ export function LyricsSongDisplay({
         All Songs
       </h3>
       <span className="h-1 w-1 rounded-full bg-muted-foreground" />
-      <span className="font-mono text-sm text-muted-foreground">
-        {displayCount}
-      </span>
+      <span className="font-mono text-sm text-muted-foreground">{displayCount}</span>
     </div>
   );
 
   if (showLetterGroups) {
-    const groups = songs.reduce<
-      Record<string, (SongListItem | SearchResult)[]>
-    >((acc, song) => {
-      const first = song.title.english[0];
-      const letter =
-        first && /\d/.test(first) ? "#" : (first?.toUpperCase() ?? "#");
-      if (!acc[letter]) acc[letter] = [];
-      acc[letter].push(song);
-      return acc;
-    }, {});
+    const groups = songs.reduce<Record<string, (SongListItem | SearchResult)[]>>(
+      (acc, song) => {
+        const firstChar = song.title.english.trim().charAt(0).toUpperCase();
+        const groupKey = /^\d$/.test(firstChar) ? "#" : firstChar || "#";
+
+        acc[groupKey] ??= [];
+        acc[groupKey].push(song);
+
+        return acc;
+      },
+      {},
+    );
 
     if (viewMode === "list") {
       return (
@@ -258,9 +257,7 @@ function GridCard({
             <Heart
               className={cn(
                 "h-4 w-4 transition-colors",
-                isFavorite
-                  ? "fill-ado-primary text-ado-primary"
-                  : "text-ado-primary",
+                isFavorite ? "fill-ado-primary text-ado-primary" : "text-ado-primary",
               )}
             />
           </button>
@@ -272,7 +269,7 @@ function GridCard({
           {song.title.english}
         </p>
         {song.title.japanese && (
-          <p className="line-clamp-1 text-xs text-muted-foreground">
+          <p className="line-clamp-1 font-jp-sans text-xs text-muted-foreground">
             {song.title.japanese}
           </p>
         )}
@@ -319,7 +316,7 @@ function ListRow({
           {song.title.english}
         </p>
         {song.title.japanese && (
-          <p className="line-clamp-1 text-xs text-muted-foreground">
+          <p className="line-clamp-1 font-jp-sans text-xs text-muted-foreground">
             {song.title.japanese}
           </p>
         )}
