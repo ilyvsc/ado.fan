@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 
 import { ExternalLinks } from "@/components/ExternalLinks";
-import { Footer } from "@/components/layout/Footer";
 import { RelatedAlbumSongs } from "@/features/lyrics/reader/components/RelatedAlbumSongs";
 import { SongCreditsDetails } from "@/features/lyrics/reader/components/SongCreditsDetails";
 import { SongLyricsHeader } from "@/features/lyrics/reader/components/SongLyricsHeader";
@@ -11,6 +10,8 @@ import { serializeLyricsToLanguages } from "@/features/lyrics/utils/serializeLyr
 import { getContrastColor } from "@/lib/color";
 import { getAlbumsBySongId } from "@/prisma/queries/album";
 import { getSongById, getSongLyricsById } from "@/prisma/queries/songs";
+
+import { buildAlternates } from "@/shared/i18n/metadata";
 
 import type { Metadata } from "next";
 
@@ -41,9 +42,7 @@ export async function generateMetadata({
       "lyrics",
       "Japanese lyrics",
     ].filter(Boolean),
-    alternates: {
-      canonical: `https://ado.fan/lyrics/${song_id}`,
-    },
+    alternates: buildAlternates(`/lyrics/${song_id}`),
     openGraph: {
       title: `${titleDisplay} — ado.fan`,
       siteName: "ado.fan",
@@ -110,8 +109,6 @@ export default async function LyricsSongPage({
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

@@ -1,4 +1,3 @@
-import { Footer } from "@/components/layout/Footer";
 import { FanAppreciation } from "@/features/home/components/AppreciationNote";
 import { ConnectSection } from "@/features/home/components/ConnectSection";
 import { HeroSection } from "@/features/home/components/HeroSection";
@@ -16,7 +15,6 @@ export default function Home() {
       <FanAppreciation />
       <ConnectSection />
       <NewsletterSection />
-      <Footer />
       <FloatingThemeButton />
     </main>
   );

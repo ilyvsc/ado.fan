@@ -2,12 +2,15 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { usePathname } from "next/navigation";
 import { useMemo, useRef } from "react";
 
 import { useSocialLinks } from "@/hooks/useSocialLinks";
 import { linksCategories } from "@/lib/socialLinks";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -90,9 +93,9 @@ export function Footer() {
 
         <div className="border-t border-foreground/10 py-6 text-center text-xs text-foreground/40">
           <p className="mx-auto max-w-lg leading-relaxed lg:max-w-5xl">
-            All content, media, lyrics, trademarks, and imagery on this site are
-            the property of their respective owners; all rights remain with the
-            original authors/rights holders.
+            All content, media, lyrics, trademarks, and imagery on this site are the
+            property of their respective owners; all rights remain with the original
+            authors/rights holders.
           </p>
           <p className="pt-2">
             &copy; 2025-{year} Ado Fan Tribute — Powered by passion, not profit.
