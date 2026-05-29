@@ -4,7 +4,7 @@ import type { Song } from "./song";
 
 import type { ExternalLinks } from "@/shared/schemas/externalLinks";
 
-export type Album = {
+export interface Album {
   id: string;
   title: {
     english: string;
@@ -15,27 +15,27 @@ export type Album = {
   tracks: AlbumTrack[];
   coverArt: string;
   externalLinks?: ExternalLinks;
-};
+}
 
-export type AlbumTrack = {
+export interface AlbumTrack {
   song: Song;
   trackNumber: number;
   isBonusTrack?: boolean;
-};
+}
 
-export type AlbumDefinition = {
+export interface AlbumDefinition {
   id: string;
   titleEnglish: string;
   titleJapanese: string;
   releaseDate: string;
   type: string;
   coverArt: string;
-  tracks: Array<{
+  tracks: {
     songId: string;
     trackNumber: number;
-  }>;
+  }[];
   externalLinks?: ExternalLinks;
   credits?: Credits;
-};
+}
 
 export type AlbumMinimal = Omit<Album, "tracks">;

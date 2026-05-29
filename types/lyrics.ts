@@ -1,29 +1,19 @@
-export type Lyrics = {
+import { Locale, type LanguageCode } from "@/shared/i18n/types";
+
+export interface Lyrics {
   songId: string;
-  language: string;
+  language: LanguageCode;
   translator: string | null;
   lines: string[];
-};
+}
 
-export type Language = {
-  code: string;
+export interface LyricsLanguage {
+  code: LanguageCode;
   label: string;
   content: string;
   lines: string[];
-};
-
-const LANGUAGE_LABELS: Record<string, { label: string }> = {
-  ja: { label: "日本語" },
-  en: { label: "English" },
-  romaji: { label: "Romaji" },
-  ko: { label: "한국어" },
-  zh: { label: "中文" },
-  es: { label: "Español" },
-  fr: { label: "Français" },
-  de: { label: "Deutsch" },
-  ru: { label: "Русский" },
-};
+}
 
 export function getLanguageLabel(code: string): string {
-  return LANGUAGE_LABELS[code.toLowerCase()]?.label ?? code.toUpperCase();
+  return Object.values(Locale).find((locale) => locale.code === code)?.label ?? code;
 }

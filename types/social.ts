@@ -1,13 +1,13 @@
-export type SocialLink = {
+export interface SocialLink {
   name: string;
   url: string;
   icon: React.ReactNode;
   description: string;
-};
+}
 
-export type Category = {
+export interface Category {
   id: string;
   label: string;
   description: string;
   data: SocialLink[];
-};
+}

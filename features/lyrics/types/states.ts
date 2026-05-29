@@ -1,7 +1,7 @@
 export type LyricsViewMode = "tabs" | "compare" | "lined";
 
-export type LyricsUrlState = {
+export interface LyricsUrlState {
   mode: LyricsViewMode;
   left: string;
   right: string;
-};
+}

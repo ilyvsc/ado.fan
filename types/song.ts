@@ -2,7 +2,7 @@ import type { SongCreateInput } from "@/prisma/generated/models";
 import type { Credits } from "@/shared/schemas/credits";
 import type { ExternalLinks } from "@/shared/schemas/externalLinks";
 
-export type Song = {
+export interface Song {
   id: string;
   title: {
     english: string;
@@ -27,9 +27,9 @@ export type Song = {
       };
     };
   };
-};
+}
 
-export type SongListItem = {
+export interface SongListItem {
   id: string;
   title: {
     english: string;
@@ -39,7 +39,7 @@ export type SongListItem = {
   releaseDate: string;
   coverArt: string;
   themeColor?: string;
-};
+}
 
 export type SongSeedInput = SongCreateInput;
 

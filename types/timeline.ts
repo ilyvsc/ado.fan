@@ -1,6 +1,6 @@
 import type { Song } from "./song";
 
-export type TimelineGroups = {
+export interface TimelineGroups {
   year: number;
   songs: Song[];
-};
+}
