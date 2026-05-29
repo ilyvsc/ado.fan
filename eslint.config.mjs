@@ -40,6 +40,10 @@ export default defineConfig([
       "@typescript-eslint/no-unused-vars": "off",
       "import/no-named-as-default": "off",
       "import/no-unresolved": "warn",
+      "@typescript-eslint/restrict-template-expressions": [
+        "warn",
+        { allowNumber: true },
+      ],
       "import/order": [
         "warn",
         {
