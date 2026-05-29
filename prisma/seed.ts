@@ -10,30 +10,31 @@ import { prisma } from "./client";
 import { AlbumType } from "./generated/client";
 import { serializeSongSeed } from "./serializer";
 
+import type { LanguageCode } from "@/shared/i18n/types";
 import type { AlbumDefinition } from "@/types/album";
 import type { Lyrics } from "@/types/lyrics";
 import type { Song, SongSeedInput } from "@/types/song";
 
-function loadJsonFile<T>(path: string): T {
+function loadJsonFile(path: string): unknown {
   return JSON.parse(readFileSync(path, "utf-8"));
 }
 
-function loadJsonFilesFromDir<T>(path: string): T[] {
+function loadJsonFilesFromDir(path: string): unknown[] {
   return readdirSync(path)
     .filter((f) => f.endsWith(".json"))
-    .map((file) => loadJsonFile<T>(join(path, file)));
+    .map((file) => loadJsonFile(join(path, file)));
 }
 
 function loadSongs(path: string): Song[] {
   const files = globSync(join(path, "songs/**/meta.json"));
-  const songs = files.map((file) => loadJsonFile<Song>(file));
+  const songs = files.map((file) => loadJsonFile(file)) as Song[];
 
   console.log(`Loaded ${songs.length} songs.`);
   return songs;
 }
 
 function loadAlbums(path: string): AlbumDefinition[] {
-  const albums = loadJsonFilesFromDir<AlbumDefinition>(join(path, "albums"));
+  const albums = loadJsonFilesFromDir(join(path, "albums")) as AlbumDefinition[];
   console.log(`Loaded ${albums.length} albums`);
   return albums;
 }
@@ -59,7 +60,7 @@ function parseLyricsFromMarkdown(path: string): Lyrics {
 
   return {
     songId,
-    language,
+    language: language as LanguageCode,
     translator: schema.translator ?? null,
     lines,
   };
@@ -86,7 +87,7 @@ function loadLyrics(path: string): Lyrics[] {
 }
 
 function normalizeDescription(
-  description: SongSeedInput["description"],
+  description: string | (string | string[])[] | null | undefined,
 ): string {
   if (!description) return "";
 
@@ -129,10 +130,7 @@ async function seedSongs(songs: SongSeedInput[]) {
   console.log(`✅ Seeded ${songs.length} songs.`);
 }
 
-async function seedAlbums(
-  albums: AlbumDefinition[],
-  seededSongIds: Set<string>,
-) {
+async function seedAlbums(albums: AlbumDefinition[], seededSongIds: Set<string>) {
   for (const album of albums) {
     const { tracks, ...data } = album;
 
@@ -205,4 +203,4 @@ async function main() {
   }
 }
 
-main();
+await main();

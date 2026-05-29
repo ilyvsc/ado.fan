@@ -1,8 +1,8 @@
 import { getLanguageLabel } from "@/types/lyrics";
 
-import type { Language, Lyrics } from "@/types/lyrics";
+import type { LyricsLanguage, Lyrics } from "@/types/lyrics";
 
-export function serializeLyricsToLanguages(lyrics: Lyrics[]): Language[] {
+export function serializeLyricsToLanguages(lyrics: Lyrics[]): LyricsLanguage[] {
   return lyrics
     .filter((l) => l.lines.length > 0)
     .map((l) => ({

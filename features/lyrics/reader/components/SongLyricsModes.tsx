@@ -14,11 +14,12 @@ import {
 import { Suspense, useMemo, useState } from "react";
 
 import { cn } from "@/lib/utils";
+import { Locale } from "@/shared/i18n/types";
 
 import { useLyricsUrlState } from "../hooks/useLyricsUrlState";
 
 import type { LyricsViewMode } from "@/features/lyrics/types/states";
-import type { Language } from "@/types/lyrics";
+import type { LyricsLanguage } from "@/types/lyrics";
 
 const MODE_CONFIG: {
   mode: LyricsViewMode;
@@ -85,13 +86,15 @@ function LanguageSelect({
 }: {
   value: string;
   onChange: (code: string) => void;
-  languages: Language[];
+  languages: LyricsLanguage[];
 }) {
   return (
     <div className="relative">
       <select
         value={value}
-        onChange={(e) => { onChange(e.target.value); }}
+        onChange={(e) => {
+          onChange(e.target.value);
+        }}
         className="cursor-pointer appearance-none rounded-full bg-transparent py-1.5 pr-7 pl-3 text-xs font-semibold text-foreground transition-colors hover:bg-(--theme-color)/10"
       >
         {languages.map((lang) => (
@@ -117,19 +120,22 @@ function EmptyState() {
 }
 
 function LyricsContent({
-  content,
+  language,
   fontSize,
 }: {
-  content: string;
+  language: LyricsLanguage;
   fontSize: number;
 }) {
   return (
     <p
       aria-live="polite"
-      className="font-sans leading-loose whitespace-pre-wrap text-foreground transition-all duration-300"
-      style={{ fontSize: `${fontSize + 2}px` }}
+      className={cn(
+        language.code === Locale.JAPANESE.code ? "font-jp-sans" : "",
+        "leading-loose whitespace-pre-wrap text-foreground transition-all duration-300",
+      )}
+      style={{ fontSize: fontSize + 2 }}
     >
-      {content}
+      {language.content}
     </p>
   );
 }
@@ -138,14 +144,14 @@ function TabsView({
   activeLang,
   fontSize,
 }: {
-  activeLang?: Language;
+  activeLang?: LyricsLanguage;
   fontSize: number;
 }) {
   if (!activeLang?.content) return <EmptyState />;
 
   return (
     <div className="mx-auto max-w-3xl text-center">
-      <LyricsContent content={activeLang.content} fontSize={fontSize} />
+      <LyricsContent language={activeLang} fontSize={fontSize} />
     </div>
   );
 }
@@ -155,8 +161,8 @@ function CompareView({
   rightLang,
   fontSize,
 }: {
-  leftLang?: Language;
-  rightLang?: Language;
+  leftLang?: LyricsLanguage;
+  rightLang?: LyricsLanguage;
   fontSize: number;
 }) {
   return (
@@ -171,7 +177,7 @@ function CompareView({
               </span>
               <span className="h-px flex-1 bg-(--theme-color)/20" />
             </div>
-            <LyricsContent content={leftLang.content} fontSize={fontSize} />
+            <LyricsContent language={leftLang} fontSize={fontSize} />
           </>
         ) : (
           <EmptyState />
@@ -188,7 +194,7 @@ function CompareView({
               </span>
               <span className="h-px flex-1 bg-(--theme-color)/20" />
             </div>
-            <LyricsContent content={rightLang.content} fontSize={fontSize} />
+            <LyricsContent language={rightLang} fontSize={fontSize} />
           </>
         ) : (
           <EmptyState />
@@ -203,8 +209,8 @@ function LinedView({
   rightLang,
   fontSize,
 }: {
-  leftLang?: Language;
-  rightLang?: Language;
+  leftLang?: LyricsLanguage;
+  rightLang?: LyricsLanguage;
   fontSize: number;
 }) {
   const pairs = useMemo(() => {
@@ -235,7 +241,7 @@ function LinedView({
                 </span>
                 <p
                   className="leading-relaxed text-foreground"
-                  style={{ fontSize: `${fontSize + 2}px` }}
+                  style={{ fontSize: fontSize + 2 }}
                 >
                   {pair.left}
                 </p>
@@ -248,7 +254,7 @@ function LinedView({
                 </span>
                 <p
                   className="leading-relaxed text-muted-foreground"
-                  style={{ fontSize: `${fontSize + 2}px` }}
+                  style={{ fontSize: fontSize + 2 }}
                 >
                   {pair.right}
                 </p>
@@ -263,7 +269,7 @@ function LinedView({
 function LyricsModes({
   availableLanguages,
 }: {
-  availableLanguages: Language[];
+  availableLanguages: LyricsLanguage[];
 }) {
   const [fontSize, setFontSize] = useState(14);
   const { state, languages, setMode, setLeft, setRight, swapLanguages } =
@@ -280,27 +286,17 @@ function LyricsModes({
   const ModeComponent = {
     tabs: <TabsView activeLang={activeLang} fontSize={fontSize} />,
     compare: (
-      <CompareView
-        leftLang={leftLang}
-        rightLang={rightLang}
-        fontSize={fontSize}
-      />
+      <CompareView leftLang={leftLang} rightLang={rightLang} fontSize={fontSize} />
     ),
     lined: (
-      <LinedView
-        leftLang={leftLang}
-        rightLang={rightLang}
-        fontSize={fontSize}
-      />
+      <LinedView leftLang={leftLang} rightLang={rightLang} fontSize={fontSize} />
     ),
   }[viewMode];
 
   return (
     <div className="relative">
       <div className="mb-10 flex flex-wrap items-center justify-between gap-3 border-b border-(--theme-color)/25 pb-6">
-        <h3 className="text-3xl font-bold tracking-tight text-foreground">
-          Lyrics
-        </h3>
+        <h3 className="text-3xl font-bold tracking-tight text-foreground">Lyrics</h3>
 
         <div className="flex flex-wrap items-center gap-2">
           {languages.length > 1 && (
@@ -309,7 +305,9 @@ function LyricsModes({
                 <PillButton
                   key={mode}
                   active={viewMode === mode}
-                  onClick={() => { setMode(mode); }}
+                  onClick={() => {
+                    setMode(mode);
+                  }}
                 >
                   <Icon className="h-4 w-4" />
                   {viewMode === mode && <span>{label}</span>}
@@ -320,7 +318,9 @@ function LyricsModes({
 
           <ControlPill>
             <button
-              onClick={() => { setFontSize((s) => Math.max(10, s - 2)); }}
+              onClick={() => {
+                setFontSize((s) => Math.max(10, s - 2));
+              }}
               aria-label="Decrease font size"
               className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
             >
@@ -335,7 +335,9 @@ function LyricsModes({
             </div>
 
             <button
-              onClick={() => { setFontSize((s) => Math.min(32, s + 2)); }}
+              onClick={() => {
+                setFontSize((s) => Math.min(32, s + 2));
+              }}
               aria-label="Increase font size"
               className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
             >
@@ -371,7 +373,9 @@ function LyricsModes({
                 <PillButton
                   key={lang.code}
                   active={state.left === lang.code}
-                  onClick={() => setLeft(lang.code)}
+                  onClick={() => {
+                    setLeft(lang.code);
+                  }}
                 >
                   {lang.label}
                 </PillButton>
@@ -391,7 +395,7 @@ function LyricsModes({
 export function SongLyricsModes({
   availableLanguages,
 }: {
-  availableLanguages: Language[];
+  availableLanguages: LyricsLanguage[];
 }) {
   return (
     <Suspense

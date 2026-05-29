@@ -3,28 +3,27 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
-import type {
-  LyricsUrlState,
-  LyricsViewMode,
-} from "@/features/lyrics/types/states";
-import type { Language } from "@/types/lyrics";
+import { Locale } from "@/shared/i18n/types";
+
+import type { LyricsUrlState, LyricsViewMode } from "@/features/lyrics/types/states";
+import type { LyricsLanguage } from "@/types/lyrics";
 
 export function useLyricsUrlState({
   availableLanguages,
 }: {
-  availableLanguages: Language[];
+  availableLanguages: LyricsLanguage[];
 }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const codes = useMemo(
-    () => availableLanguages.map((l) => l.code),
+    () => availableLanguages.map((language) => language.code),
     [availableLanguages],
   );
 
   const defaults = useMemo(() => {
-    const [first = "ja", second = first] = codes;
+    const [first = Locale.JAPANESE.code, second = first] = codes;
     return {
       left: first,
       right: second,
@@ -35,7 +34,7 @@ export function useLyricsUrlState({
   const normalize = useCallback(
     (raw: { get(key: string): string | null }): LyricsUrlState => {
       const valid = (c: string | null) =>
-        c && codes.includes(c) ? c : undefined;
+        c && (codes as readonly string[]).includes(c) ? c : undefined;
 
       const lang = valid(raw.get("lang"));
       const leftParam = valid(raw.get("left"));
@@ -43,18 +42,15 @@ export function useLyricsUrlState({
       const modeParam = raw.get("mode");
 
       if (lang) {
-        return {
-          mode: "tabs",
-          left: lang,
-          right: rightParam ?? defaults.right,
-        };
+        return { mode: "tabs", left: lang, right: rightParam ?? defaults.right };
       }
 
       const left = leftParam ?? defaults.left;
       let right = rightParam ?? defaults.right;
 
       if (left === right && codes.length > 1) {
-        right = codes.find((c) => c !== left)!;
+        const alternative = codes.find((c) => c !== left);
+        if (alternative) right = alternative;
       }
 
       const mode: LyricsViewMode = modeParam === "lined" ? "lined" : "compare";
@@ -64,10 +60,7 @@ export function useLyricsUrlState({
     [codes, defaults],
   );
 
-  const state = useMemo(
-    () => normalize(searchParams),
-    [searchParams, normalize],
-  );
+  const state = useMemo(() => normalize(searchParams), [searchParams, normalize]);
 
   const updateUrl = useCallback(
     (next: Partial<LyricsUrlState> & { mode?: LyricsViewMode }) => {
@@ -95,26 +88,34 @@ export function useLyricsUrlState({
   );
 
   const isTwoLangMode = state.mode === "compare" || state.mode === "lined";
-
   return {
     state,
     languages: availableLanguages,
-    setMode: (mode: LyricsViewMode) => { updateUrl({ mode }); },
-    setLeft: (code: string) =>
-      codes.includes(code) &&
+    setMode: (mode: LyricsViewMode) => {
+      updateUrl({ mode });
+    },
+
+    setLeft: (code: string) => {
+      if (!(codes as readonly string[]).includes(code)) return;
       updateUrl(
         isTwoLangMode && code === state.right
           ? { left: code, right: state.left }
           : { left: code },
-      ),
-    setRight: (code: string) =>
-      codes.includes(code) &&
+      );
+    },
+
+    setRight: (code: string) => {
+      if (!(codes as readonly string[]).includes(code)) return;
       updateUrl(
         isTwoLangMode && code === state.left
           ? { left: state.right, right: code }
           : { right: code },
-      ),
-    swapLanguages: () =>
-      isTwoLangMode && updateUrl({ left: state.right, right: state.left }),
+      );
+    },
+
+    swapLanguages: () => {
+      if (!isTwoLangMode) return;
+      updateUrl({ left: state.right, right: state.left });
+    },
   };
 }
