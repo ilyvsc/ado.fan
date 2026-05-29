@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo, useSyncExternalStore } from "react";
 
 function readStorage<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
@@ -13,25 +13,36 @@ function readStorage<T>(key: string, fallback: T): T {
   }
 }
 
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+  };
+}
+
 export function useLocalStorage<T>(
   key: string,
   fallback: T,
 ): [T, (updater: (prev: T) => T) => void] {
-  const [value, setValue] = useState<T>(fallback);
+  const getSnapshot = useCallback(() => localStorage.getItem(key), [key]);
+  const raw = useSyncExternalStore(subscribe, getSnapshot, () => null);
 
-  useEffect(() => {
-    setValue(readStorage(key, fallback));
-  }, [key]);
+  const value = useMemo(() => {
+    if (raw === null) return fallback;
+    try {
+      return JSON.parse(raw) as T;
+    } catch {
+      return fallback;
+    }
+  }, [raw, fallback]);
 
   const update = useCallback(
     (updater: (prev: T) => T) => {
-      setValue((prev) => {
-        const next = updater(prev);
-        localStorage.setItem(key, JSON.stringify(next));
-        return next;
-      });
+      const next = updater(readStorage(key, fallback));
+      localStorage.setItem(key, JSON.stringify(next));
+      window.dispatchEvent(new StorageEvent("storage", { key }));
     },
-    [key],
+    [key, fallback],
   );
 
   return [value, update];

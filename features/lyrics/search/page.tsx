@@ -15,7 +15,6 @@ import {
   useTransition,
 } from "react";
 
-import { useIsMobile } from "@/components/ui/use-mobile";
 import { AlphabetStrip } from "@/features/lyrics/search/components/AlphabetStrip";
 import { LyricsNavigation } from "@/features/lyrics/search/components/LyricsNavigation";
 import { LyricsSongDisplay } from "@/features/lyrics/search/components/LyricsSongDisplay";
@@ -25,6 +24,7 @@ import { useDisplayPagination } from "@/features/lyrics/search/hooks/useDisplayP
 import { useFavorites } from "@/features/lyrics/search/hooks/useFavorites";
 import { useRecentlyViewed } from "@/features/lyrics/search/hooks/useRecentlyViewed";
 import { useSongSearch } from "@/features/lyrics/search/hooks/useSongSearch";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/shared/lib/utils";
 
 import { getRandomSongId } from "./actions";

@@ -16,14 +16,14 @@ async function fetchSongSearch(
   if (!res.ok) throw new Error(`Search request failed with ${res.status}`);
 
   const data: unknown = await res.json();
-  return Array.isArray(data) ? data : [];
+  return Array.isArray(data) ? (data as SongListItem[]) : [];
 }
 
-type State = {
+interface State {
   results: SongListItem[];
   loading: boolean;
   error: string | null;
-};
+}
 
 type Action =
   | { type: "SEARCH_START" }
@@ -69,10 +69,11 @@ export function useSongSearch(query: string) {
       return;
     }
 
-    if (cacheRef.current.has(trimmedQuery)) {
+    const cached = cacheRef.current.get(trimmedQuery);
+    if (cached) {
       dispatch({
         type: "SEARCH_SUCCESS",
-        results: cacheRef.current.get(trimmedQuery)!,
+        results: cached,
       });
       return;
     }

@@ -3,18 +3,13 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
+import { useIsMobile } from "@/hooks/use-mobile";
 import { SONG_THEMES, type SongTheme } from "@/shared/constants/themes";
 import { cn } from "@/shared/lib/utils";
 import { useSongTheme } from "@/shared/providers/SongThemeProvider";
 
 import { ThemeToggleButton } from "./ThemeButton";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "../ui/dialog";
-import { useIsMobile } from "../ui/use-mobile";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../ui/dialog";
 
 function ThemeCard({
   theme,

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { useIsMobile } from "@/components/ui/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const PAGE_SIZE = 24;
 
@@ -8,17 +8,14 @@ export function useDisplayPagination<T>(items: T[], pageSize = PAGE_SIZE) {
   const isMobile = useIsMobile();
   const [visibleCount, setVisibleCount] = useState(pageSize);
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const prevItemsRef = useRef(items);
+  const [prevItems, setPrevItems] = useState(items);
 
-  if (prevItemsRef.current !== items) {
-    prevItemsRef.current = items;
+  if (prevItems !== items) {
+    setPrevItems(items);
     setVisibleCount(pageSize);
   }
 
-  const visible = useMemo(
-    () => items.slice(0, visibleCount),
-    [items, visibleCount],
-  );
+  const visible = useMemo(() => items.slice(0, visibleCount), [items, visibleCount]);
 
   const hasMore = visibleCount < items.length;
 
@@ -37,7 +34,7 @@ export function useDisplayPagination<T>(items: T[], pageSize = PAGE_SIZE) {
 
       observerRef.current = new IntersectionObserver(
         (entries) => {
-          if (entries[0].isIntersecting) {
+          if (entries[0]?.isIntersecting) {
             setVisibleCount((c) => c + pageSize);
           }
         },

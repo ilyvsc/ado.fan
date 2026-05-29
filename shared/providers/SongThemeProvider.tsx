@@ -20,9 +20,12 @@ const SONG_THEME_KEY = "song-theme";
 
 function applyTheme(themeId: string | null) {
   const root = document.documentElement;
-  themeId
-    ? root.setAttribute("data-theme", themeId)
-    : root.removeAttribute("data-theme");
+
+  if (themeId) {
+    root.setAttribute("data-theme", themeId);
+  } else {
+    root.removeAttribute("data-theme");
+  }
 }
 
 function readSavedTheme(): string | null {
@@ -39,14 +42,18 @@ export function SongThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = useCallback((themeId: string | null) => {
     applyTheme(themeId);
-    themeId
-      ? localStorage.setItem(SONG_THEME_KEY, themeId)
-      : localStorage.removeItem(SONG_THEME_KEY);
+    if (themeId) {
+      localStorage.setItem(SONG_THEME_KEY, themeId);
+    } else {
+      localStorage.removeItem(SONG_THEME_KEY);
+    }
     setCurrentTheme(themeId);
   }, []);
 
   const previewTheme = useCallback(
-    (themeId: string | null) => { applyTheme(themeId ?? currentTheme); },
+    (themeId: string | null) => {
+      applyTheme(themeId ?? currentTheme);
+    },
     [currentTheme],
   );
 
