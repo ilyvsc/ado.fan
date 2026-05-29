@@ -41,11 +41,7 @@ export function TimelineHeader() {
           { opacity: 0, y: 40, duration: 1, stagger: 0.2 },
           "-=0.5",
         )
-        .from(
-          q("[data-header-indicator]"),
-          { opacity: 0, duration: 0.6 },
-          "-=0.4",
-        );
+        .from(q("[data-header-indicator]"), { opacity: 0, duration: 0.6 }, "-=0.4");
       const transitionEl = q("[data-header-transition]");
       if (transitionEl.length) {
         gsap.to(transitionEl, {
@@ -91,9 +87,8 @@ export function TimelineHeader() {
                 Rooted in Vocaloid and Utaite culture
               </p>
               <p className="max-w-2xl text-sm md:text-lg">
-                From singing alone in a closet to finding her place on stages
-                around the world, each song carries something worth holding
-                onto.
+                From singing alone in a closet to finding her place on stages around
+                the world, each song carries something worth holding onto.
               </p>
             </div>
 
@@ -104,12 +99,11 @@ export function TimelineHeader() {
               <div className="flex gap-8 md:gap-12">
                 <blockquote className="max-w-xs space-y-3">
                   <p className="font-gambarino text-base leading-snug tracking-wide text-ado-secondary-foreground/90 md:text-xl">
-                    "So, if you could remember things today, even just a little
-                    bit, and take it with you as you go back, I would be really
-                    happy. If that happens, I think my younger self, the one who
-                    couldn't do anything, would be happy in this audience, so
-                    please, it would make me very happy if you could remember
-                    this."
+                    "So, if you could remember things today, even just a little bit,
+                    and take it with you as you go back, I would be really happy. If
+                    that happens, I think my younger self, the one who couldn't do
+                    anything, would be happy in this audience, so please, it would
+                    make me very happy if you could remember this."
                   </p>
                   <cite className="block text-xs tracking-wide text-ado-secondary-foreground/80 not-italic">
                     — Ado SPECIAL LIVE 2024「心臓」

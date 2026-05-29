@@ -5,7 +5,6 @@ import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowDown } from "lucide-react";
-
 import { useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -30,8 +29,8 @@ export function TimelineClient({
   const [isPastMiddle, setIsPastMiddle] = useState(false);
 
   const activeYearRef = useRef(activeYear);
-  const showSkipRef = useRef(true);
-  const isPastMiddleRef = useRef(false);
+  const showSkipRef = useRef(showSkip);
+  const isPastMiddleRef = useRef(isPastMiddle);
 
   useGSAP(
     () => {
@@ -39,23 +38,43 @@ export function TimelineClient({
       const content = contentRef.current;
       if (!wrapper || !content) return;
 
-      const q = gsap.utils.selector(content);
-      const sections = q("[data-year-section]");
+      const sections = gsap.utils.toArray<HTMLElement>(
+        content.querySelectorAll("[data-year-section]"),
+      );
+
+      const cards = gsap.utils.toArray<HTMLElement>(
+        content.querySelectorAll("[data-song-card]"),
+      );
 
       const updateActiveYear = () => {
-        const centerX = wrapper.offsetWidth / 2;
-        for (const el of sections) {
-          const rect = el.getBoundingClientRect();
-          if (rect.left <= centerX && rect.right >= centerX) {
-            const year = parseInt(
-              (el as HTMLElement).dataset.yearSection || "0",
-            );
-            if (year && year !== activeYearRef.current) {
-              activeYearRef.current = year;
-              setActiveYear(year);
-            }
-            break;
-          }
+        const wrapperCenter = wrapper.getBoundingClientRect().width / 2;
+
+        const activeSection = sections.find((section) => {
+          const rect = section.getBoundingClientRect();
+          return rect.left <= wrapperCenter && rect.right >= wrapperCenter;
+        });
+
+        if (!activeSection) return;
+
+        const year = Number(activeSection.dataset.yearSection);
+        if (!year || year === activeYearRef.current) return;
+
+        activeYearRef.current = year;
+        setActiveYear(year);
+      };
+
+      const updateScrollState = (progress: number) => {
+        const nextIsPastMiddle = progress >= 0.5;
+        const nextShowSkip = progress < 0.95;
+
+        if (nextIsPastMiddle !== isPastMiddleRef.current) {
+          isPastMiddleRef.current = nextIsPastMiddle;
+          setIsPastMiddle(nextIsPastMiddle);
+        }
+
+        if (nextShowSkip !== showSkipRef.current) {
+          showSkipRef.current = nextShowSkip;
+          setShowSkip(nextShowSkip);
         }
       };
 
@@ -63,7 +82,10 @@ export function TimelineClient({
 
       mm.add("(min-width: 768px)", () => {
         const getScrollDistance = () => content.offsetWidth - window.innerWidth;
-        gsap.set(content, { willChange: "transform" });
+
+        gsap.set([content, ...sections, ...cards], {
+          willChange: "transform, opacity",
+        });
 
         const scrollTl = gsap.timeline({
           scrollTrigger: {
@@ -76,35 +98,24 @@ export function TimelineClient({
             invalidateOnRefresh: true,
             onUpdate: (self) => {
               updateActiveYear();
-
-              const isPastMiddle = self.progress >= 0.5;
-              if (isPastMiddle !== isPastMiddleRef.current) {
-                isPastMiddleRef.current = isPastMiddle;
-                setIsPastMiddle(isPastMiddle);
-              }
-
-              const shouldShowSkip = self.progress < 0.95;
-              if (shouldShowSkip !== showSkipRef.current) {
-                showSkipRef.current = shouldShowSkip;
-                setShowSkip(shouldShowSkip);
-              }
+              updateScrollState(self.progress);
             },
           },
         });
 
-        scrollTl.to(content, { x: () => -getScrollDistance(), ease: "none" });
+        scrollTl.to(content, {
+          x: () => -getScrollDistance(),
+          ease: "none",
+        });
 
-        const cards = q("[data-song-card]");
-        gsap.set([...sections, ...cards], { willChange: "transform, opacity" });
-
-        sections.forEach((label) => {
-          gsap.from(label, {
+        sections.forEach((section) => {
+          gsap.from(section, {
             opacity: 0,
             scale: 0.8,
             duration: 1,
             ease: "power3.out",
             scrollTrigger: {
-              trigger: label,
+              trigger: section,
               containerAnimation: scrollTl,
               start: "left 85%",
               toggleActions: "play none none none",
@@ -138,7 +149,6 @@ export function TimelineClient({
           onUpdate: updateActiveYear,
         });
 
-        const cards = q("[data-song-card]");
         gsap.set(cards, { willChange: "transform, opacity" });
         cards.forEach((card) => {
           gsap.fromTo(
@@ -161,20 +171,25 @@ export function TimelineClient({
         });
       });
 
-      return () => mm.revert();
+      return () => {
+        gsap.set([content, ...sections, ...cards], {
+          clearProps: "willChange",
+        });
+        mm.revert();
+      };
     },
     { scope: wrapperRef, dependencies: [timelineGroups] },
   );
 
   const handleSkip = () => {
     const scrollTrigger = ScrollTrigger.getById("timeline-scroll");
-    if (scrollTrigger) {
-      gsap.to(window, {
-        scrollTo: scrollTrigger.end,
-        duration: 1.5,
-        ease: "power2.inOut",
-      });
-    }
+    if (!scrollTrigger) return;
+
+    gsap.to(window, {
+      scrollTo: scrollTrigger.end,
+      duration: 1.5,
+      ease: "power2.inOut",
+    });
   };
 
   return (
@@ -220,9 +235,7 @@ export function TimelineClient({
                   <div
                     className={cn(
                       "font-gambarino text-7xl leading-none font-black tracking-tight transition-all duration-500 ease-out md:text-9xl md:[writing-mode:vertical-rl]",
-                      isActive
-                        ? "scale-100 opacity-100"
-                        : "scale-95 opacity-10",
+                      isActive ? "scale-100 opacity-100" : "scale-95 opacity-10",
                       isPastMiddle ? "text-background" : "text-foreground",
                     )}
                   >
@@ -232,11 +245,7 @@ export function TimelineClient({
 
                 <div className="grid grid-flow-col grid-rows-4 gap-x-2 gap-y-2">
                   {yearData.songs.map((song) => (
-                    <SongCard
-                      key={song.id}
-                      song={song}
-                      isPastMiddle={isPastMiddle}
-                    />
+                    <SongCard key={song.id} song={song} isPastMiddle={isPastMiddle} />
                   ))}
                 </div>
               </div>

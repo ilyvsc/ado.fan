@@ -32,7 +32,9 @@ export function SongCard({
   const imageRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = () => { setShowControls(true); };
+  const handleMouseMove = () => {
+    setShowControls(true);
+  };
 
   useGSAP(
     () => {
@@ -49,9 +51,8 @@ export function SongCard({
 
   const toggleOpen = () => {
     if (!isExpanded) {
-      window.dispatchEvent(
-        new CustomEvent("timeline-play", { detail: song.id }),
-      );
+      window.dispatchEvent(new CustomEvent("timeline-play", { detail: song.id }));
+      setShowControls(true);
     }
     setExpandedState((prev) => !prev);
   };
@@ -63,13 +64,14 @@ export function SongCard({
       setShowControls(false);
     }, 3000);
 
-    return () => { clearTimeout(timeoutId); };
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [isExpanded, showControls]);
 
   useLayoutEffect(() => {
     if (!isExpanded) return;
     dialogRef.current?.focus();
-    setShowControls(true);
 
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -84,7 +86,9 @@ export function SongCard({
       if ((e as CustomEvent).detail !== song.id) setExpandedState(false);
     };
     window.addEventListener("timeline-play", handlePlay);
-    return () => { window.removeEventListener("timeline-play", handlePlay); };
+    return () => {
+      window.removeEventListener("timeline-play", handlePlay);
+    };
   }, [song.id]);
 
   return (
@@ -146,7 +150,7 @@ export function SongCard({
             </h3>
 
             {song.title.japanese && (
-              <span className="mt-1 truncate font-sans text-lg font-medium tracking-wide text-(--theme-color)">
+              <span className="mt-1 truncate font-jp-serif text-lg font-medium tracking-wide text-(--theme-color) md:text-xl">
                 {song.title.japanese}
               </span>
             )}
@@ -162,7 +166,9 @@ export function SongCard({
             role="dialog"
             aria-modal="true"
             aria-label={`${song.title.english} video player`}
-            onClick={() => { setExpandedState(false); }}
+            onClick={() => {
+              setExpandedState(false);
+            }}
             onKeyDown={(e) => {
               if (e.key === "Escape") setExpandedState(false);
             }}
@@ -171,11 +177,15 @@ export function SongCard({
           >
             <div
               role="presentation"
-              onClick={(e) => { e.stopPropagation(); }}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
               className="relative aspect-video w-full max-w-5xl overflow-hidden rounded-lg bg-background/40"
             >
               <button
-                onClick={() => { setExpandedState(false); }}
+                onClick={() => {
+                  setExpandedState(false);
+                }}
                 className={cn(
                   "absolute top-4 right-4 z-10 rounded-full p-2 text-white/70 backdrop-blur-sm transition-opacity duration-300 hover:text-white",
                   showControls ? "opacity-100" : "opacity-0",
