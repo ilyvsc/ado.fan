@@ -49,7 +49,7 @@ function ThemeCard({
       )}
     >
       <div className="flex items-center gap-2 sm:block">
-        <div className="relative size-18 shrink-0 overflow-hidden sm:aspect-square sm:size-auto lg:aspect-2/3">
+        <div className="relative size-22 shrink-0 overflow-hidden sm:aspect-square sm:size-auto lg:aspect-2/3">
           <Image
             src={theme.coverArt}
             alt={`${theme.songTitle.english} cover art`}
@@ -62,18 +62,18 @@ function ThemeCard({
             <span className="text-left font-gambarino text-sm leading-tight font-black text-white md:text-lg">
               {theme.songTitle.english}
             </span>
-            <span className="text-left text-xs leading-tight text-white/70">
+            <span className="text-left font-jp-sans text-xs leading-tight text-white/70">
               {theme.songTitle.japanese}
             </span>
           </div>
         </div>
 
         <div className="flex flex-col sm:hidden">
-          <span className="text-left font-gambarino text-base leading-tight font-black text-foreground">
+          <span className="text-left font-gambarino text-lg leading-tight font-black text-foreground">
             {theme.songTitle.english}
           </span>
           {theme.songTitle.japanese && (
-            <span className="text-left text-xs leading-tight text-muted-foreground">
+            <span className="text-left font-jp-sans text-base leading-tight text-muted-foreground">
               {theme.songTitle.japanese}
             </span>
           )}
@@ -88,7 +88,12 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
   const isMobile = useIsMobile();
 
   const hoverTimer = useRef<number | null>(null);
-  useEffect(() => () => { clearHoverTimer(); }, []);
+  useEffect(
+    () => () => {
+      if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    },
+    [],
+  );
 
   function clearHoverTimer() {
     if (hoverTimer.current) {
@@ -115,6 +120,8 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
 
   const activeTheme =
     SONG_THEMES.find((t) => t.id === currentTheme) ?? SONG_THEMES[0];
+
+  if (!activeTheme) return null;
 
   const visibleThemes = isMobile
     ? SONG_THEMES
@@ -152,7 +159,7 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-1.5 sm:gap-2 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-2 md:grid-cols-2 lg:grid-cols-4">
           {visibleThemes.map((theme) => (
             <ThemeCard
               key={theme.id}
@@ -162,7 +169,9 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
                 setTheme(theme.id);
                 onClose();
               }}
-              onHoverStart={() => { handleHoverStart(theme); }}
+              onHoverStart={() => {
+                handleHoverStart(theme);
+              }}
               onHoverEnd={handleHoverEnd}
               className="last:odd:col-span-2 sm:last:odd:col-span-1"
             />
@@ -171,9 +180,7 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
 
         <div className="flex flex-col gap-2 sm:max-w-xs">
           <div className="flex flex-col gap-0.5">
-            <span className="text-sm font-medium text-foreground">
-              Appearance
-            </span>
+            <span className="text-sm font-medium text-foreground">Appearance</span>
             <span className="text-xs text-muted-foreground">
               Switch between light, dark, or your system default.
             </span>
@@ -194,12 +201,16 @@ export function ThemeSelectorDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="overflow-hidden rounded-xl border border-foreground/10 bg-background p-0 sm:max-h-fit lg:max-w-5xl">
+      <DialogContent className="overflow-hidden rounded-xl border border-foreground/10 bg-background p-0 sm:max-h-fit md:max-w-2xl lg:max-w-5xl">
         <DialogTitle className="sr-only">Choose Your Theme</DialogTitle>
         <DialogDescription className="sr-only">
           See the whole site dressed in your favorite Ado song palette.
         </DialogDescription>
-        <ThemeSelectorContent onClose={() => { onOpenChange(false); }} />
+        <ThemeSelectorContent
+          onClose={() => {
+            onOpenChange(false);
+          }}
+        />
       </DialogContent>
     </Dialog>
   );
