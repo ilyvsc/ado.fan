@@ -1,7 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
 
-import { Inter, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
-
 import NoScriptError from "@/app/no-script";
 import { Footer } from "@/components/layout/Footer";
 import { SongThemeProvider } from "@/providers/SongThemeProvider";
@@ -11,45 +9,12 @@ import { buildAlternates } from "@/shared/i18n/metadata";
 import { linksCategories } from "@/shared/lib/socialLinks";
 
 import { cn } from "@/shared/lib/utils";
+import { gambarino, inter, jpNotoSans, jpNotoSerif } from "@/styles/fonts";
 
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
 import "@/styles/globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-  preload: true,
-  fallback: [
-    "system-ui",
-    "-apple-system",
-    "BlinkMacSystemFont",
-    "Segoe UI",
-    "Roboto",
-    "Arial",
-    "sans-serif",
-  ],
-  adjustFontFallback: true,
-  weight: ["400", "500", "600", "700"],
-});
-
-const jpNotoSans = Noto_Sans_JP({
-  variable: "--font-jp-sans",
-  display: "swap",
-  preload: false,
-  weight: ["400", "600"],
-  fallback: ["Hiragino Sans", "Yu Gothic", "Meiryo", "sans-serif"],
-});
-
-const jpNotoSerif = Noto_Serif_JP({
-  variable: "--font-jp-serif",
-  display: "swap",
-  preload: false,
-  weight: ["500"],
-  fallback: ["Yu Mincho", "Hiragino Mincho ProN", "serif"],
-});
 
 const description =
   "A fan-made tribute to the incredible talent and artistry of Ado, whose music has touched millions of hearts worldwide.";
@@ -128,6 +93,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   minimumScale: 1,
 };
+
 export default async function RootLayout({
   children,
   params,
@@ -138,7 +104,16 @@ export default async function RootLayout({
   const { locale } = await params;
 
   return (
-    <html lang={locale ?? "en"} suppressHydrationWarning className="min-h-full">
+    <html
+      lang={locale ?? "en"}
+      suppressHydrationWarning
+      className={cn(
+        inter.variable,
+        gambarino.variable,
+        jpNotoSans.variable,
+        jpNotoSerif.variable,
+      )}
+    >
       <head>
         <link rel="preconnect" href="https://r2.ado.fan" crossOrigin="anonymous" />
         <script
@@ -148,9 +123,7 @@ export default async function RootLayout({
         />
       </head>
 
-      <body
-        className={cn(inter.className, jpNotoSans.variable, jpNotoSerif.variable)}
-      >
+      <body className="min-h-dvh font-sans">
         <noscript>
           <style>{`body > :not(noscript) { display: none; }`}</style>
           <NoScriptError />

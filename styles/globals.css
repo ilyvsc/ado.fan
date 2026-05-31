@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "./fonts/gambarino/font.css";
 
 /* required for dark mode using tailwindcss@v4 */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -13,11 +12,17 @@
   --breakpoint-4xl: 2560px;
 
   /* Custom Fonts */
-  --font-sans: var(--font-inter);
-  --font-jp-sans: var(--font-jp-sans);
-  --font-jp-serif: var(--font-jp-serif);
+  --font-sans:
+    var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Arial, sans-serif;
 
-  --font-gambarino: "Gambarino-Regular";
+  --font-serif: var(--font-gambarino), Georgia, "Times New Roman", serif;
+
+  --font-jp-sans:
+    var(--font-jp-sans), "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
+
+  --font-jp-serif:
+    var(--font-jp-serif), "Yu Mincho", "Hiragino Mincho ProN", serif;
 
   /* Default theme colors */
   --color-ado-primary: hsl(195.79, 98%, 19%);
