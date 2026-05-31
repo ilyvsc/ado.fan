@@ -58,14 +58,14 @@ export function Footer() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-16 lg:gap-32">
             {/* <nav aria-label="Sitemap" className="space-y-2">
-                <h4 className="font-gambarino text-xl tracking-wide text-foreground/90">
+                <h4 className="font-serif text-xl tracking-wide text-foreground/90">
                   Sitemap
                 </h4>
               </nav> */}
 
             <nav aria-label="Socials" className="grid grid-cols-2 gap-10">
               <section aria-labelledby="footer-social-media">
-                <h4 className="pb-2 font-gambarino text-xl tracking-wide text-foreground/90">
+                <h4 className="pb-2 font-serif text-xl tracking-wide text-foreground/90">
                   Social Media
                 </h4>
                 <div className="flex flex-wrap gap-x-4">
@@ -77,7 +77,7 @@ export function Footer() {
               </section>
 
               <section aria-labelledby="footer-music-platforms">
-                <h4 className="pb-2 font-gambarino text-xl tracking-wide text-foreground/90">
+                <h4 className="pb-2 font-serif text-xl tracking-wide text-foreground/90">
                   Music Platforms
                 </h4>
                 <div className="flex flex-wrap gap-x-4">

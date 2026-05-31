@@ -74,7 +74,7 @@ export function TimelineHeader() {
           <div className="flex flex-col gap-4 md:gap-6">
             <h1
               data-header-title
-              className="font-gambarino text-5xl leading-6 font-black tracking-wide text-ado-secondary-foreground uppercase md:text-6xl"
+              className="font-serif text-5xl leading-6 font-black tracking-wide text-ado-secondary-foreground uppercase md:text-6xl"
             >
               Timeline
             </h1>
@@ -83,7 +83,7 @@ export function TimelineHeader() {
               data-header-fade
               className="max-w-3xl space-y-2 text-ado-secondary-foreground/80"
             >
-              <p className="font-gambarino text-2xl tracking-wide md:text-3xl">
+              <p className="font-serif text-2xl tracking-wide md:text-3xl">
                 Rooted in Vocaloid and Utaite culture
               </p>
               <p className="max-w-2xl text-sm md:text-lg">
@@ -98,7 +98,7 @@ export function TimelineHeader() {
             >
               <div className="flex gap-8 md:gap-12">
                 <blockquote className="max-w-xs space-y-3">
-                  <p className="font-gambarino text-base leading-snug tracking-wide text-ado-secondary-foreground/90 md:text-xl">
+                  <p className="font-serif text-base leading-snug tracking-wide text-ado-secondary-foreground/90 md:text-xl">
                     "So, if you could remember things today, even just a little bit,
                     and take it with you as you go back, I would be really happy. If
                     that happens, I think my younger self, the one who couldn't do
@@ -114,7 +114,7 @@ export function TimelineHeader() {
 
               <div className="grid flex-1 grid-cols-2 gap-x-2 gap-y-4">
                 <div className="space-y-1">
-                  <div className="font-gambarino text-5xl leading-none font-black text-ado-secondary-foreground md:text-6xl">
+                  <div className="font-serif text-5xl leading-none font-black text-ado-secondary-foreground md:text-6xl">
                     100+
                   </div>
                   <p className="text-xs text-ado-secondary-foreground/80 md:text-sm">
@@ -123,7 +123,7 @@ export function TimelineHeader() {
                 </div>
 
                 <div className="space-y-1">
-                  <div className="font-gambarino text-5xl leading-none font-black text-ado-secondary-foreground md:text-6xl">
+                  <div className="font-serif text-5xl leading-none font-black text-ado-secondary-foreground md:text-6xl">
                     3B+
                   </div>
                   <p className="text-xs text-ado-secondary-foreground/80 md:text-sm">
@@ -132,7 +132,7 @@ export function TimelineHeader() {
                 </div>
 
                 <div className="space-y-1">
-                  <div className="font-gambarino text-5xl leading-none font-black text-ado-secondary-foreground md:text-6xl">
+                  <div className="font-serif text-5xl leading-none font-black text-ado-secondary-foreground md:text-6xl">
                     30+
                   </div>
                   <p className="text-xs text-ado-secondary-foreground/80 md:text-sm">
@@ -141,7 +141,7 @@ export function TimelineHeader() {
                 </div>
 
                 <div className="space-y-1">
-                  <div className="font-gambarino text-5xl leading-none font-black text-ado-secondary-foreground md:text-6xl">
+                  <div className="font-serif text-5xl leading-none font-black text-ado-secondary-foreground md:text-6xl">
                     #1
                   </div>
                   <p className="text-xs text-ado-secondary-foreground/80 md:text-sm">

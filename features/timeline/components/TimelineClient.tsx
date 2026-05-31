@@ -234,7 +234,7 @@ export function TimelineClient({
                 <div className="sticky top-4 left-1/2 z-10 flex shrink-0 -translate-x-1/2 justify-center self-start md:pointer-events-none md:static md:h-full md:translate-x-0 md:flex-col md:justify-center md:self-auto">
                   <div
                     className={cn(
-                      "font-gambarino text-7xl leading-none font-black tracking-tight transition-all duration-500 ease-out md:text-9xl md:[writing-mode:vertical-rl]",
+                      "font-serif text-7xl leading-none font-black tracking-tight transition-all duration-500 ease-out md:text-9xl md:[writing-mode:vertical-rl]",
                       isActive ? "scale-100 opacity-100" : "scale-95 opacity-10",
                       isPastMiddle ? "text-background" : "text-foreground",
                     )}

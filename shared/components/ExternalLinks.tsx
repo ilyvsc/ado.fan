@@ -175,7 +175,7 @@ export function ExternalLinks({ links }: { links: ExternalLinks }) {
 
   return (
     <div className="mb-8 w-full space-y-2 py-4">
-      <h3 className="font-gambarino text-lg font-bold tracking-wide text-(--theme-contrast)">
+      <h3 className="font-serif text-lg font-bold tracking-wide text-(--theme-contrast)">
         Related Links
       </h3>
 

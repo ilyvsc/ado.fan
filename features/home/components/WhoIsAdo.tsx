@@ -87,7 +87,7 @@ function AdoDescription() {
 
         <h2
           className={cn(
-            "font-gambarino text-4xl leading-tight font-bold transition-colors duration-700 lg:text-5xl",
+            "font-serif text-4xl leading-tight font-bold transition-colors duration-700 lg:text-5xl",
             isPastMiddle ? "text-ado-primary-foreground" : "text-foreground",
           )}
         >
@@ -119,7 +119,7 @@ function AdoDescription() {
         >
           <p
             className={cn(
-              "text-md font-gambarino italic transition-colors duration-700 md:text-xl",
+              "text-md font-serif italic transition-colors duration-700 md:text-xl",
               isPastMiddle ? "text-ado-primary-foreground/90" : "text-foreground/90",
             )}
           >
@@ -203,7 +203,7 @@ function AdoExtraInfo() {
 
         <h2
           className={cn(
-            "font-gambarino text-4xl leading-tight font-bold transition-colors duration-700 lg:text-5xl",
+            "font-serif text-4xl leading-tight font-bold transition-colors duration-700 lg:text-5xl",
             isPastMiddle ? "text-ado-primary-foreground" : "text-foreground",
           )}
         >

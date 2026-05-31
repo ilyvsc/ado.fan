@@ -56,7 +56,7 @@ export function SongLyricsHeader({ song, albums }: { song: Song; albums: Album[]
           ) : null}
 
           <div className="flex flex-col justify-end pb-2 text-(--theme-contrast)">
-            <h1 className="mb-2 font-gambarino text-4xl leading-tight font-black md:text-5xl lg:text-6xl">
+            <h1 className="mb-2 font-serif text-4xl leading-tight font-black md:text-5xl lg:text-6xl">
               {song.title.english}
             </h1>
             {song.title.japanese && (

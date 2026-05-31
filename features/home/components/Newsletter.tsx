@@ -120,7 +120,7 @@ export function NewsletterSection() {
             />
             <h2
               ref={titleRef}
-              className="font-gambarino text-5xl leading-tight tracking-wide text-foreground uppercase md:text-6xl"
+              className="font-serif text-5xl leading-tight tracking-wide text-foreground uppercase md:text-6xl"
             >
               Newsletter
             </h2>
@@ -163,7 +163,7 @@ export function NewsletterSection() {
           aria-labelledby="newsletter"
         >
           <div className="flex flex-col gap-2">
-            <h3 className="font-gambarino text-3xl tracking-wide text-ado-primary-foreground sm:text-4xl">
+            <h3 className="font-serif text-3xl tracking-wide text-ado-primary-foreground sm:text-4xl">
               Feel free to join!
             </h3>
             <p className="text-sm leading-relaxed text-ado-primary-foreground/80 md:text-base">

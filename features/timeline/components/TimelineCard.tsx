@@ -142,7 +142,7 @@ export function SongCard({
           <div className="flex min-w-0 flex-1 flex-col justify-center">
             <h3
               className={cn(
-                "font-gambarino text-3xl leading-none font-bold tracking-tight transition-colors duration-700 md:text-4xl",
+                "font-serif text-3xl leading-none font-bold tracking-tight transition-colors duration-700 md:text-4xl",
                 isPastMiddle ? "text-background" : "text-foreground",
               )}
             >

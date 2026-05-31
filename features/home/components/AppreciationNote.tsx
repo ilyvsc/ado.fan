@@ -86,7 +86,7 @@ export function FanAppreciation() {
 
         <p
           ref={textRef}
-          className="mx-auto mb-8 font-gambarino text-xl leading-relaxed text-balance text-foreground italic sm:text-wrap md:text-3xl lg:max-w-4xl"
+          className="mx-auto mb-8 font-serif text-xl leading-relaxed text-balance text-foreground italic sm:text-wrap md:text-3xl lg:max-w-4xl"
         >
           "As a devoted fan, I created this website to express my gratitude for
           Ado&apos;s incredible music. Her powerful vocals and emotional delivery have

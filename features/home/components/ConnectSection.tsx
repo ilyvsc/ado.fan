@@ -85,7 +85,7 @@ export function ConnectSection() {
             </span>
             <div className="h-px flex-1 bg-ado-primary/30" />
           </div>
-          <h2 className="font-gambarino text-4xl tracking-wide text-foreground uppercase">
+          <h2 className="font-serif text-4xl tracking-wide text-foreground uppercase">
             Adomination
           </h2>
           <p className="text-sm leading-relaxed font-light text-muted-foreground">
@@ -166,7 +166,7 @@ export function ConnectSection() {
           <main className="flex flex-1 flex-col gap-6">
             <div className="flex items-baseline justify-between border-b border-foreground/10 pb-3">
               <div>
-                <h3 className="font-gambarino text-3xl font-medium tracking-wide text-foreground">
+                <h3 className="font-serif text-3xl font-medium tracking-wide text-foreground">
                   {activeCategory.label}
                 </h3>
                 <p className="mt-1 text-xs text-muted-foreground lg:hidden">

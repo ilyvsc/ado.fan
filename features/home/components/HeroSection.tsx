@@ -101,7 +101,7 @@ export function HeroSection() {
       <div className="relative z-10 flex h-full flex-col items-center justify-between pt-40 pb-20 md:pt-44 md:pb-20">
         <div className="flex flex-col items-center px-6 text-center">
           <h1
-            className="hero-title font-gambarino leading-none tracking-tight text-white italic opacity-0"
+            className="hero-title font-serif leading-none tracking-tight text-white italic opacity-0"
             style={{ fontSize: "clamp(12rem, 22vw, 18rem)" }}
           >
             Ado
@@ -111,14 +111,14 @@ export function HeroSection() {
         <div className="flex flex-col items-center gap-4 px-6">
           <div className="flex w-full max-w-lg items-center gap-3">
             <div className="hero-rule h-px flex-1 origin-right bg-linear-to-r from-transparent to-white/25" />
-            <p className="hero-fade shrink-0 font-gambarino text-sm tracking-widest text-white/50 uppercase opacity-0">
+            <p className="hero-fade shrink-0 font-serif text-sm tracking-widest text-white/50 uppercase opacity-0">
               The voice behind the mask
             </p>
             <div className="hero-rule h-px flex-1 origin-left bg-linear-to-l from-transparent to-white/25" />
           </div>
 
           <div className="hero-fade flex flex-col items-center gap-2 opacity-0">
-            <p className="font-gambarino text-base text-white/60 italic md:text-lg">
+            <p className="font-serif text-base text-white/60 italic md:text-lg">
               First ever live-action music video —{" "}
               <span className="text-white/85">Vivarium</span>
             </p>
@@ -133,7 +133,7 @@ export function HeroSection() {
                   onClick={(e) => {
                     handleSmoothScroll(e, link.href);
                   }}
-                  className="group relative font-gambarino text-sm tracking-wide text-white/60 transition-colors duration-300 hover:text-white sm:text-base"
+                  className="group relative font-serif text-sm tracking-wide text-white/60 transition-colors duration-300 hover:text-white sm:text-base"
                 >
                   {link.label}
                   <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-white/40 transition-transform duration-300 group-hover:scale-x-100" />

@@ -59,7 +59,7 @@ function ThemeCard({
           />
           <div className="absolute inset-0 hidden bg-linear-to-t from-black/90 via-black/20 to-transparent sm:block" />
           <div className="absolute inset-x-0 bottom-0 hidden flex-col p-2 sm:flex">
-            <span className="text-left font-gambarino text-sm leading-tight font-black text-white md:text-lg">
+            <span className="text-left font-serif text-sm leading-tight font-black text-white md:text-lg">
               {theme.songTitle.english}
             </span>
             <span className="text-left font-jp-sans text-xs leading-tight text-white/70">
@@ -69,7 +69,7 @@ function ThemeCard({
         </div>
 
         <div className="flex flex-col sm:hidden">
-          <span className="text-left font-gambarino text-lg leading-tight font-black text-foreground">
+          <span className="text-left font-serif text-lg leading-tight font-black text-foreground">
             {theme.songTitle.english}
           </span>
           {theme.songTitle.japanese && (
@@ -140,7 +140,7 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/20 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 p-5">
-          <span className="font-gambarino text-3xl leading-none text-white">
+          <span className="font-serif text-3xl leading-none text-white">
             {activeTheme.songTitle.english}
           </span>
           <span className="text-sm tracking-widest text-white/70">
@@ -151,7 +151,7 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
 
       <div className="flex flex-1 flex-col gap-4 p-4 sm:gap-5 sm:p-6">
         <div className="flex flex-col gap-1">
-          <span className="font-gambarino text-2xl leading-none text-foreground sm:text-3xl">
+          <span className="font-serif text-2xl leading-none text-foreground sm:text-3xl">
             Choose Your Theme
           </span>
           <p className="text-xs leading-relaxed text-muted-foreground sm:text-base">
