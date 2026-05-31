@@ -44,15 +44,27 @@
   }
 
   /* Custom colors on selection */
-  /* note: works really bad on some themes, leaving as-is for now */
   ::selection {
     background-color: var(--color-ado-primary);
     color: var(--color-ado-primary-foreground);
   }
 
   .bg-ado-primary ::selection {
-    background-color: var(--color-ado-secondary);
+    background-color: color-mix(
+      in oklab,
+      var(--color-ado-secondary),
+      var(--color-ado-secondary-foreground) 15%
+    );
     color: var(--color-ado-secondary-foreground);
+  }
+
+  .bg-ado-secondary ::selection {
+    background-color: color-mix(
+      in oklab,
+      var(--color-ado-primary),
+      var(--color-ado-primary-foreground) 15%
+    );
+    color: var(--color-ado-primary-foreground);
   }
 
   /* Dark Mode customazations */
