@@ -1,13 +1,7 @@
+import { buildLocalizedUrls, durationToSeconds, SEO_BASE_URL } from "@/lib/metadata";
 import { prisma } from "@/prisma/client";
-import { buildLocalizedUrls, SEO_BASE_URL } from "@/shared/i18n/metadata";
 
 import type { MetadataRoute } from "next";
-
-function durationToSeconds(duration: string): number {
-  const [minutes, seconds] = duration.split(":");
-  if (!minutes || !seconds) return 0;
-  return Number(minutes) * 60 + Number(seconds);
-}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const songs = await prisma.song.findMany({
@@ -69,14 +63,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     {
       url: SEO_BASE_URL,
-      alternates: buildLocalizedUrls(SEO_BASE_URL),
+      alternates: buildLocalizedUrls("/"),
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1.0,
     },
     {
       url: `${SEO_BASE_URL}/lyrics/`,
-      alternates: buildLocalizedUrls(`${SEO_BASE_URL}/lyrics/`),
+      alternates: buildLocalizedUrls("/lyrics/"),
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,

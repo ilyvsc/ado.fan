@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { SongThemeProvider } from "@/providers/SongThemeProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 
-import { buildAlternates } from "@/shared/i18n/metadata";
+import { buildAlternates, SITE_KEYWORDS } from "@/shared/lib/metadata";
 import { linksCategories } from "@/shared/lib/socialLinks";
 
 import { cn } from "@/shared/lib/utils";
@@ -36,6 +36,7 @@ const schema = JSON.stringify({
       description: description,
       about: {
         "@type": "Person",
+        "@id": "https://ado.fan/#person",
         name: "Ado",
         sameAs: sameAs,
       },
@@ -46,21 +47,12 @@ const schema = JSON.stringify({
 export const metadata: Metadata = {
   metadataBase: new URL("https://ado.fan"),
   title: {
-    default: "ado.fan — A Fan Tribute to Ado",
-    template: "%s — ado.fan",
+    default: "ado.fan - A Fan Tribute to Ado",
+    template: "%s - ado.fan",
   },
   alternates: buildAlternates(),
   description: description,
-  keywords: [
-    "Ado",
-    "Ado fan site",
-    "Ado music",
-    "Ado lyrics",
-    "Japanese singer",
-    "Utaite",
-    "Japanese pop",
-    "anime music",
-  ],
+  keywords: SITE_KEYWORDS,
   formatDetection: {
     email: false,
     address: false,
@@ -81,6 +73,19 @@ export const metadata: Metadata = {
     title: "Ado's Fan Tribute: Japan's Anonymous Superstar",
     description: description,
   },
+  icons: {
+    icon: [
+      { url: "/favicon/favicon.ico" },
+      { url: "/favicon/favicon-16x16.png", sizes: "16x16" },
+      { url: "/favicon/favicon-32x32.png", sizes: "32x32" },
+    ],
+    apple: [{ url: "/favicon/apple-touch-icon.png", sizes: "180x180" }],
+    other: [
+      { url: "/favicon/android-chrome-192x192.png", sizes: "192x192" },
+      { url: "/favicon/android-chrome-512x512.png", sizes: "512x512" },
+    ],
+  },
+  manifest: "/favicon/site.webmanifest",
 };
 
 export const viewport: Viewport = {

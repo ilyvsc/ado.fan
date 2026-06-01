@@ -1,8 +1,27 @@
-import { defaultLocale, locales } from "./types";
+import { defaultLocale, locales } from "../i18n/types";
 
 import type { Metadata } from "next";
 
 export const SEO_BASE_URL = "https://ado.fan";
+
+export const SITE_KEYWORDS: string[] = [
+  "Ado",
+  "Ado singer",
+  "Ado fan site",
+  "Ado music",
+  "Ado lyrics",
+  "Ado discography",
+  "Ado world tour",
+  "Ado Usseewa",
+  "Ado New Genesis",
+  "Ado One Piece",
+  "Ado utaite",
+  "Japanese singer",
+  "utaite",
+  "Japanese pop",
+  "anime music",
+  "Ado anonymous singer",
+];
 
 /**
  * Builds an absolute URL for the given pathname.
@@ -87,4 +106,39 @@ export function buildLocalizedUrls(pathname = ""): {
 export function buildAlternates(pathname = ""): Metadata["alternates"] {
   const { canonical, languages } = buildLocalizedUrls(pathname);
   return { canonical, languages };
+}
+
+/**
+ * Parses a duration string in `MM:SS` format.
+ *
+ * @param duration - Duration string (e.g. `"03:45"`).
+ * @returns The parsed minutes and seconds.
+ */
+function parseDuration(
+  duration: string,
+): Readonly<{ minutes: number; seconds: number }> {
+  const [minutes = 0, seconds = 0] = duration.split(":").map(Number);
+  return { minutes, seconds };
+}
+
+/**
+ * Converts a duration string in `MM:SS` format to an ISO 8601 duration.
+ *
+ * @param duration - Duration string (e.g. `"03:45"`).
+ * @returns ISO 8601 duration string (e.g. `"PT3M45S"`).
+ */
+export function durationToIso8601(duration: string): string {
+  const { minutes, seconds } = parseDuration(duration);
+  return `PT${minutes}M${seconds}S`;
+}
+
+/**
+ * Converts a duration string in `MM:SS` format to total seconds.
+ *
+ * @param duration - Duration string (e.g. `"03:45"`).
+ * @returns Total duration in seconds.
+ */
+export function durationToSeconds(duration: string): number {
+  const { minutes, seconds } = parseDuration(duration);
+  return minutes * 60 + seconds;
 }

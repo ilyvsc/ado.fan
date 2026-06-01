@@ -1,3 +1,5 @@
+import { cache } from "react";
+
 import { prisma } from "@/prisma/client";
 import {
   lyricsPrismaSelect,
@@ -25,7 +27,9 @@ import type { Song, SongListItem } from "@/types/song";
  * console.log(song.title.english);
  * ```
  */
-export async function getSongById(id: string): Promise<Song | null> {
+export const getSongById = cache(async function getSongById(
+  id: string,
+): Promise<Song | null> {
   const song = await prisma.song.findUnique({
     where: { id },
     select: songPrismaSelect,
@@ -34,7 +38,7 @@ export async function getSongById(id: string): Promise<Song | null> {
   if (!song) return null;
 
   return serializeSong(song);
-}
+});
 
 /**
  * Fetches all lyrics associated with a given song.
