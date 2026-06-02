@@ -62,10 +62,10 @@ export async function getSongLyricsById(songId: string): Promise<Lyrics[]> {
  *
  * @returns Promise resolving to a tiny array of SongListItem
  */
-export async function getAllSongsForListing(): Promise<SongListItem[]> {
+export const getAllSongsForListing = cache(async function getAllSongsForListing(): Promise<SongListItem[]> {
   const songs = await prisma.song.findMany({
     orderBy: [{ titleEnglish: "asc" }, { titleJapanese: "asc" }],
     select: songListPrismaSelect,
   });
   return songs.map(serializeSongListItem);
-}
+});

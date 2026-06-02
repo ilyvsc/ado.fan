@@ -106,7 +106,7 @@ export function TimelineHeader() {
                     make me very happy if you could remember this."
                   </p>
                   <cite className="block text-xs tracking-wide text-ado-secondary-foreground/80 not-italic">
-                    — Ado SPECIAL LIVE 2024「心臓」
+                    - Ado SPECIAL LIVE 2024「心臓」
                   </cite>
                 </blockquote>
                 <div className="hidden w-px bg-ado-secondary-foreground/10 md:block" />

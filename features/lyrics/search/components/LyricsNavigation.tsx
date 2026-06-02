@@ -22,6 +22,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ThemeSelectorButton } from "@/shared/components/themes/ThemeButton";
 import { ThemeSelectorDialog } from "@/shared/components/themes/ThemeSelector";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/shared/components/ui/dropdown-menu";
 import { cn } from "@/shared/lib/utils";
 
 import type { SongSortOption } from "@/types/song";
@@ -36,25 +42,6 @@ const SORT_OPTIONS: {
   { value: "newest", label: "Newest", icon: ArrowDown01 },
   { value: "oldest", label: "Oldest", icon: ArrowUp01 },
 ];
-
-function useClickOutside(
-  ref: React.RefObject<HTMLElement | null>,
-  open: boolean,
-  onClose: () => void,
-) {
-  useEffect(() => {
-    if (!open) return;
-    function handler(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        onClose();
-      }
-    }
-    document.addEventListener("mousedown", handler);
-    return () => {
-      document.removeEventListener("mousedown", handler);
-    };
-  }, [ref, open, onClose]);
-}
 
 function ViewModeToggle({
   viewMode,
@@ -76,29 +63,29 @@ function ViewModeToggle({
         onClick={() => {
           onViewModeChange("grid");
         }}
+        aria-label="Grid view"
         className={cn(
           "flex h-7 w-7 items-center justify-center rounded-md transition-all",
           viewMode === "grid"
             ? "bg-ado-primary text-ado-primary-foreground"
             : "text-muted-foreground hover:text-foreground",
         )}
-        title="Grid view"
       >
-        <Grid className="h-3.5 w-3.5" />
+        <Grid aria-hidden="true" className="h-3.5 w-3.5" />
       </button>
       <button
         onClick={() => {
           onViewModeChange("list");
         }}
+        aria-label="List view"
         className={cn(
           "flex h-7 w-7 items-center justify-center rounded-md transition-all",
           viewMode === "list"
             ? "bg-ado-primary text-ado-primary-foreground"
             : "text-muted-foreground hover:text-foreground",
         )}
-        title="List view"
       >
-        <List className="h-3.5 w-3.5" />
+        <List aria-hidden="true" className="h-3.5 w-3.5" />
       </button>
     </div>
   );
@@ -141,29 +128,19 @@ export function LyricsNavigation({
 }: LyricsNavigationProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
-  const sortRef = useRef<HTMLDivElement>(null);
-  const yearRef = useRef<HTMLDivElement>(null);
   const [themeDialogOpen, setThemeDialogOpen] = useState(false);
-  const [sortOpen, setSortOpen] = useState(false);
-  const [yearOpen, setYearOpen] = useState(false);
-
-  const closeSortMenu = useCallback(() => {
-    setSortOpen(false);
-  }, []);
-  const closeYearMenu = useCallback(() => {
-    setYearOpen(false);
-  }, []);
 
   useGSAP(
     () => {
       if (!navRef.current) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       gsap.fromTo(
         navRef.current,
         { y: -10, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" },
       );
     },
-    { scope: navRef },
+    { scope: navRef, dependencies: [] },
   );
 
   useEffect(() => {
@@ -192,9 +169,6 @@ export function LyricsNavigation({
     };
   }, [searchQuery, onSearchChange, onRandomClick]);
 
-  useClickOutside(sortRef, sortOpen, closeSortMenu);
-  useClickOutside(yearRef, yearOpen, closeYearMenu);
-
   const currentSort = SORT_OPTIONS.find((o) => o.value === sort) ?? SORT_OPTIONS[0];
 
   if (!currentSort) return null;
@@ -210,7 +184,10 @@ export function LyricsNavigation({
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex items-center gap-2 py-3">
           <div className="group relative flex-1">
-            <Search className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-muted-foreground/50 transition-colors group-focus-within:text-foreground" />
+            <Search
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-muted-foreground/50 transition-colors group-focus-within:text-foreground"
+            />
             <input
               ref={inputRef}
               type="text"
@@ -218,17 +195,19 @@ export function LyricsNavigation({
               onChange={(e) => {
                 onSearchChange(e.target.value);
               }}
+              aria-label="Search songs"
               placeholder="Search songs…"
               className="h-8 w-full rounded-lg border border-foreground/8 bg-foreground/4 px-10 text-sm text-foreground transition-all placeholder:text-muted-foreground/40 hover:border-foreground/12 focus:border-foreground/20 focus:bg-background focus:ring-2 focus:ring-ado-primary/10 focus:outline-none md:h-10"
             />
             {searchQuery ? (
               <button
+                aria-label="Clear search"
                 onClick={() => {
                   onSearchChange("");
                 }}
                 className="absolute top-1/2 right-2.5 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-foreground/8 hover:text-foreground"
               >
-                <X className="h-3.5 w-3.5" />
+                <X aria-hidden="true" className="h-3.5 w-3.5" />
               </button>
             ) : (
               <kbd className="pointer-events-none absolute top-1/2 right-3 hidden -translate-y-1/2 rounded border border-foreground/10 px-1.5 py-0.5 font-mono text-xs text-muted-foreground/30 select-none sm:block">
@@ -273,6 +252,7 @@ export function LyricsNavigation({
               )}
             >
               <Heart
+                aria-hidden="true"
                 className={cn(
                   "h-3.5 w-3.5",
                   showSaved ? "fill-ado-primary-foreground" : "",
@@ -293,169 +273,140 @@ export function LyricsNavigation({
               )}
             </button>
 
-            <div
-              ref={yearRef}
-              className="relative"
-              onKeyDown={(e) => {
-                if (e.key === "Escape" && yearOpen) {
-                  e.stopPropagation();
-                  setYearOpen(false);
-                }
-              }}
-            >
-              <button
-                onClick={() => {
-                  setYearOpen((o) => !o);
-                }}
-                aria-expanded={yearOpen}
-                aria-haspopup="listbox"
-                className={cn(
-                  "flex h-8 items-center gap-1.5 rounded-lg px-2 text-xs font-medium transition-colors",
-                  selectedYear !== null
-                    ? "bg-ado-primary/70 text-ado-primary-foreground"
-                    : "text-muted-foreground hover:bg-foreground/6 hover:text-foreground",
-                )}
-              >
-                <CalendarDays className="h-3.5 w-3.5" />
-                <span>Year</span>
-                {selectedYear !== null && (
-                  <>
-                    <span className="h-1 w-1 rounded-full bg-ado-primary-foreground" />
-                    <span>{selectedYear}</span>
-                  </>
-                )}
-              </button>
-
-              {yearOpen && (
-                <div
-                  role="listbox"
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className={cn(
+                    "flex h-8 items-center gap-1.5 rounded-lg px-2 text-xs font-medium transition-colors",
+                    selectedYear !== null
+                      ? "bg-ado-primary/70 text-ado-primary-foreground"
+                      : "text-muted-foreground hover:bg-foreground/6 hover:text-foreground",
+                  )}
                   aria-label="Filter by year"
-                  className="absolute top-full left-0 z-50 mt-1 max-h-56 w-18 overflow-y-auto rounded-lg border border-foreground/10 bg-background shadow-lg lg:w-20"
                 >
-                  <button
-                    role="option"
-                    aria-selected={selectedYear === null}
-                    onClick={() => {
-                      onYearChange(null);
-                      setYearOpen(false);
+                  <CalendarDays aria-hidden="true" className="h-3.5 w-3.5" />
+                  <span>Year</span>
+                  {selectedYear !== null && (
+                    <>
+                      <span
+                        aria-hidden="true"
+                        className="h-1 w-1 rounded-full bg-ado-primary-foreground"
+                      />
+                      <span>{selectedYear}</span>
+                    </>
+                  )}
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="start"
+                className="max-h-56 w-20 overflow-y-auto"
+              >
+                <DropdownMenuItem
+                  onSelect={() => {
+                    onYearChange(null);
+                  }}
+                  className="justify-between"
+                >
+                  <span
+                    className={
+                      selectedYear === null
+                        ? "text-foreground"
+                        : "text-muted-foreground"
+                    }
+                  >
+                    All
+                  </span>
+                  {selectedYear === null && (
+                    <Check
+                      aria-hidden="true"
+                      className="h-3 w-3 shrink-0 text-ado-primary"
+                    />
+                  )}
+                </DropdownMenuItem>
+                {availableYears.map((year) => (
+                  <DropdownMenuItem
+                    key={year}
+                    onSelect={() => {
+                      onYearChange(year);
                     }}
-                    className="flex w-full items-center justify-between gap-2 p-2 text-left text-xs transition-colors hover:bg-foreground/5"
+                    className="justify-between"
                   >
                     <span
                       className={
-                        selectedYear === null
+                        selectedYear === year
                           ? "text-foreground"
                           : "text-muted-foreground"
                       }
                     >
-                      All
+                      {year}
                     </span>
-                    {selectedYear === null && (
-                      <Check className="h-3 w-3 shrink-0 text-ado-primary" />
+                    {selectedYear === year && (
+                      <Check
+                        aria-hidden="true"
+                        className="h-3 w-3 shrink-0 text-ado-primary"
+                      />
                     )}
-                  </button>
-                  {availableYears.map((year) => (
-                    <button
-                      key={year}
-                      role="option"
-                      aria-selected={selectedYear === year}
-                      onClick={() => {
-                        onYearChange(year);
-                        setYearOpen(false);
-                      }}
-                      className="flex w-full items-center justify-between gap-2 p-2 text-left text-xs transition-colors hover:bg-foreground/5"
-                    >
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="flex h-8 items-center gap-1 rounded-lg px-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-foreground/6 hover:text-foreground"
+                  aria-label="Sort order"
+                >
+                  <SortIcon aria-hidden="true" className="h-3.5 w-3.5" />
+                  <span>{currentSort.label}</span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-32">
+                {SORT_OPTIONS.map((option) => (
+                  <DropdownMenuItem
+                    key={option.value}
+                    onSelect={() => {
+                      onSortChange(option.value);
+                    }}
+                    className="justify-between gap-3"
+                  >
+                    <span className="flex items-center gap-2">
+                      <option.icon
+                        aria-hidden="true"
+                        className={cn(
+                          "h-3.5 w-3.5 shrink-0",
+                          sort === option.value
+                            ? "text-foreground"
+                            : "text-muted-foreground",
+                        )}
+                      />
                       <span
                         className={
-                          selectedYear === year
+                          sort === option.value
                             ? "text-foreground"
                             : "text-muted-foreground"
                         }
                       >
-                        {year}
+                        {option.label}
                       </span>
-                      {selectedYear === year && (
-                        <Check className="h-3 w-3 shrink-0 text-ado-primary" />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div
-              ref={sortRef}
-              className="relative"
-              onKeyDown={(e) => {
-                if (e.key === "Escape" && sortOpen) {
-                  e.stopPropagation();
-                  setSortOpen(false);
-                }
-              }}
-            >
-              <button
-                onClick={() => {
-                  setSortOpen((o) => !o);
-                }}
-                aria-expanded={sortOpen}
-                aria-haspopup="listbox"
-                className="flex h-8 items-center gap-1 rounded-lg px-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-foreground/6 hover:text-foreground"
-              >
-                <SortIcon className="h-3.5 w-3.5" />
-                <span>{currentSort.label}</span>
-              </button>
-
-              {sortOpen && (
-                <div
-                  role="listbox"
-                  aria-label="Sort order"
-                  className="absolute top-full right-0 z-50 mt-1 min-w-32 overflow-hidden rounded-lg border border-foreground/10 bg-background shadow-lg"
-                >
-                  {SORT_OPTIONS.map((option) => (
-                    <button
-                      key={option.value}
-                      role="option"
-                      aria-selected={sort === option.value}
-                      onClick={() => {
-                        onSortChange(option.value);
-                        setSortOpen(false);
-                      }}
-                      className="flex w-full items-center justify-between gap-3 p-2 text-left text-xs transition-colors hover:bg-foreground/5"
-                    >
-                      <span className="flex items-center gap-2">
-                        <option.icon
-                          className={cn(
-                            "h-3.5 w-3.5 shrink-0",
-                            sort === option.value
-                              ? "text-foreground"
-                              : "text-muted-foreground",
-                          )}
-                        />
-                        <span
-                          className={
-                            sort === option.value
-                              ? "text-foreground"
-                              : "text-muted-foreground"
-                          }
-                        >
-                          {option.label}
-                        </span>
-                      </span>
-                      {sort === option.value && (
-                        <Check className="h-3 w-3 shrink-0 text-ado-primary" />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+                    </span>
+                    {sort === option.value && (
+                      <Check
+                        aria-hidden="true"
+                        className="h-3 w-3 shrink-0 text-ado-primary"
+                      />
+                    )}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <button
               onClick={onRandomClick}
+              aria-label="Random song (keyboard shortcut: R)"
               className="flex h-8 items-center gap-1.5 rounded-lg px-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-foreground/6 hover:text-foreground md:px-2"
-              title="Random song (R)"
             >
-              <Shuffle className="h-3.5 w-3.5" />
+              <Shuffle aria-hidden="true" className="h-3.5 w-3.5" />
               <span>Random</span>
             </button>
 

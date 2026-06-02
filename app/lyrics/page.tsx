@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { LyricsPageClient } from "@/features/lyrics/search/page";
 import { getAllSongsForListing, getRecommendedSongs } from "@/prisma/queries/songs";
 import { buildAlternates, buildUrl } from "@/shared/lib/metadata";
@@ -30,5 +32,9 @@ export default async function LyricsPage() {
     getAllSongsForListing(),
   ]);
 
-  return <LyricsPageClient recommended={recommended} allSongs={allSongs} />;
+  return (
+    <Suspense>
+      <LyricsPageClient recommended={recommended} allSongs={allSongs} />
+    </Suspense>
+  );
 }

@@ -22,7 +22,7 @@ export function useSocialLinks({
         title={description}
         className={clsx("flex items-center gap-2", className)}
       >
-        {icon}
+        <span aria-hidden="true">{icon}</span>
         <span>{name}</span>
       </Link>
     );

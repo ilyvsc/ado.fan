@@ -46,13 +46,17 @@ export function AlphabetStrip({
   }
 
   return (
-    <div className="fixed top-1/2 right-3 z-40 hidden -translate-y-1/2 flex-col gap-px sm:flex">
+    <nav
+      aria-label="Jump to letter"
+      className="fixed top-1/2 right-3 z-40 hidden -translate-y-1/2 flex-col gap-px sm:flex"
+    >
       {ALL_KEYS.map((letter) => {
         const active = activeLetters.has(letter);
         return (
           <button
             key={letter}
             disabled={!active}
+            aria-label={`Jump to songs starting with ${letter}`}
             onClick={() => {
               handleClick(letter);
             }}
@@ -67,6 +71,6 @@ export function AlphabetStrip({
           </button>
         );
       })}
-    </div>
+    </nav>
   );
 }

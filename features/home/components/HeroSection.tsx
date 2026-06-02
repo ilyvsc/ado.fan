@@ -89,7 +89,7 @@ export function HeroSection() {
       <div className="hero-bg pointer-events-none absolute inset-0 z-0">
         <Image
           src={VivariumInterview}
-          alt="Ado in Vivarium — first live action music video"
+          alt="Ado in Vivarium - first live action music video"
           fill
           sizes="100vw"
           className="object-cover object-center"
@@ -119,7 +119,7 @@ export function HeroSection() {
 
           <div className="hero-fade flex flex-col items-center gap-2 opacity-0">
             <p className="font-serif text-base text-white/60 italic md:text-lg">
-              First ever live-action music video —{" "}
+              First ever live-action music video -{" "}
               <span className="text-white/85">Vivarium</span>
             </p>
           </div>

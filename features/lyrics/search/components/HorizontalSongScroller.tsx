@@ -26,6 +26,7 @@ export function HorizontalSongScroller({
       if (!containerRef.current || songs.length === 0) return;
       const items = containerRef.current.querySelectorAll("[data-animate]");
       if (!items.length) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       gsap.fromTo(
         items,
         { opacity: 0, x: -16 },
@@ -39,7 +40,7 @@ export function HorizontalSongScroller({
         },
       );
     },
-    { scope: containerRef },
+    { scope: containerRef, dependencies: [] },
   );
 
   if (songs.length === 0) return null;
@@ -47,9 +48,9 @@ export function HorizontalSongScroller({
   return (
     <div ref={containerRef} className="mb-8">
       <div className="mb-3">
-        <h3 className="text-sm font-semibold tracking-widest text-ado-primary uppercase">
+        <h2 className="text-sm font-semibold tracking-widest text-ado-primary uppercase">
           {title}
-        </h3>
+        </h2>
       </div>
 
       <div className="relative">
@@ -73,7 +74,10 @@ export function HorizontalSongScroller({
                   />
                 ) : (
                   <div className="flex h-full items-center justify-center">
-                    <Music className="h-8 w-8 text-muted-foreground/30" />
+                    <Music
+                      aria-hidden="true"
+                      className="h-8 w-8 text-muted-foreground/30"
+                    />
                   </div>
                 )}
               </div>

@@ -4,15 +4,15 @@ import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ChevronUp, Loader2, Music, Search } from "lucide-react";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Activity,
   useCallback,
+  useDeferredValue,
   useEffect,
   useMemo,
   useRef,
   useState,
-  useTransition,
 } from "react";
 
 import { AlphabetStrip } from "@/features/lyrics/search/components/AlphabetStrip";
@@ -79,30 +79,70 @@ export function LyricsPageClient({ recommended, allSongs }: LyricsPageClientProp
   const router = useRouter();
   const isMobile = useIsMobile();
   const loadingRef = useRef<HTMLDivElement>(null);
-  const [isPending, startTransition] = useTransition();
-  const [scrollY, setScrollY] = useState(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [randomError, setRandomError] = useState(false);
+
+  const searchParams = useSearchParams();
 
   const [viewModeOverride, setViewMode] = useState<"grid" | "list" | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sort, setSort] = useState<SongSortOption>("az");
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const [showSaved, setShowSaved] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(() => searchParams.get("q") ?? "");
+
+  const [sort, setSort] = useState<SongSortOption>(() => {
+    const sort = searchParams.get("sort");
+    return sort === "za" || sort === "newest" || sort === "oldest" ? sort : "az";
+  });
+
+  const [selectedYear, setSelectedYear] = useState<number | null>(() => {
+    const year = searchParams.get("year");
+    const number = year ? Number(year) : null;
+    return number && !isNaN(number) ? number : null;
+  });
+
+  const [showSaved, setShowSaved] = useState(() => searchParams.get("saved") === "1");
 
   const { favoriteIds, toggleFavorite } = useFavorites();
   const { recentIds } = useRecentlyViewed();
 
-  const search = useSongSearch(searchQuery);
+  const deferredQuery = useDeferredValue(searchQuery);
+  const search = useSongSearch(deferredQuery);
   const viewMode = viewModeOverride ?? (isMobile ? "list" : "grid");
 
   useEffect(() => {
+    let frame: number;
     function onScroll() {
-      setScrollY(window.scrollY);
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        setShowScrollTop(window.scrollY > 300);
+      });
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
     };
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const params = new URLSearchParams();
+      if (searchQuery) params.set("q", searchQuery);
+      if (sort !== "az") params.set("sort", sort);
+      if (selectedYear !== null) params.set("year", String(selectedYear));
+      if (showSaved) params.set("saved", "1");
+      const search = params.toString();
+      const current = window.location.search.replace(/^\?/, "");
+      if (search !== current) {
+        window.history.replaceState(
+          null,
+          "",
+          search ? `/lyrics?${search}` : "/lyrics",
+        );
+      }
+    }, 300);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery, sort, selectedYear, showSaved]);
 
   const availableYears = useMemo(
     () =>
@@ -137,7 +177,7 @@ export function LyricsPageClient({ recommended, allSongs }: LyricsPageClientProp
 
   const display = useDisplayPagination(filteredSongs);
 
-  const showLetterGroups = !searchQuery && sort === "az";
+  const showLetterGroups = !deferredQuery && sort === "az";
 
   const activeLetters = useMemo(() => {
     const set = new Set<string>();
@@ -151,23 +191,35 @@ export function LyricsPageClient({ recommended, allSongs }: LyricsPageClientProp
 
   useEffect(() => {
     const element = loadingRef.current;
-    if (!element || !display.hasMore || searchQuery) return;
+    if (!element || !display.hasMore || deferredQuery) return;
     display.setupObserver(element);
-  }, [display, display.hasMore, searchQuery]);
+  }, [display, display.hasMore, deferredQuery]);
 
   const handleSearchChange = useCallback((query: string) => {
-    startTransition(() => {
-      setSearchQuery(query);
-    });
+    setSearchQuery(query);
   }, []);
 
   const handleRandomClick = useCallback(async () => {
-    const songId = await getRandomSongId();
-    if (songId) router.push(`/lyrics/${songId}`);
+    setRandomError(false);
+    try {
+      const songId = await getRandomSongId();
+      if (songId) router.push(`/lyrics/${songId}`);
+    } catch {
+      setRandomError(true);
+      setTimeout(() => {
+        setRandomError(false);
+      }, 3000);
+    }
   }, [router]);
 
   return (
     <div className="min-h-screen bg-background">
+      <h1 className="sr-only">Ado Song Lyrics</h1>
+      <div aria-live="polite" className="sr-only">
+        {deferredQuery
+          ? `${sortedSearchResults.length} result${sortedSearchResults.length === 1 ? "" : "s"} for ${deferredQuery}`
+          : undefined}
+      </div>
       <LyricsNavigation
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
@@ -176,7 +228,7 @@ export function LyricsPageClient({ recommended, allSongs }: LyricsPageClientProp
         onRandomClick={() => {
           void handleRandomClick();
         }}
-        resultCount={searchQuery ? sortedSearchResults.length : undefined}
+        resultCount={deferredQuery ? sortedSearchResults.length : undefined}
         sort={sort}
         onSortChange={setSort}
         totalCount={allSongs.length}
@@ -200,14 +252,14 @@ export function LyricsPageClient({ recommended, allSongs }: LyricsPageClientProp
           showLetterGroups ? "sm:pr-14 sm:pl-6" : "sm:px-6",
         )}
       >
-        <Activity mode={searchQuery ? "hidden" : "visible"}>
+        <Activity mode={deferredQuery ? "hidden" : "visible"}>
           <RecentlyViewed songs={recentSongs} />
 
           <RecommendedSongs latest={recommended.latest} random={recommended.random} />
 
           {display.visible.length === 0 ? (
             <div className="flex flex-col items-center py-20 text-muted-foreground">
-              <Music className="mb-4 h-10 w-10 opacity-20" />
+              <Music aria-hidden="true" className="mb-4 h-10 w-10 opacity-20" />
               <p className="text-sm">
                 {showSaved ? "No saved songs yet" : "No songs found"}
               </p>
@@ -233,16 +285,16 @@ export function LyricsPageClient({ recommended, allSongs }: LyricsPageClientProp
           )}
         </Activity>
 
-        <Activity mode={searchQuery ? "visible" : "hidden"}>
-          {search.loading || isPending ? (
+        <Activity mode={deferredQuery ? "visible" : "hidden"}>
+          {search.loading || deferredQuery !== searchQuery ? (
             <div className="flex flex-col items-center py-20 text-muted-foreground">
-              <Loader2 className="h-6 w-6 animate-spin" />
+              <Loader2 aria-hidden="true" className="h-6 w-6 animate-spin" />
               <p className="mt-3 text-sm">Searching...</p>
             </div>
           ) : sortedSearchResults.length === 0 ? (
             <div className="flex flex-col items-center py-20 text-muted-foreground">
-              <Search className="mb-4 h-10 w-10 opacity-20" />
-              <p className="text-sm">No results for &quot;{searchQuery}&quot;</p>
+              <Search aria-hidden="true" className="mb-4 h-10 w-10 opacity-20" />
+              <p className="text-sm">No results for &quot;{deferredQuery}&quot;</p>
               <button
                 onClick={() => {
                   handleSearchChange("");
@@ -264,12 +316,24 @@ export function LyricsPageClient({ recommended, allSongs }: LyricsPageClientProp
         </Activity>
       </main>
 
-      {scrollY > 300 && (
+      {randomError && (
+        <div
+          role="alert"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-lg bg-foreground/10 px-4 py-2 text-sm text-muted-foreground backdrop-blur-sm"
+        >
+          Couldn't load a random song. Try again.
+        </div>
+      )}
+
+      {showScrollTop && (
         <button
           onClick={() => {
+            const prefersReduced = window.matchMedia(
+              "(prefers-reduced-motion: reduce)",
+            ).matches;
             gsap.to(window, {
               scrollTo: { y: 0, autoKill: false },
-              duration: 0.6,
+              duration: prefersReduced ? 0 : 0.6,
               ease: "power3.out",
             });
           }}

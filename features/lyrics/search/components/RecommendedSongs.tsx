@@ -12,11 +12,9 @@ interface RecommendedSongsProps {
 }
 
 export function RecommendedSongs({ latest, random }: RecommendedSongsProps) {
-  const recommendedSongs = useMemo(() => {
+  const songs = useMemo(() => {
     const latestIds = new Set(latest.map((s) => s.id));
-    const filtered = random.filter((song) => !latestIds.has(song.id));
-    return [...latest, ...filtered];
+    return [...latest, ...random.filter((s) => !latestIds.has(s.id))];
   }, [latest, random]);
-
-  return <HorizontalSongScroller title="You Might Like" songs={recommendedSongs} />;
+  return <HorizontalSongScroller title="You Might Like" songs={songs} />;
 }

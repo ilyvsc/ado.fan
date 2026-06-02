@@ -39,6 +39,10 @@ export function LyricsSongDisplay({
       const container = containerRef.current;
       if (!container) return;
 
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
       const allItems = container.querySelectorAll<HTMLElement>("[data-song-id]");
       const allHeadings = container.querySelectorAll<HTMLElement>(
         "[data-letter-heading]",
@@ -60,6 +64,13 @@ export function LyricsSongDisplay({
         animatedLetters.current.add(letter);
         newHeadings.push(el);
       });
+
+      if (prefersReduced) {
+        if (newHeadings.length) gsap.set(newHeadings, { opacity: 1 });
+        if (newItems.length)
+          gsap.set(newItems, { opacity: 1, y: 0, clearProps: "all" });
+        return;
+      }
 
       if (newHeadings.length) {
         gsap.set(newHeadings, { opacity: 0 });
@@ -95,10 +106,10 @@ export function LyricsSongDisplay({
 
   const heading = (
     <div className="mb-4 flex items-center gap-2">
-      <h3 className="text-sm font-semibold tracking-widest text-ado-primary uppercase">
+      <h2 className="text-sm font-semibold tracking-widest text-ado-primary uppercase">
         All Songs
-      </h3>
-      <span className="h-1 w-1 rounded-full bg-muted-foreground" />
+      </h2>
+      <span aria-hidden="true" className="h-1 w-1 rounded-full bg-muted-foreground" />
       <span className="font-mono text-sm text-muted-foreground">{displayCount}</span>
     </div>
   );
@@ -121,21 +132,21 @@ export function LyricsSongDisplay({
       return (
         <div ref={containerRef}>
           {heading}
-          {Object.entries(groups).map(([letter, grouped], index) => (
-            <div key={letter} className={index > 0 ? "mt-2" : undefined}>
+          {Object.entries(groups).map(([letter, grouped], groupIndex) => (
+            <div key={letter} className={groupIndex > 0 ? "mt-2" : undefined}>
               <div
                 id={`letter-${letter}`}
                 data-letter-heading={letter}
-                style={{ opacity: 0 }}
                 className="mb-2 text-xs font-bold tracking-widest text-muted-foreground/30 uppercase"
               >
                 {letter}
               </div>
               <div className="flex flex-col divide-y divide-foreground/5">
-                {grouped.map((song) => (
+                {grouped.map((song, itemIndex) => (
                   <ListRow
                     key={song.id}
                     song={song}
+                    priority={groupIndex === 0 && itemIndex < 6}
                     isFavorite={favorites?.has(song.id) ?? false}
                     onToggleFavorite={onToggleFavorite}
                   />
@@ -150,21 +161,21 @@ export function LyricsSongDisplay({
     return (
       <div ref={containerRef}>
         {heading}
-        {Object.entries(groups).map(([letter, grouped], index) => (
-          <div key={letter} className={index > 0 ? "mt-6" : undefined}>
+        {Object.entries(groups).map(([letter, grouped], groupIndex) => (
+          <div key={letter} className={groupIndex > 0 ? "mt-6" : undefined}>
             <div
               id={`letter-${letter}`}
               data-letter-heading={letter}
-              style={{ opacity: 0 }}
               className="mb-3 text-xs font-bold tracking-widest text-muted-foreground/30 uppercase"
             >
               {letter}
             </div>
             <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-              {grouped.map((song) => (
+              {grouped.map((song, itemIndex) => (
                 <GridCard
                   key={song.id}
                   song={song}
+                  priority={groupIndex === 0 && itemIndex < 6}
                   isFavorite={favorites?.has(song.id) ?? false}
                   onToggleFavorite={onToggleFavorite}
                 />
@@ -181,10 +192,11 @@ export function LyricsSongDisplay({
       <div ref={containerRef}>
         {heading}
         <div className="flex flex-col divide-y divide-foreground/5">
-          {songs.map((song) => (
+          {songs.map((song, index) => (
             <ListRow
               key={song.id}
               song={song}
+              priority={index < 6}
               isFavorite={favorites?.has(song.id) ?? false}
               onToggleFavorite={onToggleFavorite}
             />
@@ -198,10 +210,11 @@ export function LyricsSongDisplay({
     <div ref={containerRef}>
       {heading}
       <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {songs.map((song) => (
+        {songs.map((song, index) => (
           <GridCard
             key={song.id}
             song={song}
+            priority={index < 6}
             isFavorite={favorites?.has(song.id) ?? false}
             onToggleFavorite={onToggleFavorite}
           />
@@ -215,10 +228,12 @@ function GridCard({
   song,
   isFavorite,
   onToggleFavorite,
+  priority = false,
 }: {
   song: SongListItem | SearchResult;
   isFavorite: boolean;
   onToggleFavorite?: (id: string) => void;
+  priority?: boolean;
 }) {
   const year = new Date(song.releaseDate).getFullYear();
 
@@ -236,15 +251,19 @@ function GridCard({
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
+            {...(priority ? { priority: true } : { loading: "lazy" })}
           />
         ) : (
           <div className="flex h-full items-center justify-center">
-            <Music className="h-10 w-10 text-muted-foreground/30" />
+            <Music
+              aria-hidden="true"
+              className="h-10 w-10 text-muted-foreground/30"
+            />
           </div>
         )}
         {onToggleFavorite && (
           <button
+            aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
             onClick={(e) => {
               e.preventDefault();
               onToggleFavorite(song.id);
@@ -255,6 +274,7 @@ function GridCard({
             )}
           >
             <Heart
+              aria-hidden="true"
               className={cn(
                 "h-4 w-4 transition-colors",
                 isFavorite ? "fill-ado-primary text-ado-primary" : "text-ado-primary",
@@ -283,10 +303,12 @@ function ListRow({
   song,
   isFavorite,
   onToggleFavorite,
+  priority = false,
 }: {
   song: SongListItem | SearchResult;
   isFavorite: boolean;
   onToggleFavorite?: (id: string) => void;
+  priority?: boolean;
 }) {
   return (
     <Link
@@ -302,11 +324,11 @@ function ListRow({
             fill
             sizes="44px"
             className="object-cover"
-            loading="lazy"
+            {...(priority ? { priority: true } : { loading: "lazy" })}
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-muted-foreground/10">
-            <Music className="h-5 w-5 text-muted-foreground" />
+            <Music aria-hidden="true" className="h-5 w-5 text-muted-foreground" />
           </div>
         )}
       </div>
@@ -325,12 +347,14 @@ function ListRow({
       <div className="flex shrink-0 items-center gap-3">
         {onToggleFavorite && (
           <button
+            aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
             onClick={(e) => {
               e.preventDefault();
               onToggleFavorite(song.id);
             }}
           >
             <Heart
+              aria-hidden="true"
               className={cn(
                 "h-4 w-4 transition-colors",
                 isFavorite

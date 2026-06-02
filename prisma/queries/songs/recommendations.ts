@@ -1,3 +1,5 @@
+import { cache } from "react";
+
 import { prisma } from "@/prisma/client";
 import { songListPrismaSelect } from "@/prisma/select";
 import { serializeSongListItem } from "@/prisma/serializer";
@@ -73,11 +75,11 @@ export async function getRandomSongs(count = 3): Promise<SongListItem[]> {
  *
  * @returns Promise resolving to object with latest and random song arrays
  */
-export async function getRecommendedSongs(): Promise<{
+export const getRecommendedSongs = cache(async function getRecommendedSongs(): Promise<{
   latest: SongListItem[];
   random: SongListItem[];
 }> {
   const [latest, random] = await Promise.all([getLatestSongs(1), getRandomSongs(5)]);
 
   return { latest, random };
-}
+});
