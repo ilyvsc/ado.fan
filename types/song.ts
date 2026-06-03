@@ -10,7 +10,7 @@ export interface Song {
   };
   length: string;
   releaseDate: string;
-  description: string;
+  description?: string;
   nicoId?: string | null;
   youtubeId?: string | null;
   coverArt: string;

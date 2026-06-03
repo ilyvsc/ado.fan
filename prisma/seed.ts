@@ -1,4 +1,4 @@
-import { globSync, readFileSync, readdirSync } from "fs";
+import { existsSync, globSync, readFileSync, readdirSync } from "fs";
 import { basename, dirname, join } from "path";
 
 import matter from "gray-matter";
@@ -27,7 +27,14 @@ function loadJsonFilesFromDir(path: string): unknown[] {
 
 function loadSongs(path: string): Song[] {
   const files = globSync(join(path, "songs/**/meta.json"));
-  const songs = files.map((file) => loadJsonFile(file)) as Song[];
+  const songs = files.map((file) => {
+    const song = loadJsonFile(file) as Song;
+    const descPath = join(dirname(file), "description.md");
+    if (existsSync(descPath)) {
+      song.description = readFileSync(descPath, "utf-8").trim();
+    }
+    return song;
+  });
 
   console.log(`Loaded ${songs.length} songs.`);
   return songs;
@@ -86,6 +93,13 @@ function loadLyrics(path: string): Lyrics[] {
   return lyrics;
 }
 
+const CDN_URL = (process.env.NEXT_CDN_URL ?? "").replace(/\/$/, "");
+
+function resolveCoverArt(path: string): string {
+  if (!CDN_URL || !path.startsWith("/")) return path;
+  return `${CDN_URL}${path}`;
+}
+
 function normalizeDescription(
   description: string | (string | string[])[] | null | undefined,
 ): string {
@@ -109,6 +123,7 @@ function normalizeCredits(credits: unknown): Credits | "" {
 export function normalizeSongs(songs: Song[]): SongSeedInput[] {
   return serializeSongSeed(songs).map((song) => ({
     ...song,
+    coverArt: resolveCoverArt(song.coverArt),
     description: normalizeDescription(song.description),
     credits: normalizeCredits(song.credits),
   }));
@@ -139,6 +154,7 @@ async function seedAlbums(albums: AlbumDefinition[], seededSongIds: Set<string>)
         ...data,
         type: data.type as AlbumType,
         releaseDate: new Date(data.releaseDate),
+        coverArt: resolveCoverArt(data.coverArt),
         credits: album.credits ? assertCredits(album.credits) : "",
         externalLinks: album.externalLinks ?? [],
       },
