@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { SongThemeProvider } from "@/providers/SongThemeProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 
+import { getGitHubFooterData } from "@/shared/lib/github";
 import { buildAlternates, SITE_KEYWORDS } from "@/shared/lib/metadata";
 import { linksCategories } from "@/shared/lib/socialLinks";
 
@@ -106,7 +107,7 @@ export default async function RootLayout({
   children: ReactNode;
   params: Promise<{ locale?: string }>;
 }) {
-  const { locale } = await params;
+  const [{ locale }, githubData] = await Promise.all([params, getGitHubFooterData()]);
 
   return (
     <html
@@ -136,7 +137,7 @@ export default async function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SongThemeProvider>{children}</SongThemeProvider>
         </ThemeProvider>
-        <Footer />
+        <Footer githubData={githubData} />
         <Analytics />
       </body>
     </html>
