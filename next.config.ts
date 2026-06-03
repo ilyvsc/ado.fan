@@ -5,6 +5,7 @@ if (!cdn) throw new Error("NEXT_PUBLIC_CDN_URL is not defined");
 const r2 = new URL(cdn);
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["10.0.0.*", "localhost"],
   images: {
     remotePatterns: [
       {
