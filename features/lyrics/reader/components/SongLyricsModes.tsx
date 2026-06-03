@@ -6,6 +6,7 @@ import {
   ChevronDown,
   Columns2,
   LayoutGrid,
+  Languages,
   Minus,
   Plus,
   Type,
@@ -41,8 +42,8 @@ function ControlPill({
   return (
     <div
       className={cn(
-        "flex items-center rounded-full border border-(--theme-color)/25 bg-background/80",
-        "p-1 backdrop-blur-sm transition-colors hover:border-(--theme-color)/40",
+        "flex items-center rounded-full border border-foreground/10 bg-background/80",
+        "p-1 backdrop-blur-sm transition-colors hover:border-foreground/20",
         className,
       )}
     >
@@ -68,10 +69,10 @@ function PillButton({
       title={title}
       aria-pressed={active}
       className={cn(
-        "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold tracking-wide transition-all duration-200",
+        "flex items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-semibold tracking-wide transition-all duration-200",
         active
-          ? "bg-(--theme-color) text-(--theme-contrast)"
-          : "text-muted-foreground hover:bg-(--theme-color)/10 hover:text-foreground",
+          ? "bg-(--theme-color)/80 text-(--theme-contrast)"
+          : "text-muted-foreground hover:bg-foreground/10 hover:text-foreground",
       )}
     >
       {children}
@@ -83,19 +84,22 @@ function LanguageSelect({
   value,
   onChange,
   languages,
+  label,
 }: {
   value: string;
   onChange: (code: string) => void;
   languages: LyricsLanguage[];
+  label: string;
 }) {
   return (
     <div className="relative">
       <select
         value={value}
+        aria-label={label}
         onChange={(e) => {
           onChange(e.target.value);
         }}
-        className="cursor-pointer appearance-none rounded-full bg-transparent py-1.5 pr-7 pl-3 text-xs font-semibold text-foreground transition-colors hover:bg-(--theme-color)/10"
+        className="cursor-pointer appearance-none rounded-full bg-transparent py-2 pr-7 pl-3 text-xs font-semibold text-foreground transition-colors hover:bg-(--theme-color)/10"
       >
         {languages.map((lang) => (
           <option key={lang.code} value={lang.code}>
@@ -103,7 +107,10 @@ function LanguageSelect({
           </option>
         ))}
       </select>
-      <div className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 opacity-40">
+      <div
+        className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 text-muted-foreground"
+        aria-hidden="true"
+      >
         <ChevronDown className="h-3 w-3" />
       </div>
     </div>
@@ -112,8 +119,8 @@ function LanguageSelect({
 
 function EmptyState() {
   return (
-    <div className="flex min-h-80 flex-col items-center justify-center gap-4 text-muted-foreground/40">
-      <LayoutGrid className="h-10 w-10" />
+    <div className="flex min-h-80 flex-col items-center justify-center gap-4 text-muted-foreground/70">
+      <LayoutGrid className="h-10 w-10" aria-hidden="true" />
       <p className="text-sm font-medium tracking-widest uppercase">No lyrics</p>
     </div>
   );
@@ -156,6 +163,17 @@ function TabsView({
   );
 }
 
+function LanguageChip({ label }: { label: string }) {
+  return (
+    <div className="mb-6 flex justify-center">
+      <span className="inline-flex items-center gap-2 rounded-full bg-(--theme-color) px-4 py-1.5 text-xs font-bold tracking-widest text-(--theme-contrast) uppercase shadow-sm ring-1 ring-(--theme-color)/40">
+        <Languages className="h-3.5 w-3.5" aria-hidden="true" />
+        {label}
+      </span>
+    </div>
+  );
+}
+
 function CompareView({
   leftLang,
   rightLang,
@@ -166,17 +184,11 @@ function CompareView({
   fontSize: number;
 }) {
   return (
-    <div className="grid grid-cols-2 gap-8 pb-20">
-      <div className="border-r border-(--theme-color)/25 px-6">
+    <div className="flex flex-col gap-10 pb-20 sm:grid sm:grid-cols-2 sm:gap-8">
+      <div className="border-b border-(--theme-color)/40 pb-8 sm:border-r sm:border-b-0 sm:pr-6 sm:pb-0">
         {leftLang?.content ? (
           <>
-            <div className="mb-8 flex items-center gap-2">
-              <span className="h-px flex-1 bg-(--theme-color)/20" />
-              <span className="text-xs font-semibold tracking-widest text-(--theme-color)/70 uppercase">
-                {leftLang.label}
-              </span>
-              <span className="h-px flex-1 bg-(--theme-color)/20" />
-            </div>
+            <LanguageChip label={leftLang.label} />
             <LyricsContent language={leftLang} fontSize={fontSize} />
           </>
         ) : (
@@ -184,16 +196,10 @@ function CompareView({
         )}
       </div>
 
-      <div className="px-6">
+      <div className="sm:px-2">
         {rightLang?.content ? (
           <>
-            <div className="mb-8 flex items-center gap-2">
-              <span className="h-px flex-1 bg-(--theme-color)/20" />
-              <span className="text-xs font-semibold tracking-widest text-(--theme-color)/70 uppercase">
-                {rightLang.label}
-              </span>
-              <span className="h-px flex-1 bg-(--theme-color)/20" />
-            </div>
+            <LanguageChip label={rightLang.label} />
             <LyricsContent language={rightLang} fontSize={fontSize} />
           </>
         ) : (
@@ -233,10 +239,10 @@ function LinedView({
         .map((pair, i) => ({ pair, i }))
         .filter(({ pair }) => pair.left || pair.right)
         .map(({ pair, i }) => (
-          <div key={`${leftCode}-${i}`} className="space-y-1">
+          <div key={`${leftCode}-${rightCode}-${i}`} className="space-y-1">
             {pair.left && (
               <div className="flex items-baseline gap-4">
-                <span className="w-7 shrink-0 text-right text-xs font-bold tracking-widest text-(--theme-color)/60 uppercase select-none">
+                <span className="w-6 shrink-0 text-right text-xs font-bold tracking-widest text-(--theme-color)/90 uppercase select-none sm:w-7">
                   {leftCode}
                 </span>
                 <p
@@ -249,7 +255,7 @@ function LinedView({
             )}
             {pair.right && (
               <div className="flex items-baseline gap-4">
-                <span className="w-7 shrink-0 text-right text-xs font-bold tracking-widest text-(--theme-color)/60 uppercase select-none">
+                <span className="w-6 shrink-0 text-right text-xs font-bold tracking-widest text-(--theme-color)/90 uppercase select-none sm:w-7">
                   {rightCode}
                 </span>
                 <p
@@ -271,7 +277,7 @@ function LyricsModes({
 }: {
   availableLanguages: LyricsLanguage[];
 }) {
-  const [fontSize, setFontSize] = useState(14);
+  const [fontSize, setFontSize] = useState(16);
   const { state, languages, setMode, setLeft, setRight, swapLanguages } =
     useLyricsUrlState({ availableLanguages });
 
@@ -281,36 +287,37 @@ function LyricsModes({
 
   const leftLang = languages.find((l) => l.code === state.left);
   const rightLang = languages.find((l) => l.code === state.right);
-  const activeLang = leftLang;
-
-  const ModeComponent = {
-    tabs: <TabsView activeLang={activeLang} fontSize={fontSize} />,
-    compare: (
-      <CompareView leftLang={leftLang} rightLang={rightLang} fontSize={fontSize} />
-    ),
-    lined: (
-      <LinedView leftLang={leftLang} rightLang={rightLang} fontSize={fontSize} />
-    ),
-  }[viewMode];
 
   return (
-    <div className="relative">
-      <div className="mb-10 flex flex-wrap items-center justify-between gap-3 border-b border-(--theme-color)/25 pb-6">
-        <h3 className="text-3xl font-bold tracking-tight text-foreground">Lyrics</h3>
+    <section aria-labelledby="lyrics-heading" className="relative">
+      <div className="mb-10 flex flex-wrap items-center justify-between gap-3 border-b border-foreground/20 pb-6">
+        <h3
+          id="lyrics-heading"
+          className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl"
+        >
+          Lyrics
+        </h3>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div
+          className="flex flex-wrap items-center gap-2"
+          role="toolbar"
+          aria-label="Lyrics view controls"
+        >
           {languages.length > 1 && (
             <ControlPill>
               {MODE_CONFIG.map(({ mode, label, icon: Icon }) => (
                 <PillButton
                   key={mode}
                   active={viewMode === mode}
+                  title={label}
                   onClick={() => {
                     setMode(mode);
                   }}
                 >
-                  <Icon className="h-4 w-4" />
-                  {viewMode === mode && <span>{label}</span>}
+                  <Icon className="h-4 w-4" aria-hidden="true" />
+                  <span className={viewMode === mode ? undefined : "sr-only"}>
+                    {label}
+                  </span>
                 </PillButton>
               ))}
             </ControlPill>
@@ -319,10 +326,10 @@ function LyricsModes({
           <ControlPill>
             <button
               onClick={() => {
-                setFontSize((s) => Math.max(10, s - 2));
+                setFontSize((s) => Math.max(12, s - 2));
               }}
               aria-label="Decrease font size"
-              className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
+              className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground focus-visible:ring-2 focus-visible:ring-(--theme-color)/50 focus-visible:outline-none"
             >
               <Minus className="h-4 w-4" />
             </button>
@@ -339,7 +346,7 @@ function LyricsModes({
                 setFontSize((s) => Math.min(32, s + 2));
               }}
               aria-label="Increase font size"
-              className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
+              className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground focus-visible:ring-2 focus-visible:ring-(--theme-color)/50 focus-visible:outline-none"
             >
               <Plus className="h-4 w-4" />
             </button>
@@ -351,11 +358,12 @@ function LyricsModes({
                 value={state.left}
                 onChange={setLeft}
                 languages={languages}
+                label="Left language"
               />
               <button
                 onClick={swapLanguages}
                 aria-label="Swap languages"
-                className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground"
+                className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground focus-visible:ring-2 focus-visible:ring-(--theme-color)/50 focus-visible:outline-none"
               >
                 <ArrowRightLeft className="h-3.5 w-3.5 transition-transform duration-200 active:rotate-180" />
               </button>
@@ -363,6 +371,7 @@ function LyricsModes({
                 value={state.right}
                 onChange={setRight}
                 languages={languages}
+                label="Right language"
               />
             </ControlPill>
           )}
@@ -386,9 +395,21 @@ function LyricsModes({
       </div>
 
       <div key={viewMode} className="transition-opacity duration-300">
-        {ModeComponent}
+        {viewMode === "tabs" && (
+          <TabsView activeLang={leftLang} fontSize={fontSize} />
+        )}
+        {viewMode === "compare" && (
+          <CompareView
+            leftLang={leftLang}
+            rightLang={rightLang}
+            fontSize={fontSize}
+          />
+        )}
+        {viewMode === "lined" && (
+          <LinedView leftLang={leftLang} rightLang={rightLang} fontSize={fontSize} />
+        )}
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -400,7 +421,7 @@ export function SongLyricsModes({
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-80 items-center justify-center text-muted-foreground/40">
+        <div className="flex min-h-80 items-center justify-center text-muted-foreground/70">
           Loading lyrics...
         </div>
       }

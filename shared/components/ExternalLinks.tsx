@@ -5,7 +5,7 @@ import { SiNiconico, SiYoutube } from "@icons-pack/react-simple-icons";
 import gsap from "gsap";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useId, useMemo, useRef, useState } from "react";
 
 import { NicoNicoPlayer, YouTubePlayer } from "@/shared/components/VideoPlayer";
 
@@ -21,6 +21,7 @@ function ExternalLinkItem({
   onToggle: () => void;
 }) {
   const contentRef = useRef<HTMLDivElement>(null);
+  const panelId = useId();
   const [hasOpened, setHasOpened] = useState(false);
 
   const isYouTube = link.type === "youtubeVideo";
@@ -63,54 +64,59 @@ function ExternalLinkItem({
 
   return (
     <div
-      className={`border-b border-(--theme-contrast)/10 transition-colors duration-300 last:border-b-0 ${
-        isOpen ? "bg-(--theme-contrast)/5" : "hover:bg-(--theme-contrast)/10"
+      className={`border-b border-(--theme-contrast)/15 transition-colors duration-300 last:border-b-0 ${
+        isOpen ? "bg-(--theme-contrast)/8" : "hover:bg-(--theme-contrast)/10"
       }`}
     >
       <button
         type="button"
         onClick={handleToggle}
-        className="group w-full px-2 py-3 text-left transition-all duration-300 sm:py-4"
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        className="group w-full px-2 py-3.5 text-left transition-all duration-300 focus-visible:bg-(--theme-contrast)/10 focus-visible:outline-2 focus-visible:outline-(--theme-contrast)/50 sm:py-4"
       >
         <div className="flex items-center justify-between gap-3 sm:gap-4">
           <div className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3">
             <div className="flex h-5 w-5 shrink-0 items-center justify-center">
               {isYouTube && (
                 <SiYoutube
+                  aria-hidden="true"
                   className={`h-4 w-4 transition-all duration-300 ${
                     isOpen
-                      ? "text-(--theme-contrast)/80"
-                      : "text-(--theme-contrast)/50 group-hover:text-(--theme-contrast)/70"
+                      ? "text-(--theme-contrast)/90"
+                      : "text-(--theme-contrast)/70 group-hover:text-(--theme-contrast)/90"
                   }`}
                 />
               )}
 
               {isNico && (
                 <SiNiconico
+                  aria-hidden="true"
                   className={`h-4 w-4 transition-all duration-300 ${
                     isOpen
-                      ? "text-(--theme-contrast)/80"
-                      : "text-(--theme-contrast)/50 group-hover:text-(--theme-contrast)/70"
+                      ? "text-(--theme-contrast)/90"
+                      : "text-(--theme-contrast)/70 group-hover:text-(--theme-contrast)/90"
                   }`}
                 />
               )}
 
               {!isVideo && (
                 <ArrowUpRight
+                  aria-hidden="true"
                   className={`h-5 w-5 transition-all duration-300 ${
                     isOpen
-                      ? "text-(--theme-contrast)/60"
-                      : "text-(--theme-contrast)/30 group-hover:text-(--theme-contrast)/50"
+                      ? "text-(--theme-contrast)/80"
+                      : "text-(--theme-contrast)/65 group-hover:text-(--theme-contrast)/80"
                   }`}
                 />
               )}
             </div>
 
             <span
-              className={`truncate text-xs font-medium transition-all duration-300 sm:text-sm ${
+              className={`truncate text-sm font-medium transition-all duration-300 ${
                 isOpen
                   ? "text-(--theme-contrast)"
-                  : "text-(--theme-contrast)/80 group-hover:text-(--theme-contrast)"
+                  : "text-(--theme-contrast)/90 group-hover:text-(--theme-contrast)"
               }`}
             >
               {title}
@@ -118,19 +124,26 @@ function ExternalLinkItem({
           </div>
 
           <ChevronDown
+            aria-hidden="true"
             className={`h-4 w-4 shrink-0 transition-all duration-300 ${
               isOpen
-                ? "rotate-180 text-(--theme-contrast)/50"
-                : "text-(--theme-contrast)/30 group-hover:text-(--theme-contrast)/40"
+                ? "rotate-180 text-(--theme-contrast)/75"
+                : "text-(--theme-contrast)/65 group-hover:text-(--theme-contrast)/80"
             }`}
           />
         </div>
       </button>
 
-      <div ref={contentRef} className="h-0 overflow-hidden opacity-0">
+      <div
+        id={panelId}
+        role="region"
+        aria-label={title}
+        ref={contentRef}
+        className="h-0 overflow-hidden opacity-0"
+      >
         <div className="space-y-3 px-3 pb-3 pl-8 sm:px-4 sm:pl-9">
           {isVideo && hasOpened && (
-            <div className="aspect-video overflow-hidden border border-(--theme-contrast)/5 bg-(--theme-contrast)/10 transition-colors duration-300 hover:border-(--theme-contrast)/10">
+            <div className="aspect-video overflow-hidden border border-(--theme-contrast)/10 bg-(--theme-contrast)/10 transition-colors duration-300 hover:border-(--theme-contrast)/20">
               {isYouTube ? (
                 <YouTubePlayer
                   youtubeId={link.value}
@@ -153,7 +166,7 @@ function ExternalLinkItem({
               href={link.value}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block text-xs text-(--theme-contrast)/60 underline underline-offset-2 transition-all duration-300 hover:text-(--theme-contrast)/80 hover:underline-offset-3"
+              className="inline-block text-xs text-(--theme-contrast)/80 underline underline-offset-2 transition-all duration-300 hover:text-(--theme-contrast) hover:underline-offset-3 focus-visible:text-(--theme-contrast) focus-visible:outline-none"
             >
               {link.value}
             </a>
@@ -174,12 +187,18 @@ export function ExternalLinks({ links }: { links: ExternalLinks }) {
   if (!links.length) return null;
 
   return (
-    <div className="mb-8 w-full space-y-2 py-4">
-      <h3 className="font-serif text-lg font-bold tracking-wide text-(--theme-contrast)">
+    <section
+      aria-labelledby="related-links-heading"
+      className="mb-8 w-full space-y-2 py-4"
+    >
+      <h3
+        id="related-links-heading"
+        className="font-serif text-base font-bold tracking-wide text-(--theme-contrast) sm:text-lg"
+      >
         Related Links
       </h3>
 
-      <div className="w-full divide-y divide-(--theme-contrast)/10 border-y border-(--theme-contrast)/10">
+      <div className="w-full divide-y divide-(--theme-contrast)/15 border-y border-(--theme-contrast)/15">
         {links.map((link, i) => (
           <ExternalLinkItem
             key={`${link.type}-${link.value}`}
@@ -191,6 +210,6 @@ export function ExternalLinks({ links }: { links: ExternalLinks }) {
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 }

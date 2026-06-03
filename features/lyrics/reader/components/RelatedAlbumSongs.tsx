@@ -23,7 +23,7 @@ export function RelatedAlbumSongs({
   }));
 
   return (
-    <div className="space-y-4 py-8">
+    <section aria-labelledby="related-album-heading" className="space-y-4 pt-4 pb-8">
       <div className="flex items-start gap-4">
         <div className="relative h-32 w-32 overflow-hidden sm:h-40 sm:w-40">
           <Image
@@ -35,7 +35,10 @@ export function RelatedAlbumSongs({
           />
         </div>
         <div className="min-w-0 flex-1">
-          <h2 className="text-xl font-bold text-(--theme-contrast) sm:text-2xl">
+          <h2
+            id="related-album-heading"
+            className="text-xl font-bold text-(--theme-contrast) sm:text-2xl"
+          >
             {mainAlbum.title.english}
           </h2>
           <h3 className="text-lg text-(--theme-contrast)/80 sm:text-xl">
@@ -53,11 +56,8 @@ export function RelatedAlbumSongs({
             <Link
               key={song.id}
               href={`/lyrics/${song.id}`}
-              className={`group mb-0.5 flex items-center gap-2 rounded px-2 py-1.5 text-xs text-balance transition-all sm:text-sm ${
-                isCurrentSong
-                  ? "cursor-default border-l-2 border-(--theme-contrast) bg-(--theme-contrast)/10"
-                  : "hover:bg-(--theme-contrast)/10"
-              }`}
+              aria-current={isCurrentSong ? "page" : undefined}
+              className={`group mb-1 flex items-center gap-2 rounded p-1 text-xs transition-all hover:bg-(--theme-contrast)/10 sm:text-sm md:px-2 lg:text-base`}
               onClick={(e) => {
                 if (isCurrentSong) e.preventDefault();
               }}
@@ -74,7 +74,7 @@ export function RelatedAlbumSongs({
               <span
                 className={
                   isCurrentSong
-                    ? "font-bold text-(--theme-contrast)"
+                    ? "font-semibold text-(--theme-contrast)"
                     : "text-(--theme-contrast)/80 group-hover:text-(--theme-contrast)"
                 }
               >
@@ -122,6 +122,6 @@ export function RelatedAlbumSongs({
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 }

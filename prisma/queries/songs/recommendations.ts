@@ -75,11 +75,16 @@ export async function getRandomSongs(count = 3): Promise<SongListItem[]> {
  *
  * @returns Promise resolving to object with latest and random song arrays
  */
-export const getRecommendedSongs = cache(async function getRecommendedSongs(): Promise<{
-  latest: SongListItem[];
-  random: SongListItem[];
-}> {
-  const [latest, random] = await Promise.all([getLatestSongs(1), getRandomSongs(5)]);
+export const getRecommendedSongs = cache(
+  async function getRecommendedSongs(): Promise<{
+    latest: SongListItem[];
+    random: SongListItem[];
+  }> {
+    const [latest, random] = await Promise.all([
+      getLatestSongs(1),
+      getRandomSongs(5),
+    ]);
 
-  return { latest, random };
-});
+    return { latest, random };
+  },
+);

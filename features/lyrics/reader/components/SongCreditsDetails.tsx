@@ -38,24 +38,27 @@ export function SongCreditsDetails({ song }: { song: Song }) {
   if (!hasDescription && !hasCredits) return null;
 
   return (
-    <section ref={sectionRef} className="relative my-5 w-full max-w-4xl p-5">
+    <section
+      ref={sectionRef}
+      className="relative mx-auto my-5 w-full max-w-5xl px-2 py-5"
+    >
       {hasDescription && (
         <div className="relative my-6">
           <div className="mb-6 flex items-center gap-4">
-            <div className="h-px flex-1 bg-linear-to-r from-transparent to-(--theme-contrast)/15" />
+            <div className="h-px flex-1 bg-linear-to-r from-transparent to-(--theme-contrast)/20" />
             <div className="flex flex-col items-center">
-              <BookOpen className="mb-2 size-4 text-(--theme-contrast)/50" />
-              <h3 className="text-xs font-medium tracking-wide text-(--theme-contrast)/70 uppercase">
+              <BookOpen className="mb-2 size-4 text-(--theme-contrast)/70" />
+              <h3 className="text-xs font-medium tracking-wide text-(--theme-contrast)/85 uppercase">
                 About this Song
               </h3>
-              <p className="mt-1 text-xs text-(--theme-contrast)/50">
+              <p className="mt-1 text-xs text-(--theme-contrast)/65">
                 Background & Context
               </p>
             </div>
-            <div className="h-px flex-1 bg-linear-to-l from-transparent to-(--theme-contrast)/15" />
+            <div className="h-px flex-1 bg-linear-to-l from-transparent to-(--theme-contrast)/20" />
           </div>
 
-          <p className="text-sm leading-relaxed whitespace-pre-wrap text-(--theme-contrast)/70 sm:text-base sm:leading-loose">
+          <p className="mx-auto max-w-4xl text-justify text-sm leading-relaxed whitespace-pre-wrap text-(--theme-contrast)/85 sm:text-base sm:leading-loose">
             {song.description}
           </p>
         </div>
@@ -64,33 +67,33 @@ export function SongCreditsDetails({ song }: { song: Song }) {
       {hasCredits && (
         <div className="relative mt-4">
           <div className="mb-6 flex items-center gap-4">
-            <div className="h-px flex-1 bg-linear-to-r from-transparent to-(--theme-contrast)/15" />
+            <div className="h-px flex-1 bg-linear-to-r from-transparent to-(--theme-contrast)/20" />
             <div className="flex flex-col items-center">
-              <Sparkle className="mb-2 size-4 text-(--theme-contrast)/50" />
-              <h3 className="text-xs font-medium tracking-wide text-(--theme-contrast)/70 uppercase">
+              <Sparkle className="mb-2 size-4 text-(--theme-contrast)/70" />
+              <h3 className="text-xs font-medium tracking-wide text-(--theme-contrast)/85 uppercase">
                 Credits
               </h3>
-              <p className="mt-1 text-xs text-(--theme-contrast)/50">
+              <p className="mt-1 text-xs text-(--theme-contrast)/65">
                 Artists & Contributors
               </p>
             </div>
-            <div className="h-px flex-1 bg-linear-to-l from-transparent to-(--theme-contrast)/15" />
+            <div className="h-px flex-1 bg-linear-to-l from-transparent to-(--theme-contrast)/20" />
           </div>
 
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5">
             {song.credits?.credits.map((credit) => (
               <div key={credit.role} className="group">
-                <span className="mb-1 block text-xs font-semibold text-(--theme-contrast)/50 capitalize">
+                <span className="mb-1 block text-xs font-semibold text-(--theme-contrast)/70 capitalize md:text-sm">
                   {credit.role}
                 </span>
                 <div className="space-y-px">
                   {credit.entities.map((entity) => (
                     <div key={entity.name} className="flex items-baseline gap-2">
-                      <span className="text-sm text-(--theme-contrast)/85">
+                      <span className="text-sm text-(--theme-contrast)">
                         {entity.name}
                       </span>
                       {entity.romanizedName && (
-                        <span className="text-xs text-(--theme-contrast)/50">
+                        <span className="text-xs text-(--theme-contrast)/80">
                           {entity.romanizedName}
                         </span>
                       )}
@@ -103,7 +106,7 @@ export function SongCreditsDetails({ song }: { song: Song }) {
         </div>
       )}
 
-      <div className="mt-8 h-px w-full bg-linear-to-r from-transparent via-(--theme-contrast)/15 to-transparent" />
+      <div className="mt-8 h-px w-full bg-linear-to-r from-transparent via-(--theme-contrast)/20 to-transparent" />
     </section>
   );
 }

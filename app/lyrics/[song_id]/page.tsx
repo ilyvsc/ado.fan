@@ -7,7 +7,7 @@ import { SongLyricsHeader } from "@/features/lyrics/reader/components/SongLyrics
 import { SongLyricsModes } from "@/features/lyrics/reader/components/SongLyricsModes";
 import { TrackRecentlyViewed } from "@/features/lyrics/reader/components/TrackRecentlyViewed";
 import { serializeLyricsToLanguages } from "@/features/lyrics/utils/serializeLyrics";
-import { getContrastColor } from "@/lib/color";
+import { getContrastColor, getThemeSurface } from "@/lib/color";
 import { buildAlternates, buildUrl, durationToIso8601 } from "@/lib/metadata";
 import { prisma } from "@/prisma/client";
 import { getAlbumsBySongId } from "@/prisma/queries/album";
@@ -121,6 +121,9 @@ export default async function LyricsSongPage({
         style={
           {
             "--theme-color": song.themeColor ?? "var(--color-background)",
+            "--theme-surface": song.themeColor
+              ? getThemeSurface(song.themeColor)
+              : "var(--color-background)",
             "--theme-contrast": song.themeColor
               ? getContrastColor(song.themeColor)
               : "var(--color-foreground)",
@@ -130,18 +133,16 @@ export default async function LyricsSongPage({
         <TrackRecentlyViewed songId={song.id} />
         <SongLyricsHeader song={song} albums={albums} />
 
-        <div className="container mx-auto px-2 py-8 sm:px-4">
+        <div className="container mx-auto px-2 py-8">
           <div className="mx-auto mb-8 max-w-5xl">
             <SongLyricsModes availableLanguages={availableLanguages} />
           </div>
         </div>
 
-        <div className="relative overflow-hidden bg-(--theme-color)">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="flex justify-center">
-              <SongCreditsDetails song={song} />
-            </div>
-            <div className="grid lg:grid-cols-2 lg:items-start lg:gap-6">
+        <div className="relative overflow-hidden bg-(--theme-surface)">
+          <div className="container mx-auto px-4">
+            <SongCreditsDetails song={song} />
+            <div className="mx-auto grid max-w-6xl lg:grid-cols-2 lg:items-start">
               <RelatedAlbumSongs albums={albums} currentSongId={song.id} />
               <ExternalLinks links={song.externalLinks ?? []} />
             </div>
