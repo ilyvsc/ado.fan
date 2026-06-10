@@ -93,11 +93,12 @@ function loadLyrics(path: string): Lyrics[] {
   return lyrics;
 }
 
-const CDN_URL = (process.env.NEXT_CDN_URL ?? "").replace(/\/$/, "");
+const CDN_URL = (process.env.NEXT_PUBLIC_CDN_URL ?? "").replace(/\/$/, "");
 
 function resolveCoverArt(path: string): string {
-  if (!CDN_URL || !path.startsWith("/")) return path;
-  return `${CDN_URL}${path}`;
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  if (!CDN_URL) return normalizedPath;
+  return `${CDN_URL}${normalizedPath}.webp`;
 }
 
 function normalizeDescription(

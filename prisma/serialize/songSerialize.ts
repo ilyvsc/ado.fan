@@ -52,7 +52,7 @@ export function serializeSongSeed(songs: Song[]): SongSeedInput[] {
     titleJapanese: song.title.japanese,
     length: song.length,
     releaseDate: new Date(song.releaseDate),
-    description: song.description,
+    description: song.description ?? "",
     nicoId: song.nicoId ?? null,
     youtubeId: song.youtubeId ?? null,
     coverArt: song.coverArt,

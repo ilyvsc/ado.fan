@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import angryAdo from "@/public/images/ado-angry.webp";
+import { getAssetUrl } from "@/components/ui/image";
 
 export default function NotFound() {
   const router = useRouter();
@@ -24,7 +24,7 @@ export default function NotFound() {
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
                 <Image
-                  src={angryAdo}
+                  src={getAssetUrl("ado-angry")}
                   alt="404-chan - scared Ado, anime girl character"
                   width={250}
                   height={250}

@@ -7,8 +7,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { createContext, useContext, useRef, useState } from "react";
 
-import adoAvatar from "@/public/images/ado-avatar.jpg";
+import { getAssetUrl } from "@/components/ui/image";
 import { cn } from "@/shared/lib/utils";
+
+const adoAvatar = getAssetUrl("avatar/ado-chando-avatar");
 
 gsap.registerPlugin(ScrollTrigger);
 

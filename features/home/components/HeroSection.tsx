@@ -9,9 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 
+import { getAssetUrl } from "@/components/ui/image";
 import { linksCategories } from "@/lib/socialLinks";
-
-import VivariumInterview from "@/public/images/vivarium_interview.png";
 
 const socialLinks = linksCategories["social-media"] ?? [];
 
@@ -88,7 +87,7 @@ export function HeroSection() {
     >
       <div className="hero-bg pointer-events-none absolute inset-0 z-0">
         <Image
-          src={VivariumInterview}
+          src={getAssetUrl("others/vivarium/ado-vivarium-interview-panoramic")}
           alt="Ado in Vivarium - first live action music video"
           fill
           sizes="100vw"
