@@ -13,10 +13,8 @@ const nextConfig: NextConfig = {
         hostname: r2.hostname,
       },
     ],
-    formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 14,
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-    unoptimized: process.env.NODE_ENV === "development",
+    unoptimized: true,
   },
 };
 
