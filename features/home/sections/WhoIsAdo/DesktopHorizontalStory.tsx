@@ -26,7 +26,7 @@ interface StoryPanelData {
 const panels: readonly StoryPanelData[] = [
   {
     title: "Voice of the Underground",
-    pull: "An ecosystem of hundreds of singers — and only one cut through.",
+    pull: "An ecosystem of hundreds of singers  and only one cut through.",
     paragraphs: [
       "She emerged from Japan's utaite scene, a community of singers known for giving their own voice to songs originally created within VOCALOID culture. By consistently covering works from popular producers, she built recognition through vocal performance alone.",
       "Each upload sharpened her craft and grew a devoted following. Not with technical perfection, but with an emotional intensity that felt visceral and unmistakable.",
@@ -37,7 +37,7 @@ const panels: readonly StoryPanelData[] = [
     title: "Usseewa",
     pull: "100 million views. One song. A generation answered back.",
     paragraphs: [
-      "In October 2020, Ado released her debut original song Usseewa, written by composer syudou. A raw, confrontational anthem that channeled the frustrations of a generation, it spread like wildfire — amassing over 100 million views within months.",
+      "In October 2020, Ado released her debut original song Usseewa, written by composer syudou. A raw, confrontational anthem that channeled the frustrations of a generation, it spread like wildfire  amassing over 100 million views within months.",
       "The song dominated charts, became a cultural phenomenon, and pushed Ado into the Japanese mainstream almost overnight. At just 17, she had become one of the most talked-about voices in the country.",
     ],
     primary: adoBreakthrough,
@@ -46,7 +46,7 @@ const panels: readonly StoryPanelData[] = [
     title: "The World Listened",
     pull: "From a faceless avatar in Tokyo to millions in cinemas worldwide.",
     paragraphs: [
-      "Her collaborations with Japan's most respected composers continued — Odo, Gira Gira, Yoru no Pierrot — each showcasing a different facet of her vocal ability.",
+      "Her collaborations with Japan's most respected composers continued  Odo, Gira Gira, Yoru no Pierrot  each showcasing a different facet of her vocal ability.",
       "These projects led to her debut album Kyōgen and then her biggest opportunity: the singing voice of Uta in One Piece Film: Red. For millions of new listeners worldwide, this was their first encounter with her voice.",
     ],
     primary: adoReflection,
