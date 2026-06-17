@@ -2,10 +2,11 @@
 
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { useRef } from "react";
 
-import { RosesCrown } from "@/shared/components/icons/RosesCrown";
+gsap.registerPlugin(ScrollTrigger);
 
 export function TimelineHeader() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -16,45 +17,30 @@ export function TimelineHeader() {
       if (!section) return;
 
       const q = gsap.utils.selector(section);
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top 80%",
           once: true,
         },
-        defaults: { ease: "power2.out" },
+        defaults: { ease: "power3.out" },
       });
 
-      tl.from(q("[data-header-line]"), {
-        scaleY: 0,
-        opacity: 0,
-        transformOrigin: "top",
-        duration: 1.4,
-      })
-        .from(
-          q("[data-header-title]"),
-          { opacity: 0, y: 80, duration: 1.2, ease: "power3.out" },
-          "-=0.8",
-        )
-        .from(
-          q("[data-header-fade]"),
-          { opacity: 0, y: 40, duration: 1, stagger: 0.2 },
-          "-=0.5",
-        )
-        .from(q("[data-header-indicator]"), { opacity: 0, duration: 0.6 }, "-=0.4");
-      const transitionEl = q("[data-header-transition]");
-      if (transitionEl.length) {
-        gsap.to(transitionEl, {
-          scaleX: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: transitionEl,
-            start: "top 80%",
-            end: "bottom 20%",
-            scrub: 1,
-          },
-        });
-      }
+      tl.fromTo(
+        q("[data-header-title]"),
+        { clipPath: "inset(0 0 100% 0)", y: 60 },
+        {
+          clipPath: "inset(0 0 0% 0)",
+          y: 0,
+          duration: 1.1,
+          ease: "power4.out",
+        },
+      ).from(
+        q("[data-header-fade]"),
+        { autoAlpha: 0, y: 28, duration: 0.8, stagger: 0.12 },
+        "-=0.5",
+      );
     },
     { scope: sectionRef },
   );
@@ -62,113 +48,50 @@ export function TimelineHeader() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-screen w-full flex-col bg-ado-secondary px-4 pt-20 pb-44 md:px-8 md:pt-28"
+      className="relative w-full overflow-hidden bg-ado-secondary px-6 pt-20 pb-12 md:px-12 md:pt-28 md:pb-16"
     >
-      <div className="mx-auto w-full max-w-6xl flex-1">
-        <div className="flex items-start gap-6 md:gap-12">
-          <div
-            data-header-line
-            className="mt-2 h-56 w-0.5 shrink-0 bg-ado-secondary-foreground"
-          />
-
-          <div className="flex flex-col gap-4 md:gap-6">
+      <div className="mx-auto w-full max-w-7xl">
+        <div className="grid items-end gap-10 md:grid-cols-12">
+          <div className="space-y-6 md:col-span-7">
             <h1
               data-header-title
-              className="font-serif text-5xl leading-6 font-black tracking-wide text-ado-secondary-foreground uppercase md:text-6xl"
+              className="font-serif text-7xl leading-none font-black tracking-tight text-ado-secondary-foreground uppercase md:text-9xl"
             >
               Timeline
             </h1>
-
-            <div
+            <p
               data-header-fade
-              className="max-w-3xl space-y-2 text-ado-secondary-foreground/80"
+              className="max-w-xl font-serif text-2xl leading-snug text-ado-secondary-foreground/90 md:text-3xl"
             >
-              <p className="font-serif text-2xl tracking-wide md:text-3xl">
-                Rooted in Vocaloid and Utaite culture
-              </p>
-              <p className="max-w-2xl text-sm md:text-lg">
-                From singing alone in a closet to finding her place on stages around
-                the world, each song carries something worth holding onto.
-              </p>
-            </div>
-
-            <div
+              Rooted in Vocaloid and Utaite culture.
+            </p>
+            <p
               data-header-fade
-              className="mt-4 flex flex-col gap-8 md:mt-8 md:flex-row"
+              className="max-w-xl text-base leading-7 text-ado-secondary-foreground/60"
             >
-              <div className="flex gap-8 md:gap-12">
-                <blockquote className="max-w-xs space-y-3">
-                  <p className="font-serif text-base leading-snug tracking-wide text-ado-secondary-foreground/90 md:text-xl">
-                    "So, if you could remember things today, even just a little bit,
-                    and take it with you as you go back, I would be really happy. If
-                    that happens, I think my younger self, the one who couldn't do
-                    anything, would be happy in this audience, so please, it would
-                    make me very happy if you could remember this."
-                  </p>
-                  <cite className="block text-xs tracking-wide text-ado-secondary-foreground/80 not-italic">
-                    - Ado SPECIAL LIVE 2024「心臓」
-                  </cite>
-                </blockquote>
-                <div className="hidden w-px bg-ado-secondary-foreground/10 md:block" />
-              </div>
-
-              <div className="grid flex-1 grid-cols-2 gap-x-2 gap-y-4">
-                <div className="space-y-1">
-                  <div className="font-serif text-5xl leading-none font-black text-ado-secondary-foreground md:text-6xl">
-                    100+
-                  </div>
-                  <p className="text-xs text-ado-secondary-foreground/80 md:text-sm">
-                    Original songs & covers
-                  </p>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="font-serif text-5xl leading-none font-black text-ado-secondary-foreground md:text-6xl">
-                    3B+
-                  </div>
-                  <p className="text-xs text-ado-secondary-foreground/80 md:text-sm">
-                    Total streams worldwide
-                  </p>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="font-serif text-5xl leading-none font-black text-ado-secondary-foreground md:text-6xl">
-                    30+
-                  </div>
-                  <p className="text-xs text-ado-secondary-foreground/80 md:text-sm">
-                    Producer collaborations
-                  </p>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="font-serif text-5xl leading-none font-black text-ado-secondary-foreground md:text-6xl">
-                    #1
-                  </div>
-                  <p className="text-xs text-ado-secondary-foreground/80 md:text-sm">
-                    Most-streamed Japanese artist worldwide
-                  </p>
-                </div>
-              </div>
-            </div>
+              From singing alone in a closet to finding her place on stages around the
+              world, each song carries something worth holding onto.
+            </p>
           </div>
+
+          <figure
+            data-header-fade
+            className="border-l-2 border-ado-secondary-foreground/40 pl-6 md:col-span-5"
+          >
+            <blockquote>
+              <p className="font-serif text-lg leading-relaxed text-ado-secondary-foreground/80 italic md:text-xl">
+                "So, if you could remember things today, even just a little bit, and
+                take it with you as you go back, I would be really happy. If that
+                happens, I think my younger self, the one who couldn't do anything,
+                would be happy in this audience."
+              </p>
+            </blockquote>
+            <figcaption className="mt-4 font-serif text-sm text-ado-secondary-foreground/50">
+              Ado - SPECIAL LIVE 2024「心臓」
+            </figcaption>
+          </figure>
         </div>
       </div>
-
-      <div
-        data-header-indicator
-        className="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 md:bottom-20"
-      >
-        <RosesCrown className="h-8 w-auto text-ado-secondary-foreground/60 md:h-10" />
-        <span className="text-xs tracking-widest text-ado-secondary-foreground/80 uppercase">
-          Scroll to explore
-        </span>
-        <div className="h-12 w-px bg-linear-to-b from-ado-secondary-foreground/40 to-transparent" />
-      </div>
-
-      <div
-        data-header-transition
-        className="absolute bottom-0 left-0 hidden h-1 w-full origin-left scale-x-0 bg-ado-secondary-foreground md:block"
-      />
     </section>
   );
 }

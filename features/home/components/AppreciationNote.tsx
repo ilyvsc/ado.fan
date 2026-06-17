@@ -4,67 +4,71 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import Image from "next/image";
 import { useRef } from "react";
 
-import rosesCrownSVG from "@/public/images/roses-crown.svg";
+import { getAssetUrl, Image } from "@/components/ui/image";
 import { RosesCrown } from "@/shared/components/icons/RosesCrown";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const note =
+  "This site exists because Ado's music means something real to me. Her voice has carried me through ordinary days and made them feel enormous. Every page here is a small way of saying thank you.";
+
 export function FanAppreciation() {
   const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const textRef = useRef<HTMLParagraphElement>(null);
 
   useGSAP(
     () => {
       const section = sectionRef.current;
-      const title = titleRef.current;
-      const text = textRef.current;
-      if (!section || !title || !text) return;
+      if (!section) return;
 
-      gsap.set(title, {
-        autoAlpha: 0,
-        y: 20,
-        skewY: 3,
-        transformOrigin: "0% 100%",
-      });
-      gsap.set(text, { autoAlpha: 0, y: 18, skewY: 2 });
-
-      const tl = gsap.timeline({
-        defaults: { ease: "power3.out" },
-        scrollTrigger: {
-          trigger: section,
-          start: "top 75%",
-          end: "bottom 35%",
-          toggleActions: "play none none reverse",
+      gsap.fromTo(
+        section.querySelectorAll("[data-word]"),
+        { opacity: 0.12 },
+        {
+          opacity: 1,
+          stagger: 0.6,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 70%",
+            end: "top 20%",
+            scrub: true,
+          },
         },
-      });
+      );
 
-      tl.to(title, { autoAlpha: 1, y: 0, skewY: 0, duration: 0.55 })
-        .to(
-          title,
-          { letterSpacing: "0.03em", duration: 0.18, ease: "power1.out" },
-          "-=0.15",
-        )
-        .to(
-          title,
-          { letterSpacing: "0em", duration: 0.24, ease: "power1.in" },
-          "-=0.02",
-        )
-        .to(text, { autoAlpha: 1, y: 0, skewY: 0, duration: 0.5 }, "-=0.18");
-
-      gsap.to(text, {
-        y: -6,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 0.4,
+      gsap.fromTo(
+        "[data-note-detail]",
+        { autoAlpha: 0, y: 18 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: section,
+            start: "top 40%",
+            toggleActions: "play none none reverse",
+          },
         },
-      });
+      );
+
+      gsap.fromTo(
+        "[data-note-image]",
+        { y: -40 },
+        {
+          y: 40,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.5,
+          },
+        },
+      );
     },
     { scope: sectionRef },
   );
@@ -72,26 +76,48 @@ export function FanAppreciation() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-ado-secondary/15 py-20"
+      className="relative overflow-hidden bg-background py-28 md:py-40"
     >
-      <div className="relative mx-auto px-4 text-center">
-        <RosesCrown className="mx-auto mb-6 h-20 w-auto text-ado-secondary md:h-32" />
+      <div className="mx-auto grid w-full max-w-7xl gap-14 px-6 md:px-10 lg:grid-cols-3 lg:gap-20">
+        <div className="flex flex-col justify-between gap-14 lg:col-span-2">
+          <p className="font-serif text-3xl leading-snug text-foreground sm:text-4xl md:text-5xl">
+            {note.split(" ").map((word, i) => (
+              <span key={i} data-word>
+                {word}{" "}
+              </span>
+            ))}
+          </p>
 
-        <h2
-          ref={titleRef}
-          className="mb-8 text-4xl font-black tracking-tight text-balance text-foreground uppercase md:text-5xl"
-        >
-          A Tribute from the Heart
-        </h2>
+          <div className="flex flex-col gap-10">
+            <p
+              data-note-detail
+              className="max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg"
+            >
+              Nothing here is official and nothing is for sale. It's one fan's
+              thank-you letter, built page by page, kept up to date as her story
+              keeps growing.
+            </p>
 
-        <p
-          ref={textRef}
-          className="mx-auto mb-8 font-serif text-xl leading-relaxed text-balance text-foreground italic sm:text-wrap md:text-3xl lg:max-w-4xl"
-        >
-          "As a devoted fan, I created this website to express my gratitude for
-          Ado&apos;s incredible music. Her powerful vocals and emotional delivery have
-          been a source of inspiration and joy in my life."
-        </p>
+            <div data-note-detail className="flex items-center gap-4">
+              <RosesCrown className="h-10 w-auto text-ado-primary md:h-12" />
+              <span className="text-base text-muted-foreground md:text-lg">
+                From a fan, with gratitude.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative aspect-square w-full overflow-hidden lg:aspect-auto lg:h-full">
+          <div data-note-image className="absolute inset-0 scale-110">
+            <Image
+              src={getAssetUrl("tours/wish/gallery/wish-tour-paris-2024")}
+              alt="Ado performing for the crowd during the Wish world tour in Paris"
+              fill
+              sizes="(min-width: 1024px) 33vw, 100vw"
+              className="object-cover"
+            />
+          </div>
+        </div>
       </div>
     </section>
   );

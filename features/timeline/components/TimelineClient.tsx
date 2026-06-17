@@ -83,6 +83,8 @@ export function TimelineClient({
       mm.add("(min-width: 768px)", () => {
         const getScrollDistance = () => content.offsetWidth - window.innerWidth;
 
+        gsap.set(wrapper, { height: "100dvh" });
+        gsap.set(content, { height: "100dvh" });
         gsap.set([content, ...sections, ...cards], {
           willChange: "transform, opacity",
         });
@@ -172,9 +174,9 @@ export function TimelineClient({
       });
 
       return () => {
-        gsap.set([content, ...sections, ...cards], {
-          clearProps: "willChange",
-        });
+        gsap.set(wrapper, { clearProps: "height" });
+        gsap.set(content, { clearProps: "height" });
+        gsap.set([content, ...sections, ...cards], { clearProps: "willChange" });
         mm.revert();
       };
     },
@@ -199,7 +201,7 @@ export function TimelineClient({
       <div
         ref={wrapperRef}
         className={cn(
-          "relative w-full overflow-x-auto transition-colors duration-700 ease-in-out md:h-screen md:overflow-hidden",
+          "relative w-full overflow-x-auto transition-colors duration-700 ease-in-out md:overflow-hidden",
           isPastMiddle ? "bg-foreground" : "bg-background",
         )}
       >
@@ -220,7 +222,7 @@ export function TimelineClient({
 
         <div
           ref={contentRef}
-          className="flex w-max items-center px-4 pb-32 md:h-screen md:p-24"
+          className="flex w-max items-center px-4 pb-32 md:p-24"
         >
           {timelineGroups.map((yearData) => {
             const isActive = activeYear === yearData.year;

@@ -95,7 +95,9 @@ function loadLyrics(path: string): Lyrics[] {
 
 const CDN_URL = (process.env.NEXT_PUBLIC_CDN_URL ?? "").replace(/\/$/, "");
 
-function resolveCoverArt(path: string): string {
+function resolveCoverArt(path: string | null | undefined): string {
+  if (!path) return "";
+
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   if (!CDN_URL) return normalizedPath;
   return `${CDN_URL}${normalizedPath}.webp`;

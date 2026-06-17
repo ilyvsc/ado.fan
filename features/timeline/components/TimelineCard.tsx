@@ -19,6 +19,130 @@ import { cn } from "@/lib/utils";
 
 import type { Song } from "@/types/song";
 
+function ImmersivePlayer({
+  song,
+  showControls,
+  onClose,
+  onMouseMove,
+  dialogRef,
+}: {
+  song: Song;
+  showControls: boolean;
+  onClose: () => void;
+  onMouseMove: () => void;
+  dialogRef: React.RefObject<HTMLDivElement | null>;
+}) {
+  const scopeRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const root = scopeRef.current;
+      if (!root) return;
+
+      const q = gsap.utils.selector(root);
+      const backdrop = q(".player-backdrop")[0];
+      const titleLines = q(".player-title-line");
+      const panel = q(".player-panel")[0];
+
+      const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+
+      if (backdrop) {
+        tl.fromTo(backdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 0);
+      }
+
+      if (panel) {
+        tl.fromTo(
+          panel,
+          { clipPath: "inset(100% 0 0 0)", y: 60 },
+          { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.9 },
+          0.15,
+        );
+      }
+
+      tl.fromTo(
+        titleLines,
+        { yPercent: 120 },
+        { yPercent: 0, stagger: 0.1, duration: 0.8 },
+        0.25,
+      );
+    },
+    { scope: scopeRef },
+  );
+
+  return (
+    <div
+      ref={dialogRef}
+      tabIndex={-1}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${song.title.english} video player`}
+      onClick={onClose}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") onClose();
+      }}
+      onMouseMove={onMouseMove}
+      className="fixed inset-0 z-50 overflow-hidden outline-none"
+      style={{ "--theme-color": song.themeColor } as CSSProperties}
+    >
+      <div
+        ref={scopeRef}
+        className="relative flex h-full w-full items-center justify-center p-4 md:p-10"
+      >
+        <div className="player-backdrop absolute inset-0 bg-black/80 backdrop-blur-sm" />
+
+        <div
+          role="presentation"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          className="relative z-10 w-full max-w-4xl space-y-5"
+        >
+          <div className="flex items-end justify-between gap-6">
+            <div className="space-y-1">
+              <span className="block overflow-hidden">
+                <span className="player-title-line block font-serif text-3xl leading-none font-bold text-white md:text-5xl">
+                  {song.title.english}
+                </span>
+              </span>
+              {song.title.japanese && (
+                <span className="block overflow-hidden">
+                  <span className="player-title-line block font-jp-serif text-lg font-medium text-(--theme-color) md:text-xl">
+                    {song.title.japanese}
+                  </span>
+                </span>
+              )}
+            </div>
+
+            <button
+              onClick={onClose}
+              aria-label="Close player"
+              className={cn(
+                "rounded-full border border-white/20 p-3 text-white/70 transition-all duration-300 hover:border-white/50 hover:text-white",
+                showControls ? "opacity-100" : "opacity-0",
+              )}
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          <div className="player-panel relative aspect-video w-full overflow-hidden bg-black">
+            {song.youtubeId ? (
+              <YouTubePlayer song={song} />
+            ) : song.nicoId ? (
+              <NicoNicoPlayer song={song} />
+            ) : (
+              <div className="flex h-full flex-col items-center justify-center gap-4 text-white/40">
+                <Music className="h-12 w-12" />
+                <span className="text-lg uppercase">Song Unavailable</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function SongCard({
   song,
   isPastMiddle = false,
@@ -101,7 +225,7 @@ export function SongCard({
       >
         <button
           onClick={toggleOpen}
-          className="relative flex w-full items-center gap-6 p-2 text-left transition-colors"
+          className="relative flex w-full items-center gap-6 rounded-lg p-2 text-left transition-colors duration-300 hover:bg-(--theme-color)/10"
         >
           <div className="relative shrink-0">
             <div
@@ -114,7 +238,7 @@ export function SongCard({
                   alt={song.title.english}
                   fill
                   sizes="96px"
-                  className="object-cover"
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
               ) : (
@@ -150,7 +274,7 @@ export function SongCard({
             </h3>
 
             {song.title.japanese && (
-              <span className="mt-1 truncate font-jp-serif text-lg font-medium tracking-wide text-(--theme-color) md:text-xl">
+              <span className="mt-1 truncate font-jp-serif text-lg font-medium text-(--theme-color) md:text-xl">
                 {song.title.japanese}
               </span>
             )}
@@ -160,54 +284,15 @@ export function SongCard({
 
       {isExpanded &&
         createPortal(
-          <div
-            ref={dialogRef}
-            tabIndex={-1}
-            role="dialog"
-            aria-modal="true"
-            aria-label={`${song.title.english} video player`}
-            onClick={() => {
+          <ImmersivePlayer
+            song={song}
+            showControls={showControls}
+            onClose={() => {
               setExpandedState(false);
             }}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") setExpandedState(false);
-            }}
             onMouseMove={handleMouseMove}
-            className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black/60 p-4 backdrop-blur-sm outline-none md:p-12"
-          >
-            <div
-              role="presentation"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-              className="relative aspect-video w-full max-w-5xl overflow-hidden rounded-lg bg-background/40"
-            >
-              <button
-                onClick={() => {
-                  setExpandedState(false);
-                }}
-                className={cn(
-                  "absolute top-4 right-4 z-10 rounded-full p-2 text-white/70 backdrop-blur-sm transition-opacity duration-300 hover:text-white",
-                  showControls ? "opacity-100" : "opacity-0",
-                )}
-              >
-                <X className="h-5 w-5" />
-              </button>
-
-              {song.youtubeId ? (
-                <YouTubePlayer song={song} />
-              ) : song.nicoId ? (
-                <NicoNicoPlayer song={song} />
-              ) : (
-                <div className="flex h-full flex-col items-center justify-center gap-4 rounded-xl border border-foreground/20 bg-background text-foreground/40">
-                  <Music className="h-12 w-12" />
-                  <span className="text-lg tracking-widest uppercase">
-                    Song Unavailable
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>,
+            dialogRef={dialogRef}
+          />,
           document.body,
         )}
     </>

@@ -1,8 +1,9 @@
 import { FanAppreciation } from "@/features/home/components/AppreciationNote";
 import { ConnectSection } from "@/features/home/components/ConnectSection";
+import { CoverMarquee } from "@/features/home/components/CoverMarquee";
 import { HeroSection } from "@/features/home/components/HeroSection";
 import { NewsletterSection } from "@/features/home/components/Newsletter";
-import { WhoIsAdo } from "@/features/home/components/WhoIsAdo";
+import { WhoIsAdo } from "@/features/home/sections/WhoIsAdo/WhoIsAdo";
 import { DiscographyTimeline } from "@/features/timeline/Timeline";
 import { FloatingThemeButton } from "@/shared/components/themes/ThemeButton";
 import { buildAlternates } from "@/shared/lib/metadata";
@@ -36,6 +37,7 @@ export default function Home() {
       <WhoIsAdo />
       <DiscographyTimeline />
       <FanAppreciation />
+      <CoverMarquee />
       <ConnectSection />
       <NewsletterSection />
       <FloatingThemeButton />

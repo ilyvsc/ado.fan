@@ -28,6 +28,34 @@ export function HeroSection() {
 
   useGSAP(
     () => {
+      gsap.fromTo(
+        ".hero-bg",
+        { scale: 1.1 },
+        { scale: 1, duration: 2.4, ease: "power2.out" },
+      );
+
+      gsap.to(".hero-bg", {
+        yPercent: 18,
+        ease: "none",
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      gsap.to(".hero-dim", {
+        opacity: 0.65,
+        ease: "none",
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
       gsap
         .timeline({
           defaults: { ease: "power2.out" },
@@ -36,10 +64,18 @@ export function HeroSection() {
             ScrollTrigger.refresh();
           },
         })
+        .set(".hero-title", { opacity: 1 })
         .fromTo(
-          ".hero-title",
-          { opacity: 0, y: -30, scale: 0.97 },
-          { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "expo.out" },
+          ".hero-letter",
+          { opacity: 0, yPercent: 60, rotate: 4 },
+          {
+            opacity: 1,
+            yPercent: 0,
+            rotate: 0,
+            duration: 1.2,
+            stagger: 0.09,
+            ease: "expo.out",
+          },
         )
         .fromTo(
           ".hero-rule",
@@ -97,13 +133,19 @@ export function HeroSection() {
         />
       </div>
 
+      <div className="hero-dim pointer-events-none absolute inset-0 z-0 bg-black opacity-0" />
+
       <div className="relative z-10 flex h-full flex-col items-center justify-between pt-40 pb-20 md:pt-44 md:pb-20">
         <div className="flex flex-col items-center px-6 text-center">
           <h1
             className="hero-title font-serif leading-none tracking-tight text-white italic opacity-0"
             style={{ fontSize: "clamp(12rem, 22vw, 18rem)" }}
           >
-            Ado
+            {"Ado".split("").map((char, i) => (
+              <span key={`${char}-${String(i)}`} className="hero-letter inline-block">
+                {char}
+              </span>
+            ))}
           </h1>
         </div>
 
