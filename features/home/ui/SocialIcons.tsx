@@ -12,22 +12,20 @@ export function SocialIcons({ links }: { links: SocialLink[] }) {
 
   useGSAP(
     () => {
-      const cards = gsap.utils.toArray<HTMLElement>("[data-social-card]");
+      const root = containerRef.current;
+      if (!root) return;
+
+      const cards = root.querySelectorAll("[data-social-card]");
 
       gsap.fromTo(
         cards,
-        { autoAlpha: 0, x: -10 },
+        { autoAlpha: 0, y: 8 },
         {
           autoAlpha: 1,
-          x: 0,
+          y: 0,
           duration: 0.4,
           ease: "power2.out",
           stagger: 0.04,
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 95%",
-            toggleActions: "play none none reverse",
-          },
         },
       );
     },

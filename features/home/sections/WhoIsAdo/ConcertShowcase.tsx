@@ -133,8 +133,6 @@ function StackedConcertCard({
       const card = ref.current;
       if (!card) return;
 
-      gsap.set(card, { height: "88dvh", top: "6dvh" });
-
       const q = gsap.utils.selector(card);
       const title = q(".stack-title")[0];
       const headline = q(".stack-headline")[0];
@@ -218,7 +216,7 @@ function StackedConcertCard({
         });
       }
 
-      if (!isLast && inner && veil) {
+      if (inner && veil) {
         const depth = gsap.timeline({
           scrollTrigger: {
             trigger: card,
@@ -244,7 +242,6 @@ function StackedConcertCard({
         cleanups.forEach((fn) => {
           fn();
         });
-        gsap.set(card, { clearProps: "height,top" });
       };
     },
     { scope: ref, dependencies: [imageOnRight, isLast] },
@@ -252,7 +249,10 @@ function StackedConcertCard({
 
   return (
     <>
-      <article ref={ref} className="sticky overflow-hidden bg-background">
+      <article
+        ref={ref}
+        className="sticky top-0 h-dvh overflow-hidden bg-background"
+      >
         <div className="stack-inner h-full">
           <div className="grid h-full grid-cols-12">
             <div
@@ -291,16 +291,15 @@ function StackedConcertCard({
                         alt: `${concert.title} ${String(i + 1)}`,
                       });
                     }}
-                    className="stack-thumb group relative aspect-square flex-1 cursor-zoom-in overflow-hidden"
+                    className="stack-thumb group relative aspect-square flex-1 cursor-zoom-in overflow-hidden bg-ado-primary"
                   >
                     <Image
                       src={img}
                       alt={`${concert.title} ${String(i + 1)}`}
                       fill
                       sizes="12vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-90"
                     />
-                    <span className="absolute inset-0 bg-ado-primary/0 transition-colors duration-300 group-hover:bg-ado-primary/30" />
                   </button>
                 ))}
               </div>

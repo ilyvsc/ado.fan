@@ -77,9 +77,6 @@ export function ConnectSection() {
           autoAlpha: isOpen ? 1 : 0,
           duration: 0.55,
           ease: "power3.inOut",
-          onComplete: () => {
-            ScrollTrigger.refresh();
-          },
         });
       });
     },

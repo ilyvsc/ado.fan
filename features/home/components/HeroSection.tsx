@@ -105,14 +105,11 @@ export function HeroSection() {
   ) => {
     if (href.startsWith("#")) {
       e.preventDefault();
-      const target = document.querySelector(href);
-      if (target) {
-        gsap.to(window, {
-          duration: 1.2,
-          scrollTo: { y: target, offsetY: 0 },
-          ease: "power3.inOut",
-        });
-      }
+      gsap.to(window, {
+        duration: 1.2,
+        scrollTo: { y: href, offsetY: 0 },
+        ease: "power3.inOut",
+      });
     }
   };
 

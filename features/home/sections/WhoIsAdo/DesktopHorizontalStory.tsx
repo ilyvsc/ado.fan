@@ -225,8 +225,6 @@ export function DesktopHorizontalStory() {
       const track = trackRef.current;
       const container = containerRef.current;
 
-      gsap.set(container, { height: "100dvh" });
-
       const getScrollWidth = () => track.scrollWidth - container.clientWidth;
 
       if (getScrollWidth() <= 0) return;
@@ -301,7 +299,6 @@ export function DesktopHorizontalStory() {
       }
 
       return () => {
-        gsap.set(container, { clearProps: "height" });
         scrollTween.scrollTrigger?.kill();
         scrollTween.kill();
         cleanups.forEach((fn) => {
@@ -315,7 +312,7 @@ export function DesktopHorizontalStory() {
   return (
     <section
       ref={containerRef}
-      className="horizontal-story-section relative hidden overflow-hidden bg-background lg:block"
+      className="horizontal-story-section relative hidden overflow-hidden bg-background lg:block lg:h-dvh"
     >
       <ProgressIndicator progressRef={progressRef} />
 

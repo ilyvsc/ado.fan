@@ -27,7 +27,6 @@ function VideoPart({ entry, videoSrc }: { entry: ConcertEntry; videoSrc: string 
       const bigTitle = q(".video-big-title")[0];
       const letters = q(".video-letter");
 
-      gsap.set(container, { height: "100dvh" });
       if (flood) gsap.set(flood, { opacity: 0 });
 
       const intro = gsap.timeline({
@@ -96,14 +95,13 @@ function VideoPart({ entry, videoSrc }: { entry: ConcertEntry; videoSrc: string 
         st?.kill();
         intro.scrollTrigger?.kill();
         intro.kill();
-        gsap.set(container, { clearProps: "height" });
       };
     },
     { scope: containerRef },
   );
 
   return (
-    <div ref={containerRef} className="relative overflow-hidden">
+    <div ref={containerRef} className="relative h-dvh overflow-hidden">
       <video
         ref={videoRef}
         muted
