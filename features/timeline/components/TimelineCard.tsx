@@ -69,6 +69,30 @@ function ImmersivePlayer({
     { scope: scopeRef },
   );
 
+  const handleExit = () => {
+    const root = scopeRef.current;
+    if (!root) {
+      onClose();
+      return;
+    }
+
+    const q = gsap.utils.selector(root);
+    const backdrop = q(".player-backdrop")[0];
+    const panel = q(".player-panel")[0];
+
+    const tl = gsap.timeline({
+      defaults: { ease: "power3.in" },
+      onComplete: onClose,
+    });
+
+    if (panel) {
+      tl.to(panel, { clipPath: "inset(100% 0 0 0)", y: 40, duration: 0.45 }, 0);
+    }
+    if (backdrop) {
+      tl.to(backdrop, { autoAlpha: 0, duration: 0.4 }, 0.1);
+    }
+  };
+
   return (
     <div
       ref={dialogRef}
@@ -76,9 +100,9 @@ function ImmersivePlayer({
       role="dialog"
       aria-modal="true"
       aria-label={`${song.title.english} video player`}
-      onClick={onClose}
+      onClick={handleExit}
       onKeyDown={(e) => {
-        if (e.key === "Escape") onClose();
+        if (e.key === "Escape") handleExit();
       }}
       onMouseMove={onMouseMove}
       className="fixed inset-0 z-50 overflow-hidden outline-none"
@@ -114,7 +138,7 @@ function ImmersivePlayer({
             </div>
 
             <button
-              onClick={onClose}
+              onClick={handleExit}
               aria-label="Close player"
               className={cn(
                 "rounded-full border border-white/20 p-3 text-white/70 transition-all duration-300 hover:border-white/50 hover:text-white",
@@ -143,35 +167,15 @@ function ImmersivePlayer({
   );
 }
 
-export function SongCard({
-  song,
-  isPastMiddle = false,
-}: {
-  song: Song;
-  isPastMiddle?: boolean;
-}) {
+export function SongCard({ song }: { song: Song }) {
   const [isExpanded, setExpandedState] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = () => {
     setShowControls(true);
   };
-
-  useGSAP(
-    () => {
-      if (!imageRef.current) return;
-      gsap.to(imageRef.current, {
-        scale: isExpanded ? 0.95 : 1,
-        opacity: isExpanded ? 0.8 : 1,
-        duration: 0.4,
-        ease: "power2.out",
-      });
-    },
-    { scope: containerRef, dependencies: [isExpanded] },
-  );
 
   const toggleOpen = () => {
     if (!isExpanded) {
@@ -225,56 +229,38 @@ export function SongCard({
       >
         <button
           onClick={toggleOpen}
-          className="relative flex w-full items-center gap-6 rounded-lg p-2 text-left transition-colors duration-300 hover:bg-(--theme-color)/10"
+          className="relative flex w-full items-center gap-6 rounded-xl p-2 text-left transition-colors duration-300 hover:bg-ado-primary/35"
         >
           <div className="relative shrink-0">
-            <div
-              ref={imageRef}
-              className="relative h-20 w-20 overflow-hidden md:h-24 md:w-24"
-            >
+            <div className="relative h-20 w-20 overflow-hidden md:h-24 md:w-24">
               {song.coverArt ? (
                 <Image
                   src={song.coverArt}
                   alt={song.title.english}
                   fill
                   sizes="96px"
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
               ) : (
-                <div className="flex h-full items-center justify-center bg-muted-foreground/10">
-                  <Music className="h-8 w-8 text-muted-foreground" />
+                <div className="flex h-full items-center justify-center bg-ado-secondary-foreground/10">
+                  <Music className="h-8 w-8 text-ado-secondary-foreground opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
                 </div>
               )}
 
-              <div
-                className={cn(
-                  "absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100",
-                  isPastMiddle ? "bg-foreground/40" : "bg-background/40",
-                )}
-              >
-                <Play
-                  className={cn(
-                    "h-8 w-8 fill-current transition-colors duration-700",
-                    isPastMiddle ? "text-background" : "text-foreground",
-                  )}
-                />
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                <Play className="h-8 w-8 fill-current text-ado-secondary-foreground" />
               </div>
             </div>
           </div>
 
-          <div className="flex min-w-0 flex-1 flex-col justify-center">
-            <h3
-              className={cn(
-                "font-serif text-3xl leading-none font-bold tracking-tight transition-colors duration-700 md:text-4xl",
-                isPastMiddle ? "text-background" : "text-foreground",
-              )}
-            >
+          <div className="flex min-w-0 flex-1 flex-col justify-center select-text">
+            <h3 className="font-serif text-2xl leading-none font-bold tracking-tight text-ado-secondary-foreground md:text-4xl">
               {song.title.english}
             </h3>
 
             {song.title.japanese && (
-              <span className="mt-1 truncate font-jp-serif text-lg font-medium text-(--theme-color) md:text-xl">
+              <span className="mt-1 truncate font-jp-serif text-lg font-medium text-ado-secondary-foreground/70 md:text-xl">
                 {song.title.japanese}
               </span>
             )}

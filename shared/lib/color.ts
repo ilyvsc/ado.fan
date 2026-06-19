@@ -19,7 +19,7 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } {
  *
  * @see https://www.w3.org/TR/WCAG21/#dfn-relative-luminance
  */
-export function getRelativeLuminance(hex: string): number {
+function getRelativeLuminance(hex: string): number {
   const { r, g, b } = hexToRgb(hex);
   return (
     0.2126 * srgbChannelToLinear(r) +

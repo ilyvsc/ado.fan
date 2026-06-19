@@ -80,8 +80,8 @@
 :root[data-theme="uta"] {
   --color-ado-primary: hsl(324 48% 56%);
   --color-ado-primary-foreground: hsl(0 0% 98%);
-  --color-ado-secondary: hsl(16 40% 76%);
-  --color-ado-secondary-foreground: hsl(240 10% 3.9%);
+  --color-ado-secondary: hsl(356 64% 50%);
+  --color-ado-secondary-foreground: hsl(0 0% 98%);
 }
 
 :root[data-theme="himawari"] {
