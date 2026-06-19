@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { cn } from "@/shared/lib/utils";
+
 import type { Album } from "@/types/album";
 
 export function RelatedAlbumSongs({
@@ -48,7 +50,10 @@ export function RelatedAlbumSongs({
       </div>
 
       <div
-        className={`max-w-fit gap-2 ${songs.length > 5 ? "columns-2" : "columns-1"}`}
+        className={cn(
+          "max-w-fit gap-2",
+          songs.length > 5 ? "columns-2" : "columns-1",
+        )}
       >
         {songs.map(({ song, trackNumber }) => {
           const isCurrentSong = song.id === currentSongId;
@@ -57,7 +62,7 @@ export function RelatedAlbumSongs({
               key={song.id}
               href={`/lyrics/${song.id}`}
               aria-current={isCurrentSong ? "page" : undefined}
-              className={`group mb-1 flex items-center gap-2 rounded p-1 text-xs transition-all hover:bg-(--theme-contrast)/10 sm:text-sm md:px-2 lg:text-base`}
+              className="group mb-1 flex items-center gap-2 rounded p-1 text-xs transition-all hover:bg-(--theme-contrast)/10 sm:text-sm md:px-2 lg:text-base"
               onClick={(e) => {
                 if (isCurrentSong) e.preventDefault();
               }}

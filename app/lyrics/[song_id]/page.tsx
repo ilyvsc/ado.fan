@@ -34,7 +34,7 @@ export async function generateMetadata({
     : song.title.english;
 
   const description =
-    song.description ||
+    song.description ??
     `Read ${song.title.english} lyrics by Ado in Japanese, English, and romaji.`;
 
   return {
@@ -105,7 +105,7 @@ export default async function LyricsSongPage({
     url: buildUrl(`/lyrics/${song.id}`),
     sameAs: sameAs.length ? sameAs : undefined,
     description:
-      song.description ||
+      song.description ??
       `Read ${song.title.english} lyrics by Ado in Japanese, English, and romaji.`,
   });
 

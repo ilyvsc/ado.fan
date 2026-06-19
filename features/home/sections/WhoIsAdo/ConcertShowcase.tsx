@@ -249,10 +249,7 @@ function StackedConcertCard({
 
   return (
     <>
-      <article
-        ref={ref}
-        className="sticky top-0 h-dvh overflow-hidden bg-background"
-      >
+      <article ref={ref} className="sticky top-0 h-dvh overflow-hidden bg-background">
         <div className="stack-inner h-full">
           <div className="grid h-full grid-cols-12">
             <div

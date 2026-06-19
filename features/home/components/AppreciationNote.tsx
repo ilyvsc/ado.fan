@@ -94,8 +94,8 @@ export function FanAppreciation() {
               className="max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg"
             >
               Nothing here is official and nothing is for sale. It's one fan's
-              thank-you letter, built page by page, kept up to date as her story
-              keeps growing.
+              thank-you letter, built page by page, kept up to date as her story keeps
+              growing.
             </p>
 
             <div data-note-detail className="flex items-center gap-4">

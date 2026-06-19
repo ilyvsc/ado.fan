@@ -96,7 +96,7 @@ export function LyricsSongDisplay({
     },
     {
       scope: containerRef,
-      dependencies: [songs.length],
+      dependencies: [songs.map((s) => s.id).join()],
     },
   );
 
