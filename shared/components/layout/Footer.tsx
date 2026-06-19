@@ -14,9 +14,8 @@ import { useSocialLinks } from "@/hooks/useSocialLinks";
 import { linksCategories } from "@/lib/socialLinks";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 
-import { githubLinks } from "@/shared/constants/github";
 import { formatDate } from "@/shared/lib/date";
-import { type GitHubData } from "@/shared/lib/github";
+import { githubLinks, type GitHubData } from "@/shared/lib/github";
 
 gsap.registerPlugin(ScrollTrigger);
 

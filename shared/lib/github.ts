@@ -17,8 +17,18 @@ export interface GitHubData {
   contributors: GitHubContributor[];
 }
 
+const GITHUB_REPO_URL = "https://github.com/ilyvsc/ado.fan";
 const GITHUB_REPO_API_URL = "https://api.github.com/repos/ilyvsc/ado.fan";
 const GITHUB_API_REVALIDATE_SECONDS = 3600;
+
+export const githubLinks = {
+  repository: GITHUB_REPO_URL,
+  stars: `${GITHUB_REPO_URL}/stargazers`,
+  forks: `${GITHUB_REPO_URL}/forks`,
+  issues: `${GITHUB_REPO_URL}/issues`,
+  license: `${GITHUB_REPO_URL}/blob/develop/LICENSE`,
+  commits: `${GITHUB_REPO_URL}/commits/develop`,
+} as const;
 
 async function fetchGitHubJson<T>(url: string): Promise<T | null> {
   try {
