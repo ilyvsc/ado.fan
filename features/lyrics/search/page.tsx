@@ -146,9 +146,9 @@ export function LyricsPageClient({ recommended, allSongs }: LyricsPageClientProp
 
   const availableYears = useMemo(
     () =>
-      [...new Set(allSongs.map((s) => new Date(s.releaseDate).getFullYear()))].toSorted(
-        (a, b) => a - b,
-      ),
+      [
+        ...new Set(allSongs.map((s) => new Date(s.releaseDate).getFullYear())),
+      ].toSorted((a, b) => a - b),
     [allSongs],
   );
 
@@ -295,7 +295,8 @@ export function LyricsPageClient({ recommended, allSongs }: LyricsPageClientProp
             <div className="flex flex-col items-center py-20 text-muted-foreground">
               <Search aria-hidden="true" className="mb-4 h-10 w-10 opacity-20" />
               <p className="text-sm">No results for &quot;{deferredQuery}&quot;</p>
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => {
                   handleSearchChange("");
                 }}
@@ -326,7 +327,8 @@ export function LyricsPageClient({ recommended, allSongs }: LyricsPageClientProp
       )}
 
       {showScrollTop && (
-        <button type="button"
+        <button
+          type="button"
           onClick={() => {
             const prefersReduced = window.matchMedia(
               "(prefers-reduced-motion: reduce)",

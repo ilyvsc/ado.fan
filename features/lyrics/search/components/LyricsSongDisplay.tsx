@@ -262,7 +262,8 @@ function GridCard({
           </div>
         )}
         {onToggleFavorite && (
-          <button type="button"
+          <button
+            type="button"
             aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
             onClick={(e) => {
               e.preventDefault();
@@ -346,7 +347,8 @@ function ListRow({
 
       <div className="flex shrink-0 items-center gap-3">
         {onToggleFavorite && (
-          <button type="button"
+          <button
+            type="button"
             aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
             onClick={(e) => {
               e.preventDefault();

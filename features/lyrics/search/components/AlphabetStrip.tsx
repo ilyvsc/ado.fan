@@ -53,7 +53,8 @@ export function AlphabetStrip({
       {ALL_KEYS.map((letter) => {
         const active = activeLetters.has(letter);
         return (
-          <button type="button"
+          <button
+            type="button"
             key={letter}
             disabled={!active}
             aria-label={`Jump to songs starting with ${letter}`}

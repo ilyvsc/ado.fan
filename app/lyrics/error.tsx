@@ -16,7 +16,8 @@ export default function LyricsError({
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background">
       <p className="text-sm text-muted-foreground">Failed to load lyrics</p>
-      <button type="button"
+      <button
+        type="button"
         onClick={reset}
         className="rounded-lg bg-foreground/8 px-4 py-2 text-sm text-foreground transition-colors hover:bg-foreground/12"
       >

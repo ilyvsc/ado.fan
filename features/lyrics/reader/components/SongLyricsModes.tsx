@@ -64,7 +64,8 @@ function PillButton({
   title?: string;
 }) {
   return (
-    <button type="button"
+    <button
+      type="button"
       onClick={onClick}
       title={title}
       aria-pressed={active}
@@ -324,7 +325,8 @@ function LyricsModes({
           )}
 
           <ControlPill>
-            <button type="button"
+            <button
+              type="button"
               onClick={() => {
                 setFontSize((s) => Math.max(12, s - 2));
               }}
@@ -341,7 +343,8 @@ function LyricsModes({
               </span>
             </div>
 
-            <button type="button"
+            <button
+              type="button"
               onClick={() => {
                 setFontSize((s) => Math.min(32, s + 2));
               }}
@@ -360,7 +363,8 @@ function LyricsModes({
                 languages={languages}
                 label="Left language"
               />
-              <button type="button"
+              <button
+                type="button"
                 onClick={swapLanguages}
                 aria-label="Swap languages"
                 className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-(--theme-color)/10 hover:text-foreground focus-visible:ring-2 focus-visible:ring-(--theme-color)/50 focus-visible:outline-none"

@@ -139,7 +139,8 @@ function ImmersivePlayer({
               )}
             </div>
 
-            <button type="button"
+            <button
+              type="button"
               onClick={handleExit}
               aria-label="Close player"
               className={cn(
@@ -229,7 +230,8 @@ export function SongCard({ song }: { song: Song }) {
         className="group relative isolate flex w-full flex-col items-start md:w-2xl"
         style={{ "--theme-color": song.themeColor } as CSSProperties}
       >
-        <button type="button"
+        <button
+          type="button"
           onClick={toggleOpen}
           className="relative flex w-full items-center gap-6 rounded-xl p-2 text-left transition-colors duration-300 hover:bg-ado-primary/35"
         >

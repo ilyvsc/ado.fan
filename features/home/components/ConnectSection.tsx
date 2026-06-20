@@ -125,7 +125,8 @@ export function ConnectSection() {
 
             return (
               <div key={category.id} data-connect-row>
-                <button type="button"
+                <button
+                  type="button"
                   onClick={() => {
                     setOpenId(isOpen ? null : category.id);
                   }}

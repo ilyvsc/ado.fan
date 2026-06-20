@@ -23,6 +23,17 @@ const navigationLinks = [
   { label: "Lyrics Finder", href: "/lyrics" },
 ];
 
+function handleSmoothScroll(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
+  if (href.startsWith("#")) {
+    e.preventDefault();
+    gsap.to(window, {
+      duration: 1.2,
+      scrollTo: { y: href, offsetY: 0 },
+      ease: "power3.inOut",
+    });
+  }
+}
+
 export function HeroSection() {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -98,20 +109,6 @@ export function HeroSection() {
     },
     { scope: wrapperRef },
   );
-
-  const handleSmoothScroll = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    href: string,
-  ) => {
-    if (href.startsWith("#")) {
-      e.preventDefault();
-      gsap.to(window, {
-        duration: 1.2,
-        scrollTo: { y: href, offsetY: 0 },
-        ease: "power3.inOut",
-      });
-    }
-  };
 
   return (
     <div
