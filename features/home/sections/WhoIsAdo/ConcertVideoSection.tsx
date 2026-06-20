@@ -24,25 +24,8 @@ function VideoPart({ entry, videoSrc }: { entry: ConcertEntry; videoSrc: string 
 
       const q = gsap.utils.selector(container);
       const flood = q(".video-flood")[0];
-      const bigTitle = q(".video-big-title")[0];
-      const letters = q(".video-letter");
 
       if (flood) gsap.set(flood, { opacity: 0 });
-
-      const intro = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          start: "top 65%",
-          toggleActions: "play none none none",
-        },
-      });
-
-      intro.fromTo(
-        letters,
-        { yPercent: 120 },
-        { yPercent: 0, stagger: 0.05, duration: 1, ease: "power4.out" },
-        0,
-      );
 
       let st: ScrollTrigger | null = null;
 
@@ -74,13 +57,6 @@ function VideoPart({ entry, videoSrc }: { entry: ConcertEntry; videoSrc: string 
                 opacity: progress > 0.5 ? (progress - 0.5) / 0.5 : 0,
               });
             }
-
-            if (bigTitle) {
-              gsap.set(bigTitle, {
-                letterSpacing: `${progress * 0.25}em`,
-                opacity: 1 - Math.max(0, (progress - 0.6) / 0.3),
-              });
-            }
           },
         });
 
@@ -93,8 +69,6 @@ function VideoPart({ entry, videoSrc }: { entry: ConcertEntry; videoSrc: string 
       return () => {
         video.removeEventListener("loadedmetadata", build);
         st?.kill();
-        intro.scrollTrigger?.kill();
-        intro.kill();
       };
     },
     { scope: containerRef },
@@ -110,19 +84,6 @@ function VideoPart({ entry, videoSrc }: { entry: ConcertEntry; videoSrc: string 
         className="h-full w-full object-cover select-none"
         src={videoSrc}
       />
-
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <h2 className="video-big-title flex font-serif text-7xl font-bold text-white uppercase mix-blend-difference xl:text-9xl">
-          {entry.title.split("").map((char, i) => (
-            <span
-              key={`${entry.id}-${String(i)}`}
-              className="inline-block overflow-hidden"
-            >
-              <span className="video-letter inline-block">{char}</span>
-            </span>
-          ))}
-        </h2>
-      </div>
 
       <div className="video-flood pointer-events-none absolute inset-0 bg-ado-primary" />
     </div>
@@ -140,6 +101,7 @@ function ContentPart({ entry }: { entry: ConcertEntry }) {
       gsap.set(section, { marginTop: "-100vh" });
 
       const q = gsap.utils.selector(section);
+      const logo = q(".content-logo")[0];
       const title = q(".content-title")[0];
       const headline = q(".content-headline")[0];
       const paras = q(".content-para");
@@ -148,11 +110,21 @@ function ContentPart({ entry }: { entry: ConcertEntry }) {
       if (title && headline) {
         const intro = gsap.timeline({
           scrollTrigger: {
-            trigger: title,
+            trigger: logo ?? title,
             start: "top 78%",
             toggleActions: "play none none none",
           },
         });
+
+        const base = logo ? 0.35 : 0;
+
+        if (logo) {
+          intro.from(
+            logo,
+            { autoAlpha: 0, y: 30, scale: 0.94, duration: 0.9, ease: "power3.out" },
+            0,
+          );
+        }
 
         intro
           .fromTo(
@@ -164,18 +136,18 @@ function ContentPart({ entry }: { entry: ConcertEntry }) {
               duration: 1.2,
               ease: "power4.out",
             },
-            0,
+            base,
           )
           .from(
             headline,
             { autoAlpha: 0, y: 28, duration: 0.8, ease: "power3.out" },
-            0.4,
+            base + 0.4,
           );
 
         intro.from(
           paras,
           { autoAlpha: 0, y: 24, stagger: 0.15, duration: 0.7, ease: "power3.out" },
-          0.7,
+          base + 0.7,
         );
       }
 
@@ -242,6 +214,17 @@ function ContentPart({ entry }: { entry: ConcertEntry }) {
     >
       <div className="relative mx-auto max-w-6xl pt-72">
         <div className="mx-auto max-w-4xl space-y-8 text-center">
+          {entry.logo && (
+            <div className="content-logo relative mx-auto aspect-square w-2/5 max-w-xs">
+              <Image
+                src={entry.logo}
+                alt={entry.title}
+                fill
+                sizes="(min-width: 1280px) 20rem, 40vw"
+                className="object-contain"
+              />
+            </div>
+          )}
           <h2 className="content-title font-serif text-8xl leading-none font-bold text-ado-primary-foreground xl:text-9xl">
             {entry.title}
           </h2>

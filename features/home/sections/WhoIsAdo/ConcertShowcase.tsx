@@ -304,17 +304,19 @@ function StackedConcertCard({
 
             <div
               className={cn(
-                "stack-portrait relative col-span-5 h-full overflow-hidden",
+                "col-span-5 h-full px-8 py-20 xl:px-12 xl:py-28",
                 imageOnRight ? "order-2" : "order-1",
               )}
             >
-              <Image
-                src={concert.hero}
-                alt={concert.title}
-                fill
-                sizes="45vw"
-                className="object-cover"
-              />
+              <div className="stack-portrait relative h-full w-full overflow-hidden">
+                <Image
+                  src={concert.hero}
+                  alt={concert.title}
+                  fill
+                  sizes="40vw"
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>

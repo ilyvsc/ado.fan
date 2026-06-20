@@ -22,6 +22,7 @@ const shinzouConcert = getAssetUrl("tours/shinzou/gallery/shinzou_concert_2024")
 const shinzouRed = getAssetUrl(
   "tours/shinzou/gallery/shinzou_concert_hatsune_miku_2024.jpg",
 );
+const shinzouLogo = getAssetUrl("tours/shinzou/ado-shinzou-live-logo.png");
 const wishPromo = getAssetUrl("tours/wish/ado-wish-promotional-banner.jpg");
 const wishTourBangkok = getAssetUrl("tours/wish/gallery/wish-tour-bangkok-2024");
 const wishTourChicago = getAssetUrl("tours/wish/gallery/wish-tour-chicago-2024");
@@ -77,6 +78,7 @@ export interface ConcertEntry {
   hero: string;
   stack: readonly string[];
   paragraphs: readonly string[];
+  logo?: string;
 }
 
 export const concerts: readonly ConcertEntry[] = [
@@ -128,6 +130,7 @@ export const videoConcerts: readonly ConcertEntry[] = [
     title: "Shinzou",
     headline: "The first woman to ever headline Japan's National Stadium.",
     hero: shinzou1,
+    logo: shinzouLogo,
     stack: [shinzou1, shinzouConcert, shinzouRed],
     paragraphs: [
       "In 2024, Ado presented her most ambitious concert to date: Shinzou, a two-day solo performance at Japan National Stadium. She became the first female artist to perform at the venue, drawing over 100,000 fans across both nights.",
