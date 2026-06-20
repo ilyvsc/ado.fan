@@ -82,7 +82,7 @@ export function FanAppreciation() {
         <div className="flex flex-col justify-between gap-14 lg:col-span-2">
           <p className="font-serif text-3xl leading-snug text-foreground sm:text-4xl md:text-5xl">
             {note.split(" ").map((word, i) => (
-              <span key={i} data-word>
+              <span key={`${i}-${word}`} data-word>
                 {word}{" "}
               </span>
             ))}

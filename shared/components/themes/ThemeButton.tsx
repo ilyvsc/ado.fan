@@ -9,6 +9,12 @@ import { cn } from "@/lib/utils";
 
 import { ThemeSelectorDialog } from "./ThemeSelector";
 
+const THEMES = [
+  { value: "light", icon: Sun, label: "Light" },
+  { value: "dark", icon: Moon, label: "Dark" },
+  { value: "system", icon: Monitor, label: "Auto" },
+];
+
 export function ThemeSelectorButton({
   onClick,
   className,
@@ -18,6 +24,7 @@ export function ThemeSelectorButton({
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       className={cn(
         "flex h-10 w-10 items-center justify-center rounded-lg border border-foreground/10 bg-foreground/5 text-foreground transition-all hover:bg-foreground/10",
@@ -38,6 +45,7 @@ export function FloatingThemeButton() {
     <>
       <div className="fixed bottom-6 left-6 z-40 md:bottom-8 md:left-8">
         <button
+          type="button"
           onClick={() => {
             setOpen(true);
           }}
@@ -55,11 +63,6 @@ export function FloatingThemeButton() {
 }
 
 export function ThemeToggleButton() {
-  const THEMES = [
-    { value: "light", icon: Sun, label: "Light" },
-    { value: "dark", icon: Moon, label: "Dark" },
-    { value: "system", icon: Monitor, label: "Auto" },
-  ];
   const { theme, setTheme } = useTheme();
   return (
     <div className="inline-flex overflow-hidden rounded-md border border-foreground/10">
@@ -68,6 +71,7 @@ export function ThemeToggleButton() {
         return (
           <button
             key={value}
+            type="button"
             onClick={() => {
               setTheme(value);
             }}

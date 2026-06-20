@@ -81,6 +81,7 @@ function VideoPart({ entry, videoSrc }: { entry: ConcertEntry; videoSrc: string 
         muted
         playsInline
         preload="auto"
+        aria-hidden
         className="h-full w-full object-cover select-none"
         src={videoSrc}
       />
@@ -232,9 +233,9 @@ function ContentPart({ entry }: { entry: ConcertEntry }) {
             {entry.headline}
           </p>
           <div className="mx-auto max-w-3xl columns-1 gap-12 space-y-5 pt-4 text-left xl:columns-2">
-            {entry.paragraphs.map((p, i) => (
+            {entry.paragraphs.map((p) => (
               <p
-                key={i}
+                key={p}
                 className="content-para text-base leading-7 text-ado-primary-foreground/80"
               >
                 {p}

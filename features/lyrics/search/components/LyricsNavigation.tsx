@@ -59,7 +59,7 @@ function ViewModeToggle({
         className,
       )}
     >
-      <button
+      <button type="button"
         onClick={() => {
           onViewModeChange("grid");
         }}
@@ -73,7 +73,7 @@ function ViewModeToggle({
       >
         <Grid aria-hidden="true" className="h-3.5 w-3.5" />
       </button>
-      <button
+      <button type="button"
         onClick={() => {
           onViewModeChange("list");
         }}
@@ -200,7 +200,7 @@ export function LyricsNavigation({
               className="h-8 w-full rounded-lg border border-foreground/8 bg-foreground/4 px-10 text-sm text-foreground transition-all placeholder:text-muted-foreground/40 hover:border-foreground/12 focus:border-foreground/20 focus:bg-background focus:ring-2 focus:ring-ado-primary/10 focus:outline-none md:h-10"
             />
             {searchQuery ? (
-              <button
+              <button type="button"
                 aria-label="Clear search"
                 onClick={() => {
                   onSearchChange("");
@@ -242,7 +242,7 @@ export function LyricsNavigation({
           </div>
 
           <div className="flex items-center gap-1.5">
-            <button
+            <button type="button"
               onClick={onToggleSaved}
               className={cn(
                 "flex h-8 items-center gap-1.5 rounded-lg px-2 text-xs font-medium transition-colors",
@@ -275,7 +275,7 @@ export function LyricsNavigation({
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button
+                <button type="button"
                   className={cn(
                     "flex h-8 items-center gap-1.5 rounded-lg px-2 text-xs font-medium transition-colors",
                     selectedYear !== null
@@ -353,7 +353,7 @@ export function LyricsNavigation({
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button
+                <button type="button"
                   className="flex h-8 items-center gap-1 rounded-lg px-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-foreground/6 hover:text-foreground"
                   aria-label="Sort order"
                 >
@@ -401,7 +401,7 @@ export function LyricsNavigation({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <button
+            <button type="button"
               onClick={onRandomClick}
               aria-label="Random song (keyboard shortcut: R)"
               className="flex h-8 items-center gap-1.5 rounded-lg px-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-foreground/6 hover:text-foreground md:px-2"

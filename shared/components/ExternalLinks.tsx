@@ -20,7 +20,7 @@ function ExternalLinkItem({
   isOpen: boolean;
   onToggle: () => void;
 }) {
-  const contentRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLElement>(null);
   const panelId = useId();
   const [hasOpened, setHasOpened] = useState(false);
 
@@ -134,9 +134,8 @@ function ExternalLinkItem({
         </div>
       </button>
 
-      <div
+      <section
         id={panelId}
-        role="region"
         aria-label={title}
         ref={contentRef}
         className="h-0 overflow-hidden opacity-0"
@@ -172,7 +171,7 @@ function ExternalLinkItem({
             </a>
           )}
         </div>
-      </div>
+      </section>
     </div>
   );
 }

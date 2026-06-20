@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useEffect, useRef } from "react";
+import { useEffect, useRef, type Ref } from "react";
 
 import type { Song } from "@/types/song";
 
@@ -9,27 +9,26 @@ interface VideoPlayerProps {
   title: string;
   allow?: string;
   className?: string;
+  ref?: Ref<HTMLIFrameElement>;
 }
 
-const VideoPlayer = forwardRef<HTMLIFrameElement, VideoPlayerProps>(
-  ({ src, title, allow, className }, ref) => {
-    return (
-      <div className="h-full w-full">
-        <iframe
-          ref={ref}
-          src={src}
-          title={title}
-          allow={allow}
-          allowFullScreen
-          loading="lazy"
-          sandbox="allow-scripts allow-same-origin allow-presentation"
-          referrerPolicy="strict-origin-when-cross-origin"
-          className={className ?? "h-full w-full border-0"}
-        />
-      </div>
-    );
-  },
-);
+function VideoPlayer({ src, title, allow, className, ref }: VideoPlayerProps) {
+  return (
+    <div className="h-full w-full">
+      <iframe
+        ref={ref}
+        src={src}
+        title={title}
+        allow={allow}
+        allowFullScreen
+        loading="lazy"
+        sandbox="allow-scripts allow-same-origin allow-presentation"
+        referrerPolicy="strict-origin-when-cross-origin"
+        className={className ?? "h-full w-full border-0"}
+      />
+    </div>
+  );
+}
 
 interface YouTubePlayerProps {
   song?: Song;

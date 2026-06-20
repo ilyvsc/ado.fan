@@ -39,7 +39,7 @@ const wishTourSeoul = getAssetUrl("tours/wish/gallery/wish-tour-seoul-2024");
 const hibanaPromo = getAssetUrl("tours/hibana/ado-hibana-promotional-banner");
 const adoMars = getAssetUrl("tours/hibana/ado-hibana-wallpaper");
 
-export const storyPanels = [
+const storyPanels = [
   {
     id: "01",
     title: "Voice of the Underground",
@@ -261,7 +261,7 @@ function OverlayReveal({
   );
 }
 
-export function DesktopStory() {
+function DesktopStory() {
   const ref = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -359,7 +359,7 @@ export function DesktopStory() {
   );
 }
 
-export function MobileStory() {
+function MobileStory() {
   const ref = useRef<HTMLDivElement>(null);
 
   useGSAP(

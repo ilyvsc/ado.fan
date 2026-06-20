@@ -30,9 +30,13 @@ function ImmersivePlayer({
   showControls: boolean;
   onClose: () => void;
   onMouseMove: () => void;
-  dialogRef: React.RefObject<HTMLDivElement | null>;
+  dialogRef: React.RefObject<HTMLDialogElement | null>;
 }) {
   const scopeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    dialogRef.current?.showModal();
+  }, [dialogRef]);
 
   useGSAP(
     () => {
@@ -94,18 +98,16 @@ function ImmersivePlayer({
   };
 
   return (
-    <div
+    <dialog
       ref={dialogRef}
-      tabIndex={-1}
-      role="dialog"
-      aria-modal="true"
       aria-label={`${song.title.english} video player`}
       onClick={handleExit}
-      onKeyDown={(e) => {
-        if (e.key === "Escape") handleExit();
+      onCancel={(e) => {
+        e.preventDefault();
+        handleExit();
       }}
       onMouseMove={onMouseMove}
-      className="fixed inset-0 z-50 overflow-hidden outline-none"
+      className="fixed inset-0 z-50 m-0 h-full max-h-none w-full max-w-none overflow-hidden border-0 bg-transparent p-0 outline-none"
       style={{ "--theme-color": song.themeColor } as CSSProperties}
     >
       <div
@@ -137,7 +139,7 @@ function ImmersivePlayer({
               )}
             </div>
 
-            <button
+            <button type="button"
               onClick={handleExit}
               aria-label="Close player"
               className={cn(
@@ -163,7 +165,7 @@ function ImmersivePlayer({
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
   );
 }
 
@@ -171,7 +173,7 @@ export function SongCard({ song }: { song: Song }) {
   const [isExpanded, setExpandedState] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  const dialogRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   const handleMouseMove = () => {
     setShowControls(true);
@@ -227,7 +229,7 @@ export function SongCard({ song }: { song: Song }) {
         className="group relative isolate flex w-full flex-col items-start md:w-2xl"
         style={{ "--theme-color": song.themeColor } as CSSProperties}
       >
-        <button
+        <button type="button"
           onClick={toggleOpen}
           className="relative flex w-full items-center gap-6 rounded-xl p-2 text-left transition-colors duration-300 hover:bg-ado-primary/35"
         >

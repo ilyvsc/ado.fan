@@ -1,5 +1,5 @@
 import { Prisma } from "../generated/client";
-import { lyricsPrismaSelect } from "../select";
+import { lyricsPrismaSelect } from "../select/lyricsSelect";
 
 import type { LanguageCode } from "@/shared/i18n/types";
 import type { Lyrics } from "@/types/lyrics";

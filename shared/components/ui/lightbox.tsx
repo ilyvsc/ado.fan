@@ -18,7 +18,7 @@ export function Lightbox({
   alt,
   onClose,
 }: LightboxProps & { onClose: () => void }) {
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDialogElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -70,30 +70,23 @@ export function Lightbox({
   );
 
   useEffect(() => {
+    overlayRef.current?.showModal();
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
     };
   }, []);
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") handleClose();
-    };
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [handleClose]);
-
   return (
-    <div
+    <dialog
       ref={overlayRef}
-      role="dialog"
-      aria-modal="true"
       aria-label={alt}
-      className="fixed inset-0 z-50 flex cursor-zoom-out items-center justify-center bg-black/90 backdrop-blur-sm"
+      className="fixed inset-0 z-50 m-0 flex h-full max-h-none w-full max-w-none cursor-zoom-out items-center justify-center border-0 bg-black/90 p-0 backdrop-blur-sm outline-none"
       onClick={handleClose}
+      onCancel={(e) => {
+        e.preventDefault();
+        handleClose();
+      }}
     >
       <div ref={imageRef} className="relative h-full w-full cursor-zoom-out">
         <Image
@@ -113,6 +106,6 @@ export function Lightbox({
           <X size={14} />
         </Button>
       </div>
-    </div>
+    </dialog>
   );
 }

@@ -8,6 +8,12 @@ import { SongHeaderActions } from "@/features/lyrics/reader/components/SongHeade
 import type { Album } from "@/types/album";
 import type { Song } from "@/types/song";
 
+const releaseDateFormat = new Intl.DateTimeFormat("en", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
 function getCreditNames(credits: Song["credits"], roles: string[]) {
   if (!credits?.credits.length) return null;
 
@@ -27,11 +33,7 @@ export function SongLyricsHeader({ song, albums }: { song: Song; albums: Album[]
   )?.trackNumber;
 
   const featuredNames = getCreditNames(song.credits, ["feat", "featuring"]);
-  const releaseLabel = new Intl.DateTimeFormat("en", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(new Date(song.releaseDate));
+  const releaseLabel = releaseDateFormat.format(new Date(song.releaseDate));
 
   return (
     <div className="relative overflow-hidden bg-(--theme-surface)">

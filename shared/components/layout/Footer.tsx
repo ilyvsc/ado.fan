@@ -41,9 +41,11 @@ const contactLinks = [
 const linksClass =
   "py-1 text-sm text-foreground/60 transition-colors hover:text-foreground hover:underline hover:underline-offset-4 md:text-base";
 
+const compactNumber = new Intl.NumberFormat("en", { notation: "compact" });
+
 function formatStat(value: number | null) {
   if (value === null) return "—";
-  return new Intl.NumberFormat("en", { notation: "compact" }).format(value);
+  return compactNumber.format(value);
 }
 
 export function Footer({ githubData }: { githubData: GitHubData }) {

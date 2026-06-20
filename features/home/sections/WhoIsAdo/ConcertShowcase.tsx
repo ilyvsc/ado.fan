@@ -267,9 +267,9 @@ function StackedConcertCard({
               </p>
 
               <div className="max-w-2xl space-y-4">
-                {concert.paragraphs.map((p, i) => (
+                {concert.paragraphs.map((p) => (
                   <p
-                    key={i}
+                    key={p}
                     className="stack-para text-base leading-7 text-muted-foreground"
                   >
                     {p}

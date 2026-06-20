@@ -16,6 +16,17 @@ import type { TimelineGroups } from "@/types/timeline";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
+function handleSkip() {
+  const scrollTrigger = ScrollTrigger.getById("timeline-scroll");
+  if (!scrollTrigger) return;
+
+  gsap.to(window, {
+    scrollTo: scrollTrigger.end,
+    duration: 1.5,
+    ease: "power2.inOut",
+  });
+}
+
 export function TimelineClient({
   timelineGroups,
 }: {
@@ -254,17 +265,6 @@ export function TimelineClient({
     { scope: wrapperRef, dependencies: [timelineGroups] },
   );
 
-  const handleSkip = () => {
-    const scrollTrigger = ScrollTrigger.getById("timeline-scroll");
-    if (!scrollTrigger) return;
-
-    gsap.to(window, {
-      scrollTo: scrollTrigger.end,
-      duration: 1.5,
-      ease: "power2.inOut",
-    });
-  };
-
   return (
     <section
       ref={sectionRef}
@@ -353,7 +353,7 @@ export function TimelineClient({
                   {String(activeIndex + 1).padStart(2, "0")} /{" "}
                   {String(total).padStart(2, "0")}
                 </span>
-                <button
+                <button type="button"
                   ref={skipRef}
                   onClick={handleSkip}
                   className="pointer-events-auto flex items-center gap-1.5 rounded-md bg-ado-primary/70 px-3 py-1.5 text-ado-primary-foreground transition-opacity duration-300 hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
