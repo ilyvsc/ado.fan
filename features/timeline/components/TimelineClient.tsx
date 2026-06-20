@@ -82,7 +82,11 @@ export function TimelineClient({
       const mm = gsap.matchMedia();
 
       mm.add("(min-width: 768px)", () => {
-        const getScrollDistance = () => content.offsetWidth - wrapper.clientWidth;
+        const getScrollDistance = () => {
+          const last = sections[sections.length - 1];
+          if (!last) return content.offsetWidth - wrapper.clientWidth;
+          return last.offsetLeft + last.offsetWidth / 2 - wrapper.clientWidth / 2;
+        };
 
         gsap.set([content, ...sections, ...cards], {
           willChange: "transform, opacity",
