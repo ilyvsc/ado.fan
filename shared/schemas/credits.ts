@@ -14,9 +14,9 @@ const CreditEntrySchema = z.object({
   entities: z.array(CreditEntitySchema).nonempty(),
 });
 
-export const CreditsSchema = z
-  .object({ credits: z.array(CreditEntrySchema).default([]) })
-  .strict();
+const CreditsSchema = z.strictObject({
+  credits: z.array(CreditEntrySchema).default([]),
+});
 
 export type Credits = z.infer<typeof CreditsSchema>;
 
