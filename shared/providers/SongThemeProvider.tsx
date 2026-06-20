@@ -3,8 +3,9 @@
 import {
   createContext,
   useCallback,
-  useContext,
+  useMemo,
   useState,
+  use,
   type ReactNode,
 } from "react";
 
@@ -57,15 +58,18 @@ export function SongThemeProvider({ children }: { children: ReactNode }) {
     [currentTheme],
   );
 
+  const theme = useMemo(
+    () => ({ currentTheme, setTheme, previewTheme }),
+    [currentTheme, setTheme, previewTheme],
+  );
+
   return (
-    <SongThemeContext.Provider value={{ currentTheme, setTheme, previewTheme }}>
-      {children}
-    </SongThemeContext.Provider>
+    <SongThemeContext.Provider value={theme}>{children}</SongThemeContext.Provider>
   );
 }
 
 export function useSongTheme() {
-  const context = useContext(SongThemeContext);
+  const context = use(SongThemeContext);
   if (!context) throw new Error();
   return context;
 }
