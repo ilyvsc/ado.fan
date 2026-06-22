@@ -13,7 +13,7 @@ async function fetchSongSearch(
     signal,
   });
 
-  if (!res.ok) throw new Error(`Search request failed with ${res.status}`);
+  if (!res.ok) throw new Error(String(res.status));
 
   const data: unknown = await res.json();
   return Array.isArray(data) ? (data as SongListItem[]) : [];

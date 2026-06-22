@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 
+import { Button } from "@/components/ui/button";
+
 export default function LyricsError({
   error,
   reset,
@@ -14,15 +16,19 @@ export default function LyricsError({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background">
-      <p className="text-sm text-muted-foreground">Failed to load lyrics</p>
-      <button
-        type="button"
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background px-6 text-center">
+      <h1 className="text-3xl font-bold text-ado-primary uppercase md:text-4xl">
+        Something broke
+      </h1>
+      <p className="max-w-sm text-base text-muted-foreground">
+        We couldn't load the lyrics. Try again in a minute.
+      </p>
+      <Button
+        className="h-11 bg-ado-primary text-base font-semibold text-foreground hover:bg-ado-primary/80"
         onClick={reset}
-        className="rounded-lg bg-foreground/8 px-4 py-2 text-sm text-foreground transition-colors hover:bg-foreground/12"
       >
         Try again
-      </button>
+      </Button>
     </div>
   );
 }

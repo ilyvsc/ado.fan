@@ -55,6 +55,7 @@ export function LyricsSearchPage({ recommended, allSongs }: LyricsSearchPageProp
 
   const deferredQuery = useDeferredValue(searchQuery);
   const search = useSongSearch(deferredQuery);
+  if (search.error) throw new Error(`Search failed (${search.error})`);
   const viewMode = viewModeOverride ?? (isMobile ? "list" : "grid");
 
   const availableYears = useMemo(
