@@ -3,10 +3,10 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
+import { SONG_THEMES, type SongTheme } from "@/constants/themes";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { SONG_THEMES, type SongTheme } from "@/shared/constants/themes";
-import { cn } from "@/shared/lib/utils";
-import { useSongTheme } from "@/shared/providers/SongThemeProvider";
+import { cn } from "@/lib/utils";
+import { useSongTheme } from "@/providers/SongThemeProvider";
 
 import { ThemeToggleButton } from "./ThemeButton";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../ui/dialog";

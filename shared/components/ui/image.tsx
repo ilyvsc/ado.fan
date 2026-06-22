@@ -1,7 +1,7 @@
 import NextImage, { type ImageProps } from "next/image";
 import { useState } from "react";
 
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/lib/utils";
 
 const IMAGE_FORMAT = "webp";
 const ACCEPTED_FORMATS = ["jpg", "jpeg", "png", "webp", "avif", "mp4"];

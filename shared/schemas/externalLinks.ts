@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { Prisma } from "@/prisma/generated/client";
+import { Prisma } from "@/prisma/client";
 
 const nonEmptyString = z.string().trim().min(1);
 

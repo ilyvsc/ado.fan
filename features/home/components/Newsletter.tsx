@@ -8,9 +8,8 @@ import { ArrowUpRightSquare, Bell, Calendar, ShoppingBag, Video } from "lucide-r
 import Link from "next/link";
 import { useMemo, useRef } from "react";
 
+import { RosesCrown } from "@/components/icons/RosesCrown";
 import { Button } from "@/components/ui/button";
-import rosesCrownSVG from "@/public/images/roses-crown.svg";
-import { RosesCrown } from "@/shared/components/icons/RosesCrown";
 
 gsap.registerPlugin(ScrollTrigger);
 

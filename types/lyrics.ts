@@ -1,4 +1,4 @@
-import { Locale, type LanguageCode } from "@/shared/i18n/types";
+import { Locale, type LanguageCode } from "@/i18n/types";
 
 export interface Lyrics {
   songId: string;

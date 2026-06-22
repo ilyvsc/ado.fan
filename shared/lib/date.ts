@@ -1,4 +1,4 @@
-import { defaultLocale } from "@/shared/i18n/types";
+import { defaultLocale } from "@/i18n/types";
 
 export function formatDate(
   value: string | null | undefined,

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-import { useRecentlyViewed } from "@/features/lyrics/search/hooks/useRecentlyViewed";
+import { useRecentlyViewed } from "@/features/lyrics/hooks/useRecentlyViewed";
 
 export function TrackRecentlyViewed({ songId }: { songId: string }) {
   const { addRecentSong } = useRecentlyViewed();

@@ -1,8 +1,6 @@
-import { Credits } from "@/shared/schemas/credits";
-
 import type { Song } from "./song";
-
-import type { ExternalLinks } from "@/shared/schemas/externalLinks";
+import type { Credits } from "@/schemas/credits";
+import type { ExternalLinks } from "@/schemas/externalLinks";
 
 export interface Album {
   id: string;

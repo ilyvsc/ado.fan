@@ -18,17 +18,17 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { ThemeSelectorButton } from "@/shared/components/themes/ThemeButton";
-import { ThemeSelectorDialog } from "@/shared/components/themes/ThemeSelector";
+import { ThemeSelectorButton } from "@/components/themes/ThemeButton";
+import { ThemeSelectorDialog } from "@/components/themes/ThemeSelector";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/shared/components/ui/dropdown-menu";
-import { cn } from "@/shared/lib/utils";
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 import type { SongSortOption } from "@/types/song";
 

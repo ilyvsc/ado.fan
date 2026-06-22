@@ -3,7 +3,7 @@
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollToPlugin);
 

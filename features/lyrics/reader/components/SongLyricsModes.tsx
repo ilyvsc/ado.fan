@@ -14,12 +14,12 @@ import {
 
 import { Suspense, useMemo, useState } from "react";
 
+import { Locale } from "@/i18n/types";
 import { cn } from "@/lib/utils";
-import { Locale } from "@/shared/i18n/types";
 
 import { useLyricsUrlState } from "../hooks/useLyricsUrlState";
 
-import type { LyricsViewMode } from "@/features/lyrics/types/states";
+import type { LyricsViewMode } from "@/features/lyrics/reader/types/states";
 import type { LyricsLanguage } from "@/types/lyrics";
 
 const MODE_CONFIG: {

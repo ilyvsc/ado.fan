@@ -5,7 +5,7 @@ import { Check, Heart, Share2 } from "lucide-react";
 
 import { useState } from "react";
 
-import { useFavorites } from "@/features/lyrics/search/hooks/useFavorites";
+import { useFavorites } from "@/features/lyrics/hooks/useFavorites";
 import { cn } from "@/lib/utils";
 
 interface SongHeaderActionsProps {

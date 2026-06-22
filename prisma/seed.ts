@@ -4,13 +4,13 @@ import { basename, dirname, join } from "path";
 import matter from "gray-matter";
 import { z } from "zod";
 
-import { Credits, assertCredits } from "@/shared/schemas/credits";
+import { serializeSongSeed } from "@/db/serialize";
+import { Credits, assertCredits } from "@/schemas/credits";
 
 import { prisma } from "./client";
 import { AlbumType } from "./generated/client";
-import { serializeSongSeed } from "./serializer";
 
-import type { LanguageCode } from "@/shared/i18n/types";
+import type { LanguageCode } from "@/i18n/types";
 import type { AlbumDefinition } from "@/types/album";
 import type { Lyrics } from "@/types/lyrics";
 import type { Song, SongSeedInput } from "@/types/song";

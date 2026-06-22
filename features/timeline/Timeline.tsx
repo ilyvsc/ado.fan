@@ -1,4 +1,4 @@
-import { getTimelineSongs } from "@/prisma/queries/songs";
+import { getTimelineSongs } from "@/db/queries/songs";
 
 import { TimelineClient } from "./components/TimelineClient";
 

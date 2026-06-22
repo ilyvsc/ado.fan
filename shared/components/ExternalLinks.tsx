@@ -7,9 +7,9 @@ import { ArrowUpRight, ChevronDown } from "lucide-react";
 
 import { useCallback, useId, useMemo, useRef, useState } from "react";
 
-import { NicoNicoPlayer, YouTubePlayer } from "@/shared/components/VideoPlayer";
+import { NicoNicoPlayer, YouTubePlayer } from "@/components/VideoPlayer";
 
-import type { ExternalLinks } from "@/shared/schemas/externalLinks";
+import type { ExternalLinks } from "@/schemas/externalLinks";
 
 function ExternalLinkItem({
   link,

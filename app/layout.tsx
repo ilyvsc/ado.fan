@@ -2,14 +2,14 @@ import { Analytics } from "@vercel/analytics/react";
 
 import NoScriptError from "@/app/no-script";
 import { Footer } from "@/components/layout/Footer";
+
+import { getGitHubFooterData } from "@/lib/github";
+import { buildAlternates, SITE_KEYWORDS } from "@/lib/metadata";
+import { linksCategories } from "@/lib/socialLinks";
+
+import { cn } from "@/lib/utils";
 import { SongThemeProvider } from "@/providers/SongThemeProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-
-import { getGitHubFooterData } from "@/shared/lib/github";
-import { buildAlternates, SITE_KEYWORDS } from "@/shared/lib/metadata";
-import { linksCategories } from "@/shared/lib/socialLinks";
-
-import { cn } from "@/shared/lib/utils";
 import { gambarino, inter, jpNotoSans, jpNotoSerif } from "@/styles/fonts";
 
 import type { Metadata, Viewport } from "next";

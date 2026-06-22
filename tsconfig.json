@@ -13,10 +13,15 @@
     "incremental": true,
     "paths": {
       "@/*": ["./*"],
-      "@/components/*": ["./shared/components/*"],
-      "@/providers/*": ["./shared/providers/*"],
       "@/lib/*": ["./shared/lib/*"],
-      "@/hooks/*": ["./shared/hooks/*"]
+      "@/hooks/*": ["./shared/hooks/*"],
+      "@/schemas/*": ["./shared/schemas/*"],
+      "@/providers/*": ["./shared/providers/*"],
+      "@/components/*": ["./shared/components/*"],
+      "@/db/*": ["./server/db/*"],
+      "@/types/*": ["./types/*"],
+      "@/i18n/*": ["./shared/i18n/*"],
+      "@/constants/*": ["./shared/constants/*"]
     },
     "plugins": [{ "name": "next" }],
     "noEmit": true,

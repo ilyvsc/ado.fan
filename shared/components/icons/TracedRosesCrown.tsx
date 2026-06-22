@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { useRef } from "react";
 
-import { RosesCrown } from "@/shared/components/icons/RosesCrown";
+import { RosesCrown } from "@/components/icons/RosesCrown";
 
 gsap.registerPlugin(ScrollTrigger);
 

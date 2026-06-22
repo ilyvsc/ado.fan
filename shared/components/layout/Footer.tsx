@@ -10,12 +10,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSocialLinks } from "@/hooks/useSocialLinks";
-import { linksCategories } from "@/lib/socialLinks";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 
-import { formatDate } from "@/shared/lib/date";
-import { githubLinks, type GitHubData } from "@/shared/lib/github";
+import { formatDate } from "@/lib/date";
+import { githubLinks, type GitHubData } from "@/lib/github";
+import { linksCategories } from "@/lib/socialLinks";
 
 gsap.registerPlugin(ScrollTrigger);
 

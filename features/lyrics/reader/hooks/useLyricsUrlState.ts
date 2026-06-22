@@ -3,10 +3,13 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
-import { Locale } from "@/shared/i18n/types";
-
-import type { LyricsUrlState, LyricsViewMode } from "@/features/lyrics/types/states";
+import type {
+  LyricsUrlState,
+  LyricsViewMode,
+} from "@/features/lyrics/reader/types/states";
 import type { LyricsLanguage } from "@/types/lyrics";
+
+import { Locale } from "@/i18n/types";
 
 export function useLyricsUrlState({
   availableLanguages,

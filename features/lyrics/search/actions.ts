@@ -1,6 +1,6 @@
 "use server";
 
-import { getRandomSongs } from "@/prisma/queries/songs";
+import { getRandomSongs } from "@/db/queries/songs";
 
 export async function getRandomSongId(): Promise<string | null> {
   const [randomSong] = await getRandomSongs(1);
