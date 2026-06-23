@@ -3,7 +3,7 @@
 <div align="center">
 
 [![Build CI Status][ci-badge]](https://github.com/ilyvsc/ado.fan/actions/workflows/ci.yml)
-[![contributions welcome][contributions-badge]](CODE_OF_CONDUCT.md)
+[![contributions welcome][contributions-badge]](CONTRIBUTING.md)
 [![code style][prettier-badge]](https://github.com/prettier/prettier)
 [![Website][uptime-badge]][website-url]
 [![Join Ado Hangout Discord!][discord-badge]][fan-discord]
@@ -25,229 +25,143 @@ A fan tribute to the Japanese artist Ado.
 
 ## Table of Contents
 
-- [Project Overview](#project-overview)
-- [Built With](#built-with)
-- [Getting Started](#getting-started)
-  - [Installation](#installation)
-  - [Database Setup](#database-setup)
-  - [Environment Configuration](#environment-configuration)
-- [Development](#development)
-- [Environment Variables](#environment-variables)
+- [Project overview](#project-overview)
+- [Documentation](#documentation)
+- [Stack](#stack)
+- [Quick start](#quick-start)
+- [Commands](#commands)
+- [Project layout](#project-layout)
 - [Contributing](#contributing)
 - [License](#license)
 
-## Project Overview
+## Project overview
 
-**ado.fan** is a comprehensive fan-made website dedicated to the phenomenal Japanese singer Ado. This platform serves as a central hub for the global fan community to:
+**ado.fan** is a non-commercial fan-made website about the Japanese singer Ado.
+It brings together discography information, lyrics, music videos, news, and fan
+community resources.
 
-- 🎵 **Discover Music**: Explore Ado's complete discography with high-quality audio streaming
-- 🎬 **Watch Music Videos**: Experience her iconic music videos and live performances
-- 📰 **Stay Updated**: Get the latest news, releases, and tour announcements
-- 👥 **Connect**: Join a passionate community of fans from around the world
+The project is under active development. Discuss ideas and larger proposals in
+[GitHub Discussions](https://github.com/ilyvsc/ado.fan/discussions).
 
-> [!IMPORTANT]
-> This project is currently under active development. Many features are subject to change, and while we have numerous exciting ideas in the pipeline, we haven't defined a fixed roadmap yet. We welcome community input and contributions. Share your ideas in our [GitHub Discussions](https://github.com/ilyvsc/ado.fan/discussions)
+## Documentation
 
-### Built With
+| Audience                                                         | Guide                              |
+| ---------------------------------------------------------------- | ---------------------------------- |
+| Code, design, documentation, data, and pull-request contributors | [CONTRIBUTING.md](CONTRIBUTING.md) |
+| UI and lyrics translators                                        | [TRANSLATING.md](TRANSLATING.md)   |
+| Local setup and available commands                               | This README                        |
 
-This project is built with a modern, full-stack JavaScript setup:
+## Stack
 
-#### Frontend & Framework
+- Next.js 16, React 19, and strict TypeScript
+- Tailwind CSS v4, shadcn/ui, and Radix UI
+- Prisma ORM with PostgreSQL
+- Lingui v6 for UI localization
+- Bun as the primary package manager and command runner
 
-- **[Next.js 15](https://nextjs.org/)**: React-based framework with App Router, Server Components, and built-in optimizations
-- **[React 19](https://react.dev/)**: Latest React with improved performance and developer experience
-- **[TypeScript](https://www.typescriptlang.org/)**: Full type safety and enhanced IDE support
+## Quick start
 
-#### Database & Data Management
+### Prerequisites
 
-- **[PostgreSQL](https://www.postgresql.org/)**: Robust, ACID-compliant relational database
-- **[Prisma ORM](https://www.prisma.io/)**: Type-safe database client with migrations and introspection
-
-#### Styling & UI
-
-- **[Tailwind CSS](https://tailwindcss.com/)**: Utility-first CSS framework for rapid UI development
-- **[shadcn/ui](https://ui.shadcn.com/)**: High-quality, accessible React components built on Radix UI
-- **[Radix UI](https://www.radix-ui.com/)**: Unstyled, accessible components for design systems
-
-#### Development Tools
-
-- **Package Manager**: Flexible support for [pnpm](https://pnpm.io/), [npm](https://npmjs.com/), [yarn](https://yarnpkg.com/), or any of your choice.
-- **[ESLint](https://eslint.org/)**: Code linting for consistent code quality
-- **[Prettier](https://prettier.io/)**: Code formatting for consistent style
-- **[Docker](https://www.docker.com/)**: Containerization for consistent deployment environments
-
-## Getting Started
-
-Follow this comprehensive guide to set up the project locally. The process is straightforward and should take about 10-15 minutes.
+- [Bun](https://bun.sh/) or any other package manager
+- A PostgreSQL-compatible database and a `DATABASE_URL`
 
 > [!NOTE]
-> This project supports **any modern package manager**. Choose the one you prefer. Examples in this documentation use `pnpm`, just replace `pnpm` with your preferred package manager throughout the commands.
+> This documentation uses `bun` because continuous integration uses Bun and
+> Node 24. You may use any modern package manager except `npm`. Do not commit
+> an additional lockfile.
 
-### Installation
-
-#### 1. Clone the Repository
+### Clone and install
 
 ```sh
-git clone https://github.com/ilyvsc/ado.fan.git
+git clone git@github.com:ilyvsc/ado.fan.git
 cd ado.fan
+bun install
 ```
 
-#### 2. Install Dependencies
+### Configure environment variables
 
-```sh
-pnpm install
-```
-
-This will install all required dependencies including Next.js, React, TypeScript, Tailwind CSS, and development tools.
-
-### Environment Configuration
-
-#### 3. Set Up Environment Variables
-
-Open `.env` in your favorite editor and configure the required variables. See the [Environment Variables](#environment-variables) section for reference.
+Create a local environment file and set the database URL for the database you
+will use:
 
 ```sh
 cp sample.env .env
 ```
 
-### Database Setup
+| Variable              | Required | Purpose                                                               |
+| --------------------- | -------- | --------------------------------------------------------------------- |
+| `DATABASE_URL`        | Yes      | Connection string used by Prisma.                                     |
+| `NEXT_PUBLIC_CDN_URL` | Yes      | Base URL for remote images. `next.config.ts` validates it at startup. |
+| `NODE_ENV`            | No       | Local development defaults to `development`.                          |
 
-#### 4. Set Up Local Database
+`sample.env` shows the expected Prisma Postgres connection-string format. Do not
+commit `.env` files or credentials.
 
-Launch a dedicated [Prisma‑powered Postgres instance](https://www.prisma.io/docs/postgres/database/local-development#1-launching-local-prisma-postgres) in local:
+### Prepare the database
 
-```sh
-pnpm prisma dev --name="ado.fan"
-```
-
-#### 5. Generate Prisma Client
-
-Generate the type-safe Prisma client based on your schema:
-
-```sh
-pnpm prisma generate --no-engine
-```
-
-#### 6. Apply Database Migrations
-
-Initialize your database with the required tables and schema:
+Generate the Prisma client, apply local migrations, and optionally seed local
+development data:
 
 ```sh
-pnpm prisma migrate dev
+bun run db:generate
+bun run db:dev
+bun run db:seed
 ```
 
-This command will:
+> [!WARNING]
+> `db:seed` clears and repopulates the local song, album, and lyrics tables.
+> Use it only with a disposable local database.
 
-- Apply all pending migrations to your database
-- Generate a new migration if schema changes are detected
-- Regenerate the Prisma client
-
-#### 7. Seed Database (Optional)
-
-Populate your database with data including Ado's songs and albums:
+### Run the application
 
 ```sh
-pnpm prisma db seed
+bun run dev
 ```
 
-The seed data includes:
+Open [http://localhost:3000](http://localhost:3000). Run `bun run db:studio` to
+inspect the local database with Prisma Studio.
 
-- Complete discography from [`songs.json`](prisma/fixtures/songs/songs.json)
-- Album information from [`albums.json`](prisma/fixtures/albums.json)
-- Cover songs data from [`covers.json`](prisma/fixtures/songs/covers.json)
-- NicoNico Douga cover songs (2017-2024 songs) data from [`nico-covers.json`](prisma/fixtures/songs/nico-covers.json)
+## Commands
 
-## Development
+| Command                | Purpose                                                                          |
+| ---------------------- | -------------------------------------------------------------------------------- |
+| `bun run dev`          | Start the Next.js development server with Turbopack.                             |
+| `bun run build`        | Generate Prisma and Lingui artifacts, then create a production build.            |
+| `bun run lint`         | Run ESLint across the project.                                                   |
+| `bun run lint:fix`     | Run ESLint and apply available fixes.                                            |
+| `bun run format`       | Format the repository with Prettier. Review resulting changes before committing. |
+| `bun run db:generate`  | Regenerate Prisma client files.                                                  |
+| `bun run db:dev`       | Create and apply local Prisma migrations.                                        |
+| `bun run db:seed`      | Replace local database content with development data.                            |
+| `bun run db:studio`    | Open Prisma Studio.                                                              |
 
-### Start the Development Server
+The generated Prisma client and compiled Lingui `messages.ts` catalogs are
+ignored by Git. Commit migration files and source `.po` catalogs instead.
 
-Launch the development server with hot reloading:
+## Project layout
 
-```sh
-pnpm run dev
+```text
+app/                 Routes, route handlers, layouts, and page metadata
+features/            Domain-specific UI and logic
+shared/              Reusable components, i18n, hooks, providers, and utilities
+server/db/           Database access and serialization
+types/               Shared domain types
+prisma/              Schema, migrations, and generated client
+styles/              Tailwind theme and global styles
 ```
-
-🎉 **Success!** The application will be available at:
-
-- **Website**: [http://localhost:3000](http://localhost:3000)
-- **Database Studio**: Run `pnpm prisma studio` to explore your data
-
-## Environment Variables
-
-Configure these environment variables in your `.env` file for proper application functionality:
-
-### Required Variables
-
-- `DATABASE_URL`: **Required**. Sets the URL where Prisma is going to fetch/query data from.
-  - Get a production-ready database at [Prisma](https://prisma.io), [Supabase](https://supabase.com/), [Render](https://render.com), or similar.
 
 ## Contributing
 
-We welcome contributions from the community! Whether you're fixing bugs, adding features, or improving documentation, your help makes ado.fan better for everyone.
-
-### How to Contribute
-
-1. **Fork the Repository**
-
-   ```sh
-   git fork https://github.com/ilyvsc/ado.fan.git
-   ```
-
-2. **Create a Feature Branch**
-
-   ```sh
-   git checkout -b feature/amazing-feature
-   ```
-
-3. **Make Your Changes**
-   - Follow our coding guidelines (see workspace rules)
-   - Ensure your code is properly typed with TypeScript
-   - Add tests for new functionality
-   - Update documentation as needed
-
-4. **Test Your Changes**
-
-   ```sh
-   pnpm run lint
-   pnpm run build
-   ```
-
-5. **Commit Your Changes**
-
-   ```sh
-   git commit -m "Add amazing feature"
-   ```
-
-6. **Push to Your Fork**
-
-   ```sh
-   git push origin feature/amazing-feature
-   ```
-
-7. **Open a Pull Request**
-   - Describe your changes in detail
-   - Link any related issues
-   - Include screenshots for UI changes
-
-### Development Guidelines
-
-- **Code Style**: We use Prettier and ESLint for consistent formatting
-- **TypeScript**: Strict type checking is enforced
-- **Components**: Follow the established component patterns
-- **Accessibility**: Ensure all UI changes are accessible
-- **Performance**: Consider loading times and bundle size
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. It covers
+repository conventions, validation, database changes, pull-request scope, and
+licensing.
 
 ## License
 
-This project is an unofficial, non-commercial fan project that makes use of multiple licenses:
-
-**Original Source Code**: GNU General Public License v3.0 (GPL-3.0)
-
-**Original Non-Code Assets**: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
-
-Full license details and copyright notices are provided in the [LICENSE](LICENSE) file.
-
-© Copyright 2025 <https://ado.fan/>
+This is an unofficial, non-commercial fan project. Original source code is
+licensed under GPL-3.0, while original non-code assets are licensed under
+CC BY-NC-SA 4.0. See [LICENSE](LICENSE) for copyright, trademark, and full
+license details.
 
 <!-- link definitions --urls-- -->
 
