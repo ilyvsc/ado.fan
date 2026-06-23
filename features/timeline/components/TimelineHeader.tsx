@@ -50,44 +50,44 @@ export function TimelineHeader() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden px-6 pt-8 pb-6 md:py-6"
+      className="relative w-full overflow-hidden px-6 pt-8 pb-6 md:px-10 md:py-6 lg:px-12 lg:py-8 3xl:px-16 3xl:py-10"
     >
       <TracedRosesCrown className="pointer-events-none absolute top-2 right-4 h-28 w-28 rotate-12 text-ado-primary md:hidden" />
 
       <div className="mx-auto w-full max-w-7xl">
-        <div className="grid items-end gap-5 md:grid-cols-12">
+        <div className="grid items-start gap-5 md:grid-cols-12">
           <div className="space-y-3 md:col-span-7">
             <h1
               data-header-title
-              className="font-serif text-5xl leading-none font-black tracking-tight text-ado-secondary-foreground uppercase md:text-7xl"
+              className="font-serif text-5xl leading-none font-black tracking-tight text-ado-secondary-foreground uppercase md:text-7xl 3xl:text-8xl"
             >
               Timeline
             </h1>
             <p
               data-header-fade
-              className="max-w-xl font-serif text-xl leading-snug text-ado-secondary-foreground/90 md:text-2xl"
+              className="max-w-xl font-serif text-xl leading-snug text-ado-secondary-foreground/90 md:text-2xl 3xl:text-3xl"
             >
               Rooted in Vocaloid and Utaite culture.
             </p>
             <p
               data-header-fade
-              className="max-w-xl text-base leading-7 text-ado-secondary-foreground/70"
+              className="max-w-xl text-base leading-7 text-ado-secondary-foreground/70 lg:text-lg"
             >
               From singing alone in a closet to finding her place on stages around the
               world, each song carries something worth holding onto.
             </p>
           </div>
 
-          <figure data-header-fade className="md:col-span-5 md:pt-16 md:pl-10">
+          <figure data-header-fade className="md:col-span-5 md:pl-10">
             <blockquote className="border-l-2 border-ado-primary/80 pl-5">
-              <p className="max-w-md font-serif text-base leading-relaxed text-ado-secondary-foreground/90 italic md:text-lg">
+              <p className="max-w-md font-serif text-base leading-relaxed text-ado-secondary-foreground/90 italic md:text-lg 3xl:text-xl">
                 "So, if you could remember things today, even just a little bit, and
                 take it with you as you go back, I would be really happy. If that
                 happens, I think my younger self, the one who couldn't do anything,
                 would be happy in this audience."
               </p>
             </blockquote>
-            <figcaption className="mt-4 pl-5 font-serif text-sm text-ado-secondary-foreground/70">
+            <figcaption className="mt-4 pl-5 font-serif text-sm text-ado-secondary-foreground/70 3xl:text-base">
               Ado - SPECIAL LIVE 2024「心臓」
             </figcaption>
           </figure>

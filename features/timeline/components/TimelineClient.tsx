@@ -268,7 +268,7 @@ export function TimelineClient({
   return (
     <section
       ref={sectionRef}
-      className="w-full bg-background px-4 py-10 md:h-dvh md:overflow-hidden md:p-12"
+      className="w-full bg-background px-4 py-10 2xl:p-12 md:h-dvh md:overflow-hidden md:p-5 lg:p-8"
     >
       <div className="overflow-hidden rounded-3xl bg-ado-secondary/80 md:flex md:h-full md:flex-col dark:bg-ado-secondary/40">
         <TimelineHeader />
@@ -281,7 +281,7 @@ export function TimelineClient({
         >
           <div
             ref={contentRef}
-            className="flex flex-col gap-12 px-6 py-10 md:h-full md:w-max md:flex-row md:items-center md:gap-5 md:px-20 md:py-0 md:pb-12"
+            className="flex flex-col gap-12 px-6 py-10 3xl:gap-8 3xl:px-28 3xl:pb-12 md:h-full md:w-max md:flex-row md:items-center md:gap-5 md:px-20 md:py-0 md:pb-6 lg:pb-10"
           >
             {timelineGroups.map((yearData) => {
               const isActive = activeYear === yearData.year;

@@ -233,10 +233,10 @@ export function SongCard({ song }: { song: Song }) {
         <button
           type="button"
           onClick={toggleOpen}
-          className="relative flex w-full items-center gap-6 rounded-xl p-2 text-left transition-colors duration-300 hover:bg-ado-primary/35"
+          className="relative flex w-full items-center gap-4 rounded-xl p-2 text-left transition-colors duration-300 hover:bg-ado-primary/35 md:gap-6"
         >
           <div className="relative shrink-0">
-            <div className="relative h-20 w-20 overflow-hidden md:h-24 md:w-24">
+            <div className="relative h-16 w-16 overflow-hidden md:h-20 md:w-20 lg:h-24 lg:w-24 xl:h-32 xl:w-32">
               {song.coverArt ? (
                 <Image
                   src={song.coverArt}
@@ -259,12 +259,12 @@ export function SongCard({ song }: { song: Song }) {
           </div>
 
           <div className="flex min-w-0 flex-1 flex-col justify-center select-text">
-            <h3 className="font-serif text-2xl leading-none font-bold tracking-tight text-ado-secondary-foreground md:text-4xl">
+            <h3 className="truncate font-serif text-2xl leading-tight font-bold tracking-tight text-ado-secondary-foreground 3xl:text-5xl md:text-3xl lg:text-4xl">
               {song.title.english}
             </h3>
 
             {song.title.japanese && (
-              <span className="mt-1 truncate font-jp-serif text-lg font-medium text-ado-secondary-foreground/70 md:text-xl">
+              <span className="mt-1 truncate font-jp-serif text-base font-medium text-ado-secondary-foreground/70 3xl:text-2xl md:text-lg lg:text-xl">
                 {song.title.japanese}
               </span>
             )}
