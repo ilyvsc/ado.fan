@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { Suspense, useMemo, useState } from "react";
+import Markdown from "react-markdown";
 
 import { Locale } from "@/i18n/types";
 import { cn } from "@/lib/utils";
@@ -135,16 +136,18 @@ function LyricsContent({
   fontSize: number;
 }) {
   return (
-    <p
+    <div
       aria-live="polite"
       className={cn(
         language.code === Locale.JAPANESE.code ? "font-jp-sans" : "",
-        "leading-loose whitespace-pre-wrap text-foreground transition-all duration-300",
+        "prose prose-sm max-w-none leading-loose text-foreground transition-all duration-300",
+        "[&_h1]:text-foreground [&_h2]:text-foreground [&_h3]:text-foreground [&_p]:my-0 [&_p]:whitespace-pre-wrap",
+        "[&_em]:text-foreground/80 [&_strong]:text-foreground",
       )}
       style={{ fontSize: fontSize + 2 }}
     >
-      {language.content}
-    </p>
+      <Markdown>{language.content}</Markdown>
+    </div>
   );
 }
 

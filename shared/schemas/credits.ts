@@ -14,7 +14,7 @@ const CreditEntrySchema = z.object({
   entities: z.array(CreditEntitySchema).nonempty(),
 });
 
-const CreditsSchema = z.strictObject({
+export const CreditsSchema = z.strictObject({
   credits: z.array(CreditEntrySchema).default([]),
 });
 

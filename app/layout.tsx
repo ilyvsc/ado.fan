@@ -1,9 +1,6 @@
 import { Analytics } from "@vercel/analytics/react";
 
 import NoScriptError from "@/app/no-script";
-import { Footer } from "@/components/layout/Footer";
-
-import { getGitHubFooterData } from "@/lib/github";
 import { buildAlternates, SITE_KEYWORDS } from "@/lib/metadata";
 import { linksCategories } from "@/lib/socialLinks";
 
@@ -107,7 +104,7 @@ export default async function RootLayout({
   children: ReactNode;
   params: Promise<{ locale?: string }>;
 }) {
-  const [{ locale }, githubData] = await Promise.all([params, getGitHubFooterData()]);
+  const { locale } = await params;
 
   return (
     <html
@@ -137,7 +134,6 @@ export default async function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SongThemeProvider>{children}</SongThemeProvider>
         </ThemeProvider>
-        <Footer githubData={githubData} />
         <Analytics />
       </body>
     </html>

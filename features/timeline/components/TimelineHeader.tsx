@@ -50,7 +50,7 @@ export function TimelineHeader() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden px-6 pt-8 pb-6 md:px-10 md:py-6 lg:px-12 lg:py-8 3xl:px-16 3xl:py-10"
+      className="relative w-full overflow-hidden px-6 pt-8 pb-6 3xl:px-16 3xl:py-10 md:px-10 md:py-6 lg:px-12 lg:py-8"
     >
       <TracedRosesCrown className="pointer-events-none absolute top-2 right-4 h-28 w-28 rotate-12 text-ado-primary md:hidden" />
 
@@ -59,13 +59,13 @@ export function TimelineHeader() {
           <div className="space-y-3 md:col-span-7">
             <h1
               data-header-title
-              className="font-serif text-5xl leading-none font-black tracking-tight text-ado-secondary-foreground uppercase md:text-7xl 3xl:text-8xl"
+              className="font-serif text-5xl leading-none font-black tracking-tight text-ado-secondary-foreground uppercase 3xl:text-8xl md:text-7xl"
             >
               Timeline
             </h1>
             <p
               data-header-fade
-              className="max-w-xl font-serif text-xl leading-snug text-ado-secondary-foreground/90 md:text-2xl 3xl:text-3xl"
+              className="max-w-xl font-serif text-xl leading-snug text-ado-secondary-foreground/90 3xl:text-3xl md:text-2xl"
             >
               Rooted in Vocaloid and Utaite culture.
             </p>
@@ -80,7 +80,7 @@ export function TimelineHeader() {
 
           <figure data-header-fade className="md:col-span-5 md:pl-10">
             <blockquote className="border-l-2 border-ado-primary/80 pl-5">
-              <p className="max-w-md font-serif text-base leading-relaxed text-ado-secondary-foreground/90 italic md:text-lg 3xl:text-xl">
+              <p className="max-w-md font-serif text-base leading-relaxed text-ado-secondary-foreground/90 italic 3xl:text-xl md:text-lg">
                 "So, if you could remember things today, even just a little bit, and
                 take it with you as you go back, I would be really happy. If that
                 happens, I think my younger self, the one who couldn't do anything,

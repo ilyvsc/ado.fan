@@ -11,7 +11,7 @@ const ExternalLinkSchema = z.object({
   description: nonEmptyString.nullable().optional(),
 });
 
-const ExternalLinksSchema = z.array(ExternalLinkSchema).default([]);
+export const ExternalLinksSchema = z.array(ExternalLinkSchema).default([]);
 
 export type ExternalLinks = z.infer<typeof ExternalLinksSchema>;
 
