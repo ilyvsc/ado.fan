@@ -14,8 +14,7 @@ function isPublicPath(pathname: string) {
   return false;
 }
 
-const devBypass =
-  process.env.NODE_ENV === "development" && process.env.ADMIN_DEV_BYPASS === "allow";
+const devBypass = process.env.ADMIN_DEV_BYPASS === "allow";
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
