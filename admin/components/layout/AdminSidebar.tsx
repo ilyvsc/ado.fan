@@ -29,6 +29,7 @@ import { useEffect, useState } from "react";
 
 import { deleteMyAccount, getMyResourceLevels } from "@/admin/actions/roles";
 import { authClient } from "@/admin/auth/client";
+import { getVerifiedSessionUser } from "@/admin/auth/guard";
 import {
   PermissionLevel,
   Role,
@@ -207,9 +208,8 @@ export function AdminSidebar({
   const pathname = usePathname();
   const router = useRouter();
 
-  const { data: session } = authClient.useSession();
-  const user = session?.user;
-
+  const [user, setUser] =
+    useState<Awaited<ReturnType<typeof getVerifiedSessionUser>>>(null);
   const [levels, setLevels] = useState<Record<Resource, Level> | null>(null);
   const [themeOpen, setThemeOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() =>
@@ -217,8 +217,11 @@ export function AdminSidebar({
   );
 
   useEffect(() => {
-    getMyResourceLevels()
-      .then(setLevels)
+    Promise.all([getMyResourceLevels(), getVerifiedSessionUser()])
+      .then(([levels, user]) => {
+        setLevels(levels);
+        setUser(user);
+      })
       .catch(() => {
         setLevels(null);
       });
