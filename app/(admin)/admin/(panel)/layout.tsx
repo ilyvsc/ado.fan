@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 import { getVerifiedSessionUser } from "@/admin/auth/guard";
 
 import { PanelShell } from "./shell";
