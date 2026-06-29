@@ -14,6 +14,7 @@ export const INVITE_COOKIE = "invite_token";
 
 export const auth = betterAuth({
   appName: "ado.fan",
+  baseURL: process.env.BETTER_AUTH_URL,
   database: prismaAdapter(prisma, { provider: "postgresql" }),
   socialProviders: {
     github: {

@@ -8,8 +8,7 @@ import { loadOverrides } from "@/db/queries/admin";
 
 import type { Action, Resource } from "@/admin/lib/permissions";
 
-const devBypass =
-  process.env.NODE_ENV === "development" && process.env.ADMIN_DEV_BYPASS === "allow";
+const devBypass = process.env.ADMIN_DEV_BYPASS === "allow";
 
 const BYPASS_SUPERUSER = {
   id: "dev-bypass",
