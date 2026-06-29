@@ -6,12 +6,12 @@ import { listAllAccounts } from "@/admin/actions/auth-data";
 import { getSessionIdentity } from "@/admin/auth/guard";
 import { TableSkeleton } from "@/admin/components/ui/TableSkeleton";
 import { Role } from "@/admin/lib/permissions";
-import { AccountsTable } from "@/admin/tables/AccountsTable";
+import { AccountsTable } from "@/admin/tables/accounts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 async function AccountsSection({ userId }: { userId?: string }) {
   const accounts = await listAllAccounts(userId);
-  return <AccountsTable accounts={accounts} userId={userId} />;
+  return <AccountsTable accounts={accounts} />;
 }
 
 export default async function AccountsPage({

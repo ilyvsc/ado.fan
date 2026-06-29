@@ -36,6 +36,7 @@ export function TextField({
         hasAffix && field.prefix ? "pl-7" : undefined,
         hasAffix && field.suffix ? "pr-7" : undefined,
         field.readOnly && READONLY,
+        field.inputClassName,
       )}
     />
   );

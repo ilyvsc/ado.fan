@@ -45,7 +45,7 @@ export function SelectField({
             <SelectItem
               key={opt.value}
               value={opt.value}
-              className="cursor-pointer rounded-md px-3 py-1.5 text-sm text-foreground focus:bg-ado-primary/10 focus:text-foreground"
+              className="cursor-pointer rounded-md py-1.5 pr-3 pl-8 text-sm text-foreground focus:bg-ado-primary/10 focus:text-foreground"
             >
               {opt.label}
             </SelectItem>

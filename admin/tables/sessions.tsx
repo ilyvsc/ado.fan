@@ -1,6 +1,5 @@
 "use client";
 
-import { type ColumnDef } from "@tanstack/react-table";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -8,14 +7,13 @@ import { toast } from "sonner";
 
 import { bulkDeleteSessions } from "@/admin/actions/auth-data";
 import { DateTimeCell, UserCell, ObfuscatedCell } from "@/admin/data-table/cells";
-import { DataTable } from "@/admin/data-table/DataTable";
-import { DataTableToolbar } from "@/admin/data-table/toolbar";
-
-import { useAdminTable } from "@/admin/hooks/use-data-table";
-import { sortData } from "@/admin/lib/table-sort";
+import { DataTableClient } from "@/admin/data-table/DataTableClient";
+import { matchesSearch, matchesSelect, userSelectFilter } from "@/admin/lib/filters";
 import { undoToast } from "@/admin/lib/toast";
 
 import type { AdminSession } from "@/admin/types/admin";
+import type { ClientTableConfig } from "@/admin/types/data-table";
+import type { ColumnDef } from "@tanstack/react-table";
 
 const columns: ColumnDef<AdminSession>[] = [
   {
@@ -25,11 +23,10 @@ const columns: ColumnDef<AdminSession>[] = [
     cell: ({ getValue }) => <ObfuscatedCell value={getValue() as string} />,
   },
   {
-    id: "user",
+    id: "userName",
     accessorKey: "userName",
     header: "User",
     maxSize: 230,
-    enableSorting: false,
     cell: ({ row }) => (
       <UserCell
         name={row.original.userName}
@@ -90,6 +87,21 @@ const columns: ColumnDef<AdminSession>[] = [
   },
 ];
 
+export const sessionsTableConfig: ClientTableConfig<AdminSession> = {
+  tableId: "sessions",
+  columns,
+  defaultVisibility: { id: false },
+  emptyMessage: "No sessions found.",
+  buildFilters: (rows) => [
+    userSelectFilter(
+      rows.map((s) => ({ id: s.userId, name: s.userName, image: s.userImage })),
+    ),
+  ],
+  filter: (s, { search, activeFilters }) =>
+    matchesSearch(search, s.userName, s.userEmail, s.ipAddress, s.userAgent) &&
+    matchesSelect(activeFilters.user, s.userId),
+};
+
 export function SessionsTable({ sessions }: { sessions: AdminSession[] }) {
   const router = useRouter();
   const [, startTransition] = useTransition();
@@ -115,68 +127,18 @@ export function SessionsTable({ sessions }: { sessions: AdminSession[] }) {
     });
   }
 
-  const {
-    table,
-    search,
-    setSearch,
-    current,
-    setCurrent,
-    pageSize,
-    resetPreferences,
-    setColumnOrder,
-  } = useAdminTable<AdminSession>({
-    tableId: "sessions",
-    columns,
-    defaultVisibility: { id: false },
-  });
-
-  const filtered = search
-    ? sessions.filter((s) => {
-        const q = search.toLowerCase();
-        return (
-          s.userName.toLowerCase().includes(q) ||
-          s.userEmail.toLowerCase().includes(q) ||
-          (s.ipAddress ?? "").toLowerCase().includes(q) ||
-          (s.userAgent ?? "").toLowerCase().includes(q)
-        );
-      })
-    : sessions;
-
-  const sorted = sortData(filtered, table.getState().sorting);
-  const pageCount = Math.ceil(sorted.length / pageSize);
-  const paged = sorted.slice((current - 1) * pageSize, current * pageSize);
-
-  table.setOptions((prev) => ({ ...prev, data: paged }));
-
   return (
-    <div className="flex flex-col gap-4">
-      <DataTableToolbar
-        table={table}
-        search={search}
-        onSearchChange={setSearch}
-        filters={[]}
-        activeFilters={{}}
-        onFilterChange={() => undefined}
-        onFiltersClear={() => undefined}
-        onResetPreferences={resetPreferences}
-        onReorderColumns={setColumnOrder}
-      />
-      <DataTable
-        table={table}
-        current={current}
-        pageCount={pageCount}
-        total={filtered.length}
-        onPageChange={setCurrent}
-        emptyMessage="No sessions found."
-        bulkActions={[
-          {
-            label: "Delete",
-            icon: Trash2,
-            variant: "destructive",
-            onClick: bulkDelete,
-          },
-        ]}
-      />
-    </div>
+    <DataTableClient
+      config={sessionsTableConfig}
+      data={sessions}
+      bulkActions={[
+        {
+          label: "Delete",
+          icon: Trash2,
+          variant: "destructive",
+          onClick: bulkDelete,
+        },
+      ]}
+    />
   );
 }

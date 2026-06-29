@@ -1,4 +1,5 @@
 export { CheckboxField } from "./CheckboxField";
+export { MarkdownField } from "./MarkdownField";
 export { ColorField } from "./ColorField";
 export { DateField } from "./DateField";
 export { NumberField } from "./NumberField";

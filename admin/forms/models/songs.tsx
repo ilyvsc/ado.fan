@@ -2,33 +2,39 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "@refinedev/react-hook-form";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { Resolver } from "react-hook-form";
 
-import { FormSkeleton } from "@/admin/components/ui/TableSkeleton";
-import { GenericForm } from "@/admin/forms/form";
-import { FormActions } from "@/admin/forms/FormActions";
-
 import {
-  SongAlbums,
   CreditsEditor,
   ExternalLinksEditor,
   SongLyricsEditor,
-} from "@/admin/forms/models/";
+} from "@/admin/components/editors";
+import { LastEditMarker } from "@/admin/components/ui/LastEditMarker";
+import { FormSkeleton } from "@/admin/components/ui/TableSkeleton";
+import { GenericForm } from "@/admin/forms/form";
+import { FormActions } from "@/admin/forms/FormActions";
 
 import { songFormSchema, type SongFormValues } from "@/admin/schemas/songs";
 
 import { Form } from "@/components/ui/form";
 
+import { SongAlbums } from "./albums";
+
 import type { FormConfig } from "@/admin/types/forms";
 
 export function SongForm({ action, id }: { action: "create" | "edit"; id?: string }) {
+  const router = useRouter();
   const form = useForm<SongFormValues>({
     refineCoreProps: {
       resource: "songs",
       action,
       id,
       redirect: "list",
+      onMutationSuccess: () => {
+        router.refresh();
+      },
     },
     resolver: zodResolver(songFormSchema) as unknown as Resolver,
     defaultValues: {
@@ -52,10 +58,11 @@ export function SongForm({ action, id }: { action: "create" | "edit"; id?: strin
           groups: [
             {
               title: "Identity",
+              col: 1 as const,
               fields: [
                 {
                   name: "id",
-                  label: "ID",
+                  label: "Song ID",
                   placeholder: "usseewa",
                   description: "Unique slug used in URLs. Lowercase, hyphens only.",
                   readOnly: action === "edit",
@@ -64,62 +71,94 @@ export function SongForm({ action, id }: { action: "create" | "edit"; id?: strin
             },
             {
               title: "Titles",
+              col: 2 as const,
+              row: 1,
               fields: [
-                { name: "titleEnglish", label: "English Title" },
-                { name: "titleJapanese", label: "Japanese Title" },
+                {
+                  name: "titleEnglish",
+                  label: "English Title",
+                  placeholder: "Enter English title",
+                },
+                {
+                  name: "titleJapanese",
+                  label: "Japanese Title",
+                  placeholder: "Enter Japanese title",
+                  inputClassName: "font-jp-sans",
+                  optional: true,
+                },
               ],
             },
             {
-              title: "Release",
+              title: "Release Information",
+              col: 1 as const,
+              row: 2,
               fields: [
                 {
                   name: "length",
                   label: "Duration",
                   placeholder: "Enter the song duration",
+                  description: "Song length in M:SS format.",
                 },
                 {
                   name: "releaseDate",
                   label: "Release Date",
                   type: "date" as const,
+                  description: "Date the song was publicly released.",
+                },
+              ],
+            },
+            {
+              title: "Platform IDs",
+              col: 2 as const,
+              row: 2,
+              fields: [
+                {
+                  name: "nicoId",
+                  label: "Nico ID",
+                  placeholder: "Enter NicoNico video ID",
+                },
+                {
+                  name: "youtubeId",
+                  label: "YouTube ID",
+                  placeholder: "Enter YouTube video ID",
+                },
+              ],
+            },
+            {
+              title: "Appearance",
+              col: 2 as const,
+              cols: 1,
+              fields: [
+                {
+                  name: "coverArt",
+                  label: "Cover Art",
+                  type: "url" as const,
+                  imagePreview: true,
+                  description: "URL to the song's cover art image.",
+                  optional: true,
                 },
                 {
                   name: "themeColor",
                   label: "Theme Color",
                   type: "color" as const,
                   placeholder: "#FFFFFF",
-                },
-              ],
-            },
-            {
-              title: "Media",
-              fields: [
-                { name: "coverArt", label: "Cover Art", type: "url" as const },
-              ],
-            },
-            {
-              title: "Platform IDs",
-              fields: [
-                {
-                  name: "nicoId",
-                  label: "Nico ID",
-                  placeholder: "Enter video ",
-                },
-                {
-                  name: "youtubeId",
-                  label: "YouTube ID",
-                  placeholder: "Enter video ",
+                  description: "Hex color used as the song's theme on public pages.",
                 },
               ],
             },
             {
               title: "Description",
+              fullWidth: true,
               fields: [
                 {
                   name: "description",
                   label: "Description",
-                  type: "textarea" as const,
-                  rows: 2,
+                  type: "markdown" as const,
+                  rows: 4,
                   span: 3 as const,
+                  description:
+                    "Markdown-formatted notes shown on the song's public page.",
+                  optional: true,
                 },
               ],
             },
@@ -158,6 +197,7 @@ export function SongForm({ action, id }: { action: "create" | "edit"; id?: strin
       >
         <GenericForm form={form} schema={songFormSchema} config={config} />
         <FormActions listHref="/admin/songs" />
+        {action === "edit" && songId && <LastEditMarker entity="song" id={songId} />}
       </form>
     </Form>
   );

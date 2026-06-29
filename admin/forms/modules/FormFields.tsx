@@ -9,6 +9,7 @@ import {
   CheckboxField,
   ColorField,
   DateField,
+  MarkdownField,
   NumberField,
   SelectField,
   TextField,
@@ -45,6 +46,8 @@ export function RenderField({
         switch (field.type) {
           case "textarea":
             return <TextareaField {...shared} />;
+          case "markdown":
+            return <MarkdownField {...shared} />;
           case "select":
             return <SelectField {...shared} />;
           case "checkbox":

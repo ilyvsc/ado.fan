@@ -24,7 +24,7 @@ export function FormActions({ listHref }: FormActionsProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const {
-    formState: { isSubmitting },
+    formState: { isSubmitting, isDirty },
   } = useFormContext();
 
   return (
@@ -33,8 +33,7 @@ export function FormActions({ listHref }: FormActionsProps) {
         <Button
           type="button"
           variant="ghost"
-          size="sm"
-          className="h-8 rounded-md px-3 text-sm text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
+          className="h-9 rounded-md px-4 text-sm font-medium text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
           onClick={() => {
             setOpen(true);
           }}
@@ -43,9 +42,8 @@ export function FormActions({ listHref }: FormActionsProps) {
         </Button>
         <Button
           type="submit"
-          size="sm"
-          disabled={isSubmitting}
-          className="h-8 rounded-md bg-ado-primary px-4 text-sm font-medium text-ado-primary-foreground hover:bg-ado-primary/90 disabled:opacity-50"
+          disabled={isSubmitting || !isDirty}
+          className="h-9 rounded-md bg-ado-primary px-4 text-sm font-medium text-ado-primary-foreground hover:bg-ado-primary/90 disabled:opacity-50"
         >
           {isSubmitting ? "Saving…" : "Save"}
         </Button>

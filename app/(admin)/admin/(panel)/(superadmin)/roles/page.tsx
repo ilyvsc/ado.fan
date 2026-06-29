@@ -8,7 +8,7 @@ import { EmergencySignOut } from "@/admin/components/ui/EmergencySignOut";
 import { TableSkeleton } from "@/admin/components/ui/TableSkeleton";
 import { RESOURCES, Role, ROLES, roleBaseline } from "@/admin/lib/permissions";
 import { LEVEL_META, SECTION_META } from "@/admin/lib/sections";
-import { MembersTable } from "@/admin/tables/MembersTable";
+import { MembersTable } from "@/admin/tables/members";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 

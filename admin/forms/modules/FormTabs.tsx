@@ -60,7 +60,7 @@ export function AdminFormTabs({
         <TabsContent
           key={tab.label}
           value={tab.label}
-          className="mt-0 flex flex-col gap-6"
+          className="mt-0 flex min-h-96 flex-col gap-6"
         >
           {tab.content}
           {tab.groups && (

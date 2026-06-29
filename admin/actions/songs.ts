@@ -2,6 +2,7 @@
 
 import { requireResource } from "@/admin/auth/guard";
 import { type SongFormValues } from "@/admin/schemas/songs";
+import { recordChange } from "@/db/queries/admin/changes";
 import {
   dbCreateSong,
   dbDeleteLyrics,
@@ -114,38 +115,40 @@ export async function adminGetSong(id: string) {
 }
 
 export async function adminCreateSong(data: SongFormValues) {
-  await requireResource("songs", "write");
+  const user = await requireResource("songs", "write");
   const song = await dbCreateSong(data.id, {
     titleEnglish: data.titleEnglish,
-    titleJapanese: data.titleJapanese,
+    titleJapanese: data.titleJapanese ?? null,
     length: data.length,
-    description: data.description,
+    description: data.description ?? null,
     releaseDate: new Date(data.releaseDate),
     nicoId: data.nicoId ?? null,
     youtubeId: data.youtubeId ?? null,
-    coverArt: data.coverArt,
+    coverArt: data.coverArt ?? null,
     themeColor: data.themeColor ?? null,
     credits: data.credits ? assertCredits(data.credits) : undefined,
     externalLinks: data.externalLinks as Prisma.InputJsonValue | undefined,
   });
+  await recordChange("song", song.id, user.id);
   return { ...song, releaseDate: song.releaseDate.toISOString().slice(0, 10) };
 }
 
 export async function adminUpdateSong(id: string, data: SongFormValues) {
-  await requireResource("songs", "write");
+  const user = await requireResource("songs", "write");
   const song = await dbUpdateSong(id, {
     titleEnglish: data.titleEnglish,
-    titleJapanese: data.titleJapanese,
+    titleJapanese: data.titleJapanese ?? null,
     length: data.length,
-    description: data.description,
+    description: data.description ?? null,
     releaseDate: new Date(data.releaseDate),
     nicoId: data.nicoId ?? null,
     youtubeId: data.youtubeId ?? null,
-    coverArt: data.coverArt,
+    coverArt: data.coverArt ?? null,
     themeColor: data.themeColor ?? null,
     credits: data.credits ? assertCredits(data.credits) : undefined,
     externalLinks: data.externalLinks as Prisma.InputJsonValue | undefined,
   });
+  await recordChange("song", id, user.id);
   return { ...song, releaseDate: song.releaseDate.toISOString().slice(0, 10) };
 }
 
@@ -176,8 +179,10 @@ export async function adminUpsertLyrics(
   lines: string[],
   translator: string | null,
 ) {
-  await requireResource("songs", "write");
-  return dbUpsertLyrics(songId, language, lines, translator);
+  const user = await requireResource("songs", "write");
+  const result = await dbUpsertLyrics(songId, language, lines, translator);
+  await recordChange("song", songId, user.id);
+  return result;
 }
 
 export async function adminDeleteLyrics(songId: string, language: string) {

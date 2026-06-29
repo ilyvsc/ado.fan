@@ -6,7 +6,7 @@ import { listAllSessions } from "@/admin/actions/auth-data";
 import { getSessionIdentity } from "@/admin/auth/guard";
 import { TableSkeleton } from "@/admin/components/ui/TableSkeleton";
 import { Role } from "@/admin/lib/permissions";
-import { SessionsTable } from "@/admin/tables/SessionsTable";
+import { SessionsTable } from "@/admin/tables/sessions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 async function SessionsSection({ userId }: { userId?: string }) {

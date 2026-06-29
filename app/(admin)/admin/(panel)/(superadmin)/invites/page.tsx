@@ -3,10 +3,10 @@ import { Suspense } from "react";
 
 import { listInvites } from "@/admin/actions/invites";
 import { getSessionIdentity } from "@/admin/auth/guard";
-import { InviteForm } from "@/admin/components/InviteForm";
+import { InvitePermissionsDialog } from "@/admin/components/dialogs/InvitePermissionsDialog";
 import { TableSkeleton } from "@/admin/components/ui/TableSkeleton";
 import { Role } from "@/admin/lib/permissions";
-import { InvitesTable } from "@/admin/tables/InvitesTable";
+import { InvitesTable } from "@/admin/tables/invites";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 async function InvitesSection() {
@@ -34,7 +34,7 @@ export default async function InvitesPage() {
           <CardTitle className="text-base">Generate invite</CardTitle>
         </CardHeader>
         <CardContent>
-          <InviteForm />
+          <InvitePermissionsDialog />
         </CardContent>
       </Card>
 

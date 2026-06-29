@@ -1,7 +1,6 @@
 "use client";
 
-import { type ColumnDef } from "@tanstack/react-table";
-import { Trash2 } from "lucide-react";
+import { Plug, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
@@ -14,15 +13,13 @@ import {
   ObfuscatedCell,
   ProviderBadgeCell,
 } from "@/admin/data-table/cells";
-
-import { DataTable } from "@/admin/data-table/DataTable";
-import { DataTableToolbar } from "@/admin/data-table/toolbar";
-
-import { useAdminTable } from "@/admin/hooks/use-data-table";
-import { sortData } from "@/admin/lib/table-sort";
+import { DataTableClient } from "@/admin/data-table/DataTableClient";
+import { matchesSearch, matchesSelect, userSelectFilter } from "@/admin/lib/filters";
 import { undoToast } from "@/admin/lib/toast";
 
 import type { AdminAccount } from "@/admin/types/admin";
+import type { ClientTableConfig } from "@/admin/types/data-table";
+import type { ColumnDef } from "@tanstack/react-table";
 
 const columns: ColumnDef<AdminAccount>[] = [
   {
@@ -32,11 +29,10 @@ const columns: ColumnDef<AdminAccount>[] = [
     cell: ({ getValue }) => <ObfuscatedCell value={getValue() as string} />,
   },
   {
-    id: "user",
+    id: "userName",
     accessorKey: "userName",
     header: "User",
     maxSize: 230,
-    enableSorting: false,
     cell: ({ row }) => (
       <UserCell
         name={row.original.userName}
@@ -94,12 +90,34 @@ const columns: ColumnDef<AdminAccount>[] = [
   },
 ];
 
-export function AccountsTable({
-  accounts,
-}: {
-  accounts: AdminAccount[];
-  userId?: string;
-}) {
+export const accountsTableConfig: ClientTableConfig<AdminAccount> = {
+  tableId: "accounts",
+  columns,
+  defaultVisibility: { id: false, scope: false },
+  emptyMessage: "No accounts found.",
+  buildFilters: (rows) => [
+    userSelectFilter(
+      rows.map((a) => ({ id: a.userId, name: a.userName, image: a.userImage })),
+    ),
+    {
+      id: "provider",
+      label: "Provider",
+      field: "providerId",
+      type: "select",
+      icon: Plug,
+      options: [...new Set(rows.map((a) => a.providerId))].map((p) => ({
+        label: p.charAt(0).toUpperCase() + p.slice(1),
+        value: p,
+      })),
+    },
+  ],
+  filter: (a, { search, activeFilters }) =>
+    matchesSearch(search, a.userName, a.userEmail, a.providerId, a.accountId) &&
+    matchesSelect(activeFilters.user, a.userId) &&
+    matchesSelect(activeFilters.provider, a.providerId),
+};
+
+export function AccountsTable({ accounts }: { accounts: AdminAccount[] }) {
   const router = useRouter();
   const [, startTransition] = useTransition();
 
@@ -124,68 +142,18 @@ export function AccountsTable({
     });
   }
 
-  const {
-    table,
-    search,
-    setSearch,
-    current,
-    setCurrent,
-    pageSize,
-    resetPreferences,
-    setColumnOrder,
-  } = useAdminTable<AdminAccount>({
-    tableId: "accounts",
-    columns,
-    defaultVisibility: { id: false, scope: false },
-  });
-
-  const filtered = search
-    ? accounts.filter((a) => {
-        const q = search.toLowerCase();
-        return (
-          a.userName.toLowerCase().includes(q) ||
-          a.userEmail.toLowerCase().includes(q) ||
-          a.providerId.toLowerCase().includes(q) ||
-          a.accountId.toLowerCase().includes(q)
-        );
-      })
-    : accounts;
-
-  const sorted = sortData(filtered, table.getState().sorting);
-  const pageCount = Math.ceil(sorted.length / pageSize);
-  const paged = sorted.slice((current - 1) * pageSize, current * pageSize);
-
-  table.setOptions((prev) => ({ ...prev, data: paged }));
-
   return (
-    <div className="flex flex-col gap-4">
-      <DataTableToolbar
-        table={table}
-        search={search}
-        onSearchChange={setSearch}
-        filters={[]}
-        activeFilters={{}}
-        onFilterChange={() => undefined}
-        onFiltersClear={() => undefined}
-        onResetPreferences={resetPreferences}
-        onReorderColumns={setColumnOrder}
-      />
-      <DataTable
-        table={table}
-        current={current}
-        pageCount={pageCount}
-        total={filtered.length}
-        onPageChange={setCurrent}
-        emptyMessage="No accounts found."
-        bulkActions={[
-          {
-            label: "Delete",
-            icon: Trash2,
-            variant: "destructive",
-            onClick: bulkDelete,
-          },
-        ]}
-      />
-    </div>
+    <DataTableClient
+      config={accountsTableConfig}
+      data={accounts}
+      bulkActions={[
+        {
+          label: "Delete",
+          icon: Trash2,
+          variant: "destructive",
+          onClick: bulkDelete,
+        },
+      ]}
+    />
   );
 }

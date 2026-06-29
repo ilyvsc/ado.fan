@@ -1,10 +1,24 @@
-import type { FilterDef } from "./filters";
+import type { ActiveFilters, FilterDef } from "./filters";
 import type { ColumnDef, VisibilityState } from "@tanstack/react-table";
 
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
 export type { FilterDef, ActiveFilterValue, ActiveFilters } from "./filters";
+
+interface RowFilterContext {
+  search: string;
+  activeFilters: ActiveFilters;
+}
+
+export interface ClientTableConfig<T extends { id: string }> {
+  tableId: string;
+  columns: ColumnDef<T>[];
+  buildFilters?: (rows: T[]) => FilterDef[];
+  filter?: (row: T, ctx: RowFilterContext) => boolean;
+  defaultVisibility?: VisibilityState;
+  emptyMessage?: string;
+}
 
 export interface BulkAction<TData> {
   label: string;

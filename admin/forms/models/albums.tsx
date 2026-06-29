@@ -4,84 +4,114 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "@refinedev/react-hook-form";
 import { Disc3 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Resolver } from "react-hook-form";
 
 import { adminGetSongAlbums } from "@/admin/actions/songs";
+import { CreditsEditor, ExternalLinksEditor } from "@/admin/components/editors";
+import { LastEditMarker } from "@/admin/components/ui/LastEditMarker";
 import { FormSkeleton } from "@/admin/components/ui/TableSkeleton";
 import { GenericForm } from "@/admin/forms/form";
 import { FormActions } from "@/admin/forms/FormActions";
-import { CreditsEditor, ExternalLinksEditor } from "@/admin/forms/models/";
+
 import { albumFormSchema, type AlbumFormValues } from "@/admin/schemas/albums";
 
 import { Form } from "@/components/ui/form";
-
-import { cn } from "@/lib/utils";
+import { TypographyMuted } from "@/components/ui/typography";
 
 import type { FormConfig } from "@/admin/types/forms";
-
-interface AlbumEntry {
-  id: string;
-  title: { english: string; japanese: string };
-  type: string;
-  releaseDate: string;
-  coverArt: string;
-}
+import type { Album } from "@/types/album";
 
 export function SongAlbums({ songId }: { songId: string }) {
-  const [albums, setAlbums] = useState<AlbumEntry[] | null>(null);
+  const [albums, setAlbums] = useState<Album[] | null>(null);
 
   useEffect(() => {
     void adminGetSongAlbums(songId).then(setAlbums);
   }, [songId]);
 
-  if (albums === null) {
-    return <p className="text-sm text-muted-foreground/50">Loading albums…</p>;
-  }
-
-  if (albums.length === 0) {
-    return <p className="text-sm text-muted-foreground/50">No albums yet.</p>;
-  }
-
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-foreground/12 bg-foreground/2 p-4">
-      <p className="text-xs font-medium tracking-wider text-muted-foreground/60 uppercase">
-        Albums
-      </p>
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-        {albums.map((album) => (
-          <div
-            key={album.id}
-            className={cn(
-              "flex items-center gap-3 rounded-lg border border-foreground/8 bg-background p-3",
-            )}
-          >
-            <div className="relative size-14 shrink-0 overflow-hidden rounded-md bg-foreground/5">
-              {album.coverArt ? (
-                <Image
-                  src={album.coverArt}
-                  alt={album.title.english}
-                  fill
-                  sizes="56px"
-                  className="object-cover"
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center">
-                  <Disc3 className="size-4 text-muted-foreground/30" />
-                </div>
-              )}
-            </div>
-            <div className="min-w-0">
-              <p className="truncate text-sm font-medium text-foreground">
-                {album.title.english}
-              </p>
-              <p className="truncate text-xs text-muted-foreground capitalize">
-                {album.type} · {album.releaseDate}
-              </p>
-            </div>
-          </div>
-        ))}
+    <div className="flex min-h-48 w-full flex-col gap-3 rounded-lg border border-foreground/12 bg-foreground/2 p-4">
+      <div className="flex flex-col gap-0.5">
+        <p className="text-xs font-medium tracking-wider text-muted-foreground/60 uppercase">
+          Albums
+        </p>
+        <TypographyMuted className="text-xs leading-snug">
+          {albums === null
+            ? "Loading…"
+            : albums.length === 0
+              ? "This song hasn't been added to any album yet."
+              : `Appears in ${albums.length} album${albums.length === 1 ? "" : "s"}.`}
+        </TypographyMuted>
       </div>
+
+      {albums && albums.length > 0 && (
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+          {albums.map((album) => {
+            const track = album.tracks.find((t) => t.song.id === songId);
+            return (
+              <div
+                key={album.id}
+                className="flex gap-3 rounded-lg border border-foreground/8 bg-background p-3"
+              >
+                <div className="relative size-14 shrink-0 overflow-hidden rounded-md bg-foreground/5">
+                  {album.coverArt ? (
+                    <Image
+                      src={album.coverArt}
+                      alt={album.title.english}
+                      fill
+                      sizes="56px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <Disc3 className="size-4 text-muted-foreground/30" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex min-w-0 flex-1 flex-col gap-1">
+                  <Link
+                    href={`/admin/albums/${album.id}/edit`}
+                    className="truncate text-sm font-medium text-foreground hover:text-ado-primary hover:underline"
+                  >
+                    {album.title.english}
+                  </Link>
+                  {album.title.japanese && (
+                    <p className="truncate font-jp-sans text-xs text-muted-foreground/50">
+                      {album.title.japanese}
+                    </p>
+                  )}
+                  <dl className="mt-0.5 grid grid-cols-2 gap-x-3 gap-y-0.5">
+                    {(
+                      [
+                        ["Type", <span className="capitalize">{album.type}</span>],
+                        ["Released", album.releaseDate.slice(0, 4)],
+                        ["Tracks", album.tracks.length],
+                        [
+                          "Position",
+                          track
+                            ? `#${track.trackNumber}${track.isBonusTrack ? " (bonus)" : ""}`
+                            : "—",
+                        ],
+                      ] as [string, React.ReactNode][]
+                    ).map(([label, value]) => (
+                      <div key={label} className="flex items-baseline gap-1">
+                        <dt className="shrink-0 text-xs text-muted-foreground/40">
+                          {label}:
+                        </dt>
+                        <dd className="truncate text-xs text-muted-foreground">
+                          {value}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -99,12 +129,16 @@ export function AlbumForm({
   action: "create" | "edit";
   id?: string;
 }) {
+  const router = useRouter();
   const form = useForm<AlbumFormValues>({
     refineCoreProps: {
       resource: "albums",
       action,
       id,
       redirect: "list",
+      onMutationSuccess: () => {
+        router.refresh();
+      },
     },
     resolver: zodResolver(albumFormSchema) as unknown as Resolver,
     defaultValues: {
@@ -126,10 +160,11 @@ export function AlbumForm({
           groups: [
             {
               title: "Identity",
+              col: 1 as const,
               fields: [
                 {
                   name: "id",
-                  label: "ID",
+                  label: "Album ID",
                   placeholder: "usseewa-single",
                   description: "Unique slug used in URLs. Lowercase, hyphens only.",
                   readOnly: action === "edit",
@@ -138,32 +173,58 @@ export function AlbumForm({
             },
             {
               title: "Titles",
+              col: 2 as const,
+              row: 1,
               fields: [
-                { name: "titleEnglish", label: "English Title" },
-                { name: "titleJapanese", label: "Japanese Title" },
+                {
+                  name: "titleEnglish",
+                  label: "English Title",
+                  placeholder: "Enter English title",
+                },
+                {
+                  name: "titleJapanese",
+                  label: "Japanese Title",
+                  placeholder: "Enter Japanese title",
+                  inputClassName: "font-jp-sans",
+                  optional: true,
+                },
               ],
             },
             {
-              title: "Release",
+              title: "Release Information",
+              col: 1 as const,
+              row: 2,
               fields: [
                 {
                   name: "releaseDate",
                   label: "Release Date",
                   type: "date" as const,
                   fromYear: 2017,
+                  description: "Date the album was first released.",
                 },
                 {
                   name: "type",
                   label: "Type",
                   type: "select" as const,
                   options: TYPE_OPTIONS,
+                  description: "Release format of this album.",
                 },
               ],
             },
             {
               title: "Media",
+              col: 2 as const,
+              row: 2,
+              cols: 1,
               fields: [
-                { name: "coverArt", label: "Cover Art", type: "url" as const },
+                {
+                  name: "coverArt",
+                  label: "Cover Art",
+                  type: "url" as const,
+                  imagePreview: true,
+                  description: "URL to the album's cover art image.",
+                  optional: true,
+                },
               ],
             },
           ],
@@ -195,6 +256,7 @@ export function AlbumForm({
       >
         <GenericForm form={form} schema={albumFormSchema} config={config} />
         <FormActions listHref="/admin/albums" />
+        {action === "edit" && id && <LastEditMarker entity="album" id={id} />}
       </form>
     </Form>
   );

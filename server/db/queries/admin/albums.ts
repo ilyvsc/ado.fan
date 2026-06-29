@@ -12,7 +12,13 @@ const albumAdminSelect = {
 } satisfies Prisma.AlbumSelect;
 
 const albumListSelect = {
-  ...albumAdminSelect,
+  id: true,
+  titleEnglish: true,
+  titleJapanese: true,
+  releaseDate: true,
+  type: true,
+  coverArt: true,
+  externalLinks: true,
   _count: { select: { tracks: true } },
 } satisfies Prisma.AlbumSelect;
 
@@ -42,10 +48,10 @@ export async function dbListAlbums(params: {
 
 export interface AlbumMutationData {
   titleEnglish: string;
-  titleJapanese: string;
+  titleJapanese: string | null;
   releaseDate: Date;
-  type: string;
-  coverArt: string;
+  type: Prisma.AlbumCreateInput["type"];
+  coverArt: string | null;
   credits?: Prisma.InputJsonValue;
   externalLinks?: Prisma.InputJsonValue;
 }

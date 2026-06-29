@@ -3,8 +3,8 @@
 import { ShieldCheck } from "lucide-react";
 
 import { type Member } from "@/admin/actions/roles";
-import { PermissionsDialog } from "@/admin/components/MemberPermissionsDialog";
-import { MemberSessionsDialog } from "@/admin/components/MemberSessionsDialog";
+import { PermissionsDialog } from "@/admin/components/dialogs/MemberPermissionsDialog";
+import { MemberSessionsDialog } from "@/admin/components/dialogs/MemberSessionsDialog";
 import {
   INVITE_ROLES,
   OVERRIDABLE,

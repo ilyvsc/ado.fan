@@ -28,7 +28,7 @@ import {
 
 import type { InviteRole, Level, Resource } from "@/admin/lib/permissions";
 
-export function InviteForm() {
+export function InvitePermissionsDialog() {
   const [role, setRole] = useState<InviteRole>(Role.contributor);
   const [perms, setPerms] = useState<InvitePermissions>({});
   const [link, setLink] = useState("");

@@ -5,11 +5,13 @@ import {
   ChevronLeft,
   ChevronRight,
   Disc3,
+  History,
   Home,
   KeyRound,
   LayoutGrid,
   LogOut,
   type LucideIcon,
+  LucideListChevronsUpDown,
   Mail,
   Music,
   Palette,
@@ -44,6 +46,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Kbd } from "@/components/ui/kbd";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
@@ -82,23 +85,26 @@ interface NavItem {
   href: string;
   icon: LucideIcon;
   exact?: boolean;
-  disabled?: boolean;
   resource?: Resource;
   superadminOnly?: boolean;
 }
 
 const navGroups: { label: string; icon: LucideIcon; items: NavItem[] }[] = [
   {
+    label: "",
+    icon: LucideListChevronsUpDown,
+    items: [{ label: "Dashboard", href: "/admin", icon: Home, exact: true }],
+  },
+  {
     label: "Content",
     icon: LayoutGrid,
     items: [
-      { label: "Dashboard", href: "/admin", icon: Home, exact: true },
       { label: "Songs", href: "/admin/songs", icon: Music, resource: "songs" },
       { label: "Albums", href: "/admin/albums", icon: Disc3, resource: "albums" },
     ],
   },
   {
-    label: "Access",
+    label: "Management",
     icon: Users,
     items: [
       {
@@ -115,10 +121,11 @@ const navGroups: { label: string; icon: LucideIcon; items: NavItem[] }[] = [
         resource: "roles",
         superadminOnly: true,
       },
+      { label: "Changes", href: "/admin/changes", icon: History },
     ],
   },
   {
-    label: "Auth",
+    label: "Authentication",
     icon: KeyRound,
     items: [
       {
@@ -139,6 +146,55 @@ const navGroups: { label: string; icon: LucideIcon; items: NavItem[] }[] = [
   },
 ];
 
+function NavLink({
+  item,
+  active,
+  collapsed,
+  onNavigate,
+}: {
+  item: NavItem;
+  active: boolean;
+  collapsed: boolean;
+  onNavigate?: () => void;
+}) {
+  const Icon = item.icon;
+  const linkContent = (
+    <span
+      className={cn(
+        "relative flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm transition-colors duration-150",
+        collapsed && "justify-center px-0",
+        active
+          ? "bg-foreground/8 font-medium text-foreground before:absolute before:top-1/2 before:left-0 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-foreground"
+          : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground",
+      )}
+    >
+      <Icon className={cn("shrink-0", collapsed ? "size-4" : "size-3.5")} />
+      {!collapsed && <span>{item.label}</span>}
+    </span>
+  );
+
+  if (collapsed) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Link href={item.href} onClick={onNavigate}>
+            {linkContent}
+          </Link>
+        </TooltipTrigger>
+        <TooltipContent side="right" className={SIDEBAR_TOOLTIP}>
+          {item.label}
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return (
+    <Link href={item.href} onClick={onNavigate}>
+      {linkContent}
+    </Link>
+  );
+}
+
 export function AdminSidebar({
   collapsed,
   onToggle,
@@ -150,8 +206,10 @@ export function AdminSidebar({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+
   const { data: session } = authClient.useSession();
   const user = session?.user;
+
   const [levels, setLevels] = useState<Record<Resource, Level> | null>(null);
   const [themeOpen, setThemeOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() =>
@@ -204,7 +262,7 @@ export function AdminSidebar({
               <span className="text-sm leading-none font-semibold text-foreground">
                 ado.fan
               </span>
-              <span className="text-xs text-muted-foreground">Admin</span>
+              <span className="text-xs text-muted-foreground">Admin Panel</span>
             </div>
           )}
 
@@ -230,9 +288,9 @@ export function AdminSidebar({
               className="ml-auto flex items-center gap-1.5 rounded-md px-2 py-1.5 text-muted-foreground transition-colors duration-150 hover:bg-foreground/5 hover:text-foreground"
             >
               <ChevronLeft className="size-3.5" />
-              <kbd className="rounded border border-foreground/10 bg-foreground/5 px-1 py-0.5 text-xs leading-none text-muted-foreground/50">
+              <Kbd className="border-foreground/10 bg-foreground/5 text-muted-foreground/50">
                 ⌘B
-              </kbd>
+              </Kbd>
             </button>
           )}
         </div>
@@ -251,8 +309,25 @@ export function AdminSidebar({
             }))
             .filter((group) => group.items.length > 0)
             .map((group) => {
-              const isOpen = openGroups[group.label] ?? true;
+              const items = group.items.map((item) => (
+                <NavLink
+                  key={item.href}
+                  item={item}
+                  active={isActive(item.href, item.exact)}
+                  collapsed={collapsed}
+                  onNavigate={onNavigate}
+                />
+              ));
 
+              if (!group.label) {
+                return (
+                  <div key="_root" className="flex flex-col gap-0.5">
+                    {items}
+                  </div>
+                );
+              }
+
+              const isOpen = openGroups[group.label] ?? true;
               const GroupIcon = group.icon;
               return (
                 <div key={group.label} className="flex flex-col gap-0.5">
@@ -291,80 +366,10 @@ export function AdminSidebar({
                       <div
                         className={cn(
                           "flex flex-col gap-0.5 pt-0.5",
-                          !collapsed && "pl-1",
+                          !collapsed && "pl-2",
                         )}
                       >
-                        {group.items.map((item) => {
-                          const active = isActive(item.href, item.exact);
-                          const Icon = item.icon;
-                          const linkContent = (
-                            <span
-                              className={cn(
-                                "relative flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm transition-colors duration-150",
-                                collapsed && "justify-center px-0",
-                                active
-                                  ? "bg-foreground/8 font-medium text-foreground before:absolute before:top-1/2 before:left-0 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-foreground"
-                                  : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground",
-                                item.disabled && "pointer-events-none opacity-40",
-                              )}
-                            >
-                              <Icon className="size-3.5 shrink-0" />
-                              {!collapsed && <span>{item.label}</span>}
-                              {!collapsed && item.disabled && (
-                                <span className="ml-auto text-xs text-muted-foreground/40">
-                                  Soon
-                                </span>
-                              )}
-                            </span>
-                          );
-
-                          if (item.disabled) {
-                            if (collapsed) {
-                              return (
-                                <Tooltip key={item.href}>
-                                  <TooltipTrigger asChild>
-                                    <div>{linkContent}</div>
-                                  </TooltipTrigger>
-                                  <TooltipContent
-                                    side="right"
-                                    className={SIDEBAR_TOOLTIP}
-                                  >
-                                    {item.label} (Soon)
-                                  </TooltipContent>
-                                </Tooltip>
-                              );
-                            }
-                            return <div key={item.href}>{linkContent}</div>;
-                          }
-
-                          if (collapsed) {
-                            return (
-                              <Tooltip key={item.href}>
-                                <TooltipTrigger asChild>
-                                  <Link href={item.href} onClick={onNavigate}>
-                                    {linkContent}
-                                  </Link>
-                                </TooltipTrigger>
-                                <TooltipContent
-                                  side="right"
-                                  className={SIDEBAR_TOOLTIP}
-                                >
-                                  {item.label}
-                                </TooltipContent>
-                              </Tooltip>
-                            );
-                          }
-
-                          return (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              onClick={onNavigate}
-                            >
-                              {linkContent}
-                            </Link>
-                          );
-                        })}
+                        {items}
                       </div>
                     </div>
                   </div>

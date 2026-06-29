@@ -230,7 +230,7 @@ export function DataTableColumnToggle<T>({
                   >
                     <div
                       className={cn(
-                        "flex size-4 shrink-0 items-center justify-center rounded border",
+                        "flex size-4 shrink-0 items-center justify-center rounded-md border",
                         isVisible
                           ? "border-ado-primary bg-ado-primary text-ado-primary-foreground"
                           : "border-foreground/20 bg-background",

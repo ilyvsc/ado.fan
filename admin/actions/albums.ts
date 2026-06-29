@@ -10,6 +10,7 @@ import {
   dbListAlbums,
   dbUpdateAlbum,
 } from "@/db/queries/admin/albums";
+import { recordChange } from "@/db/queries/admin/changes";
 import { Prisma } from "@/prisma/client";
 import { assertCredits } from "@/schemas/credits";
 
@@ -98,30 +99,32 @@ export async function adminGetAlbum(id: string) {
 }
 
 export async function adminCreateAlbum(data: AlbumFormValues) {
-  await requireResource("albums", "write");
+  const user = await requireResource("albums", "write");
   const album = await dbCreateAlbum(data.id, {
     titleEnglish: data.titleEnglish,
-    titleJapanese: data.titleJapanese,
+    titleJapanese: data.titleJapanese ?? null,
     releaseDate: new Date(data.releaseDate),
     type: data.type,
-    coverArt: data.coverArt,
+    coverArt: data.coverArt ?? null,
     credits: data.credits ? assertCredits(data.credits) : undefined,
     externalLinks: data.externalLinks as Prisma.InputJsonValue | undefined,
   });
+  await recordChange("album", album.id, user.id);
   return { ...album, releaseDate: album.releaseDate.toISOString().slice(0, 10) };
 }
 
 export async function adminUpdateAlbum(id: string, data: AlbumFormValues) {
-  await requireResource("albums", "write");
+  const user = await requireResource("albums", "write");
   const album = await dbUpdateAlbum(id, {
     titleEnglish: data.titleEnglish,
-    titleJapanese: data.titleJapanese,
+    titleJapanese: data.titleJapanese ?? null,
     releaseDate: new Date(data.releaseDate),
     type: data.type,
-    coverArt: data.coverArt,
+    coverArt: data.coverArt ?? null,
     credits: data.credits ? assertCredits(data.credits) : undefined,
     externalLinks: data.externalLinks as Prisma.InputJsonValue | undefined,
   });
+  await recordChange("album", id, user.id);
   return { ...album, releaseDate: album.releaseDate.toISOString().slice(0, 10) };
 }
 

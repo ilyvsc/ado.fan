@@ -3,13 +3,13 @@ import { Prisma, prisma } from "@/prisma/client";
 
 export interface SongMutationData {
   titleEnglish: string;
-  titleJapanese: string;
+  titleJapanese: string | null;
   length: string;
-  description: string;
+  description: string | null;
   releaseDate: Date;
   nicoId: string | null;
   youtubeId: string | null;
-  coverArt: string;
+  coverArt: string | null;
   themeColor: string | null;
   credits?: Prisma.InputJsonValue;
   externalLinks?: Prisma.InputJsonValue;

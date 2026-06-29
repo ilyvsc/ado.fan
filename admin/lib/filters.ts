@@ -1,10 +1,30 @@
 import { type CrudFilter } from "@refinedev/core";
+import { User } from "lucide-react";
 
 import type {
   ActiveFilterValue,
   ActiveFilters,
   FilterDef,
 } from "@/admin/types/data-table";
+
+export function matchesSearch(
+  search: string,
+  ...fields: (string | null | undefined)[]
+): boolean {
+  if (!search) return true;
+  return fields.some((f) => (f ?? "").toLowerCase().includes(search));
+}
+
+export function matchesSelect(active: ActiveFilterValue, value: string): boolean {
+  return typeof active !== "string" || active === value;
+}
+
+export function matchesSelectIn(
+  active: ActiveFilterValue,
+  candidates: string[],
+): boolean {
+  return typeof active !== "string" || candidates.includes(active);
+}
 
 export function filtersToCrud(
   filters: FilterDef[],
@@ -77,7 +97,7 @@ export function getFilterSummary(def: FilterDef, value: ActiveFilterValue): stri
     case "search":
       return String(value);
     case "select":
-      return String(value);
+      return def.options?.find((o) => o.value === value)?.label ?? String(value);
     case "multi-select":
     case "checkbox-group":
       return (value as string[]).join(", ");
@@ -103,4 +123,28 @@ export function getFilterSummary(def: FilterDef, value: ActiveFilterValue): stri
     default:
       return String(value);
   }
+}
+
+export function userSelectFilter(
+  users: { id: string; name: string; image?: string | null }[],
+  opts: { id?: string; label?: string } = {},
+): FilterDef {
+  const id = opts.id ?? "user";
+  const byId = new Map<
+    string,
+    { value: string; label: string; image: string | null }
+  >();
+  for (const u of users) {
+    if (u.id && !byId.has(u.id)) {
+      byId.set(u.id, { value: u.id, label: u.name, image: u.image ?? null });
+    }
+  }
+  return {
+    id,
+    label: opts.label ?? "User",
+    field: id,
+    type: "select",
+    icon: User,
+    options: [...byId.values()],
+  };
 }

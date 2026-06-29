@@ -1,12 +1,20 @@
 "use client";
 
-import { type ColumnDef } from "@tanstack/react-table";
-import { Ban, CircleCheck, CircleSlash, Clock, type LucideIcon } from "lucide-react";
+import {
+  Activity,
+  Ban,
+  CircleCheck,
+  CircleSlash,
+  Clock,
+  ShieldCheck,
+  type LucideIcon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
 import { bulkRevokeInvites } from "@/admin/actions/invites";
+
 import {
   BadgeCell,
   DateTimeCell,
@@ -17,18 +25,18 @@ import {
   RevokeInviteCell,
   ObfuscatedCell,
 } from "@/admin/data-table/cells";
-
-import { DataTable } from "@/admin/data-table/DataTable";
-import { DataTableToolbar } from "@/admin/data-table/toolbar";
-
-import { useAdminTable } from "@/admin/hooks/use-data-table";
-import { sortData } from "@/admin/lib/table-sort";
+import { DataTableClient } from "@/admin/data-table/DataTableClient";
+import { matchesSearch, matchesSelect, userSelectFilter } from "@/admin/lib/filters";
+import { ROLES } from "@/admin/lib/permissions";
 import { undoToast } from "@/admin/lib/toast";
 import { cn } from "@/lib/utils";
 
 import type { InviteRecord, InviteStatus } from "@/admin/actions/invites";
-
 import type { Resource, Level } from "@/admin/lib/permissions";
+import type { ClientTableConfig } from "@/admin/types/data-table";
+import type { ColumnDef } from "@tanstack/react-table";
+
+const INVITE_STATUSES: InviteStatus[] = ["active", "used", "revoked", "expired"];
 
 const STATUS_CONFIG: Record<InviteStatus, { className: string; icon: LucideIcon }> = {
   active: { className: "text-green-600", icon: CircleCheck },
@@ -149,6 +157,59 @@ const columns: ColumnDef<InviteRecord>[] = [
   },
 ];
 
+export const invitesTableConfig: ClientTableConfig<InviteRecord> = {
+  tableId: "invites",
+  columns,
+  defaultVisibility: { id: false, permissions: false },
+  emptyMessage: "No invites yet.",
+  buildFilters: (rows) => [
+    {
+      id: "status",
+      label: "Status",
+      field: "status",
+      type: "select",
+      icon: Activity,
+      options: INVITE_STATUSES.map((s) => ({
+        label: s.charAt(0).toUpperCase() + s.slice(1),
+        value: s,
+      })),
+    },
+    {
+      id: "role",
+      label: "Role",
+      field: "role",
+      type: "select",
+      icon: ShieldCheck,
+      options: ROLES.map((r) => ({
+        label: r.charAt(0).toUpperCase() + r.slice(1),
+        value: r,
+      })),
+    },
+    userSelectFilter(
+      rows.map((i) => ({
+        id: i.createdById,
+        name: i.createdByName,
+        image: i.createdByImage,
+      })),
+      { id: "createdBy", label: "Created by" },
+    ),
+    userSelectFilter(
+      rows.flatMap((i) =>
+        i.usedById && i.usedByName
+          ? [{ id: i.usedById, name: i.usedByName, image: i.usedByImage }]
+          : [],
+      ),
+      { id: "usedBy", label: "For" },
+    ),
+  ],
+  filter: (i, { search, activeFilters }) =>
+    matchesSearch(search, i.createdByName, i.usedByName, i.email, i.status, i.role) &&
+    matchesSelect(activeFilters.status, i.status) &&
+    matchesSelect(activeFilters.role, i.role) &&
+    matchesSelect(activeFilters.createdBy, i.createdById) &&
+    matchesSelect(activeFilters.usedBy, i.usedById ?? ""),
+};
+
 export function InvitesTable({ invites }: { invites: InviteRecord[] }) {
   const router = useRouter();
   const [, startTransition] = useTransition();
@@ -179,64 +240,13 @@ export function InvitesTable({ invites }: { invites: InviteRecord[] }) {
     });
   }
 
-  const {
-    table,
-    current,
-    setCurrent,
-    pageSize,
-    search,
-    setSearch,
-    resetPreferences,
-    setColumnOrder,
-  } = useAdminTable<InviteRecord>({
-    tableId: "invites",
-    columns,
-    defaultVisibility: { id: false, permissions: false },
-  });
-
-  const filtered = search
-    ? invites.filter((i) => {
-        const q = search.toLowerCase();
-        return (
-          i.createdByName.toLowerCase().includes(q) ||
-          (i.usedByName ?? "").toLowerCase().includes(q) ||
-          (i.email ?? "").toLowerCase().includes(q) ||
-          i.status.includes(q) ||
-          i.role.includes(q)
-        );
-      })
-    : invites;
-
-  const sorted = sortData(filtered, table.getState().sorting);
-  const pageCount = Math.ceil(sorted.length / pageSize);
-  const paged = sorted.slice((current - 1) * pageSize, current * pageSize);
-
-  table.setOptions((prev) => ({ ...prev, data: paged }));
-
   return (
-    <div className="flex flex-col gap-4">
-      <DataTableToolbar
-        table={table}
-        search={search}
-        onSearchChange={setSearch}
-        filters={[]}
-        activeFilters={{}}
-        onFilterChange={() => undefined}
-        onFiltersClear={() => undefined}
-        onResetPreferences={resetPreferences}
-        onReorderColumns={setColumnOrder}
-      />
-      <DataTable
-        table={table}
-        current={current}
-        pageCount={pageCount}
-        total={filtered.length}
-        onPageChange={setCurrent}
-        emptyMessage="No invites yet."
-        bulkActions={[
-          { label: "Revoke", icon: Ban, variant: "destructive", onClick: bulkRevoke },
-        ]}
-      />
-    </div>
+    <DataTableClient
+      config={invitesTableConfig}
+      data={invites}
+      bulkActions={[
+        { label: "Revoke", icon: Ban, variant: "destructive", onClick: bulkRevoke },
+      ]}
+    />
   );
 }

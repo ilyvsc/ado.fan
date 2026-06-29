@@ -19,6 +19,7 @@ interface Props {
 
 export function DataTableFilterPopover({ def, value, onChange, onClear }: Props) {
   const active = isFilterActive(value);
+  const Icon = def.icon;
 
   return (
     <Popover>
@@ -33,6 +34,7 @@ export function DataTableFilterPopover({ def, value, onChange, onClear }: Props)
               : "border-foreground/12 bg-background text-muted-foreground hover:bg-foreground/5 hover:text-foreground",
           )}
         >
+          {Icon && <Icon className="size-3.5" />}
           {def.label}
           {active && (
             <span className="inline-flex max-w-20 items-center truncate rounded-md border border-ado-primary/25 bg-ado-primary/10 px-1.5 py-0.5 text-ado-primary">

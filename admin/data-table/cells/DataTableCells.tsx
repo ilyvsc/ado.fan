@@ -14,7 +14,7 @@ interface CellProps {
 
 export function TextCell({ value, className }: CellProps) {
   return (
-    <span className={cn("text-sm text-muted-foreground", className)}>
+    <span className={cn("truncate text-sm text-muted-foreground", className)}>
       {value as string}
     </span>
   );
@@ -22,22 +22,16 @@ export function TextCell({ value, className }: CellProps) {
 
 export function MonoCell({ value, className }: CellProps) {
   return (
-    <span
-      className={cn(
-        "font-mono text-xs text-muted-foreground tabular-nums",
-        className,
-      )}
-    >
-      {value as string}
-    </span>
+    <TextCell value={value} className={cn("font-mono tabular-nums", className)} />
   );
 }
 
 export function BoldCell({ value, className }: CellProps) {
   return (
-    <span className={cn("text-sm font-medium text-foreground", className)}>
-      {value as string}
-    </span>
+    <TextCell
+      value={value}
+      className={cn("font-medium text-foreground", className)}
+    />
   );
 }
 
@@ -50,11 +44,7 @@ export function DateCell({ value, className }: CellProps) {
       })
     : "-";
 
-  return (
-    <span className={cn("text-sm text-muted-foreground tabular-nums", className)}>
-      {formatted}
-    </span>
-  );
+  return <TextCell value={formatted} className={cn("tabular-nums", className)} />;
 }
 
 export function BadgeCell({ value, className }: CellProps) {
@@ -70,15 +60,13 @@ export function BadgeCell({ value, className }: CellProps) {
   );
 }
 
+export function NullCell({ className }: { className?: string }) {
+  return <span className={cn("text-xs text-muted-foreground/40", className)}>-</span>;
+}
+
 export function NullableCell({ value, className }: CellProps) {
-  if (value === null || value === undefined || value === "") {
-    return <span className="text-xs text-muted-foreground/40">-</span>;
-  }
-  return (
-    <span className={cn("text-sm text-muted-foreground", className)}>
-      {value as string}
-    </span>
-  );
+  if (value === null || value === undefined || value === "") return <NullCell />;
+  return <TextCell value={value} className={className} />;
 }
 
 export function ColorCell({
@@ -88,7 +76,7 @@ export function ColorCell({
   value: string | null;
   className?: string;
 }) {
-  if (!value) return <span className="text-xs text-muted-foreground/40">-</span>;
+  if (!value) return <NullCell />;
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <div
@@ -102,14 +90,7 @@ export function ColorCell({
 
 export function IdCell({ value, className }: CellProps) {
   return (
-    <span
-      className={cn(
-        "block truncate font-mono text-xs text-muted-foreground",
-        className,
-      )}
-    >
-      {value as string}
-    </span>
+    <TextCell value={value} className={cn("block font-mono text-xs", className)} />
   );
 }
 
@@ -122,9 +103,7 @@ export function CountCell({
   icon: LucideIcon;
   className?: string;
 }) {
-  if (count === 0) {
-    return <span className="text-xs text-muted-foreground/30">-</span>;
-  }
+  if (count === 0) return <NullCell />;
   return (
     <div
       className={cn(
@@ -145,9 +124,7 @@ export function DateTimeCell({
 }: CellProps & {
   highlightExpired?: boolean;
 }) {
-  if (!value) {
-    return <span className={cn("text-xs text-muted-foreground", className)}>-</span>;
-  }
+  if (!value) return <NullCell className={className} />;
 
   const date = new Date(value as string | Date);
   const expired = highlightExpired && date < new Date();
@@ -211,7 +188,7 @@ export function CoverCell({ url }: { url: string }) {
     );
   }
   return (
-    <div className="relative size-9 overflow-hidden rounded-md bg-foreground/5">
+    <div className="relative size-9 shrink-0 overflow-hidden rounded-md bg-foreground/5">
       <Image
         src={url}
         alt="Cover"
@@ -220,6 +197,43 @@ export function CoverCell({ url }: { url: string }) {
         loading="lazy"
         fill
       />
+    </div>
+  );
+}
+
+export function VideoLinksCell({
+  nicoId,
+  youtubeId,
+}: {
+  nicoId?: string | null;
+  youtubeId?: string | null;
+}) {
+  if (!nicoId && !youtubeId) return <NullCell />;
+
+  return (
+    <div className="flex items-center gap-1.5">
+      {youtubeId && (
+        <a
+          href={`https://youtube.com/watch?v=${youtubeId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Open on YouTube"
+          className="text-xs font-medium text-muted-foreground/50 transition-colors hover:text-foreground"
+        >
+          YouTube
+        </a>
+      )}
+      {nicoId && (
+        <a
+          href={`https://www.nicovideo.jp/watch/${nicoId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Open on NicoNico"
+          className="text-xs font-medium text-muted-foreground/50 transition-colors hover:text-foreground"
+        >
+          NicoNico
+        </a>
+      )}
     </div>
   );
 }

@@ -13,13 +13,13 @@ datasource db {
 model Song {
   id            String   @id
   titleEnglish  String
-  titleJapanese String
+  titleJapanese String?
   length        String
-  description   String
+  description   String?
   releaseDate   DateTime
   nicoId        String?
   youtubeId     String?
-  coverArt      String
+  coverArt      String?
   themeColor    String?
 
   credits       Json?
@@ -47,10 +47,10 @@ model Lyrics {
 model Album {
   id            String    @id
   titleEnglish  String
-  titleJapanese String
+  titleJapanese String?
   releaseDate   DateTime
   type          AlbumType
-  coverArt      String
+  coverArt      String?
 
   credits       Json?
   externalLinks Json?
@@ -78,6 +78,24 @@ enum AlbumType {
   single
   ep
   album
+}
+
+enum ContentEntity {
+  song
+  album
+}
+
+model ContentChange {
+  id        String        @id @default(cuid())
+  entity    ContentEntity
+  entityId  String
+  userId    String
+  createdAt DateTime      @default(now())
+  syncedAt  DateTime?
+  commitSha String?
+
+  @@index([syncedAt])
+  @@index([entity, entityId])
 }
 
 enum Role {

@@ -21,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const songEntries: MetadataRoute.Sitemap = songs.map((song) => {
     const baseVideoMetadata = {
       title: `${song.titleEnglish}${song.titleJapanese ? ` (${song.titleJapanese})` : ""} - Ado`,
-      description: song.description,
+      description: song.description ?? "",
       duration: durationToSeconds(song.length),
       publication_date: new Date(song.releaseDate),
       requires_subscription: "no" as const,
@@ -52,7 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return {
       url: `${SEO_BASE_URL}/lyrics/${song.id}`,
       alternates: buildLocalizedUrls(`/lyrics/${song.id}`),
-      images: [song.coverArt],
+      images: song.coverArt ? [song.coverArt] : [],
       videos: videos,
       lastModified: song.releaseDate,
       changeFrequency: "monthly" as const,

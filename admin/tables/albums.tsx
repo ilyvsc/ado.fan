@@ -12,11 +12,10 @@ import {
   NullableCell,
   TextCell,
 } from "@/admin/data-table/cells";
-import { ResourceTable } from "@/admin/data-table/DataTableResources";
 
 import type { FilterDef, TableConfig } from "@/admin/types/data-table";
 
-interface Album {
+interface AlbumRow {
   id: string;
   titleEnglish: string;
   titleJapanese: string;
@@ -27,41 +26,46 @@ interface Album {
   _count: { tracks: number };
 }
 
-const columns: ColumnDef<Album>[] = [
+const columns: ColumnDef<AlbumRow>[] = [
   {
     accessorKey: "id",
     enableResizing: false,
     enableSorting: false,
-    header: "ID",
+    header: "Album ID",
     cell: ({ getValue }) => <IdCell value={getValue()} />,
   },
   {
     accessorKey: "titleEnglish",
-    header: "Title (English)",
+    header: "English title",
     cell: ({ getValue }) => <TextCell value={getValue()} />,
   },
   {
     accessorKey: "titleJapanese",
-    header: "Title (Japanese)",
+    header: "Japanese title",
     cell: ({ getValue }) => <NullableCell value={getValue()} />,
   },
   {
     accessorKey: "releaseDate",
     header: "Release Date",
+    enableResizing: false,
+    maxSize: 32,
     cell: ({ getValue }) => <DateCell value={getValue()} />,
   },
   {
     accessorKey: "type",
     enableSorting: false,
+    enableResizing: false,
     header: "Type",
+    size: 20,
     cell: ({ getValue }) => <TextCell value={getValue()} className="capitalize" />,
   },
   {
     id: "trackCount",
-    accessorFn: (row) => row._count.tracks,
     enableResizing: false,
     enableSorting: false,
     header: "Tracks",
+    size: 20,
+    accessorFn: (row) => row._count.tracks,
     cell: ({ getValue }) => <CountCell count={getValue() as number} icon={Music} />,
   },
   {
@@ -104,22 +108,10 @@ const filters: FilterDef[] = [
   },
 ];
 
-const albumTableConfig: TableConfig<Album> = {
+export const albumTableConfig: TableConfig<AlbumRow> = {
   resource: "albums",
   columns,
   filters,
   getRowLabel: (row) => row.titleEnglish,
   duplicate: adminDuplicateAlbum,
-  pageSize: 10,
 };
-
-export default function AlbumsPage() {
-  return (
-    <ResourceTable
-      config={albumTableConfig}
-      createHref="/admin/albums/create"
-      title="Albums"
-      singular="Album"
-    />
-  );
-}

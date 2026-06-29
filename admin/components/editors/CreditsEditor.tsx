@@ -4,13 +4,22 @@ import { Code, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Control, useFieldArray } from "react-hook-form";
 
-import { BASE_INPUT } from "@/admin/forms/modules/fields/field-utils";
+import { JsonEditor, serialize } from "@/admin/components/editors/JsonEditor";
+import {
+  ADD_BUTTON,
+  BASE_INPUT,
+  FIELD_LABEL,
+  FORM_MESSAGE,
+  OPTIONAL,
+  REQUIRED,
+  TRASH_BUTTON,
+} from "@/admin/forms/modules/fields/field-utils";
 import { type SongFormValues } from "@/admin/schemas/songs";
 
 import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { TypographyMuted } from "@/components/ui/typography";
 
 import { cn } from "@/lib/utils";
 
@@ -29,16 +38,19 @@ function EntityFields({
   return (
     <div className="flex flex-col gap-2 border-l border-foreground/10 pl-4">
       {fields.map((entity, entityIndex) => (
-        <div key={entity.id} className="flex items-start gap-2">
+        <div key={entity.id} className="flex items-end gap-2">
           <FormField
             control={control}
             name={`credits.credits.${roleIndex}.entities.${entityIndex}.name`}
             render={({ field }) => (
-              <FormItem className="flex-1">
+              <FormItem className="flex-1 space-y-0">
+                {entityIndex === 0 && (
+                  <label className={FIELD_LABEL}>Name{REQUIRED}</label>
+                )}
                 <FormControl>
-                  <Input placeholder="Name" {...field} className={BASE_INPUT} />
+                  <Input placeholder="e.g. Ado" {...field} className={BASE_INPUT} />
                 </FormControl>
-                <FormMessage className="text-xs text-red-600" />
+                <FormMessage className={FORM_MESSAGE} />
               </FormItem>
             )}
           />
@@ -46,15 +58,14 @@ function EntityFields({
             control={control}
             name={`credits.credits.${roleIndex}.entities.${entityIndex}.romanizedName`}
             render={({ field }) => (
-              <FormItem className="flex-1">
+              <FormItem className="flex-1 space-y-0">
+                {entityIndex === 0 && (
+                  <label className={FIELD_LABEL}>Romanized name{OPTIONAL}</label>
+                )}
                 <FormControl>
-                  <Input
-                    placeholder="Romanized name (optional)"
-                    {...field}
-                    className={BASE_INPUT}
-                  />
+                  <Input placeholder="e.g. Ado" {...field} className={BASE_INPUT} />
                 </FormControl>
-                <FormMessage className="text-xs text-red-600" />
+                <FormMessage className={FORM_MESSAGE} />
               </FormItem>
             )}
           />
@@ -62,12 +73,12 @@ function EntityFields({
             type="button"
             size="icon"
             variant="ghost"
-            className="mt-0.5 size-9 shrink-0 text-foreground/30 transition-colors hover:bg-red-500/8 hover:text-red-500"
+            className={cn(TRASH_BUTTON, entityIndex === 0 && "mt-5")}
             onClick={() => {
               remove(entityIndex);
             }}
           >
-            <Trash2 className="size-4" />
+            <Trash2 className="size-3.5" />
           </Button>
         </div>
       ))}
@@ -75,7 +86,7 @@ function EntityFields({
         type="button"
         variant="ghost"
         size="sm"
-        className="w-fit gap-1.5 text-sm text-muted-foreground/60 transition-colors hover:text-foreground"
+        className={ADD_BUTTON}
         onClick={() => {
           append({ name: "", romanizedName: "" });
         }}
@@ -97,15 +108,10 @@ export function CreditsEditor({ control: rawControl }: { control: unknown }) {
   const [jsonMode, setJsonMode] = useState(false);
   const [jsonText, setJsonText] = useState("");
   const [jsonError, setJsonError] = useState<string | null>(null);
+  const [jsonValid, setJsonValid] = useState(true);
 
   const enterJsonMode = () => {
-    setJsonText(
-      JSON.stringify(
-        fields.map(({ id, ...rest }) => rest),
-        null,
-        2,
-      ),
-    );
+    setJsonText(serialize(fields.map(({ id, ...rest }) => rest)));
     setJsonError(null);
     setJsonMode(true);
   };
@@ -123,42 +129,41 @@ export function CreditsEditor({ control: rawControl }: { control: unknown }) {
   };
 
   return (
-    <div className="flex w-full flex-col gap-3 rounded-lg border border-foreground/12 bg-foreground/2 p-4">
-      <div className="flex items-center justify-between">
-        <p className="text-xs font-medium tracking-wider text-muted-foreground/60 uppercase">
-          Credits
-        </p>
+    <div className="flex min-h-48 w-full flex-col gap-3 rounded-lg border border-foreground/12 bg-foreground/2 p-4">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col gap-0.5">
+          <p className="text-xs font-medium tracking-wider text-muted-foreground/60 uppercase">
+            Credits
+          </p>
+          <TypographyMuted className="text-xs leading-snug">
+            Attribute roles and contributors. Each role groups the people or
+            organizations responsible for that contribution.
+          </TypographyMuted>
+        </div>
         <Button
           type="button"
           variant="ghost"
           size="sm"
-          className={cn(
-            "h-6 gap-1.5 rounded-md px-2 text-xs",
-            jsonMode
-              ? "bg-ado-primary/10 text-ado-primary hover:bg-ado-primary/20"
-              : "text-muted-foreground/50 hover:text-foreground",
-          )}
+          className="h-6 shrink-0 gap-1.5 rounded-md px-2 text-xs text-muted-foreground/50 hover:text-foreground"
+          disabled={jsonMode && !jsonValid}
           onClick={jsonMode ? exitJsonMode : enterJsonMode}
         >
           <Code className="size-3" />
-          {jsonMode ? "Apply JSON" : "JSON"}
+          {jsonMode ? "Editor" : "JSON"}
         </Button>
       </div>
 
       {jsonMode ? (
-        <div className="flex flex-col gap-2">
-          <Textarea
-            value={jsonText}
-            onChange={(e) => {
-              setJsonText(e.target.value);
-              setJsonError(null);
-            }}
-            rows={14}
-            spellCheck={false}
-            className="w-full resize-y rounded-md border border-foreground/12 bg-foreground/3 px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground/40 focus:border-ado-primary/60 focus:ring-1 focus:ring-ado-primary/30 focus:outline-none"
-          />
-          {jsonError && <p className="text-xs text-red-500">{jsonError}</p>}
-        </div>
+        <JsonEditor
+          value={jsonText}
+          onChange={(v) => {
+            setJsonText(v);
+            setJsonError(null);
+          }}
+          rows={14}
+          error={jsonError}
+          onValidityChange={setJsonValid}
+        />
       ) : (
         <>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:items-start">
@@ -170,20 +175,21 @@ export function CreditsEditor({ control: rawControl }: { control: unknown }) {
                   "transition-colors duration-150 hover:border-foreground/20",
                 )}
               >
-                <div className="flex items-start gap-2">
+                <div className="flex items-end gap-2">
                   <FormField
                     control={control}
                     name={`credits.credits.${roleIndex}.role`}
                     render={({ field }) => (
-                      <FormItem className="flex-1">
+                      <FormItem className="flex-1 space-y-0">
+                        <label className={FIELD_LABEL}>Role{REQUIRED}</label>
                         <FormControl>
                           <Input
-                            placeholder="Role (e.g. Composer)"
+                            placeholder="e.g. Composer, Lyricist"
                             {...field}
                             className={cn(BASE_INPUT, "font-medium")}
                           />
                         </FormControl>
-                        <FormMessage className="text-xs text-red-600" />
+                        <FormMessage className={FORM_MESSAGE} />
                       </FormItem>
                     )}
                   />
@@ -191,12 +197,12 @@ export function CreditsEditor({ control: rawControl }: { control: unknown }) {
                     type="button"
                     size="icon"
                     variant="ghost"
-                    className="mt-0.5 size-9 shrink-0 text-foreground/30 transition-colors hover:bg-red-500/8 hover:text-red-500"
+                    className={TRASH_BUTTON}
                     onClick={() => {
                       remove(roleIndex);
                     }}
                   >
-                    <Trash2 className="size-4" />
+                    <Trash2 className="size-3.5" />
                   </Button>
                 </div>
                 <EntityFields roleIndex={roleIndex} control={control} />
@@ -207,7 +213,7 @@ export function CreditsEditor({ control: rawControl }: { control: unknown }) {
             type="button"
             variant="ghost"
             size="sm"
-            className="w-fit gap-1.5 text-sm text-muted-foreground/60 transition-colors hover:text-foreground"
+            className={ADD_BUTTON}
             onClick={() => {
               append({ role: "", entities: [{ name: "", romanizedName: "" }] });
             }}

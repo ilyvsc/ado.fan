@@ -2,9 +2,11 @@
 
 import { X } from "lucide-react";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 
 import type { ActiveFilterValue, FilterDef } from "@/admin/types/filters";
+import type { LucideIcon } from "lucide-react";
 
 export function isFilterActive(value: unknown) {
   if (value === null || value === undefined) return false;
@@ -14,16 +16,21 @@ export function isFilterActive(value: unknown) {
 
 function FilterLabel({
   label,
+  icon: Icon,
   hasValue,
   onClear,
 }: {
   label: string;
+  icon?: LucideIcon;
   hasValue: boolean;
   onClear: () => void;
 }) {
   return (
     <div className="mb-2 flex items-center justify-between">
-      <span className="text-xs font-medium text-foreground">{label}</span>
+      <span className="flex items-center gap-1.5 text-xs font-medium text-foreground">
+        {Icon && <Icon className="size-3.5 text-muted-foreground" />}
+        {label}
+      </span>
       {hasValue && (
         <button
           onClick={onClear}
@@ -38,10 +45,12 @@ function FilterLabel({
 
 export function SwitchFilter({
   label,
+  icon: Icon,
   value,
   onChange,
 }: {
   label: string;
+  icon?: LucideIcon;
   value: boolean | null;
   onChange: (v: boolean | null) => void;
 }) {
@@ -64,6 +73,7 @@ export function SwitchFilter({
       )}
     >
       <span className="inline-flex items-center gap-1.5">
+        {Icon && <Icon className="size-3.5" />}
         {label}
         {stateLabel && (
           <span className="inline-flex items-center rounded-md border border-ado-primary/25 bg-ado-primary/10 px-1.5 py-0.5 text-ado-primary">
@@ -72,6 +82,60 @@ export function SwitchFilter({
         )}
       </span>
     </button>
+  );
+}
+
+export function SelectFilter({
+  def,
+  value,
+  onChange,
+  onClear,
+}: {
+  def: FilterDef & { type: "select" };
+  value: string | null;
+  onChange: (v: ActiveFilterValue) => void;
+  onClear: () => void;
+}) {
+  const options = def.options ?? [];
+  return (
+    <div>
+      <FilterLabel
+        label={def.label}
+        icon={def.icon}
+        hasValue={!!value}
+        onClear={onClear}
+      />
+      <div className="flex max-h-64 flex-col gap-1 overflow-y-auto">
+        {options.map((opt) => {
+          const active = value === opt.value;
+          return (
+            <button
+              key={opt.value}
+              onClick={() => {
+                if (active) onClear();
+                else onChange(opt.value);
+              }}
+              className={cn(
+                "flex items-center gap-2 rounded-md px-2 py-1.5 text-left text-xs transition-colors",
+                active
+                  ? "bg-ado-primary font-medium text-ado-primary-foreground"
+                  : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground",
+              )}
+            >
+              {opt.image !== undefined && (
+                <Avatar className="size-5 shrink-0">
+                  {opt.image && <AvatarImage src={opt.image} alt="" />}
+                  <AvatarFallback className="text-[8px]">
+                    {opt.label.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              )}
+              <span className="truncate">{opt.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -87,10 +151,20 @@ export function FilterControl({
   onClear: () => void;
 }) {
   switch (def.type) {
+    case "select":
+      return (
+        <SelectFilter
+          def={def}
+          value={(value as string | null) ?? null}
+          onChange={onChange}
+          onClear={onClear}
+        />
+      );
     case "switch":
       return (
         <SwitchFilter
           label={def.label}
+          icon={def.icon}
           value={(value as boolean | null) ?? null}
           onChange={(v) => {
             if (v === null) onClear();
@@ -151,7 +225,12 @@ export function YearRangeFilter({
 
   return (
     <div>
-      <FilterLabel label={def.label} hasValue={isActive} onClear={onClear} />
+      <FilterLabel
+        label={def.label}
+        icon={def.icon}
+        hasValue={isActive}
+        onClear={onClear}
+      />
       <div className="grid grid-cols-3 gap-1">
         {years.map((year) => {
           const isEdge = value && (year === start || year === end);

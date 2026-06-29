@@ -102,11 +102,25 @@ export function ResourceTable<TData extends { id: string }>({
 
   const handleBulkDelete = useCallback(
     (rows: TData[]) => {
-      rows.forEach((row) => {
-        deleteOne({ resource: config.resource, id: row.id });
+      const promises = rows.map(
+        (row) =>
+          new Promise<void>((resolve, reject) => {
+            deleteOne(
+              { resource: config.resource, id: row.id },
+              {
+                onSuccess: () => {
+                  resolve();
+                },
+                onError: reject,
+              },
+            );
+          }),
+      );
+      void Promise.all(promises).then(() => {
+        router.refresh();
       });
     },
-    [deleteOne, config.resource],
+    [deleteOne, config.resource, router],
   );
 
   const handleRowClick = useCallback(

@@ -12,13 +12,12 @@ import {
   IdCell,
   NullableCell,
   TextCell,
+  VideoLinksCell,
 } from "@/admin/data-table/cells";
-
-import { ResourceTable } from "@/admin/data-table/DataTableResources";
 
 import type { FilterDef, TableConfig } from "@/admin/types/data-table";
 
-interface Song {
+interface SongRow {
   id: string;
   titleEnglish: string;
   titleJapanese: string;
@@ -26,37 +25,41 @@ interface Song {
   coverArt: string;
   themeColor: string | null;
   length: string;
+  nicoId: string | null;
+  youtubeId: string | null;
   externalLinks: unknown;
   _count: { albumTracks: number; lyrics: number };
 }
 
-const columns: ColumnDef<Song>[] = [
+const columns: ColumnDef<SongRow>[] = [
   {
     accessorKey: "id",
     enableResizing: false,
     enableSorting: false,
-    header: "ID",
+    header: "Song ID",
     cell: ({ getValue }) => <IdCell value={getValue()} />,
   },
   {
     accessorKey: "titleEnglish",
-    header: "Title (English)",
+    header: "English title",
     cell: ({ getValue }) => <TextCell value={getValue()} />,
   },
   {
     accessorKey: "titleJapanese",
-    header: "Title (Japanese)",
+    header: "Japanese title",
     cell: ({ getValue }) => <NullableCell value={getValue()} />,
   },
   {
     accessorKey: "releaseDate",
     header: "Release Date",
+    enableResizing: false,
+    maxSize: 32,
     cell: ({ getValue }) => <DateCell value={getValue()} />,
   },
   {
     accessorKey: "length",
     header: "Duration",
-    maxSize: 0,
+    enableResizing: false,
     cell: ({ getValue }) => <TextCell value={getValue()} />,
   },
   {
@@ -84,8 +87,20 @@ const columns: ColumnDef<Song>[] = [
     header: "Ext. Links",
     cell: ({ getValue }) => (
       <CountCell
-        count={((getValue() as Song["externalLinks"][] | undefined) ?? []).length}
+        count={((getValue() as unknown[] | null) ?? []).length}
         icon={Link2}
+      />
+    ),
+  },
+  {
+    id: "videoLinks",
+    enableResizing: false,
+    enableSorting: false,
+    header: "Video",
+    cell: ({ row }) => (
+      <VideoLinksCell
+        nicoId={row.original.nicoId}
+        youtubeId={row.original.youtubeId}
       />
     ),
   },
@@ -138,22 +153,10 @@ const filters: FilterDef[] = [
   },
 ];
 
-const songTableConfig: TableConfig<Song> = {
+export const songTableConfig: TableConfig<SongRow> = {
   resource: "songs",
   columns,
   filters,
   getRowLabel: (row) => row.titleEnglish,
   duplicate: adminDuplicateSong,
-  pageSize: 15,
 };
-
-export default function SongsPage() {
-  return (
-    <ResourceTable
-      config={songTableConfig}
-      createHref="/admin/songs/create"
-      title="Songs"
-      singular="Song"
-    />
-  );
-}

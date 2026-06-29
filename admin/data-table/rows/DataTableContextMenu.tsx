@@ -71,7 +71,10 @@ export function DataTableContextMenu<TData extends { id: string }>({
     deleteOne(
       { resource, id: row.id },
       {
-        onSuccess: () => toast.success(`"${label}" deleted`),
+        onSuccess: () => {
+          toast.success(`"${label}" deleted`);
+          router.refresh();
+        },
         onError: () => toast.error(`Failed to delete "${label}"`),
       },
     );

@@ -4,7 +4,7 @@ import { Refine } from "@refinedev/core";
 import routerProvider from "@refinedev/nextjs-router";
 
 import { Menu } from "lucide-react";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, useSyncExternalStore } from "react";
 
 import { AdminSidebar } from "@/admin/components/layout/AdminSidebar";
 import { adminDataProvider } from "@/admin/provider";
@@ -25,42 +25,46 @@ function MobileHeader({ onToggle }: { onToggle: () => void }) {
         <Menu className="size-4" />
       </Button>
       <span className="text-sm font-semibold tracking-tight text-foreground">
-        ado.fan admin
+        ado.fan admin panel
       </span>
     </header>
   );
 }
 
+const SIDEBAR_KEY = "admin-sidebar-collapsed";
+
+function subscribeStorage(cb: () => void) {
+  window.addEventListener("storage", cb);
+  return () => {
+    window.removeEventListener("storage", cb);
+  };
+}
+
+function setCollapsed(next: boolean) {
+  localStorage.setItem(SIDEBAR_KEY, String(next));
+  window.dispatchEvent(new Event("storage"));
+}
+
 export function PanelShell({ children }: { children: React.ReactNode }) {
-  const [collapsed, setCollapsedState] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      localStorage.getItem("admin-sidebar-collapsed") === "true",
+  const collapsed = useSyncExternalStore(
+    subscribeStorage,
+    () => localStorage.getItem(SIDEBAR_KEY) === "true",
+    () => false,
   );
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  function setCollapsed(updater: boolean | ((prev: boolean) => boolean)) {
-    setCollapsedState((prev) => {
-      const next = typeof updater === "function" ? updater(prev) : updater;
-      try {
-        localStorage.setItem("admin-sidebar-collapsed", String(next));
-      } catch {}
-      return next;
-    });
-  }
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key === "b") {
         e.preventDefault();
-        setCollapsed((c) => !c);
+        setCollapsed(!collapsed);
       }
     }
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [collapsed]);
 
   return (
     <Suspense>
@@ -106,7 +110,7 @@ export function PanelShell({ children }: { children: React.ReactNode }) {
             <AdminSidebar
               collapsed={collapsed}
               onToggle={() => {
-                setCollapsed((c) => !c);
+                setCollapsed(!collapsed);
               }}
             />
           </div>

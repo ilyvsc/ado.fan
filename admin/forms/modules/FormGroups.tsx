@@ -49,15 +49,38 @@ export function FormGroup({
   );
 }
 
-function splitGroups(groups: FieldGroup[]): [FieldGroup[], FieldGroup[]] {
+interface Placed {
+  group: FieldGroup;
+  col: number;
+  row: number;
+}
+
+function placeGroups(groups: FieldGroup[]): Placed[] {
+  const free = groups.filter((g) => !g.col);
   const pinned1 = groups.filter((g) => g.col === 1);
   const pinned2 = groups.filter((g) => g.col === 2);
-  const free = groups.filter((g) => !g.col);
 
   const half = Math.ceil(free.length / 2);
   const col1 = [...pinned1, ...free.slice(0, half)];
   const col2 = [...pinned2, ...free.slice(half)];
-  return [col1, col2];
+
+  const placed: Placed[] = [];
+
+  let next1 = 1;
+  for (const g of col1) {
+    const row = g.row ?? next1;
+    placed.push({ group: g, col: 1, row });
+    next1 = Math.max(next1, row) + 1;
+  }
+
+  let next2 = 1;
+  for (const g of col2) {
+    const row = g.row ?? next2;
+    placed.push({ group: g, col: 2, row });
+    next2 = Math.max(next2, row) + 1;
+  }
+
+  return placed;
 }
 
 export function GroupsLayout({
@@ -71,12 +94,14 @@ export function GroupsLayout({
   schema?: ParseableSchema;
   columns?: 1 | 2;
 }) {
+  const key = (g: FieldGroup) => g.fields.map((f) => f.name).join("-");
+
   if (columns === 1) {
     return (
       <div className="flex flex-col gap-6">
         {groups.map((group) => (
           <FormGroup
-            key={group.fields.map((f) => f.name).join("-")}
+            key={key(group)}
             group={group}
             control={control}
             schema={schema}
@@ -86,30 +111,21 @@ export function GroupsLayout({
     );
   }
 
-  const [col1, col2] = splitGroups(groups);
+  const wide = groups.filter((g) => g.fullWidth);
+  const placed = placeGroups(groups.filter((g) => !g.fullWidth));
 
   return (
-    <div className="grid max-w-6xl grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2 md:items-start">
-      <div className="flex flex-col gap-6">
-        {col1.map((group) => (
-          <FormGroup
-            key={group.fields.map((f) => f.name).join("-")}
-            group={group}
-            control={control}
-            schema={schema}
-          />
+    <div className="flex flex-col gap-6">
+      <div className="grid max-w-6xl grid-cols-2 items-start gap-x-6 gap-y-6">
+        {placed.map(({ group, col, row }) => (
+          <div key={key(group)} style={{ gridColumn: col, gridRow: row }}>
+            <FormGroup group={group} control={control} schema={schema} />
+          </div>
         ))}
       </div>
-      <div className="flex flex-col gap-6">
-        {col2.map((group) => (
-          <FormGroup
-            key={group.fields.map((f) => f.name).join("-")}
-            group={group}
-            control={control}
-            schema={schema}
-          />
-        ))}
-      </div>
+      {wide.map((group) => (
+        <FormGroup key={key(group)} group={group} control={control} schema={schema} />
+      ))}
     </div>
   );
 }

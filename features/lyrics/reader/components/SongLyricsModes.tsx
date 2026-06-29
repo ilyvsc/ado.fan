@@ -13,9 +13,17 @@ import {
 } from "lucide-react";
 
 import { Suspense, useMemo, useState } from "react";
-import Markdown from "react-markdown";
+import Markdown, { type Components } from "react-markdown";
 
+import { proseComponents } from "@/components/ui/markdown";
+import {
+  TypographyBlockquote,
+  TypographyH2,
+  TypographyH3,
+  TypographyP,
+} from "@/components/ui/typography";
 import { Locale } from "@/i18n/types";
+import { formatLyricsMarkdown } from "@/lib/lyrics";
 import { cn } from "@/lib/utils";
 
 import { useLyricsUrlState } from "../hooks/useLyricsUrlState";
@@ -101,7 +109,11 @@ function LanguageSelect({
         onChange={(e) => {
           onChange(e.target.value);
         }}
-        className="cursor-pointer appearance-none rounded-full bg-transparent py-2 pr-7 pl-3 text-xs font-semibold text-foreground transition-colors hover:bg-(--theme-color)/10"
+        className={cn(
+          "cursor-pointer appearance-none rounded-full bg-transparent",
+          "py-2 pr-7 pl-3 text-xs font-semibold text-foreground",
+          "transition-colors hover:bg-(--theme-color)/10",
+        )}
       >
         {languages.map((lang) => (
           <option key={lang.code} value={lang.code}>
@@ -128,6 +140,58 @@ function EmptyState() {
   );
 }
 
+const LYRICS_MARKDOWN: Components = {
+  ...proseComponents,
+  h1: ({ node, className, ...props }) => (
+    <TypographyH2
+      className={cn("mt-8 mb-4 border-foreground/10 first:mt-0", className)}
+      {...props}
+    />
+  ),
+  h2: ({ node, className, ...props }) => (
+    <TypographyH3
+      className={cn(
+        "mt-6 mb-3 text-sm tracking-widest text-muted-foreground uppercase first:mt-0",
+        className,
+      )}
+      {...props}
+    />
+  ),
+  h3: ({ node, className, ...props }) => (
+    <TypographyH3
+      className={cn(
+        "mt-5 mb-2 text-base text-muted-foreground first:mt-0",
+        className,
+      )}
+      {...props}
+    />
+  ),
+  p: ({ node, className, ...props }) => (
+    <TypographyP
+      className={cn(
+        "my-2 leading-loose whitespace-pre-wrap not-first:mt-2",
+        className,
+      )}
+      {...props}
+    />
+  ),
+  em: ({ node, className, ...props }) => (
+    <em className={cn("text-foreground/70", className)} {...props} />
+  ),
+  hr: ({ node, className, ...props }) => (
+    <hr className={cn("my-8 border-foreground/15", className)} {...props} />
+  ),
+  blockquote: ({ node, className, ...props }) => (
+    <TypographyBlockquote
+      className={cn(
+        "my-2 border-foreground/20 pl-4 text-muted-foreground",
+        className,
+      )}
+      {...props}
+    />
+  ),
+};
+
 function LyricsContent({
   language,
   fontSize,
@@ -140,13 +204,13 @@ function LyricsContent({
       aria-live="polite"
       className={cn(
         language.code === Locale.JAPANESE.code ? "font-jp-sans" : "",
-        "prose prose-sm max-w-none leading-loose text-foreground transition-all duration-300",
-        "[&_h1]:text-foreground [&_h2]:text-foreground [&_h3]:text-foreground [&_p]:my-0 [&_p]:whitespace-pre-wrap",
-        "[&_em]:text-foreground/80 [&_strong]:text-foreground",
+        "text-foreground transition-all duration-300",
       )}
       style={{ fontSize: fontSize + 2 }}
     >
-      <Markdown>{language.content}</Markdown>
+      <Markdown components={LYRICS_MARKDOWN}>
+        {formatLyricsMarkdown(language.lines.join("\n"))}
+      </Markdown>
     </div>
   );
 }
@@ -158,7 +222,7 @@ function TabsView({
   activeLang?: LyricsLanguage;
   fontSize: number;
 }) {
-  if (!activeLang?.content) return <EmptyState />;
+  if (!activeLang?.lines.length) return <EmptyState />;
 
   return (
     <div className="mx-auto max-w-3xl text-center">
@@ -170,7 +234,14 @@ function TabsView({
 function LanguageChip({ label }: { label: string }) {
   return (
     <div className="mb-6 flex justify-center">
-      <span className="inline-flex items-center gap-2 rounded-full bg-(--theme-color) px-4 py-1.5 text-xs font-bold tracking-widest text-(--theme-contrast) uppercase shadow-sm ring-1 ring-(--theme-color)/40">
+      <span
+        className={cn(
+          "inline-flex items-center gap-2 rounded-full",
+          "bg-(--theme-color) px-4 py-1.5",
+          "text-xs font-bold tracking-widest text-(--theme-contrast) uppercase",
+          "shadow-sm ring-1 ring-(--theme-color)/40",
+        )}
+      >
         <Languages className="h-3.5 w-3.5" aria-hidden="true" />
         {label}
       </span>
@@ -190,7 +261,7 @@ function CompareView({
   return (
     <div className="flex flex-col gap-10 pb-20 sm:grid sm:grid-cols-2 sm:gap-8">
       <div className="border-b border-(--theme-color)/40 pb-8 sm:border-r sm:border-b-0 sm:pr-6 sm:pb-0">
-        {leftLang?.content ? (
+        {leftLang?.lines.length ? (
           <>
             <LanguageChip label={leftLang.label} />
             <LyricsContent language={leftLang} fontSize={fontSize} />
@@ -201,7 +272,7 @@ function CompareView({
       </div>
 
       <div className="sm:px-2">
-        {rightLang?.content ? (
+        {rightLang?.lines.length ? (
           <>
             <LanguageChip label={rightLang.label} />
             <LyricsContent language={rightLang} fontSize={fontSize} />
@@ -246,7 +317,13 @@ function LinedView({
           <div key={`${leftCode}-${rightCode}-${i}`} className="space-y-1">
             {pair.left && (
               <div className="flex items-baseline gap-4">
-                <span className="w-6 shrink-0 text-right text-xs font-bold tracking-widest text-(--theme-color)/90 uppercase select-none sm:w-7">
+                <span
+                  className={cn(
+                    "w-6 shrink-0 text-right select-none sm:w-7",
+                    "text-xs font-bold tracking-widest uppercase",
+                    "text-(--theme-color)/90",
+                  )}
+                >
                   {leftCode}
                 </span>
                 <p
@@ -259,7 +336,13 @@ function LinedView({
             )}
             {pair.right && (
               <div className="flex items-baseline gap-4">
-                <span className="w-6 shrink-0 text-right text-xs font-bold tracking-widest text-(--theme-color)/90 uppercase select-none sm:w-7">
+                <span
+                  className={cn(
+                    "w-6 shrink-0 text-right select-none sm:w-7",
+                    "text-xs font-bold tracking-widest uppercase",
+                    "text-(--theme-color)/90",
+                  )}
+                >
                   {rightCode}
                 </span>
                 <p

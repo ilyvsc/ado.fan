@@ -15,11 +15,11 @@ export function serializeSongListItem(
     id: song.id,
     title: {
       english: song.titleEnglish,
-      japanese: song.titleJapanese,
+      japanese: song.titleJapanese ?? "",
     },
     length: song.length,
     releaseDate: song.releaseDate.toISOString().slice(0, 10),
-    coverArt: song.coverArt,
+    coverArt: song.coverArt ?? "",
     themeColor: song.themeColor ?? undefined,
   };
 }
@@ -31,14 +31,14 @@ export function serializeSong(
     id: song.id,
     title: {
       english: song.titleEnglish,
-      japanese: song.titleJapanese,
+      japanese: song.titleJapanese ?? "",
     },
     length: song.length,
     releaseDate: song.releaseDate.toISOString().slice(0, 10),
-    description: song.description,
+    description: song.description ?? undefined,
     nicoId: song.nicoId,
     youtubeId: song.youtubeId,
-    coverArt: song.coverArt,
+    coverArt: song.coverArt ?? "",
     themeColor: song.themeColor ?? undefined,
     credits: parseCredits(song.credits),
     externalLinks: parseExternalLinks(song.externalLinks),

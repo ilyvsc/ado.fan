@@ -9,7 +9,8 @@ export type FieldType =
   | "date"
   | "number"
   | "url"
-  | "color";
+  | "color"
+  | "markdown";
 
 export interface FieldConfig {
   name: string;
@@ -27,6 +28,8 @@ export interface FieldConfig {
   prefix?: string;
   suffix?: string;
   fromYear?: number;
+  imagePreview?: boolean;
+  inputClassName?: string;
 }
 
 export interface FieldGroup {
@@ -34,6 +37,8 @@ export interface FieldGroup {
   fields: FieldConfig[];
   cols?: number;
   col?: 1 | 2;
+  row?: number;
+  fullWidth?: boolean;
 }
 
 export interface TabConfig {
