@@ -16,11 +16,17 @@ export const auth = betterAuth({
   appName: "ado.fan",
   baseURL: process.env.BETTER_AUTH_URL,
   database: prismaAdapter(prisma, { provider: "postgresql" }),
+  emailAndPassword: { enabled: false },
   socialProviders: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID ?? "",
       clientSecret: process.env.GITHUB_CLIENT_SECRET ?? "",
     },
+  },
+  session: {
+    expiresIn: 60 * 60 * 24,
+    updateAge: 60 * 60 * 12,
+    preserveSessionInDatabase: true,
   },
   user: {
     additionalFields: {
