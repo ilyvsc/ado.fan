@@ -8,7 +8,6 @@ export function serializeLyricsToLanguages(lyrics: Lyrics[]): LyricsLanguage[] {
     .map((l) => ({
       code: l.language,
       label: getLanguageLabel(l.language),
-      content: l.lines.join("\n"),
       lines: l.lines,
     }));
 }

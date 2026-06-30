@@ -6,7 +6,10 @@ const nonEmptyString = z.string().trim().min(1);
 
 const CreditEntitySchema = z.object({
   name: nonEmptyString,
-  romanizedName: nonEmptyString.optional(),
+  romanizedName: z.preprocess(
+    (v) => (v === "" ? undefined : v),
+    nonEmptyString.optional(),
+  ),
 });
 
 const CreditEntrySchema = z.object({
@@ -14,7 +17,7 @@ const CreditEntrySchema = z.object({
   entities: z.array(CreditEntitySchema).nonempty(),
 });
 
-const CreditsSchema = z.strictObject({
+export const CreditsSchema = z.strictObject({
   credits: z.array(CreditEntrySchema).default([]),
 });
 

@@ -3,6 +3,7 @@ generator client {
   output              = "./generated/"
   importFileExtension = "ts"
   moduleFormat        = "esm"
+  previewFeatures     = ["partialIndexes"]
 }
 
 datasource db {
@@ -12,19 +13,19 @@ datasource db {
 model Song {
   id            String   @id
   titleEnglish  String
-  titleJapanese String
+  titleJapanese String?
   length        String
-  description   String
+  description   String?
   releaseDate   DateTime
   nicoId        String?
   youtubeId     String?
-  coverArt      String
+  coverArt      String?
   themeColor    String?
 
-  credits        Json?
-  externalLinks  Json?
-  lyrics         Lyrics[]
-  albumTracks    AlbumTrack[]
+  credits       Json?
+  externalLinks Json?
+  lyrics        Lyrics[]
+  albumTracks   AlbumTrack[]
 
   @@index([releaseDate(sort: Desc)], name: "song_release_date_idx")
   @@index([titleEnglish], name: "song_title_english_idx")
@@ -46,10 +47,10 @@ model Lyrics {
 model Album {
   id            String    @id
   titleEnglish  String
-  titleJapanese String
+  titleJapanese String?
   releaseDate   DateTime
   type          AlbumType
-  coverArt      String
+  coverArt      String?
 
   credits       Json?
   externalLinks Json?
@@ -79,3 +80,120 @@ enum AlbumType {
   album
 }
 
+enum ContentEntity {
+  song
+  album
+}
+
+model ContentChange {
+  id        String        @id @default(cuid())
+  entity    ContentEntity
+  entityId  String
+  userId    String
+  createdAt DateTime      @default(now())
+  syncedAt  DateTime?
+  commitSha String?
+
+  @@index([syncedAt])
+  @@index([entity, entityId])
+}
+
+enum Role {
+  superadmin
+  admin
+  contributor
+}
+
+model User {
+  id            String           @id
+  name          String
+  email         String           @unique
+  emailVerified Boolean          @default(false)
+  image         String?
+  role          Role             @default(contributor)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  permissions   UserPermission[]
+
+  @@unique([role], where: { role: "superadmin" }, map: "User_only_one_superadmin")
+}
+
+enum PermissionLevel {
+  none
+  read
+  write
+}
+
+model UserPermission {
+  id        String          @id @default(cuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resource  String
+  level     PermissionLevel
+  createdAt DateTime        @default(now())
+
+  @@unique([userId, resource])
+  @@index([userId])
+}
+
+model Invite {
+  id          String    @id @default(cuid())
+  token       String    @unique
+  role        Role      @default(contributor)
+  invitedBy   String
+  email       String?
+  permissions Json?
+  expiresAt   DateTime
+  usedAt      DateTime?
+  usedBy      String?
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([invitedBy])
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+}

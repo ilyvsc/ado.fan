@@ -1,10 +1,10 @@
 import nextPlugin from "@next/eslint-plugin-next";
+import tanstackPlugin from "@tanstack/eslint-plugin-query";
 import { defineConfig } from "eslint/config";
 import importPlugin from "eslint-plugin-import";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import * as tseslint from "typescript-eslint";
-
 export default defineConfig([
   {
     ignores: [
@@ -28,6 +28,7 @@ export default defineConfig([
       reactHooksPlugin.configs.flat["recommended-latest"],
       nextPlugin.configs.recommended,
       nextPlugin.configs["core-web-vitals"],
+      tanstackPlugin.configs["flat/recommended-strict"],
     ],
     languageOptions: {
       parserOptions: {

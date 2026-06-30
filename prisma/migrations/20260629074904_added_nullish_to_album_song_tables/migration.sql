@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "Album" ALTER COLUMN "titleJapanese" DROP NOT NULL,
+ALTER COLUMN "coverArt" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Song" ALTER COLUMN "titleJapanese" DROP NOT NULL,
+ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "coverArt" DROP NOT NULL;
