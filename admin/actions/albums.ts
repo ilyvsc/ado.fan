@@ -12,7 +12,7 @@ import {
 } from "@/db/queries/admin/albums";
 import { recordChange } from "@/db/queries/admin/changes";
 import { Prisma } from "@/prisma/client";
-import { assertCredits } from "@/schemas/credits";
+import { assertCredits, parseCredits } from "@/schemas/credits";
 
 import type { ListFilter } from "../types/filters";
 
@@ -95,7 +95,11 @@ export async function adminGetAlbum(id: string) {
   await requireResource("albums", "read");
   const album = await dbGetAlbum(id);
   if (!album) throw new Error(`Album not found: ${id}`);
-  return { ...album, releaseDate: album.releaseDate.toISOString().slice(0, 10) };
+  return {
+    ...album,
+    releaseDate: album.releaseDate.toISOString().slice(0, 10),
+    credits: parseCredits(album.credits) ?? undefined,
+  };
 }
 
 export async function adminCreateAlbum(data: AlbumFormValues) {

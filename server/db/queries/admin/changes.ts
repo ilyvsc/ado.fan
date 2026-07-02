@@ -27,6 +27,7 @@ export interface RecentChange {
   createdAt: Date;
   synced: boolean;
   syncedAt: Date | null;
+  commitSha: string | null;
   user: ChangeUser;
 }
 
@@ -83,6 +84,43 @@ export async function markSynced(changeIds: string[], commitSha: string) {
   });
 }
 
+// Every distinct commit sha we ever recorded as synced, for cross-checking
+// against GitHub. A sha that no longer exists there means the sync was lost.
+export async function getSyncedCommitShas(): Promise<string[]> {
+  const rows = await prisma.contentChange.findMany({
+    where: { syncedAt: { not: null }, commitSha: { not: null } },
+    select: { commitSha: true },
+    distinct: ["commitSha"],
+  });
+  return rows.flatMap((row) => (row.commitSha ? [row.commitSha] : []));
+}
+
+// Send changes back to pending so the next sync recommits them.
+export async function resetSyncedByCommitShas(shas: string[]): Promise<number> {
+  if (!shas.length) return 0;
+  const result = await prisma.contentChange.updateMany({
+    where: { commitSha: { in: shas } },
+    data: { syncedAt: null, commitSha: null },
+  });
+  return result.count;
+}
+
+// Drop change rows whose entity no longer exists: nothing to sync.
+export async function deleteChanges(changeIds: string[]) {
+  if (!changeIds.length) return;
+  await prisma.contentChange.deleteMany({ where: { id: { in: changeIds } } });
+}
+
+// Rows marked synced with no commit recorded cannot be verified at all
+// treat them as lost and send them back to pending.
+export async function resetSyncedWithoutCommit(): Promise<number> {
+  const result = await prisma.contentChange.updateMany({
+    where: { syncedAt: { not: null }, commitSha: null },
+    data: { syncedAt: null },
+  });
+  return result.count;
+}
+
 async function usersById(userIds: string[]): Promise<Map<string, ChangeUser>> {
   const ids = [...new Set(userIds)];
   if (!ids.length) return new Map();
@@ -122,6 +160,7 @@ export async function getRecentChanges(limit = 100): Promise<RecentChange[]> {
       entityId: true,
       createdAt: true,
       syncedAt: true,
+      commitSha: true,
       userId: true,
     },
   });
@@ -133,6 +172,7 @@ export async function getRecentChanges(limit = 100): Promise<RecentChange[]> {
     createdAt: r.createdAt,
     synced: r.syncedAt !== null,
     syncedAt: r.syncedAt,
+    commitSha: r.commitSha,
     user: users.get(r.userId) ?? UNKNOWN_USER,
   }));
 }
@@ -163,16 +203,72 @@ export async function getPendingPreview(): Promise<PendingPreview[]> {
   return [...grouped.values()];
 }
 
-export async function getDistinctUserNames(changeIds: string[]): Promise<string[]> {
+export interface ChangeEditor {
+  name: string;
+  username: string | null;
+}
+
+export interface ChangeAttribution {
+  entity: ContentEntityType;
+  entityId: string;
+  count: number;
+  editors: ChangeEditor[];
+}
+
+// Who edited what, grouped per entity. This feeds the PR description.
+export async function getChangeAttributions(
+  changeIds: string[],
+): Promise<ChangeAttribution[]> {
+  if (!changeIds.length) return [];
+  const rows = await prisma.contentChange.findMany({
+    where: { id: { in: changeIds } },
+    select: { entity: true, entityId: true, userId: true },
+    orderBy: { createdAt: "asc" },
+  });
+  const userIds = [...new Set(rows.map((row) => row.userId))];
+  const users = await prisma.user.findMany({
+    where: { id: { in: userIds } },
+    select: { id: true, name: true, username: true },
+  });
+  const usersByIdMap = new Map(users.map((user) => [user.id, user]));
+
+  const grouped = new Map<string, ChangeAttribution>();
+  for (const row of rows) {
+    const key = `${row.entity}:${row.entityId}`;
+    const user = usersByIdMap.get(row.userId);
+    const editor: ChangeEditor = {
+      name: user?.name ?? "Unknown",
+      username: user?.username ?? null,
+    };
+    const existing = grouped.get(key);
+    if (existing) {
+      existing.count += 1;
+      if (!existing.editors.some((e) => e.name === editor.name)) {
+        existing.editors.push(editor);
+      }
+    } else {
+      grouped.set(key, {
+        entity: row.entity,
+        entityId: row.entityId,
+        count: 1,
+        editors: [editor],
+      });
+    }
+  }
+  return [...grouped.values()];
+}
+
+// "Name <email>" per contributor on `Co-Authored-By` format
+export async function getDistinctCoAuthors(changeIds: string[]): Promise<string[]> {
   if (!changeIds.length) return [];
   const rows = await prisma.contentChange.findMany({
     where: { id: { in: changeIds } },
     select: { userId: true },
   });
-  const userIds = [...new Set(rows.map((r) => r.userId))];
+  const userIds = [...new Set(rows.map((row) => row.userId))];
   const users = await prisma.user.findMany({
     where: { id: { in: userIds } },
-    select: { name: true },
+    select: { name: true, email: true },
   });
-  return users.map((u) => u.name);
+  return users.map((user) => `${user.name} <${user.email}>`);
 }

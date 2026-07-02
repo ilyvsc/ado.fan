@@ -7,15 +7,17 @@ import Link from "next/link";
 import { BadgeCell, DateTimeCell, UserCell } from "@/admin/data-table/cells";
 import { matchesSearch, matchesSelect, userSelectFilter } from "@/admin/lib/filters";
 
-import type { ClientTableConfig } from "@/admin/types/data-table";
-import type { RecentChange } from "@/db/queries/admin/changes";
+import { CommitCell } from "../data-table/cells/CommitCell";
 
-function editHref(change: RecentChange): string {
+import type { ClientTableConfig } from "@/admin/types/data-table";
+import type { VerifiedChange } from "@/db/sync";
+
+function editHref(change: VerifiedChange): string {
   const base = change.entity === "song" ? "/admin/songs" : "/admin/albums";
   return `${base}/${change.entityId}/edit`;
 }
 
-const columns: ColumnDef<RecentChange>[] = [
+const columns: ColumnDef<VerifiedChange>[] = [
   {
     id: "user",
     accessorKey: "user",
@@ -37,12 +39,14 @@ const columns: ColumnDef<RecentChange>[] = [
     id: "entity",
     accessorKey: "entity",
     header: "Type",
-    cell: ({ getValue }) => <BadgeCell value={getValue()} />,
+    maxSize: 26,
+    enableResizing: false,
+    cell: ({ getValue }) => <BadgeCell value={getValue()} className="capitalize" />,
   },
   {
     id: "entityId",
     accessorKey: "entityId",
-    header: "Item",
+    header: "Entity",
     enableSorting: false,
     cell: ({ row }) => (
       <Link
@@ -57,10 +61,19 @@ const columns: ColumnDef<RecentChange>[] = [
     id: "status",
     accessorKey: "synced",
     header: "Status",
+    maxSize: 26,
     enableSorting: false,
+    enableResizing: false,
     cell: ({ row }) =>
       row.original.synced ? (
-        <BadgeCell value="Synced" className="text-muted-foreground" />
+        row.original.verified === false ? (
+          <BadgeCell
+            value="Missing on GitHub"
+            className="border-destructive/30 text-destructive"
+          />
+        ) : (
+          <BadgeCell value="Synced" className="text-muted-foreground" />
+        )
       ) : (
         <BadgeCell
           value="Pending"
@@ -69,20 +82,31 @@ const columns: ColumnDef<RecentChange>[] = [
       ),
   },
   {
+    id: "commit",
+    accessorKey: "commitSha",
+    header: "Commit SHA",
+    enableSorting: false,
+    cell: ({ row }) => <CommitCell change={row.original} />,
+  },
+  {
     id: "createdAt",
     accessorKey: "createdAt",
-    header: "When",
+    header: "Edited At",
+    maxSize: 36,
+    enableResizing: false,
     cell: ({ getValue }) => <DateTimeCell value={getValue()} />,
   },
   {
     id: "syncedAt",
     accessorKey: "syncedAt",
     header: "Synced At",
+    maxSize: 36,
+    enableResizing: false,
     cell: ({ getValue }) => <DateTimeCell value={getValue()} />,
   },
 ];
 
-export const changesTableConfig: ClientTableConfig<RecentChange> = {
+export const changesTableConfig: ClientTableConfig<VerifiedChange> = {
   tableId: "changes",
   columns,
   emptyMessage: "No changes found.",

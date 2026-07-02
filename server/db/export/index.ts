@@ -17,10 +17,10 @@ function assertSlug(id: string) {
 
 const toDate = (d: Date) => d.toISOString().slice(0, 10);
 
-export async function exportSong(id: string): Promise<FixtureFile[]> {
+export async function exportSong(id: string): Promise<FixtureFile[] | null> {
   assertSlug(id);
   const song = await prisma.song.findUnique({ where: { id } });
-  if (!song) throw new Error(`Song not found: ${id}`);
+  if (!song) return null;
 
   const lyrics = await prisma.lyrics.findMany({
     where: { songId: id },
@@ -47,10 +47,10 @@ export async function exportSong(id: string): Promise<FixtureFile[]> {
   );
 }
 
-export async function exportAlbum(id: string): Promise<FixtureFile[]> {
+export async function exportAlbum(id: string): Promise<FixtureFile[] | null> {
   assertSlug(id);
   const album = await prisma.album.findUnique({ where: { id } });
-  if (!album) throw new Error(`Album not found: ${id}`);
+  if (!album) return null;
 
   const tracks = await prisma.albumTrack.findMany({
     where: { albumId: id },
@@ -74,6 +74,6 @@ export async function exportAlbum(id: string): Promise<FixtureFile[]> {
 export async function exportEntity(
   entity: "song" | "album",
   id: string,
-): Promise<FixtureFile[]> {
+): Promise<FixtureFile[] | null> {
   return entity === "song" ? exportSong(id) : exportAlbum(id);
 }

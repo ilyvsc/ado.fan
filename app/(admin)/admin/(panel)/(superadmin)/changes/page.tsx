@@ -5,13 +5,14 @@ import { GitHubSyncPanel } from "@/admin/components/GitHubSyncPanel";
 import { DataTableClient } from "@/admin/data-table/DataTableClient";
 import { Role } from "@/admin/lib/permissions";
 import { changesTableConfig } from "@/admin/tables/changes";
-import { getRecentChanges } from "@/db/queries/admin/changes";
+import { getVerifiedChanges } from "@/db/sync";
 
 export default async function ChangesPage() {
   const user = await getSessionIdentity();
   if (!user) redirect("/admin/sign-in");
 
-  const changes = await getRecentChanges();
+  const changes = await getVerifiedChanges();
+  const unverifiedCount = changes.filter((c) => c.verified === false).length;
 
   return (
     <div className="flex flex-col gap-8">
@@ -24,7 +25,9 @@ export default async function ChangesPage() {
         </p>
       </div>
 
-      {user.role === Role.superadmin && <GitHubSyncPanel />}
+      {user.role === Role.superadmin && (
+        <GitHubSyncPanel unverifiedCount={unverifiedCount} />
+      )}
 
       <DataTableClient config={changesTableConfig} data={changes} />
     </div>

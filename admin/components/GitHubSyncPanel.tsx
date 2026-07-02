@@ -1,9 +1,14 @@
 "use client";
 
-import { CloudUpload, GitPullRequest } from "lucide-react";
+import { CloudUpload, GitPullRequest, RotateCcw } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 
-import { listPendingSync, syncPendingToGithub } from "@/admin/actions/sync";
+import {
+  listPendingSync,
+  requeueUnverifiedChanges,
+  syncPendingToGithub,
+} from "@/admin/actions/sync";
 import { Button } from "@/components/ui/button";
 
 import { timeAgo } from "@/lib/relative-time";
@@ -11,15 +16,25 @@ import { timeAgo } from "@/lib/relative-time";
 import type { PendingPreview } from "@/db/queries/admin/changes";
 import type { SyncRun } from "@/db/sync";
 
-export function GitHubSyncPanel() {
+export function GitHubSyncPanel({
+  unverifiedCount = 0,
+}: {
+  unverifiedCount?: number;
+}) {
+  const router = useRouter();
   const [pending, setPending] = useState<PendingPreview[] | null>(null);
   const [result, setResult] = useState<{ run?: SyncRun; error?: string } | null>(
     null,
   );
+  const [refreshTick, setRefreshTick] = useState(0);
   const [busy, startTransition] = useTransition();
 
   const refresh = () => void listPendingSync().then(setPending);
   useEffect(refresh, []);
+
+  useEffect(() => {
+    if (refreshTick > 0) router.refresh();
+  }, [refreshTick, router]);
 
   const onSync = () => {
     startTransition(async () => {
@@ -27,8 +42,21 @@ export function GitHubSyncPanel() {
         const run = await syncPendingToGithub();
         setResult({ run });
         refresh();
+        setRefreshTick((tick) => tick + 1);
       } catch (e) {
         setResult({ error: e instanceof Error ? e.message : "Sync failed." });
+      }
+    });
+  };
+
+  const onRequeue = () => {
+    startTransition(async () => {
+      try {
+        await requeueUnverifiedChanges();
+        refresh();
+        setRefreshTick((tick) => tick + 1);
+      } catch (e) {
+        setResult({ error: e instanceof Error ? e.message : "Re-queue failed." });
       }
     });
   };
@@ -58,6 +86,26 @@ export function GitHubSyncPanel() {
         </Button>
       </div>
 
+      {unverifiedCount > 0 && (
+        <div className="border-destructive/30 bg-destructive/5 flex items-center justify-between gap-3 rounded-md border px-3 py-2">
+          <p className="text-destructive text-xs">
+            {unverifiedCount} change{unverifiedCount === 1 ? "" : "s"} marked as
+            synced but the commit is missing on GitHub.
+          </p>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            disabled={busy}
+            onClick={onRequeue}
+            className="border-destructive/30 text-destructive hover:bg-destructive/10 h-7 shrink-0 gap-1.5 rounded-md px-2.5 text-xs"
+          >
+            <RotateCcw className="size-3" />
+            Re-queue
+          </Button>
+        </div>
+      )}
+
       {count > 0 && (
         <ul className="flex flex-col gap-1.5">
           {pending?.map((p) => (
@@ -66,13 +114,13 @@ export function GitHubSyncPanel() {
               className="flex items-center justify-between gap-3 rounded-md bg-background px-3 py-1.5 text-xs"
             >
               <span className="truncate text-foreground">
-                {p.entity} · {p.entityId}
+                {p.entity} - {p.entityId}
                 <span className="ml-2 text-muted-foreground/50">
                   {p.count} change{p.count === 1 ? "" : "s"}
                 </span>
               </span>
               <span className="shrink-0 text-muted-foreground/60">
-                {p.user.name} · {timeAgo(p.lastAt)}
+                {p.user.name} - {timeAgo(p.lastAt)}
               </span>
             </li>
           ))}

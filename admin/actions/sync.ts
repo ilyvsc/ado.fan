@@ -10,7 +10,12 @@ import {
   type PendingPreview,
   type RecentChange,
 } from "@/db/queries/admin/changes";
-import { runSync, type SyncRun } from "@/db/sync";
+import {
+  requeueMissingCommits,
+  runSync,
+  type RequeueRun,
+  type SyncRun,
+} from "@/db/sync";
 
 export async function getEntityLastChange(
   entity: ContentEntityType,
@@ -33,4 +38,9 @@ export async function listPendingSync(): Promise<PendingPreview[]> {
 export async function syncPendingToGithub(): Promise<SyncRun> {
   await requireSuperadmin();
   return runSync();
+}
+
+export async function requeueUnverifiedChanges(): Promise<RequeueRun> {
+  await requireSuperadmin();
+  return requeueMissingCommits();
 }

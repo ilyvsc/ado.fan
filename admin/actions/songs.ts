@@ -16,7 +16,7 @@ import {
 } from "@/db/queries/admin/songs";
 import { getAlbumsBySongId } from "@/db/queries/album";
 import { Prisma } from "@/prisma/client";
-import { assertCredits } from "@/schemas/credits";
+import { assertCredits, parseCredits } from "@/schemas/credits";
 
 import type { ListFilter } from "../types/filters";
 
@@ -111,7 +111,11 @@ export async function adminGetSong(id: string) {
   await requireResource("songs", "read");
   const song = await dbGetSong(id);
   if (!song) throw new Error(`Song not found: ${id}`);
-  return { ...song, releaseDate: song.releaseDate.toISOString().slice(0, 10) };
+  return {
+    ...song,
+    releaseDate: song.releaseDate.toISOString().slice(0, 10),
+    credits: parseCredits(song.credits) ?? undefined,
+  };
 }
 
 export async function adminCreateSong(data: SongFormValues) {

@@ -29,6 +29,14 @@ export function assertCredits(json: unknown): Credits {
 
 export function parseCredits(json: Prisma.JsonValue): Credits | null {
   if (json == null) return null;
+  if (typeof json === "string") {
+    try {
+      return parseCredits(JSON.parse(json) as Prisma.JsonValue);
+    } catch {
+      return null;
+    }
+  }
+
   const result = CreditsSchema.safeParse(json);
   return result.success ? result.data : null;
 }
