@@ -6,11 +6,17 @@ import { env } from "prisma/config";
 
 import { Prisma, PrismaClient } from "./generated/client";
 
-const adapter = new PrismaPg({ connectionString: env("DATABASE_URL") });
-const prisma = new PrismaClient({
-  adapter,
-  log:
-    process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-}).$extends(withAccelerate());
+const databaseUrl = env("DATABASE_URL");
+
+const prisma =
+  process.env.NODE_ENV === "production"
+    ? new PrismaClient({
+        accelerateUrl: databaseUrl,
+        log: ["error"],
+      }).$extends(withAccelerate())
+    : new PrismaClient({
+        adapter: new PrismaPg({ connectionString: databaseUrl }),
+        log: ["query", "error", "warn"],
+      });
 
 export { prisma, Prisma };
