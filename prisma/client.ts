@@ -8,15 +8,19 @@ import { Prisma, PrismaClient } from "./generated/client";
 
 const databaseUrl = env("DATABASE_URL");
 
-const prisma =
+const client =
   process.env.NODE_ENV === "production"
     ? new PrismaClient({
         accelerateUrl: databaseUrl,
         log: ["error"],
-      }).$extends(withAccelerate())
+      })
     : new PrismaClient({
-        adapter: new PrismaPg({ connectionString: databaseUrl }),
+        adapter: new PrismaPg({
+          connectionString: databaseUrl,
+        }),
         log: ["query", "error", "warn"],
       });
+
+const prisma = client.$extends(withAccelerate());
 
 export { prisma, Prisma };
