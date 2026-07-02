@@ -1,26 +1,13 @@
 import "dotenv/config";
 
 import { PrismaPg } from "@prisma/adapter-pg";
-import { withAccelerate } from "@prisma/extension-accelerate";
 import { env } from "prisma/config";
 
 import { Prisma, PrismaClient } from "./generated/client";
 
-const databaseUrl = env("DATABASE_URL");
-
-const client =
-  process.env.NODE_ENV === "production"
-    ? new PrismaClient({
-        accelerateUrl: databaseUrl,
-        log: ["error"],
-      })
-    : new PrismaClient({
-        adapter: new PrismaPg({
-          connectionString: databaseUrl,
-        }),
-        log: ["query", "error", "warn"],
-      });
-
-const prisma = client.$extends(withAccelerate());
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({ connectionString: env("DATABASE_URL") }),
+  log: env("NODE_ENV") ? ["error"] : ["query", "error", "warn"],
+});
 
 export { prisma, Prisma };
