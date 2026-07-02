@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 
 import { Role } from "@/admin/lib/permissions";
 
-import { prisma } from "../client";
+import { prisma, Prisma } from "../client";
 
 import type { PermissionLevel } from "../generated/enums";
 
@@ -175,7 +175,7 @@ async function seedPermissions(
   users: Awaited<ReturnType<typeof seedUsers>>["users"],
 ) {
   const permissions = users.flatMap((user) => {
-    if (user.role === "superadmin") return [];
+    if (user.role === Role.superadmin) return [];
 
     const numPerms = faker.number.int({ min: 0, max: 3 });
     const assignedResources = faker.helpers.arrayElements(RESOURCES, numPerms);
@@ -237,7 +237,7 @@ async function seedInvites(
               .map((r) => [r, faker.helpers.arrayElement(PERMISSION_LEVELS)]),
           ),
         { probability: 0.6 },
-      ) ?? null;
+      ) ?? Prisma.JsonNull;
 
     return {
       id: faker.string.uuid(),
