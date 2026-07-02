@@ -3,11 +3,8 @@
 import { CrudFilter } from "@refinedev/core";
 import {
   getCoreRowModel,
+  getExpandedRowModel,
   useReactTable,
-  type ColumnDef,
-  type ColumnSizingState,
-  type SortingState,
-  type VisibilityState,
 } from "@tanstack/react-table";
 
 import { useCallback, useMemo, useState } from "react";
@@ -22,6 +19,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { useDebouncedValue } from "./use-debounced-value";
 import { useTablePreferences } from "./use-table-preferences";
+
+import type {
+  ColumnDef,
+  ColumnSizingState,
+  ExpandedState,
+  SortingState,
+  VisibilityState,
+} from "@tanstack/react-table";
 
 function SelectColumn<TData>(): ColumnDef<TData> {
   return {
@@ -73,6 +78,7 @@ export function useAdminTable<TData>({
   const [current, setCurrent] = useState(1);
   const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({});
+  const [expanded, setExpanded] = useState<ExpandedState>({});
 
   const setSearch = useCallback((value: string) => {
     setSearchRaw(value);
@@ -135,7 +141,7 @@ export function useAdminTable<TData>({
   const table = useReactTable<TData>({
     data: [],
     columns: allColumns,
-    state: { sorting, columnVisibility, columnSizing, columnOrder },
+    state: { sorting, columnVisibility, columnSizing, columnOrder, expanded },
     onSortingChange: (updater) => {
       setSorting(updater);
       setCurrent(1);
@@ -143,8 +149,11 @@ export function useAdminTable<TData>({
     onColumnVisibilityChange: setColumnVisibility,
     onColumnSizingChange: setColumnSizing,
     onColumnOrderChange: setColumnOrder,
+    onExpandedChange: setExpanded,
+    getSubRows: (row) => (row as unknown as { children?: TData[] }).children,
     columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
     manualSorting: true,
     manualPagination: true,
   });

@@ -1,9 +1,13 @@
 import {
   commitFixtureFiles,
   ensureContentPr,
+  getLatestContentPr,
   getSyncConfig,
   verifyCommits,
+  type ContentPrInfo,
 } from "@/lib/github-sync";
+
+export type { ContentPrInfo } from "@/lib/github-sync";
 
 import { exportEntity } from "./export";
 import {
@@ -87,6 +91,14 @@ export async function runSync(): Promise<SyncRun> {
 
   const pr = await ensureContentPr(prBody, true);
   return { synced: count, commit: commit.url, pr };
+}
+
+export async function getLastPr(): Promise<ContentPrInfo | null> {
+  try {
+    return await getLatestContentPr();
+  } catch {
+    return null;
+  }
 }
 
 export interface RequeueRun {

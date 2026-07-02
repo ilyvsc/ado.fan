@@ -21,16 +21,20 @@ export function DataTableRow<TData extends { id: string }>({
   contextMenu,
   onRowClick,
 }: DataTableRowProps<TData>) {
+  const cells = row.getVisibleCells();
+  const leadCellIndex = cells.findIndex((cell) => cell.column.id !== "select");
+
   const tableRow = (
     <TableRow
       data-state={row.getIsSelected() ? "selected" : undefined}
       className={cn(
         "group transition-colors data-[state=selected]:bg-ado-primary/10",
+        row.depth > 0 && "bg-foreground/2",
         onRowClick ? "cursor-pointer" : "cursor-default",
       )}
       onClick={() => onRowClick?.(row.original)}
     >
-      {row.getVisibleCells().map((cell) => (
+      {cells.map((cell, index) => (
         <TableCell
           key={cell.id}
           style={
@@ -40,7 +44,13 @@ export function DataTableRow<TData extends { id: string }>({
           }
           className="overflow-hidden px-4 py-2"
         >
-          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          {index === leadCellIndex && row.depth > 0 ? (
+            <div style={{ paddingLeft: row.depth * 20 }}>
+              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            </div>
+          ) : (
+            flexRender(cell.column.columnDef.cell, cell.getContext())
+          )}
         </TableCell>
       ))}
     </TableRow>

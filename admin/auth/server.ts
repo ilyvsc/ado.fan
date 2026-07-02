@@ -4,7 +4,7 @@ import { APIError } from "better-auth/api";
 import { cookies } from "next/headers";
 
 import { OVERRIDABLE, PermissionLevel, Role } from "@/admin/lib/permissions";
-import { dbGetUserRole } from "@/db/queries/admin";
+import { dbGetUserRole, syncGithubProfile } from "@/db/queries/admin";
 
 import { prisma } from "@/prisma/client";
 
@@ -17,10 +17,17 @@ export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   database: prismaAdapter(prisma, { provider: "postgresql" }),
   emailAndPassword: { enabled: false },
+  account: {
+    accountLinking: {
+      trustedProviders: ["github"],
+      updateUserInfoOnLink: true,
+    },
+  },
   socialProviders: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID ?? "",
       clientSecret: process.env.GITHUB_CLIENT_SECRET ?? "",
+      mapProfileToUser: (profile) => ({ username: profile.login }),
     },
   },
   session: {
@@ -31,6 +38,7 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: { type: "string", required: false, input: false },
+      username: { type: "string", required: false, input: false },
     },
     deleteUser: {
       enabled: true,
@@ -94,6 +102,20 @@ export const auth = betterAuth({
               .createMany({ data: rows })
               .catch(() => undefined);
           }
+        },
+      },
+    },
+    account: {
+      create: {
+        after: async (account) => {
+          if (account.providerId !== "github") return;
+          await syncGithubProfile(account.userId, account.accessToken);
+        },
+      },
+      update: {
+        after: async (account) => {
+          if (account.providerId !== "github") return;
+          await syncGithubProfile(account.userId, account.accessToken);
         },
       },
     },

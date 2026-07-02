@@ -257,3 +257,40 @@ export async function ensureContentPr(
   );
   return createdPr.data.html_url ?? null;
 }
+
+export interface ContentPrInfo {
+  url: string;
+  number: number;
+  title: string;
+  state: "open" | "merged" | "closed";
+  updatedAt: string;
+}
+
+// Most recent PR from the content branch, open or already resolved, for
+// display purposes. Independent of ensureContentPr's open-only lookup.
+export async function getLatestContentPr(): Promise<ContentPrInfo | null> {
+  const config = getSyncConfig();
+  const pulls = await githubRequest<
+    {
+      html_url: string;
+      number: number;
+      title: string;
+      state: "open" | "closed";
+      merged_at: string | null;
+      updated_at: string;
+    }[]
+  >(
+    config,
+    `/pulls?state=all&head=${config.owner}:${config.branch}&base=${config.base}&sort=updated&direction=desc&per_page=1`,
+  );
+  const pr = pulls.data[0];
+  if (pulls.status !== 200 || !pr) return null;
+
+  return {
+    url: pr.html_url,
+    number: pr.number,
+    title: pr.title,
+    state: pr.merged_at ? "merged" : pr.state,
+    updatedAt: pr.updated_at,
+  };
+}
