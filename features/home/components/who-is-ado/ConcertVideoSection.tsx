@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
 
 import { Image } from "@/components/ui/image";
+import { useFrozenViewportHeight } from "@/hooks/use-frozen-viewport-height";
 
 import { ConcertEntry } from "./WhoIsAdo";
 
@@ -15,6 +16,8 @@ gsap.registerPlugin(ScrollTrigger);
 function VideoPart({ entry, videoSrc }: { entry: ConcertEntry; videoSrc: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  useFrozenViewportHeight(containerRef);
 
   useGSAP(
     () => {

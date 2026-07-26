@@ -37,6 +37,10 @@
 }
 
 @layer base {
+  html {
+    overflow-anchor: none; /* Firefox scroll anchoring fights GSAP ScrollTrigger pins. */
+  }
+
   /* Defaults Japanese locale */
   :lang(ja) {
     font-family: var(--font-jp-sans);

@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
 
 import { getAssetUrl, Image } from "@/components/ui/image";
+import { useFrozenViewportHeight } from "@/hooks/use-frozen-viewport-height";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -215,6 +216,8 @@ export function DesktopHorizontalStory() {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
+
+  useFrozenViewportHeight(containerRef);
 
   useGSAP(
     () => {

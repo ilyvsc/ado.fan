@@ -24,8 +24,8 @@ export async function getLatestSongs(count = 3): Promise<SongListItem[]> {
 /**
  * Fetch random songs from the catalog.
  *
- * Uses PostgreSQL's RANDOM() function for true randomization with a random skip offset
- * to ensure diverse results across calls.
+ * Uses PostgreSQL's ORDER BY RANDOM(), a full-table sort that is fine at
+ * catalog scale.
  *
  * @param count - Number of random songs to fetch (default: 3, max: 10)
  * @returns Promise resolving to an array of random songs

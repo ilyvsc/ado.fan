@@ -76,14 +76,14 @@ export default async function LyricsSongPage({
   params: Promise<{ song_id: string }>;
 }) {
   const { song_id } = await params;
-  const song = await getSongById(song_id);
+
+  const [song, rawLyrics, albums] = await Promise.all([
+    getSongById(song_id),
+    getSongLyricsById(song_id),
+    getAlbumsBySongId(song_id),
+  ]);
 
   if (!song) notFound();
-
-  const [rawLyrics, albums] = await Promise.all([
-    getSongLyricsById(song_id),
-    getAlbumsBySongId(song.id),
-  ]);
 
   const availableLanguages = serializeLyricsToLanguages(rawLyrics);
 
