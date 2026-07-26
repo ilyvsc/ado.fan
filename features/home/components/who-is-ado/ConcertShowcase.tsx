@@ -8,6 +8,7 @@ import { useCallback, useRef, useState } from "react";
 
 import { getAssetUrl, Image } from "@/components/ui/image";
 import { Lightbox, type LightboxProps } from "@/components/ui/lightbox";
+import { useFrozenViewportHeight } from "@/hooks/use-frozen-viewport-height";
 import { cn } from "@/lib/utils";
 
 import { ConcertVideoSection } from "./ConcertVideoSection";
@@ -127,6 +128,8 @@ function StackedConcertCard({
   }, []);
 
   const imageOnRight = index % 2 === 0;
+
+  useFrozenViewportHeight(ref);
 
   useGSAP(
     () => {
