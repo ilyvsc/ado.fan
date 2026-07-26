@@ -1,6 +1,6 @@
 import { songPrismaSelect } from "@/db/select";
 import { serializeSong } from "@/db/serialize";
-import { timelineConfig } from "@/db/timelineConfig";
+import { timelineConfig } from "@/features/timeline/config";
 import { prisma } from "@/prisma/client";
 
 import type { Song } from "@/types/song";

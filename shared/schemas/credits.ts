@@ -6,7 +6,10 @@ const nonEmptyString = z.string().trim().min(1);
 
 const CreditEntitySchema = z.object({
   name: nonEmptyString,
-  romanizedName: nonEmptyString.optional(),
+  romanizedName: z.preprocess(
+    (v) => (v === "" ? undefined : v),
+    nonEmptyString.optional(),
+  ),
 });
 
 const CreditEntrySchema = z.object({
@@ -14,7 +17,7 @@ const CreditEntrySchema = z.object({
   entities: z.array(CreditEntitySchema).nonempty(),
 });
 
-const CreditsSchema = z.strictObject({
+export const CreditsSchema = z.strictObject({
   credits: z.array(CreditEntrySchema).default([]),
 });
 
@@ -26,6 +29,14 @@ export function assertCredits(json: unknown): Credits {
 
 export function parseCredits(json: Prisma.JsonValue): Credits | null {
   if (json == null) return null;
+  if (typeof json === "string") {
+    try {
+      return parseCredits(JSON.parse(json) as Prisma.JsonValue);
+    } catch {
+      return null;
+    }
+  }
+
   const result = CreditsSchema.safeParse(json);
   return result.success ? result.data : null;
 }

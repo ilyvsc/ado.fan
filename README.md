@@ -123,17 +123,17 @@ inspect the local database with Prisma Studio.
 
 ## Commands
 
-| Command                | Purpose                                                                          |
-| ---------------------- | -------------------------------------------------------------------------------- |
-| `bun run dev`          | Start the Next.js development server with Turbopack.                             |
-| `bun run build`        | Generate Prisma and Lingui artifacts, then create a production build.            |
-| `bun run lint`         | Run ESLint across the project.                                                   |
-| `bun run lint:fix`     | Run ESLint and apply available fixes.                                            |
-| `bun run format`       | Format the repository with Prettier. Review resulting changes before committing. |
-| `bun run db:generate`  | Regenerate Prisma client files.                                                  |
-| `bun run db:dev`       | Create and apply local Prisma migrations.                                        |
-| `bun run db:seed`      | Replace local database content with development data.                            |
-| `bun run db:studio`    | Open Prisma Studio.                                                              |
+| Command               | Purpose                                                                          |
+| --------------------- | -------------------------------------------------------------------------------- |
+| `bun run dev`         | Start the Next.js development server with Turbopack.                             |
+| `bun run build`       | Generate Prisma and Lingui artifacts, then create a production build.            |
+| `bun run lint`        | Run ESLint across the project.                                                   |
+| `bun run lint:fix`    | Run ESLint and apply available fixes.                                            |
+| `bun run format`      | Format the repository with Prettier. Review resulting changes before committing. |
+| `bun run db:generate` | Regenerate Prisma client files.                                                  |
+| `bun run db:dev`      | Create and apply local Prisma migrations.                                        |
+| `bun run db:seed`     | Replace local database content with development data.                            |
+| `bun run db:studio`   | Open Prisma Studio.                                                              |
 
 The generated Prisma client and compiled Lingui `messages.ts` catalogs are
 ignored by Git. Commit migration files and source `.po` catalogs instead.

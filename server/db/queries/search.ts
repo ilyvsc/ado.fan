@@ -37,11 +37,11 @@ export async function searchSongsByTitle(query: string): Promise<SearchResult[]>
     id: song.id,
     title: {
       english: song.titleEnglish,
-      japanese: song.titleJapanese,
+      japanese: song.titleJapanese ?? "",
     },
     length: song.length,
     releaseDate: song.releaseDate.toISOString().slice(0, 10),
-    coverArt: song.coverArt,
+    coverArt: song.coverArt ?? "",
     themeColor: song.themeColor ?? undefined,
     matchType: "title",
   }));

@@ -1,6 +1,6 @@
 import { Prisma } from "@/prisma/client";
 
-import { songPrismaSelect } from "./song";
+import { songListPrismaSelect } from "./song";
 
 export const albumListPrismaSelect = {
   id: true,
@@ -13,9 +13,7 @@ export const albumListPrismaSelect = {
     select: {
       trackNumber: true,
       isBonusTrack: true,
-      song: {
-        select: songPrismaSelect,
-      },
+      song: { select: songListPrismaSelect },
     },
     orderBy: { trackNumber: "asc" as const },
   },

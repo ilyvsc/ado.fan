@@ -1,6 +1,6 @@
 import { Prisma } from "@/prisma/client";
 
-import { serializeSong } from "./song";
+import { serializeSongListItem } from "./song";
 import { albumListPrismaSelect, albumMinimalPrismaSelect } from "../select/album";
 
 import type { Album, AlbumMinimal } from "@/types/album";
@@ -12,13 +12,13 @@ export function serializeAlbumWithoutLyrics(
     id: album.id,
     title: {
       english: album.titleEnglish,
-      japanese: album.titleJapanese,
+      japanese: album.titleJapanese ?? "",
     },
     releaseDate: album.releaseDate.toISOString().slice(0, 10),
     type: album.type,
-    coverArt: album.coverArt,
+    coverArt: album.coverArt ?? "",
     tracks: album.tracks.map((track) => ({
-      song: serializeSong(track.song),
+      song: serializeSongListItem(track.song),
       trackNumber: track.trackNumber,
       isBonusTrack: track.isBonusTrack,
     })),
@@ -32,10 +32,10 @@ export function serializeAlbumMinimal(
     id: album.id,
     title: {
       english: album.titleEnglish,
-      japanese: album.titleJapanese,
+      japanese: album.titleJapanese ?? "",
     },
     releaseDate: album.releaseDate.toISOString().slice(0, 10),
     type: album.type,
-    coverArt: album.coverArt,
+    coverArt: album.coverArt ?? "",
   };
 }

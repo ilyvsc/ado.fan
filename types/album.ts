@@ -1,4 +1,4 @@
-import type { Song } from "./song";
+import type { SongListItem } from "./song";
 import type { Credits } from "@/schemas/credits";
 import type { ExternalLinks } from "@/schemas/externalLinks";
 
@@ -16,7 +16,7 @@ export interface Album {
 }
 
 export interface AlbumTrack {
-  song: Song;
+  song: SongListItem;
   trackNumber: number;
   isBonusTrack?: boolean;
 }
