@@ -14,7 +14,7 @@ model Song {
   id            String   @id
   titleEnglish  String
   titleJapanese String?
-  length        String
+  length        String // TODO: rename to duration
   description   String?
   releaseDate   DateTime
   nicoId        String?
