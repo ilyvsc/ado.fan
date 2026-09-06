@@ -139,7 +139,7 @@ export function ConnectSection() {
                         "font-serif text-2xl leading-tight font-bold transition-colors duration-300 sm:text-3xl md:text-4xl",
                         isOpen
                           ? "text-foreground"
-                          : "text-foreground/55 group-hover:text-foreground",
+                          : "text-foreground/75 group-hover:text-foreground",
                       )}
                     >
                       {category.label}
@@ -149,7 +149,7 @@ export function ConnectSection() {
                         "max-w-3xl text-sm leading-relaxed transition-colors duration-300 md:text-base",
                         isOpen
                           ? "text-muted-foreground"
-                          : "text-muted-foreground/60 group-hover:text-muted-foreground",
+                          : "text-muted-foreground/75 group-hover:text-muted-foreground",
                       )}
                     >
                       {category.description}
@@ -160,7 +160,7 @@ export function ConnectSection() {
                       "size-6 shrink-0 transition-transform duration-300 md:size-7",
                       isOpen
                         ? "rotate-45 text-foreground"
-                        : "text-foreground/35 group-hover:text-foreground",
+                        : "text-foreground/75 group-hover:text-foreground",
                     )}
                   />
                 </button>
