@@ -236,7 +236,7 @@ export function SongCard({ song }: { song: Song }) {
           className="relative flex w-full items-center gap-4 rounded-xl p-2 text-left transition-colors duration-300 hover:bg-ado-primary/35 md:gap-6"
         >
           <div className="relative shrink-0">
-            <div className="relative h-16 w-16 overflow-hidden md:h-20 md:w-20 lg:h-24 lg:w-24 xl:h-32 xl:w-32">
+            <div className="relative size-16 overflow-hidden md:size-20 lg:size-24 xl:size-26">
               {song.coverArt ? (
                 <Image
                   src={song.coverArt}
