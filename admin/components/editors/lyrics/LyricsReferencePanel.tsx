@@ -13,9 +13,7 @@ export function LyricsReferencePanel({
   const isJapaneseLanguage = language === Locale.JAPANESE.code;
 
   if (lines.length === 0)
-    return (
-      <span className="text-sm leading-6 text-foreground">No lines saved yet</span>
-    );
+    return <span className="text-sm leading-6 text-foreground">No lines saved yet</span>;
 
   return (
     <div className="flex overflow-hidden rounded-md border bg-background/80">

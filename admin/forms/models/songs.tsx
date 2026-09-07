@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { Resolver } from "react-hook-form";
 
+import type { FormConfig } from "@/admin/types/forms";
+
 import {
   CreditsEditor,
   ExternalLinksEditor,
@@ -15,14 +17,10 @@ import { LastEditMarker } from "@/admin/components/ui/LastEditMarker";
 import { FormSkeleton } from "@/admin/components/ui/TableSkeleton";
 import { GenericForm } from "@/admin/forms/form";
 import { FormActions } from "@/admin/forms/FormActions";
-
 import { songFormSchema, type SongFormValues } from "@/admin/schemas/songs";
-
 import { Form } from "@/components/ui/form";
 
 import { SongAlbums } from "./albums";
-
-import type { FormConfig } from "@/admin/types/forms";
 
 export function SongForm({ action, id }: { action: "create" | "edit"; id?: string }) {
   const router = useRouter();

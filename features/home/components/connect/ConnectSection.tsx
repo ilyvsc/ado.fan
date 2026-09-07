@@ -4,7 +4,6 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, Plus } from "lucide-react";
-
 import Link from "next/link";
 import { useRef, useState } from "react";
 
@@ -43,7 +42,13 @@ export function ConnectSection() {
       ).fromTo(
         "[data-connect-row]",
         { autoAlpha: 0, y: 24 },
-        { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.09, ease: "power3.out" },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.09,
+          ease: "power3.out",
+        },
         0.4,
       );
 
@@ -102,16 +107,14 @@ export function ConnectSection() {
               data-connect-header
               className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground md:text-lg"
             >
-              She performs anonymously, so these verified channels are her entire
-              public presence: her own accounts, her label and shops, the platforms
-              that stream her catalog, and the places where fans gather.
+              She performs anonymously, so these verified channels are her entire public
+              presence: her own accounts, her label and shops, the platforms that stream
+              her catalog, and the places where fans gather.
             </p>
           </div>
           <Image
             data-connect-header
-            src={getAssetUrl(
-              "others/dokidoki-secret-club/ado-dokidoki-character.webp",
-            )}
+            src={getAssetUrl("others/dokidoki-secret-club/ado-dokidoki-character.webp")}
             alt="Ado's chibi character from the Doki Doki Secret Base"
             width={480}
             height={480}
@@ -184,9 +187,8 @@ export function ConnectSection() {
               She even has a secret base
             </h3>
             <p className="mt-3 text-base leading-7 text-muted-foreground md:text-lg">
-              Doki Doki Secret Base is Ado's membership fan club: exclusive vlogs,
-              tour diaries, broadcasts, and member-only stories inside a pixel-art
-              hideout.
+              Doki Doki Secret Base is Ado's membership fan club: exclusive vlogs, tour
+              diaries, broadcasts, and member-only stories inside a pixel-art hideout.
             </p>
             <Link
               href={dokiDokiUrl}

@@ -12,19 +12,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-import {
-  BadgeCell,
-  CoverCell,
-  DateTimeCell,
-  UserCell,
-} from "@/admin/data-table/cells";
+import type { ChangeRow } from "@/admin/lib/group-changes";
+import type { ClientTableConfig } from "@/admin/types/data-table";
+
+import { BadgeCell, CoverCell, DateTimeCell, UserCell } from "@/admin/data-table/cells";
 import { matchesSearch, matchesSelect, userSelectFilter } from "@/admin/lib/filters";
 import { cn } from "@/lib/utils";
 
 import { CommitCell } from "../data-table/cells/CommitCell";
-
-import type { ChangeRow } from "@/admin/lib/group-changes";
-import type { ClientTableConfig } from "@/admin/types/data-table";
 
 function editHref(change: ChangeRow): string {
   const base = change.entity === "song" ? "/admin/songs" : "/admin/albums";
@@ -43,10 +38,7 @@ const columns: ColumnDef<ChangeRow>[] = [
       const editCount = (change.children?.length ?? 0) + 1;
       return (
         <div className="flex min-w-0 items-center gap-2">
-          <Link
-            href={editHref(change)}
-            className="group flex min-w-0 items-center gap-2"
-          >
+          <Link href={editHref(change)} className="group flex min-w-0 items-center gap-2">
             <CoverCell url={change.entityInfo.coverArt ?? ""} />
             <span className="flex min-w-0 flex-col">
               <span className="truncate text-sm font-medium text-foreground group-hover:underline">
@@ -170,7 +162,11 @@ export const changesTableConfig: ClientTableConfig<ChangeRow> = {
   emptyMessage: "No changes found.",
   buildFilters: (rows) => [
     userSelectFilter(
-      rows.map((c) => ({ id: c.user.id, name: c.user.name, image: c.user.image })),
+      rows.map((c) => ({
+        id: c.user.id,
+        name: c.user.name,
+        image: c.user.image,
+      })),
     ),
     {
       id: "entity",

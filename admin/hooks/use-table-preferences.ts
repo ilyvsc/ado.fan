@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useSyncExternalStore } from "react";
-
 import type { VisibilityState } from "@tanstack/react-table";
+
+import { useRef, useSyncExternalStore } from "react";
 
 interface TablePreferences {
   columnVisibility: VisibilityState;
@@ -45,7 +45,10 @@ export function useTablePreferences(
   defaultOrder: string[] = [],
 ) {
   // Cache raw JSON string -> parsed object so `getSnapshot` returns a stable reference
-  const cacheRef = useRef<{ raw: string | null; prefs: Partial<TablePreferences> }>({
+  const cacheRef = useRef<{
+    raw: string | null;
+    prefs: Partial<TablePreferences>;
+  }>({
     raw: null,
     prefs: {},
   });
@@ -69,8 +72,7 @@ export function useTablePreferences(
     getSnapshot,
     () => EMPTY_PREFS,
   );
-  const columnVisibility: VisibilityState =
-    snap.columnVisibility ?? defaultVisibility;
+  const columnVisibility: VisibilityState = snap.columnVisibility ?? defaultVisibility;
   const columnOrder: string[] = snap.columnOrder?.length
     ? snap.columnOrder
     : defaultOrder;
@@ -84,8 +86,7 @@ export function useTablePreferences(
   }
 
   function setColumnOrder(updater: string[] | ((prev: string[]) => string[])) {
-    const next: string[] =
-      typeof updater === "function" ? updater(columnOrder) : updater;
+    const next: string[] = typeof updater === "function" ? updater(columnOrder) : updater;
     writePrefs(tableId, { ...readPrefs(tableId), columnOrder: next });
   }
 

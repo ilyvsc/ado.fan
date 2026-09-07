@@ -4,7 +4,6 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BookOpen, Sparkle } from "lucide-react";
-
 import { useRef } from "react";
 
 import type { Song } from "@/types/song";

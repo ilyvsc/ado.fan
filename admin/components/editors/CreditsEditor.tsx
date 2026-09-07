@@ -15,12 +15,10 @@ import {
   TRASH_BUTTON,
 } from "@/admin/forms/modules/fields/field-utils";
 import { type SongFormValues } from "@/admin/schemas/songs";
-
 import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TypographyMuted } from "@/components/ui/typography";
-
 import { cn } from "@/lib/utils";
 
 function EntityFields({
@@ -136,8 +134,8 @@ export function CreditsEditor({ control: rawControl }: { control: unknown }) {
             Credits
           </p>
           <TypographyMuted className="text-xs leading-snug">
-            Attribute roles and contributors. Each role groups the people or
-            organizations responsible for that contribution.
+            Attribute roles and contributors. Each role groups the people or organizations
+            responsible for that contribution.
           </TypographyMuted>
         </div>
         <Button

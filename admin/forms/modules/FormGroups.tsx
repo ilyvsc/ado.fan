@@ -1,9 +1,9 @@
+import type { FieldGroup } from "@/admin/types/forms";
+
 import { cn } from "@/lib/utils";
 
 import { type ParseableSchema } from "../validation";
 import { RenderField } from "./FormFields";
-
-import type { FieldGroup } from "@/admin/types/forms";
 
 export function FormGroup({
   group,
@@ -100,12 +100,7 @@ export function GroupsLayout({
     return (
       <div className="flex flex-col gap-6">
         {groups.map((group) => (
-          <FormGroup
-            key={key(group)}
-            group={group}
-            control={control}
-            schema={schema}
-          />
+          <FormGroup key={key(group)} group={group} control={control} schema={schema} />
         ))}
       </div>
     );

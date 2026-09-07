@@ -10,7 +10,6 @@ import {
   Square,
   Trash2,
 } from "lucide-react";
-
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 import { toast } from "sonner";
@@ -153,10 +152,7 @@ export function DataTableContextMenu<TData extends { id: string }>({
                 onClick={() => {
                   action.onClick(row);
                 }}
-                className={cn(
-                  baseItemClass,
-                  action.destructive && destructiveItemClass,
-                )}
+                className={cn(baseItemClass, action.destructive && destructiveItemClass)}
               >
                 <span
                   className={

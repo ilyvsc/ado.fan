@@ -9,20 +9,18 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Resolver } from "react-hook-form";
 
+import type { FormConfig } from "@/admin/types/forms";
+import type { Album } from "@/types/album";
+
 import { adminGetSongAlbums } from "@/admin/actions/songs";
 import { CreditsEditor, ExternalLinksEditor } from "@/admin/components/editors";
 import { LastEditMarker } from "@/admin/components/ui/LastEditMarker";
 import { FormSkeleton } from "@/admin/components/ui/TableSkeleton";
 import { GenericForm } from "@/admin/forms/form";
 import { FormActions } from "@/admin/forms/FormActions";
-
 import { albumFormSchema, type AlbumFormValues } from "@/admin/schemas/albums";
-
 import { Form } from "@/components/ui/form";
 import { TypographyMuted } from "@/components/ui/typography";
-
-import type { FormConfig } from "@/admin/types/forms";
-import type { Album } from "@/types/album";
 
 export function SongAlbums({ songId }: { songId: string }) {
   const [albums, setAlbums] = useState<Album[] | null>(null);
@@ -122,13 +120,7 @@ const TYPE_OPTIONS = [
   { label: "Album", value: "album" },
 ];
 
-export function AlbumForm({
-  action,
-  id,
-}: {
-  action: "create" | "edit";
-  id?: string;
-}) {
+export function AlbumForm({ action, id }: { action: "create" | "edit"; id?: string }) {
   const router = useRouter();
   const form = useForm<AlbumFormValues>({
     refineCoreProps: {

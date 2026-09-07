@@ -2,9 +2,9 @@
 
 import { Loader2, Search } from "lucide-react";
 
-import { LyricsSongDisplay } from "./LyricsSongDisplay";
-
 import type { SongListItem, SongSortOption } from "@/types/song";
+
+import { LyricsSongDisplay } from "./LyricsSongDisplay";
 
 interface SearchResultsPanelProps {
   loading: boolean;

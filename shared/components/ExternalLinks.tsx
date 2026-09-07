@@ -4,12 +4,11 @@ import { useGSAP } from "@gsap/react";
 import { SiNiconico, SiYoutube } from "@icons-pack/react-simple-icons";
 import gsap from "gsap";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
-
 import { useCallback, useId, useMemo, useRef, useState } from "react";
 
-import { NicoNicoPlayer, YouTubePlayer } from "@/components/VideoPlayer";
-
 import type { ExternalLinks } from "@/schemas/externalLinks";
+
+import { NicoNicoPlayer, YouTubePlayer } from "@/components/VideoPlayer";
 
 function ExternalLinkItem({
   link,
@@ -144,10 +143,7 @@ function ExternalLinkItem({
           {isVideo && hasOpened && (
             <div className="aspect-video overflow-hidden border border-(--theme-contrast)/10 bg-(--theme-contrast)/10 transition-colors duration-300 hover:border-(--theme-contrast)/20">
               {isYouTube ? (
-                <YouTubePlayer
-                  youtubeId={link.value}
-                  title={link.title ?? undefined}
-                />
+                <YouTubePlayer youtubeId={link.value} title={link.title ?? undefined} />
               ) : (
                 <NicoNicoPlayer nicoId={link.value} title={link.title ?? undefined} />
               )}

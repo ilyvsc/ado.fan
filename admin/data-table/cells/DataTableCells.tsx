@@ -1,5 +1,4 @@
 import { ImageOff, type LucideIcon } from "lucide-react";
-
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -21,17 +20,12 @@ export function TextCell({ value, className }: CellProps) {
 }
 
 export function MonoCell({ value, className }: CellProps) {
-  return (
-    <TextCell value={value} className={cn("font-mono tabular-nums", className)} />
-  );
+  return <TextCell value={value} className={cn("font-mono tabular-nums", className)} />;
 }
 
 export function BoldCell({ value, className }: CellProps) {
   return (
-    <TextCell
-      value={value}
-      className={cn("font-medium text-foreground", className)}
-    />
+    <TextCell value={value} className={cn("font-medium text-foreground", className)} />
   );
 }
 
@@ -89,9 +83,7 @@ export function ColorCell({
 }
 
 export function IdCell({ value, className }: CellProps) {
-  return (
-    <TextCell value={value} className={cn("block font-mono text-xs", className)} />
-  );
+  return <TextCell value={value} className={cn("block font-mono text-xs", className)} />;
 }
 
 export function CountCell({

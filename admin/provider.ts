@@ -1,3 +1,8 @@
+import type { BaseRecord, CrudSort, DataProvider, LogicalFilter } from "@refinedev/core";
+
+import type { AlbumFormValues } from "./schemas/albums";
+import type { SongFormValues } from "./schemas/songs";
+
 import {
   adminCreateAlbum,
   adminDeleteAlbum,
@@ -12,16 +17,6 @@ import {
   adminListSongs,
   adminUpdateSong,
 } from "./actions/songs";
-
-import type { AlbumFormValues } from "./schemas/albums";
-import type { SongFormValues } from "./schemas/songs";
-
-import type {
-  BaseRecord,
-  CrudSort,
-  DataProvider,
-  LogicalFilter,
-} from "@refinedev/core";
 
 export type ListFilter = Pick<LogicalFilter, "field" | "operator" | "value">;
 
@@ -59,9 +54,7 @@ const registry = {
 } satisfies Record<string, ResourceHandlers>;
 
 function getHandlers(resource: string): ResourceHandlers {
-  const handlers = (registry as Record<string, ResourceHandlers | undefined>)[
-    resource
-  ];
+  const handlers = (registry as Record<string, ResourceHandlers | undefined>)[resource];
   if (!handlers) throw new Error(`Resource not registered: ${resource}`);
   return handlers;
 }

@@ -5,14 +5,12 @@ import { SiGithub } from "@icons-pack/react-simple-icons";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CircleDot, Clock, GitFork, Mail, Scale, Star } from "lucide-react";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSocialLinks } from "@/hooks/useSocialLinks";
-
 import { formatDate } from "@/lib/date";
 import { githubLinks, type GitHubData } from "@/lib/github";
 import { linksCategories } from "@/lib/socialLinks";
@@ -107,9 +105,9 @@ export function Footer({ githubData }: { githubData: GitHubData }) {
                 Help with the Adomination
               </h3>
               <p className="mt-2 max-w-sm text-justify text-sm text-muted-foreground md:max-w-xl md:text-base">
-                Translate the website and lyrics into your language, improve content
-                and documentation, fix bugs, review pull requests, enhance
-                accessibility, or ship new features for the community.
+                Translate the website and lyrics into your language, improve content and
+                documentation, fix bugs, review pull requests, enhance accessibility, or
+                ship new features for the community.
               </p>
               <a
                 href={githubLinks.repository}
@@ -168,9 +166,7 @@ export function Footer({ githubData }: { githubData: GitHubData }) {
                         className="flex items-center gap-1.5 transition-colors hover:text-foreground"
                       >
                         <CircleDot className="h-4 w-4" aria-hidden="true" />
-                        {formatStat(
-                          githubStats?.openIssuesAndPullRequests ?? null,
-                        )}{" "}
+                        {formatStat(githubStats?.openIssuesAndPullRequests ?? null)}{" "}
                         issues
                       </a>
                     </li>
@@ -230,10 +226,7 @@ export function Footer({ githubData }: { githubData: GitHubData }) {
                           className="group relative rounded-full transition-transform hover:z-10 hover:-translate-y-1 focus-visible:z-10 focus-visible:-translate-y-1"
                         >
                           <Avatar className="h-9 w-9 border border-background">
-                            <AvatarImage
-                              src={avatarUrl}
-                              alt="GitHub Profile Avatar"
-                            />
+                            <AvatarImage src={avatarUrl} alt="GitHub Profile Avatar" />
                             <AvatarFallback className="bg-foreground/10 text-xs text-foreground">
                               {login.slice(0, 2).toUpperCase()}
                             </AvatarFallback>
@@ -255,8 +248,7 @@ export function Footer({ githubData }: { githubData: GitHubData }) {
                           {selectedContributor.login}
                         </span>
                         <span className="block text-sm text-foreground/60">
-                          {formatStat(selectedContributor.contributions)}{" "}
-                          contributions
+                          {formatStat(selectedContributor.contributions)} contributions
                         </span>
                       </a>
                     </div>
@@ -287,7 +279,10 @@ export function Footer({ githubData }: { githubData: GitHubData }) {
                 Music Platforms
               </h4>
               <div className="flex flex-col">
-                {useSocialLinks({ links: musicPlatforms, className: linksClass })}
+                {useSocialLinks({
+                  links: musicPlatforms,
+                  className: linksClass,
+                })}
               </div>
             </section>
 

@@ -11,13 +11,7 @@ import {
   SiYoutube,
   SiYoutubemusic,
 } from "@icons-pack/react-simple-icons";
-import {
-  BadgeJapaneseYen,
-  CircleQuestionMark,
-  Cloud,
-  Disc3,
-  Music4,
-} from "lucide-react";
+import { BadgeJapaneseYen, CircleQuestionMark, Cloud, Disc3, Music4 } from "lucide-react";
 
 import type { Category, SocialLink } from "@/types/social";
 
@@ -25,8 +19,7 @@ export const categories: Category[] = [
   {
     id: "social-media",
     label: "Social Media",
-    description:
-      "Official accounts for updates, announcements, and community updates.",
+    description: "Official accounts for updates, announcements, and community updates.",
     data: [
       {
         name: "@ado_staff",
@@ -62,8 +55,7 @@ export const categories: Category[] = [
         name: "YouTube",
         url: "https://www.youtube.com/@Ado1024",
         icon: <SiYoutube className="h-4 w-4" />,
-        description:
-          "Official channel featuring music videos, live shows, and trailers",
+        description: "Official channel featuring music videos, live shows, and trailers",
       },
       {
         name: "LINE",
@@ -149,8 +141,7 @@ export const categories: Category[] = [
         name: "AWA",
         url: "https://s.awa.fm/artist/74809ad9e993b0030087",
         icon: <Music4 className="h-4 w-4" />,
-        description:
-          "Japan-focused streaming service with Ado's catalog and playlists",
+        description: "Japan-focused streaming service with Ado's catalog and playlists",
       },
       {
         name: "LINE Music",

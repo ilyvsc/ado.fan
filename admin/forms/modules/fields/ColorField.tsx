@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  useMemo,
-  useState,
-  type ComponentProps,
-  type ReactNode,
-  type Ref,
-} from "react";
+import { useMemo, useState, type ComponentProps, type ReactNode, type Ref } from "react";
 import { HexColorPicker } from "react-colorful";
 
 import { FormControl, FormItem } from "@/components/ui/form";

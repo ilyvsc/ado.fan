@@ -1,12 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormControl, FormItem } from "@/components/ui/form";
 
-import {
-  FieldDescription,
-  FieldLabel,
-  FieldMessage,
-  FieldProps,
-} from "./FieldShared";
+import { FieldDescription, FieldLabel, FieldMessage, FieldProps } from "./FieldShared";
 
 export function CheckboxField({ field, rhfField, invalid, required }: FieldProps) {
   return (

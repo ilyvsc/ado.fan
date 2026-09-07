@@ -28,9 +28,7 @@ export default async function JoinPage({
           </>
         ) : (
           <div className="flex flex-col gap-1">
-            <h1 className="text-lg font-semibold text-foreground">
-              Invite unavailable
-            </h1>
+            <h1 className="text-lg font-semibold text-foreground">Invite unavailable</h1>
             <p className="text-sm text-muted-foreground">
               This invite is invalid, already used, or expired.
             </p>

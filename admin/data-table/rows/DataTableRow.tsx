@@ -2,13 +2,12 @@
 
 import { flexRender, type Row } from "@tanstack/react-table";
 
-import { TableCell, TableRow } from "@/components/ui/table";
+import type { ContextMenuConfig } from "@/admin/types/data-table";
 
+import { TableCell, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
 import { DataTableContextMenu } from "./DataTableContextMenu";
-
-import type { ContextMenuConfig } from "@/admin/types/data-table";
 
 interface DataTableRowProps<TData extends { id: string }> {
   row: Row<TData>;

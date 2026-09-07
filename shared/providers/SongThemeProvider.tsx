@@ -63,9 +63,7 @@ export function SongThemeProvider({ children }: { children: ReactNode }) {
     [currentTheme, setTheme, previewTheme],
   );
 
-  return (
-    <SongThemeContext.Provider value={theme}>{children}</SongThemeContext.Provider>
-  );
+  return <SongThemeContext.Provider value={theme}>{children}</SongThemeContext.Provider>;
 }
 
 export function useSongTheme() {

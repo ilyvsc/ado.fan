@@ -1,12 +1,11 @@
 import { ArrowLeft, Calendar, Clock, Mic, Music } from "lucide-react";
-
 import Image from "next/image";
 import Link from "next/link";
 
-import { SongHeaderActions } from "@/features/lyrics/reader/components/SongHeaderActions";
-
 import type { Album } from "@/types/album";
 import type { Song } from "@/types/song";
+
+import { SongHeaderActions } from "@/features/lyrics/reader/components/SongHeaderActions";
 
 const releaseDateFormat = new Intl.DateTimeFormat("en", {
   year: "numeric",
@@ -28,9 +27,7 @@ function getCreditNames(credits: Song["credits"], roles: string[]) {
 
 export function SongLyricsHeader({ song, albums }: { song: Song; albums: Album[] }) {
   const mainAlbum = albums[0];
-  const trackNumber = mainAlbum?.tracks.find(
-    (t) => t.song.id === song.id,
-  )?.trackNumber;
+  const trackNumber = mainAlbum?.tracks.find((t) => t.song.id === song.id)?.trackNumber;
 
   const featuredNames = getCreditNames(song.credits, ["feat", "featuring"]);
   const releaseLabel = releaseDateFormat.format(new Date(song.releaseDate));
@@ -91,9 +88,7 @@ export function SongLyricsHeader({ song, albums }: { song: Song; albums: Album[]
                         {album.title.english}
                       </Link>
                       {index < albums.length - 1 && (
-                        <span className="text-(--theme-contrast)/60 select-none">
-                          •
-                        </span>
+                        <span className="text-(--theme-contrast)/60 select-none">•</span>
                       )}
                     </span>
                   ))}

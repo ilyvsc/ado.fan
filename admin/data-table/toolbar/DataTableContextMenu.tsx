@@ -12,7 +12,6 @@ import {
   Square,
   Trash2,
 } from "lucide-react";
-
 import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -125,11 +124,7 @@ export function DataTableContextMenu<TData extends { id: string }>({
 
           <ContextMenuItem onClick={handleCopyId} className={itemCn}>
             <span className={cn("text-muted-foreground", copied && "text-green-500")}>
-              {copied ? (
-                <Check className="size-3.5" />
-              ) : (
-                <Copy className="size-3.5" />
-              )}
+              {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
             </span>
             <span className="flex-1">{copied ? "Copied!" : "Copy ID"}</span>
           </ContextMenuItem>
@@ -140,10 +135,7 @@ export function DataTableContextMenu<TData extends { id: string }>({
                 void handleDuplicate();
               }}
               disabled={duplicating}
-              className={cn(
-                itemCn,
-                "disabled:pointer-events-none disabled:opacity-50",
-              )}
+              className={cn(itemCn, "disabled:pointer-events-none disabled:opacity-50")}
             >
               <span className="text-muted-foreground">
                 {duplicating ? (

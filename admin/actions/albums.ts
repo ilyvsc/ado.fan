@@ -116,7 +116,10 @@ export async function adminCreateAlbum(data: AlbumFormValues) {
   });
   await recordChange("album", album.id, user.id);
   invalidateContentTag("albums:list");
-  return { ...album, releaseDate: album.releaseDate.toISOString().slice(0, 10) };
+  return {
+    ...album,
+    releaseDate: album.releaseDate.toISOString().slice(0, 10),
+  };
 }
 
 export async function adminUpdateAlbum(id: string, data: AlbumFormValues) {
@@ -132,7 +135,10 @@ export async function adminUpdateAlbum(id: string, data: AlbumFormValues) {
   });
   await recordChange("album", id, user.id);
   invalidateContentTag("albums:list");
-  return { ...album, releaseDate: album.releaseDate.toISOString().slice(0, 10) };
+  return {
+    ...album,
+    releaseDate: album.releaseDate.toISOString().slice(0, 10),
+  };
 }
 
 export async function adminDeleteAlbum(id: string) {

@@ -3,6 +3,8 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { Disc3, Languages, Link2 } from "lucide-react";
 
+import type { FilterDef, TableConfig } from "@/admin/types/data-table";
+
 import { adminDuplicateSong } from "@/admin/actions/songs";
 import {
   ColorCell,
@@ -14,8 +16,6 @@ import {
   TextCell,
   VideoLinksCell,
 } from "@/admin/data-table/cells";
-
-import type { FilterDef, TableConfig } from "@/admin/types/data-table";
 
 interface SongRow {
   id: string;
@@ -76,9 +76,7 @@ const columns: ColumnDef<SongRow>[] = [
     enableResizing: false,
     enableSorting: false,
     header: "Lyrics",
-    cell: ({ getValue }) => (
-      <CountCell count={getValue() as number} icon={Languages} />
-    ),
+    cell: ({ getValue }) => <CountCell count={getValue() as number} icon={Languages} />,
   },
   {
     accessorKey: "externalLinks",
@@ -86,10 +84,7 @@ const columns: ColumnDef<SongRow>[] = [
     enableSorting: false,
     header: "Ext. Links",
     cell: ({ getValue }) => (
-      <CountCell
-        count={((getValue() as unknown[] | null) ?? []).length}
-        icon={Link2}
-      />
+      <CountCell count={((getValue() as unknown[] | null) ?? []).length} icon={Link2} />
     ),
   },
   {
@@ -98,10 +93,7 @@ const columns: ColumnDef<SongRow>[] = [
     enableSorting: false,
     header: "Video",
     cell: ({ row }) => (
-      <VideoLinksCell
-        nicoId={row.original.nicoId}
-        youtubeId={row.original.youtubeId}
-      />
+      <VideoLinksCell nicoId={row.original.nicoId} youtubeId={row.original.youtubeId} />
     ),
   },
   {

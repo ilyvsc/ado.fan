@@ -1,9 +1,9 @@
+import type { Album, AlbumMinimal } from "@/types/album";
+
 import { Prisma } from "@/prisma/client";
 
-import { serializeSongListItem } from "./song";
 import { albumListPrismaSelect, albumMinimalPrismaSelect } from "../select/album";
-
-import type { Album, AlbumMinimal } from "@/types/album";
+import { serializeSongListItem } from "./song";
 
 export function serializeAlbumWithoutLyrics(
   album: Prisma.AlbumGetPayload<{ select: typeof albumListPrismaSelect }>,

@@ -21,7 +21,6 @@ import {
   UserCheck,
   Users,
 } from "lucide-react";
-
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -36,7 +35,6 @@ import {
   type Level,
   type Resource,
 } from "@/admin/lib/permissions";
-
 import { confirmToast } from "@/admin/lib/toast";
 import { ThemeSelectorDialog } from "@/components/themes/ThemeSelector";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -101,7 +99,12 @@ const navGroups: { label: string; icon: LucideIcon; items: NavItem[] }[] = [
     icon: LayoutGrid,
     items: [
       { label: "Songs", href: "/admin/songs", icon: Music, resource: "songs" },
-      { label: "Albums", href: "/admin/albums", icon: Disc3, resource: "albums" },
+      {
+        label: "Albums",
+        href: "/admin/albums",
+        icon: Disc3,
+        resource: "albums",
+      },
     ],
   },
   {
@@ -305,8 +308,7 @@ export function AdminSidebar({
               items: group.items.filter((item) => {
                 if (!item.resource) return true;
                 if (levels === null) return false;
-                if (item.superadminOnly && user?.role !== Role.superadmin)
-                  return false;
+                if (item.superadminOnly && user?.role !== Role.superadmin) return false;
                 return levels[item.resource] !== PermissionLevel.none;
               }),
             }))

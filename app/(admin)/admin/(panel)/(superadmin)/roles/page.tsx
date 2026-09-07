@@ -1,6 +1,10 @@
+import type { LucideIcon } from "lucide-react";
+
 import { Shield, ShieldCheck, User } from "lucide-react";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+
+import type { Role as RoleType } from "@/admin/lib/permissions";
 
 import { listMembers } from "@/admin/actions/roles";
 import { getSessionIdentity } from "@/admin/auth/guard";
@@ -11,9 +15,6 @@ import { LEVEL_META, SECTION_META } from "@/admin/lib/sections";
 import { MembersTable } from "@/admin/tables/members";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-
-import type { Role as RoleType } from "@/admin/lib/permissions";
-import type { LucideIcon } from "lucide-react";
 
 const ROLE_ICON: Record<RoleType, LucideIcon> = {
   superadmin: ShieldCheck,
@@ -69,10 +70,7 @@ export default async function RolesPage() {
               {ROLES.map((role) => {
                 const Icon = ROLE_ICON[role];
                 return (
-                  <tr
-                    key={role}
-                    className="border-b border-foreground/5 last:border-0"
-                  >
+                  <tr key={role} className="border-b border-foreground/5 last:border-0">
                     <td className="px-4 py-3">
                       <span className="flex items-center gap-2 text-xs text-foreground capitalize">
                         <Icon className="size-3.5 shrink-0 text-muted-foreground" />

@@ -1,9 +1,15 @@
 "use client";
 
+import type { ColumnDef } from "@tanstack/react-table";
+
 import { KeyRound, ShieldCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
+
+import type { Member } from "@/admin/actions/roles";
+import type { InviteRole } from "@/admin/lib/permissions";
+import type { ClientTableConfig } from "@/admin/types/data-table";
 
 import { setMemberRole } from "@/admin/actions/roles";
 import {
@@ -22,11 +28,6 @@ import {
   userSelectFilter,
 } from "@/admin/lib/filters";
 import { ROLES } from "@/admin/lib/permissions";
-
-import type { Member } from "@/admin/actions/roles";
-import type { InviteRole } from "@/admin/lib/permissions";
-import type { ClientTableConfig } from "@/admin/types/data-table";
-import type { ColumnDef } from "@tanstack/react-table";
 
 interface MemberColumnsDeps {
   currentUserId: string;
@@ -105,9 +106,7 @@ export function memberColumns({
       id: "actions",
       header: "Actions",
       enableSorting: false,
-      cell: ({ row }) => (
-        <MemberActionsCell member={row.original} pending={pending} />
-      ),
+      cell: ({ row }) => <MemberActionsCell member={row.original} pending={pending} />,
     },
   ];
 }
@@ -173,7 +172,5 @@ export function MembersTable({
 
   const columns = memberColumns({ currentUserId, pending, changeRole });
 
-  return (
-    <DataTableClient config={{ ...membersTableConfig, columns }} data={members} />
-  );
+  return <DataTableClient config={{ ...membersTableConfig, columns }} data={members} />;
 }

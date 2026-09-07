@@ -2,7 +2,6 @@
 
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-
 import { useRef } from "react";
 
 import { getAssetUrl, Image } from "@/components/ui/image";
@@ -26,13 +25,9 @@ const shinzouLogo = getAssetUrl("tours/shinzou/ado-shinzou-live-logo.png");
 const wishPromo = getAssetUrl("tours/wish/ado-wish-promotional-banner.jpg");
 const wishTourBangkok = getAssetUrl("tours/wish/gallery/wish-tour-bangkok-2024");
 const wishTourChicago = getAssetUrl("tours/wish/gallery/wish-tour-chicago-2024");
-const wishTourDusseldorf = getAssetUrl(
-  "tours/wish/gallery/wish-tour-dusseldorf-2024",
-);
+const wishTourDusseldorf = getAssetUrl("tours/wish/gallery/wish-tour-dusseldorf-2024");
 const wishTourJakarta = getAssetUrl("tours/wish/gallery/wish-tour-jakarta-2024");
-const wishTourLosAngeles = getAssetUrl(
-  "tours/wish/gallery/wish-tour-los-angeles-2024",
-);
+const wishTourLosAngeles = getAssetUrl("tours/wish/gallery/wish-tour-los-angeles-2024");
 const wishTourNewYork = getAssetUrl("tours/wish/gallery/wish-tour-newyork-2024");
 const wishTourParis = getAssetUrl("tours/wish/gallery/wish-tour-paris-2024");
 const wishTourSeoul = getAssetUrl("tours/wish/gallery/wish-tour-seoul-2024");
@@ -332,17 +327,16 @@ function DesktopStory() {
           </h1>
           <div className="intro-text max-w-xl space-y-4">
             <p className="text-justify text-base leading-8 text-muted-foreground md:text-lg">
-              Born in Tokyo in 2002, Ado began sharing song covers online as a
-              teenager, uploading her performances to NicoNico. She emerged from
-              Japan&apos;s utaite scene a community of singers known for giving their
-              own voice to VOCALOID songs and built recognition through vocal
-              performance alone.
+              Born in Tokyo in 2002, Ado began sharing song covers online as a teenager,
+              uploading her performances to NicoNico. She emerged from Japan&apos;s utaite
+              scene a community of singers known for giving their own voice to VOCALOID
+              songs and built recognition through vocal performance alone.
             </p>
             <p className="text-justify text-base leading-8 text-muted-foreground md:text-lg">
-              What set her apart was never polished presentation. It was the raw
-              emotional weight of her voice a delivery that could shift from whispered
-              vulnerability to explosive rage within a single phrase. Before the world
-              knew her name, the underground already understood what she was becoming.
+              What set her apart was never polished presentation. It was the raw emotional
+              weight of her voice a delivery that could shift from whispered vulnerability
+              to explosive rage within a single phrase. Before the world knew her name,
+              the underground already understood what she was becoming.
             </p>
           </div>
         </div>

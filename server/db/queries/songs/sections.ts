@@ -1,10 +1,10 @@
+import type { Song } from "@/types/song";
+import type { TimelineGroups } from "@/types/timeline";
+
 import { songPrismaSelect } from "@/db/select";
 import { serializeSong } from "@/db/serialize";
 import { timelineConfig } from "@/features/timeline/config";
 import { prisma } from "@/prisma/client";
-
-import type { Song } from "@/types/song";
-import type { TimelineGroups } from "@/types/timeline";
 
 /**
  * Fetch the timeline songs grouped by year.

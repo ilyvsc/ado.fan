@@ -1,10 +1,8 @@
 "use client";
 
 import { Ban, Copy } from "lucide-react";
-
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-
 import { toast } from "sonner";
 
 import { type InviteRecord, revokeInvite } from "@/admin/actions/invites";

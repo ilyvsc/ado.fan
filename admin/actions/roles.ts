@@ -1,17 +1,11 @@
 "use server";
 
-import { getSessionIdentity, requireSuperadmin } from "@/admin/auth/guard";
-import {
-  effectiveLevel,
-  OVERRIDABLE,
-  RESOURCES,
-  Role,
-} from "@/admin/lib/permissions";
+import type { Level, Override, Resource } from "@/admin/lib/permissions";
 
+import { getSessionIdentity, requireSuperadmin } from "@/admin/auth/guard";
+import { effectiveLevel, OVERRIDABLE, RESOURCES, Role } from "@/admin/lib/permissions";
 import { dbListAllSessions, loadOverrides } from "@/db/queries/admin";
 import { prisma } from "@/prisma/client";
-
-import type { Level, Override, Resource } from "@/admin/lib/permissions";
 
 export interface Member {
   id: string;
@@ -62,8 +56,7 @@ export async function listMembers(): Promise<Member[]> {
       role: u.role,
       createdAt: u.createdAt,
       updatedAt: u.updatedAt,
-      sessionCount: (u as unknown as { _count: { sessions: number } })._count
-        .sessions,
+      sessionCount: (u as unknown as { _count: { sessions: number } })._count.sessions,
       levels: Object.fromEntries(
         RESOURCES.map((r) => [r, effectiveLevel(u.role, overrides, r)]),
       ) as Record<Resource, Level>,
@@ -144,10 +137,7 @@ export async function getMyResourceLevels(): Promise<Record<Resource, Level>> {
   const overrides = await loadOverrides(user.id);
   const role = user.role ?? Role.contributor;
   return Object.fromEntries(
-    RESOURCES.map((resource) => [
-      resource,
-      effectiveLevel(role, overrides, resource),
-    ]),
+    RESOURCES.map((resource) => [resource, effectiveLevel(role, overrides, resource)]),
   ) as Record<Resource, Level>;
 }
 

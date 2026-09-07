@@ -11,9 +11,11 @@ import {
   Plus,
   Type,
 } from "lucide-react";
-
 import { Suspense, useMemo, useState } from "react";
 import Markdown, { type Components } from "react-markdown";
+
+import type { LyricsViewMode } from "@/features/lyrics/reader/types/states";
+import type { LyricsLanguage } from "@/types/lyrics";
 
 import { proseComponents } from "@/components/ui/markdown";
 import {
@@ -27,9 +29,6 @@ import { formatLyricsMarkdown } from "@/lib/lyrics";
 import { cn } from "@/lib/utils";
 
 import { useLyricsUrlState } from "../hooks/useLyricsUrlState";
-
-import type { LyricsViewMode } from "@/features/lyrics/reader/types/states";
-import type { LyricsLanguage } from "@/types/lyrics";
 
 const MODE_CONFIG: {
   mode: LyricsViewMode;
@@ -159,19 +158,13 @@ const LYRICS_MARKDOWN: Components = {
   ),
   h3: ({ node, className, ...props }) => (
     <TypographyH3
-      className={cn(
-        "mt-5 mb-2 text-base text-muted-foreground first:mt-0",
-        className,
-      )}
+      className={cn("mt-5 mb-2 text-base text-muted-foreground first:mt-0", className)}
       {...props}
     />
   ),
   p: ({ node, className, ...props }) => (
     <TypographyP
-      className={cn(
-        "my-2 leading-loose whitespace-pre-wrap not-first:mt-2",
-        className,
-      )}
+      className={cn("my-2 leading-loose whitespace-pre-wrap not-first:mt-2", className)}
       {...props}
     />
   ),
@@ -183,10 +176,7 @@ const LYRICS_MARKDOWN: Components = {
   ),
   blockquote: ({ node, className, ...props }) => (
     <TypographyBlockquote
-      className={cn(
-        "my-2 border-foreground/20 pl-4 text-muted-foreground",
-        className,
-      )}
+      className={cn("my-2 border-foreground/20 pl-4 text-muted-foreground", className)}
       {...props}
     />
   ),
@@ -359,11 +349,7 @@ function LinedView({
   );
 }
 
-function LyricsModes({
-  availableLanguages,
-}: {
-  availableLanguages: LyricsLanguage[];
-}) {
+function LyricsModes({ availableLanguages }: { availableLanguages: LyricsLanguage[] }) {
   const [fontSize, setFontSize] = useState(16);
   const { state, languages, setMode, setLeft, setRight, swapLanguages } =
     useLyricsUrlState({ availableLanguages });
@@ -485,15 +471,9 @@ function LyricsModes({
       </div>
 
       <div key={viewMode} className="transition-opacity duration-300">
-        {viewMode === "tabs" && (
-          <TabsView activeLang={leftLang} fontSize={fontSize} />
-        )}
+        {viewMode === "tabs" && <TabsView activeLang={leftLang} fontSize={fontSize} />}
         {viewMode === "compare" && (
-          <CompareView
-            leftLang={leftLang}
-            rightLang={rightLang}
-            fontSize={fontSize}
-          />
+          <CompareView leftLang={leftLang} rightLang={rightLang} fontSize={fontSize} />
         )}
         {viewMode === "lined" && (
           <LinedView leftLang={leftLang} rightLang={rightLang} fontSize={fontSize} />

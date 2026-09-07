@@ -2,7 +2,10 @@ import { prisma } from "@/prisma/client";
 
 /** A user's role, for permission checks. */
 export async function dbGetUserRole(userId: string) {
-  return prisma.user.findUnique({ where: { id: userId }, select: { role: true } });
+  return prisma.user.findUnique({
+    where: { id: userId },
+    select: { role: true },
+  });
 }
 
 /** Name/email/avatar for a batch of user ids, keyed by id. */

@@ -35,7 +35,11 @@ export const LEVEL_META: Record<
     tone: "text-muted-foreground",
   },
   [PermissionLevel.read]: { label: "Read", icon: Eye, tone: "text-yellow-600" },
-  [PermissionLevel.write]: { label: "Write", icon: Pencil, tone: "text-green-600" },
+  [PermissionLevel.write]: {
+    label: "Write",
+    icon: Pencil,
+    tone: "text-green-600",
+  },
 };
 
 export interface AccessSummary {

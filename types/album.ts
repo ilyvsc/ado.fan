@@ -1,6 +1,7 @@
-import type { SongListItem } from "./song";
 import type { Credits } from "@/schemas/credits";
 import type { ExternalLinks } from "@/schemas/externalLinks";
+
+import type { SongListItem } from "./song";
 
 export interface Album {
   id: string;

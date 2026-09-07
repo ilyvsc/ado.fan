@@ -4,6 +4,8 @@ import { SlidersHorizontal } from "lucide-react";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
+import type { Level, Role } from "@/admin/lib/permissions";
+
 import { getMemberOverrides, setMemberOverride } from "@/admin/actions/roles";
 import {
   LEVEL_OPTIONS,
@@ -22,8 +24,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-
-import type { Level, Role } from "@/admin/lib/permissions";
 
 type Section = (typeof OVERRIDABLE)[number];
 

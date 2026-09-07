@@ -1,19 +1,13 @@
 "use client";
 
 import { Copy, SlidersHorizontal, UserPlus } from "lucide-react";
-
 import { useState } from "react";
-
 import { toast } from "sonner";
 
-import { createInvite, type InvitePermissions } from "@/admin/actions/invites";
-import {
-  INVITE_ROLES,
-  OVERRIDABLE,
-  LEVEL_OPTIONS,
-  Role,
-} from "@/admin/lib/permissions";
+import type { InviteRole, Level, Resource } from "@/admin/lib/permissions";
 
+import { createInvite, type InvitePermissions } from "@/admin/actions/invites";
+import { INVITE_ROLES, OVERRIDABLE, LEVEL_OPTIONS, Role } from "@/admin/lib/permissions";
 import { LEVEL_META, SECTION_META } from "@/admin/lib/sections";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,8 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-import type { InviteRole, Level, Resource } from "@/admin/lib/permissions";
 
 export function InvitePermissionsDialog() {
   const [role, setRole] = useState<InviteRole>(Role.contributor);
@@ -99,10 +91,7 @@ export function InvitePermissionsDialog() {
               {OVERRIDABLE.map((resource) => {
                 const Icon = SECTION_META[resource].icon;
                 return (
-                  <div
-                    key={resource}
-                    className="flex items-center justify-between gap-2"
-                  >
+                  <div key={resource} className="flex items-center justify-between gap-2">
                     <span className="flex items-center gap-2 text-sm text-foreground">
                       <Icon className="size-4 text-muted-foreground" />
                       {SECTION_META[resource].label}

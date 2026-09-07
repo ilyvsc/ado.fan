@@ -2,7 +2,6 @@
 
 import { SiNiconico, SiYoutube } from "@icons-pack/react-simple-icons";
 import { Code, Plus, Trash2 } from "lucide-react";
-
 import { useState } from "react";
 import { Control, useFieldArray, useWatch } from "react-hook-form";
 
@@ -15,7 +14,6 @@ import {
   OPTIONAL,
   TRASH_BUTTON,
 } from "@/admin/forms/modules/fields/field-utils";
-
 import { Button } from "@/components/ui/button";
 import { FieldTitle } from "@/components/ui/field";
 import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
@@ -242,8 +240,8 @@ export function ExternalLinksEditor({
             External Links
           </p>
           <TypographyMuted className="text-xs leading-snug">
-            Link this song to platform videos and external resources. YouTube and
-            NicoNico entries unlock the Watch button on public pages.
+            Link this song to platform videos and external resources. YouTube and NicoNico
+            entries unlock the Watch button on public pages.
           </TypographyMuted>
         </div>
         <Button
@@ -291,7 +289,12 @@ export function ExternalLinksEditor({
             size="sm"
             className={ADD_BUTTON}
             onClick={() => {
-              append({ type: "link", value: "", title: null, description: null });
+              append({
+                type: "link",
+                value: "",
+                title: null,
+                description: null,
+              });
             }}
           >
             <Plus className="size-3.5" />

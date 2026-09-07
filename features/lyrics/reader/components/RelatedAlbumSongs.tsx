@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { cn } from "@/lib/utils";
-
 import type { Album } from "@/types/album";
+
+import { cn } from "@/lib/utils";
 
 export function RelatedAlbumSongs({
   albums,
@@ -50,10 +50,7 @@ export function RelatedAlbumSongs({
       </div>
 
       <div
-        className={cn(
-          "max-w-fit gap-2",
-          songs.length > 5 ? "columns-2" : "columns-1",
-        )}
+        className={cn("max-w-fit gap-2", songs.length > 5 ? "columns-2" : "columns-1")}
       >
         {songs.map(({ song, trackNumber }) => {
           const isCurrentSong = song.id === currentSongId;
@@ -69,9 +66,7 @@ export function RelatedAlbumSongs({
             >
               <span
                 className={
-                  isCurrentSong
-                    ? "text-(--theme-contrast)"
-                    : "text-(--theme-contrast)/50"
+                  isCurrentSong ? "text-(--theme-contrast)" : "text-(--theme-contrast)/50"
                 }
               >
                 {trackNumber}.

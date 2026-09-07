@@ -2,13 +2,13 @@
 
 import { useMemo } from "react";
 
+import type { BulkAction, ClientTableConfig } from "@/admin/types/data-table";
+
 import { useAdminTable } from "@/admin/hooks/use-data-table";
 import { sortData } from "@/admin/lib/table-sort";
 
 import { DataTable } from "./DataTable";
 import { DataTableToolbar } from "./toolbar";
-
-import type { BulkAction, ClientTableConfig } from "@/admin/types/data-table";
 
 interface Props<T extends { id: string }> {
   config: ClientTableConfig<T>;

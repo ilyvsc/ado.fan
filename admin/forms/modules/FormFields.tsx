@@ -2,6 +2,8 @@
 
 import { Control, FieldValues, Path } from "react-hook-form";
 
+import type { FieldConfig } from "@/admin/types/forms";
+
 import { FormField } from "@/components/ui/form";
 
 import { isFieldRequired, type ParseableSchema } from "../validation";
@@ -18,8 +20,6 @@ import {
   UrlField,
 } from "./fields/";
 import { getPlaceholder } from "./fields/field-utils";
-
-import type { FieldConfig } from "@/admin/types/forms";
 
 export function RenderField({
   field,

@@ -134,11 +134,7 @@ export function LyricsEntryEditor({
                 title={preview ? "Edit" : "Preview markdown"}
                 className="h-8 w-8 rounded-md p-0 text-muted-foreground/40 hover:text-foreground"
               >
-                {preview ? (
-                  <EyeOff className="size-3.5" />
-                ) : (
-                  <Eye className="size-3.5" />
-                )}
+                {preview ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
               </Button>
               <Button
                 type="button"

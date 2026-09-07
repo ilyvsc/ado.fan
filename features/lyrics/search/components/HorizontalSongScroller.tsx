@@ -3,7 +3,6 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Music } from "lucide-react";
-
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
@@ -15,10 +14,7 @@ interface HorizontalSongScrollerProps {
   songs: SongListItem[];
 }
 
-export function HorizontalSongScroller({
-  title,
-  songs,
-}: HorizontalSongScrollerProps) {
+export function HorizontalSongScroller({ title, songs }: HorizontalSongScrollerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(

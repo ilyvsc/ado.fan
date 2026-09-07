@@ -3,12 +3,11 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { APIError } from "better-auth/api";
 import { cookies } from "next/headers";
 
+import type { Level } from "@/admin/lib/permissions";
+
 import { OVERRIDABLE, PermissionLevel, Role } from "@/admin/lib/permissions";
 import { dbGetUserRole, syncGithubProfile } from "@/db/queries/admin";
-
 import { prisma } from "@/prisma/client";
-
-import type { Level } from "@/admin/lib/permissions";
 
 export const INVITE_COOKIE = "invite_token";
 
@@ -58,7 +57,9 @@ export const auth = betterAuth({
         before: async (user) => {
           const token = (await cookies()).get(INVITE_COOKIE)?.value;
           if (!token) {
-            throw new APIError("FORBIDDEN", { message: "An invite is required." });
+            throw new APIError("FORBIDDEN", {
+              message: "An invite is required.",
+            });
           }
 
           const invite = await prisma.invite.findUnique({ where: { token } });
@@ -98,9 +99,7 @@ export const auth = betterAuth({
           });
 
           if (rows.length) {
-            await prisma.userPermission
-              .createMany({ data: rows })
-              .catch(() => undefined);
+            await prisma.userPermission.createMany({ data: rows }).catch(() => undefined);
           }
         },
       },

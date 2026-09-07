@@ -1,9 +1,14 @@
 "use client";
 
+import type { ColumnDef } from "@tanstack/react-table";
+
 import { Plug, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
+
+import type { AdminAccount } from "@/admin/types/admin";
+import type { ClientTableConfig } from "@/admin/types/data-table";
 
 import { bulkDeleteAccounts } from "@/admin/actions/auth-data";
 import {
@@ -16,10 +21,6 @@ import {
 import { DataTableClient } from "@/admin/data-table/DataTableClient";
 import { matchesSearch, matchesSelect, userSelectFilter } from "@/admin/lib/filters";
 import { undoToast } from "@/admin/lib/toast";
-
-import type { AdminAccount } from "@/admin/types/admin";
-import type { ClientTableConfig } from "@/admin/types/data-table";
-import type { ColumnDef } from "@tanstack/react-table";
 
 const columns: ColumnDef<AdminAccount>[] = [
   {

@@ -51,7 +51,10 @@ async function entityInfoByRows(
 
   const map = new Map<string, EntityInfo>();
   for (const song of songs) {
-    map.set(`song:${song.id}`, { title: song.titleEnglish, coverArt: song.coverArt });
+    map.set(`song:${song.id}`, {
+      title: song.titleEnglish,
+      coverArt: song.coverArt,
+    });
   }
   for (const album of albums) {
     map.set(`album:${album.id}`, {

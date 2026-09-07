@@ -1,23 +1,19 @@
+import type { Metadata } from "next";
+
 import { notFound } from "next/navigation";
 
 import { ExternalLinks } from "@/components/ExternalLinks";
-
 import { getAlbumsBySongId } from "@/db/queries/album";
 import { getSongById, getSongLyricsById } from "@/db/queries/songs";
-
 import { RelatedAlbumSongs } from "@/features/lyrics/reader/components/RelatedAlbumSongs";
 import { SongCreditsDetails } from "@/features/lyrics/reader/components/SongCreditsDetails";
 import { SongLyricsHeader } from "@/features/lyrics/reader/components/SongLyricsHeader";
 import { SongLyricsModes } from "@/features/lyrics/reader/components/SongLyricsModes";
 import { TrackRecentlyViewed } from "@/features/lyrics/reader/components/TrackRecentlyViewed";
 import { serializeLyricsToLanguages } from "@/features/lyrics/reader/utils/serializeLyrics";
-
 import { getContrastColor, getThemeSurface } from "@/lib/color";
 import { buildAlternates, buildUrl, durationToIso8601 } from "@/lib/metadata";
-
 import { prisma } from "@/prisma/client";
-
-import type { Metadata } from "next";
 
 export async function generateStaticParams() {
   const songs = await prisma.song.findMany({ select: { id: true } });

@@ -2,7 +2,6 @@
 
 import { Table } from "@tanstack/react-table";
 import { Check, Columns3, Eye, EyeOff, GripVertical, RotateCcw } from "lucide-react";
-
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";

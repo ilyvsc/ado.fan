@@ -3,7 +3,6 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
 import { useRef } from "react";
 
 import { getAssetUrl, Image } from "@/components/ui/image";
@@ -101,10 +100,7 @@ function PanelOne({ data }: { data: StoryPanelData }) {
 
           <div className="max-w-xl space-y-4">
             {data.paragraphs.map((p) => (
-              <p
-                key={p}
-                className="text-base leading-8 text-muted-foreground md:text-lg"
-              >
+              <p key={p} className="text-base leading-8 text-muted-foreground md:text-lg">
                 {p}
               </p>
             ))}
@@ -130,10 +126,7 @@ function PanelTwo({ data }: { data: StoryPanelData }) {
 
           <div className="max-w-xl space-y-4">
             {data.paragraphs.map((p) => (
-              <p
-                key={p}
-                className="text-base leading-8 text-muted-foreground md:text-lg"
-              >
+              <p key={p} className="text-base leading-8 text-muted-foreground md:text-lg">
                 {p}
               </p>
             ))}
@@ -167,10 +160,7 @@ function PanelThree({ data }: { data: StoryPanelData }) {
 
           <div className="max-w-xl space-y-4">
             {data.paragraphs.map((p) => (
-              <p
-                key={p}
-                className="text-base leading-8 text-muted-foreground md:text-lg"
-              >
+              <p key={p} className="text-base leading-8 text-muted-foreground md:text-lg">
                 {p}
               </p>
             ))}

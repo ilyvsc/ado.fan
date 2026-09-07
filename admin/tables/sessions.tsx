@@ -1,19 +1,20 @@
 "use client";
 
+import type { ColumnDef } from "@tanstack/react-table";
+
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
+
+import type { AdminSession } from "@/admin/types/admin";
+import type { ClientTableConfig } from "@/admin/types/data-table";
 
 import { bulkDeleteSessions } from "@/admin/actions/auth-data";
 import { DateTimeCell, UserCell, ObfuscatedCell } from "@/admin/data-table/cells";
 import { DataTableClient } from "@/admin/data-table/DataTableClient";
 import { matchesSearch, matchesSelect, userSelectFilter } from "@/admin/lib/filters";
 import { undoToast } from "@/admin/lib/toast";
-
-import type { AdminSession } from "@/admin/types/admin";
-import type { ClientTableConfig } from "@/admin/types/data-table";
-import type { ColumnDef } from "@tanstack/react-table";
 
 const columns: ColumnDef<AdminSession>[] = [
   {

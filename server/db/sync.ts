@@ -9,6 +9,8 @@ import {
 
 export type { ContentPrInfo } from "@/lib/github-sync";
 
+import type { FixtureFile } from "./export/serialize-fixtures";
+
 import { exportEntity } from "./export";
 import {
   deleteChanges,
@@ -22,8 +24,6 @@ import {
   resetSyncedWithoutCommit,
   type RecentChange,
 } from "./queries/admin/changes";
-
-import type { FixtureFile } from "./export/serialize-fixtures";
 
 export interface SyncRun {
   synced: number;

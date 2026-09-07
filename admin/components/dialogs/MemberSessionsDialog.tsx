@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
+import type { Member } from "@/admin/actions/roles";
+
 import {
   listMemberSessions,
   revokeMemberSession,
@@ -31,8 +33,6 @@ import {
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-
-import type { Member } from "@/admin/actions/roles";
 
 type Session = Awaited<ReturnType<typeof listMemberSessions>>[number];
 type Icon = React.ComponentType<{ className?: string }>;

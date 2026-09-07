@@ -28,9 +28,7 @@ export async function dbGetAlbum(id: string) {
 
 export async function dbListAlbums(params: {
   where: Prisma.AlbumWhereInput;
-  orderBy:
-    | Prisma.AlbumOrderByWithRelationInput
-    | Prisma.AlbumOrderByWithRelationInput[];
+  orderBy: Prisma.AlbumOrderByWithRelationInput | Prisma.AlbumOrderByWithRelationInput[];
   skip: number;
   take: number;
 }) {
@@ -57,7 +55,10 @@ export interface AlbumMutationData {
 }
 
 export async function dbCreateAlbum(id: string, data: AlbumMutationData) {
-  return prisma.album.create({ data: { id, ...data }, select: albumAdminSelect });
+  return prisma.album.create({
+    data: { id, ...data },
+    select: albumAdminSelect,
+  });
 }
 
 export async function dbUpdateAlbum(id: string, data: AlbumMutationData) {
@@ -85,9 +86,7 @@ export async function dbDuplicateAlbum(id: string): Promise<{ id: string }> {
       type: source.type,
       coverArt: source.coverArt,
       credits:
-        source.credits !== null
-          ? (source.credits as Prisma.InputJsonValue)
-          : undefined,
+        source.credits !== null ? (source.credits as Prisma.InputJsonValue) : undefined,
     },
     select: { id: true },
   });

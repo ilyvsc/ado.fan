@@ -3,7 +3,6 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
 import { useRef } from "react";
 
 import { TracedRosesCrown } from "@/components/icons/TracedRosesCrown";
@@ -81,10 +80,10 @@ export function TimelineHeader() {
           <figure data-header-fade className="md:col-span-5 md:pl-10">
             <blockquote className="border-l-2 border-ado-primary/80 pl-5">
               <p className="max-w-md font-serif text-base leading-relaxed text-ado-secondary-foreground/90 italic 3xl:text-xl md:text-lg">
-                "So, if you could remember things today, even just a little bit, and
-                take it with you as you go back, I would be really happy. If that
-                happens, I think my younger self, the one who couldn't do anything,
-                would be happy in this audience."
+                "So, if you could remember things today, even just a little bit, and take
+                it with you as you go back, I would be really happy. If that happens, I
+                think my younger self, the one who couldn't do anything, would be happy in
+                this audience."
               </p>
             </blockquote>
             <figcaption className="mt-4 pl-5 font-serif text-sm text-ado-secondary-foreground/70 3xl:text-base">

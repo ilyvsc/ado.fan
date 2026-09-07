@@ -1,11 +1,11 @@
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
 
+import type { SongListItem } from "@/types/song";
+
 import { songListPrismaSelect } from "@/db/select";
 import { serializeSongListItem } from "@/db/serialize";
 import { prisma } from "@/prisma/client";
-
-import type { SongListItem } from "@/types/song";
 
 /**
  * Fetch the latest songs by release date.
@@ -90,16 +90,11 @@ export async function getRandomSongs(count = 3): Promise<SongListItem[]> {
  *
  * @returns Promise resolving to object with latest and random song arrays
  */
-export const getRecommendedSongs = cache(
-  async function getRecommendedSongs(): Promise<{
-    latest: SongListItem[];
-    random: SongListItem[];
-  }> {
-    const [latest, random] = await Promise.all([
-      getLatestSongs(1),
-      getRandomSongs(5),
-    ]);
+export const getRecommendedSongs = cache(async function getRecommendedSongs(): Promise<{
+  latest: SongListItem[];
+  random: SongListItem[];
+}> {
+  const [latest, random] = await Promise.all([getLatestSongs(1), getRandomSongs(5)]);
 
-    return { latest, random };
-  },
-);
+  return { latest, random };
+});

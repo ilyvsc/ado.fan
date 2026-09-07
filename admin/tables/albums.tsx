@@ -3,6 +3,8 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { Link2, Music } from "lucide-react";
 
+import type { FilterDef, TableConfig } from "@/admin/types/data-table";
+
 import { adminDuplicateAlbum } from "@/admin/actions/albums";
 import {
   CountCell,
@@ -12,8 +14,6 @@ import {
   NullableCell,
   TextCell,
 } from "@/admin/data-table/cells";
-
-import type { FilterDef, TableConfig } from "@/admin/types/data-table";
 
 interface AlbumRow {
   id: string;
@@ -74,10 +74,7 @@ const columns: ColumnDef<AlbumRow>[] = [
     enableSorting: false,
     header: "Ext. Links",
     cell: ({ getValue }) => (
-      <CountCell
-        count={((getValue() as unknown[] | null) ?? []).length}
-        icon={Link2}
-      />
+      <CountCell count={((getValue() as unknown[] | null) ?? []).length} icon={Link2} />
     ),
   },
   {

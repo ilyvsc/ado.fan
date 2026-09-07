@@ -1,12 +1,11 @@
 import { Heart, Music } from "lucide-react";
-
 import Image from "next/image";
 import Link from "next/link";
 
-import { cn } from "@/lib/utils";
-
 import type { SearchResult } from "@/types/search";
 import type { SongListItem } from "@/types/song";
+
+import { cn } from "@/lib/utils";
 
 export function GridCard({
   song,
@@ -39,10 +38,7 @@ export function GridCard({
           />
         ) : (
           <div className="flex h-full items-center justify-center">
-            <Music
-              aria-hidden="true"
-              className="h-10 w-10 text-muted-foreground/30"
-            />
+            <Music aria-hidden="true" className="h-10 w-10 text-muted-foreground/30" />
           </div>
         )}
         {onToggleFavorite && (

@@ -3,12 +3,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 import { BASE_INPUT, READONLY } from "./field-utils";
-import {
-  FieldDescription,
-  FieldLabel,
-  FieldMessage,
-  FieldProps,
-} from "./FieldShared";
+import { FieldDescription, FieldLabel, FieldMessage, FieldProps } from "./FieldShared";
 
 export function TextField({
   field,

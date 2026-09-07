@@ -1,7 +1,6 @@
 "use client";
 
 import { ResourceTable } from "@/admin/data-table/DataTableResources";
-
 import { songTableConfig } from "@/admin/tables/songs";
 
 export default function SongsPage() {

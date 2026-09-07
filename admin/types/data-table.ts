@@ -1,8 +1,8 @@
-import type { ActiveFilters, FilterDef } from "./filters";
 import type { ColumnDef, VisibilityState } from "@tanstack/react-table";
-
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
+
+import type { ActiveFilters, FilterDef } from "./filters";
 
 export type { FilterDef, ActiveFilterValue, ActiveFilters } from "./filters";
 

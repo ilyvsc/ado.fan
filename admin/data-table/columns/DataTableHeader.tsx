@@ -2,7 +2,6 @@
 
 import { flexRender, type Header } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, ChevronUp } from "lucide-react";
-
 import { type ReactNode } from "react";
 
 import { TableHead } from "@/components/ui/table";
@@ -54,17 +53,11 @@ function HeaderContent<TData>({ header }: { header: Header<TData, unknown> }) {
   return headerDef;
 }
 
-export function DataTableHeader<TData>({
-  header,
-}: {
-  header: Header<TData, unknown>;
-}) {
+export function DataTableHeader<TData>({ header }: { header: Header<TData, unknown> }) {
   return (
     <TableHead
       style={
-        header.column.getCanResize()
-          ? { minWidth: `${header.getSize()}px` }
-          : undefined
+        header.column.getCanResize() ? { minWidth: `${header.getSize()}px` } : undefined
       }
       className={cn(
         "relative h-9 text-xs font-medium text-muted-foreground",

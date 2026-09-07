@@ -12,7 +12,9 @@ async function main() {
     process.exit(1);
   }
 
-  const existing = await prisma.user.findUnique({ where: { role: Role.superadmin } });
+  const existing = await prisma.user.findUnique({
+    where: { role: Role.superadmin },
+  });
   if (existing) {
     console.error(`❌ Superadmin already exists: ${existing.email}`);
     process.exit(1);

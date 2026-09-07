@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { FloatingThemeButton } from "@/components/themes/ThemeButton";
 import { FanAppreciation } from "@/features/home/components/AppreciationNote";
 import { ConnectSection } from "@/features/home/components/connect/ConnectSection";
@@ -6,10 +8,7 @@ import { HeroSection } from "@/features/home/components/HeroSection";
 import { NewsletterSection } from "@/features/home/components/Newsletter";
 import { WhoIsAdo } from "@/features/home/components/who-is-ado/WhoIsAdo";
 import { DiscographyTimeline } from "@/features/timeline/Timeline";
-
 import { buildAlternates } from "@/lib/metadata";
-
-import type { Metadata } from "next";
 
 const description =
   "Fan tribute to Ado, Japan's anonymous singing sensation. Explore lyrics, discography timeline, and more.";

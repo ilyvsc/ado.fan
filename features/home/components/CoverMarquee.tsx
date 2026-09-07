@@ -3,7 +3,6 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
 import { useRef } from "react";
 
 import { getAssetUrl, Image } from "@/components/ui/image";
@@ -44,7 +43,10 @@ const rowB = [
   { slug: "songs/mirror", title: "Mirror" },
   { slug: "songs/missing", title: "Missing" },
   { slug: "songs/star-night-show", title: "Star Night Show" },
-  { slug: "songs/sakura-biyori-time-machine", title: "Sakura Biyori & Time Machine" },
+  {
+    slug: "songs/sakura-biyori-time-machine",
+    title: "Sakura Biyori & Time Machine",
+  },
   { slug: "songs/yoru-no-pierrot", title: "Yoru no Pierrot" },
 ];
 
@@ -152,10 +154,7 @@ export function CoverMarquee() {
   );
 
   return (
-    <section
-      ref={sectionRef}
-      className="overflow-hidden bg-background py-16 md:py-24"
-    >
+    <section ref={sectionRef} className="overflow-hidden bg-background py-16 md:py-24">
       <div className="flex flex-col gap-3 md:gap-4">
         <CoverRow items={rowA} rowRef={rowARef} />
         <CoverRow items={rowB} rowRef={rowBRef} hidden />

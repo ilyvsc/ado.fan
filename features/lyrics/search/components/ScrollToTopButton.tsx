@@ -3,7 +3,6 @@
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ChevronUp } from "lucide-react";
-
 import { useEffect, useState } from "react";
 
 gsap.registerPlugin(ScrollToPlugin);

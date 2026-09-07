@@ -1,5 +1,7 @@
 "use client";
 
+import type { ColumnDef } from "@tanstack/react-table";
+
 import {
   Activity,
   Ban,
@@ -13,8 +15,11 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
-import { bulkRevokeInvites } from "@/admin/actions/invites";
+import type { InviteRecord, InviteStatus } from "@/admin/actions/invites";
+import type { Resource, Level } from "@/admin/lib/permissions";
+import type { ClientTableConfig } from "@/admin/types/data-table";
 
+import { bulkRevokeInvites } from "@/admin/actions/invites";
 import {
   BadgeCell,
   DateTimeCell,
@@ -30,11 +35,6 @@ import { matchesSearch, matchesSelect, userSelectFilter } from "@/admin/lib/filt
 import { ROLES } from "@/admin/lib/permissions";
 import { undoToast } from "@/admin/lib/toast";
 import { cn } from "@/lib/utils";
-
-import type { InviteRecord, InviteStatus } from "@/admin/actions/invites";
-import type { Resource, Level } from "@/admin/lib/permissions";
-import type { ClientTableConfig } from "@/admin/types/data-table";
-import type { ColumnDef } from "@tanstack/react-table";
 
 const INVITE_STATUSES: InviteStatus[] = ["active", "used", "revoked", "expired"];
 
@@ -245,7 +245,12 @@ export function InvitesTable({ invites }: { invites: InviteRecord[] }) {
       config={invitesTableConfig}
       data={invites}
       bulkActions={[
-        { label: "Revoke", icon: Ban, variant: "destructive", onClick: bulkRevoke },
+        {
+          label: "Revoke",
+          icon: Ban,
+          variant: "destructive",
+          onClick: bulkRevoke,
+        },
       ]}
     />
   );

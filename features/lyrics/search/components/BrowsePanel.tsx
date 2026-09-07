@@ -1,14 +1,13 @@
 "use client";
 
 import { Music } from "lucide-react";
-
 import { useEffect, useRef } from "react";
+
+import type { SongListItem, SongSortOption } from "@/types/song";
 
 import { HorizontalSongScroller } from "./HorizontalSongScroller";
 import { LyricsSongDisplay } from "./LyricsSongDisplay";
 import { RecommendedSongs } from "./RecommendedSongs";
-
-import type { SongListItem, SongSortOption } from "@/types/song";
 
 interface BrowsePanelProps {
   recentSongs: SongListItem[];
@@ -59,9 +58,7 @@ export function BrowsePanel({
       {display.visible.length === 0 ? (
         <div className="flex flex-col items-center py-20 text-muted-foreground">
           <Music aria-hidden="true" className="mb-4 h-10 w-10 opacity-20" />
-          <p className="text-sm">
-            {showSaved ? "No saved songs yet" : "No songs found"}
-          </p>
+          <p className="text-sm">{showSaved ? "No saved songs yet" : "No songs found"}</p>
         </div>
       ) : (
         <>

@@ -1,8 +1,13 @@
 "use client";
 
 import { SlidersHorizontal } from "lucide-react";
-
 import { useState } from "react";
+
+import type {
+  ActiveFilterValue,
+  ActiveFilters,
+  FilterDef,
+} from "@/admin/types/data-table";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -15,12 +20,6 @@ import {
 } from "@/components/ui/sheet";
 
 import { FilterControl, isFilterActive } from "./DataTableFilters";
-
-import type {
-  ActiveFilterValue,
-  ActiveFilters,
-  FilterDef,
-} from "@/admin/types/data-table";
 
 interface Props {
   filters: FilterDef[];
@@ -39,9 +38,7 @@ export function DataTableFilterSheet({
 }: Props) {
   const [open, setOpen] = useState(false);
 
-  const activeCount = filters.filter((f) =>
-    isFilterActive(activeFilters[f.id]),
-  ).length;
+  const activeCount = filters.filter((f) => isFilterActive(activeFilters[f.id])).length;
 
   if (!filters.length) return null;
 
@@ -92,9 +89,7 @@ export function DataTableFilterSheet({
             <div key={def.id}>
               {i > 0 && <Separator className="mb-5 bg-foreground/6" />}
               {def.description && (
-                <p className="mb-2 text-xs text-muted-foreground">
-                  {def.description}
-                </p>
+                <p className="mb-2 text-xs text-muted-foreground">{def.description}</p>
               )}
               <FilterControl
                 def={def}

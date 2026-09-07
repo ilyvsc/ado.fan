@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import {
   Table,
   TableBody,
@@ -6,10 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { cn } from "@/lib/utils";
-
-import type { ReactNode } from "react";
 
 interface Column<T> {
   key: string;

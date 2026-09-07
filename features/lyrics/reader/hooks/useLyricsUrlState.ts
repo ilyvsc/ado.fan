@@ -3,13 +3,13 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
-import { Locale } from "@/i18n/types";
-
 import type {
   LyricsUrlState,
   LyricsViewMode,
 } from "@/features/lyrics/reader/types/states";
 import type { LyricsLanguage } from "@/types/lyrics";
+
+import { Locale } from "@/i18n/types";
 
 export function useLyricsUrlState({
   availableLanguages,
@@ -45,7 +45,11 @@ export function useLyricsUrlState({
       const modeParam = raw.get("mode");
 
       if (lang) {
-        return { mode: "tabs", left: lang, right: rightParam ?? defaults.right };
+        return {
+          mode: "tabs",
+          left: lang,
+          right: rightParam ?? defaults.right,
+        };
       }
 
       const left = leftParam ?? defaults.left;

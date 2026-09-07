@@ -1,10 +1,10 @@
+import type { Metadata } from "next";
+
 import { Suspense } from "react";
 
 import { getAllSongsForListing, getRecommendedSongs } from "@/db/queries/songs";
 import { LyricsSearchPage } from "@/features/lyrics/search/LyricsSearchPage";
 import { buildAlternates, buildUrl } from "@/lib/metadata";
-
-import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Ado Song Lyrics - Browse All Songs",

@@ -2,7 +2,6 @@
 
 import { Refine } from "@refinedev/core";
 import routerProvider from "@refinedev/nextjs-router";
-
 import { Menu } from "lucide-react";
 import { Suspense, useEffect, useState, useSyncExternalStore } from "react";
 
@@ -148,9 +147,7 @@ export function PanelShell({ children }: { children: React.ReactNode }) {
                 setMobileOpen((o) => !o);
               }}
             />
-            <main className="flex-1 overflow-auto px-6 py-8 lg:px-10">
-              {children}
-            </main>
+            <main className="flex-1 overflow-auto px-6 py-8 lg:px-10">{children}</main>
           </div>
         </div>
         <Toaster position="bottom-center" />

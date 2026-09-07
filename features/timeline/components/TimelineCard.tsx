@@ -3,21 +3,14 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Music, Play, X } from "lucide-react";
-
 import Image from "next/image";
-import {
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-} from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
+
+import type { Song } from "@/types/song";
 
 import { NicoNicoPlayer, YouTubePlayer } from "@/components/VideoPlayer";
 import { cn } from "@/lib/utils";
-
-import type { Song } from "@/types/song";
 
 function ImmersivePlayer({
   song,

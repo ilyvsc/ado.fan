@@ -83,9 +83,7 @@ export function YouTubePlayer({
   const id = song?.youtubeId ?? youtubeId;
   if (!id) return null;
 
-  const videoTitle = song
-    ? `${song.title.english} by Ado`
-    : (title ?? "YouTube Video");
+  const videoTitle = song ? `${song.title.english} by Ado` : (title ?? "YouTube Video");
 
   const params = new URLSearchParams(extraParams);
   params.set("enablejsapi", "1");
@@ -120,9 +118,7 @@ export function NicoNicoPlayer({
   const id = song?.nicoId ?? nicoId;
   if (!id) return null;
 
-  const videoTitle = song
-    ? `${song.title.english} by Ado`
-    : (title ?? "NicoNico Video");
+  const videoTitle = song ? `${song.title.english} by Ado` : (title ?? "NicoNico Video");
 
   return (
     <VideoPlayer

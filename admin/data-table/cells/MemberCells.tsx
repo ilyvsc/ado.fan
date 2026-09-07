@@ -92,10 +92,8 @@ export function AccessCell({ member }: { member: Member }) {
                 <span
                   className={cn(
                     "flex items-center justify-center rounded p-1",
-                    level === PermissionLevel.write &&
-                      "bg-green-500/10 text-green-600",
-                    level === PermissionLevel.read &&
-                      "bg-yellow-500/10 text-yellow-600",
+                    level === PermissionLevel.write && "bg-green-500/10 text-green-600",
+                    level === PermissionLevel.read && "bg-yellow-500/10 text-yellow-600",
                     level === PermissionLevel.none &&
                       "bg-foreground/5 text-muted-foreground/30",
                   )}
@@ -124,11 +122,7 @@ export function MemberActionsCell({
   return (
     <div className="flex justify-start gap-1">
       {member.role !== Role.superadmin && (
-        <PermissionsDialog
-          userId={member.id}
-          userName={member.name}
-          role={member.role}
-        />
+        <PermissionsDialog userId={member.id} userName={member.name} role={member.role} />
       )}
       <MemberSessionsDialog member={member} />
     </div>

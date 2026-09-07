@@ -2,9 +2,9 @@ import { faker } from "@faker-js/faker";
 
 import { Role } from "@/admin/lib/permissions";
 
-import { prisma, Prisma } from "../client";
-
 import type { PermissionLevel } from "../generated/enums";
+
+import { prisma, Prisma } from "../client";
 
 type Provider = "discord" | "github";
 
@@ -52,7 +52,9 @@ async function clearDatabase() {
         OR: [{ invitedBy: { not: firstUser.id } }, { usedBy: { not: firstUser.id } }],
       },
     }),
-    prisma.userPermission.deleteMany({ where: { userId: { not: firstUser.id } } }),
+    prisma.userPermission.deleteMany({
+      where: { userId: { not: firstUser.id } },
+    }),
     prisma.account.deleteMany({ where: { userId: { not: firstUser.id } } }),
     prisma.session.deleteMany({ where: { userId: { not: firstUser.id } } }),
     prisma.user.deleteMany({ where: { id: { not: firstUser.id } } }),
@@ -114,7 +116,9 @@ async function seedSessions(users: Awaited<ReturnType<typeof seedUsers>>["users"
       token: faker.string.alphanumeric(64),
       createdAt: user.createdAt,
       updatedAt: faker.date.recent({ days: 7 }),
-      ipAddress: faker.helpers.maybe(() => faker.internet.ip(), { probability: 0.8 }),
+      ipAddress: faker.helpers.maybe(() => faker.internet.ip(), {
+        probability: 0.8,
+      }),
       userAgent: faker.helpers.maybe(() => faker.internet.userAgent(), {
         probability: 0.8,
       }),
@@ -171,9 +175,7 @@ async function seedAccounts(users: Awaited<ReturnType<typeof seedUsers>>["users"
   console.log(`✅ Seeded ${accounts.length} accounts.`);
 }
 
-async function seedPermissions(
-  users: Awaited<ReturnType<typeof seedUsers>>["users"],
-) {
+async function seedPermissions(users: Awaited<ReturnType<typeof seedUsers>>["users"]) {
   const permissions = users.flatMap((user) => {
     if (user.role === Role.superadmin) return [];
 

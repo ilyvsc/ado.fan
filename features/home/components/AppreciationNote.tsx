@@ -3,7 +3,6 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
 import { useRef } from "react";
 
 import { RosesCrown } from "@/components/icons/RosesCrown";
@@ -93,9 +92,8 @@ export function FanAppreciation() {
               data-note-detail
               className="max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg"
             >
-              Nothing here is official and nothing is for sale. It's one fan's
-              thank-you letter, built page by page, kept up to date as her story keeps
-              growing.
+              Nothing here is official and nothing is for sale. It's one fan's thank-you
+              letter, built page by page, kept up to date as her story keeps growing.
             </p>
 
             <div data-note-detail className="flex items-center gap-4">

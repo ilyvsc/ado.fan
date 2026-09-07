@@ -143,7 +143,9 @@ export async function commitFixtureFiles(
     .join("\n");
 
   const result = await githubGraphql<{
-    createCommitOnBranch: { commit: { oid: string; url: string } | null } | null;
+    createCommitOnBranch: {
+      commit: { oid: string; url: string } | null;
+    } | null;
   }>(
     config,
     `
@@ -223,9 +225,7 @@ export async function ensureContentPr(
 ): Promise<string | null> {
   const config = getSyncConfig();
 
-  const openPullRequests = await githubRequest<
-    { html_url: string; number: number }[]
-  >(
+  const openPullRequests = await githubRequest<{ html_url: string; number: number }[]>(
     config,
     `/pulls?state=open&head=${config.owner}:${config.branch}&base=${config.base}`,
   );
@@ -242,19 +242,18 @@ export async function ensureContentPr(
     return existingPullRequest.html_url;
   }
 
-  const createdPr = await githubRequest<{ html_url?: string; message?: string }>(
-    config,
-    "/pulls",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        title: "content: sync admin edits to fixtures",
-        head: config.branch,
-        base: config.base,
-        body,
-      }),
-    },
-  );
+  const createdPr = await githubRequest<{
+    html_url?: string;
+    message?: string;
+  }>(config, "/pulls", {
+    method: "POST",
+    body: JSON.stringify({
+      title: "content: sync admin edits to fixtures",
+      head: config.branch,
+      base: config.base,
+      body,
+    }),
+  });
   return createdPr.data.html_url ?? null;
 }
 

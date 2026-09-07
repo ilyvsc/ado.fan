@@ -10,12 +10,7 @@ import {
   type PendingPreview,
   type RecentChange,
 } from "@/db/queries/admin/changes";
-import {
-  requeueMissingCommits,
-  runSync,
-  type RequeueRun,
-  type SyncRun,
-} from "@/db/sync";
+import { requeueMissingCommits, runSync, type RequeueRun, type SyncRun } from "@/db/sync";
 
 export async function getEntityLastChange(
   entity: ContentEntityType,

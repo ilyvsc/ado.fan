@@ -2,9 +2,9 @@
 
 import { useMemo } from "react";
 
-import { HorizontalSongScroller } from "./HorizontalSongScroller";
-
 import type { SongListItem } from "@/types/song";
+
+import { HorizontalSongScroller } from "./HorizontalSongScroller";
 
 interface RecommendedSongsProps {
   latest: SongListItem[];

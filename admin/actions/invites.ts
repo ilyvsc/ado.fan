@@ -1,16 +1,14 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { randomBytes } from "node:crypto";
 
-import { cookies } from "next/headers";
+import type { InviteRole, Level, Resource } from "@/admin/lib/permissions";
 
 import { requireSuperadmin } from "@/admin/auth/guard";
 import { INVITE_COOKIE } from "@/admin/auth/server";
 import { OVERRIDABLE, PermissionLevel, Role } from "@/admin/lib/permissions";
-
 import { prisma } from "@/prisma/client";
-
-import type { InviteRole, Level, Resource } from "@/admin/lib/permissions";
 
 export type InvitePermissions = Partial<Record<Resource, Level>>;
 
@@ -77,7 +75,9 @@ export async function createInvite(
 
 export async function listInvites(): Promise<InviteRecord[]> {
   await requireSuperadmin();
-  const invites = await prisma.invite.findMany({ orderBy: { createdAt: "desc" } });
+  const invites = await prisma.invite.findMany({
+    orderBy: { createdAt: "desc" },
+  });
 
   const userIds = [
     ...new Set([
@@ -116,7 +116,10 @@ export async function listInvites(): Promise<InviteRecord[]> {
 
 export async function revokeInvite(id: string) {
   await requireSuperadmin();
-  await prisma.invite.update({ where: { id }, data: { revokedAt: new Date() } });
+  await prisma.invite.update({
+    where: { id },
+    data: { revokedAt: new Date() },
+  });
 }
 
 export async function bulkRevokeInvites(ids: string[]) {

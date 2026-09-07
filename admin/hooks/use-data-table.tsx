@@ -1,12 +1,19 @@
 "use client";
 
+import type {
+  ColumnDef,
+  ColumnSizingState,
+  ExpandedState,
+  SortingState,
+  VisibilityState,
+} from "@tanstack/react-table";
+
 import { CrudFilter } from "@refinedev/core";
 import {
   getCoreRowModel,
   getExpandedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
 import { useCallback, useMemo, useState } from "react";
 
 import { filtersToCrud } from "@/admin/lib/filters";
@@ -19,14 +26,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { useDebouncedValue } from "./use-debounced-value";
 import { useTablePreferences } from "./use-table-preferences";
-
-import type {
-  ColumnDef,
-  ColumnSizingState,
-  ExpandedState,
-  SortingState,
-  VisibilityState,
-} from "@tanstack/react-table";
 
 function SelectColumn<TData>(): ColumnDef<TData> {
   return {

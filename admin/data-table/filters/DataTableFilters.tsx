@@ -1,12 +1,13 @@
 "use client";
 
+import type { LucideIcon } from "lucide-react";
+
 import { X } from "lucide-react";
+
+import type { ActiveFilterValue, FilterDef } from "@/admin/types/filters";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-
-import type { ActiveFilterValue, FilterDef } from "@/admin/types/filters";
-import type { LucideIcon } from "lucide-react";
 
 export function isFilterActive(value: unknown) {
   if (value === null || value === undefined) return false;

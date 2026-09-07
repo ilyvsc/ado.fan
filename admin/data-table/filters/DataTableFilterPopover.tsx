@@ -1,14 +1,13 @@
 "use client";
 
-import { getFilterSummary } from "@/admin/lib/filters";
+import type { ActiveFilterValue, FilterDef } from "@/admin/types/filters";
 
+import { getFilterSummary } from "@/admin/lib/filters";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
 import { FilterControl, isFilterActive } from "./DataTableFilters";
-
-import type { ActiveFilterValue, FilterDef } from "@/admin/types/filters";
 
 interface Props {
   def: FilterDef;

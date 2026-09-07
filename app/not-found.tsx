@@ -37,8 +37,8 @@ export default function NotFound() {
                 You interrupted 404-chan!!!
               </CardTitle>
               <CardDescription className="max-w-xl text-center text-base text-muted-foreground md:text-2xl">
-                <strong>Mou~!</strong> 404-chan was peacefully enjoying Ado's music
-                when you suddenly appeared!
+                <strong>Mou~!</strong> 404-chan was peacefully enjoying Ado's music when
+                you suddenly appeared!
               </CardDescription>
             </div>
           </CardHeader>
@@ -47,8 +47,8 @@ export default function NotFound() {
             <div className="rounded-lg border border-ado-primary/50 bg-ado-primary/5 p-4 transition-transform hover:scale-105 md:p-6">
               <p className="text-center text-base leading-relaxed text-foreground italic md:text-lg">
                 <strong>404-chan:</strong> I was having such a great time listening to
-                Ado-sama's songs and you just... UGGGHHHHH!!! Go find your own page!!
-                Shoo shoo! 🔪
+                Ado-sama's songs and you just... UGGGHHHHH!!! Go find your own page!! Shoo
+                shoo! 🔪
               </p>
             </div>
 

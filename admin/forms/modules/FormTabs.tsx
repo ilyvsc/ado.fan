@@ -2,14 +2,13 @@
 
 import { Control, useFormState } from "react-hook-form";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { TabConfig } from "@/admin/types/forms";
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
 import { type ParseableSchema } from "../validation";
 import { GroupsLayout } from "./FormGroups";
-
-import type { TabConfig } from "@/admin/types/forms";
 
 function tabHasError(tab: TabConfig, errors: Record<string, unknown>): boolean {
   const fieldNames = tab.groups?.flatMap((g) => g.fields.map((f) => f.name)) ?? [];

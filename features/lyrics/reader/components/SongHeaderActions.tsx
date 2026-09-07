@@ -2,7 +2,6 @@
 
 import { SiNiconico, SiYoutube } from "@icons-pack/react-simple-icons";
 import { Check, Heart, Share2 } from "lucide-react";
-
 import { useState } from "react";
 
 import { useFavorites } from "@/features/lyrics/hooks/useFavorites";

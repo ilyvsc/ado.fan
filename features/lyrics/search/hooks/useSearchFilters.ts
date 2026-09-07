@@ -35,11 +35,7 @@ export function useSearchFilters() {
       const search = params.toString();
       const current = window.location.search.replace(/^\?/, "");
       if (search !== current) {
-        window.history.replaceState(
-          null,
-          "",
-          search ? `/lyrics?${search}` : "/lyrics",
-        );
+        window.history.replaceState(null, "", search ? `/lyrics?${search}` : "/lyrics");
       }
     }, URL_SYNC_DEBOUNCE_MS);
     return () => {

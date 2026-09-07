@@ -2,19 +2,17 @@
 
 import { useDelete, useList } from "@refinedev/core";
 import { Plus } from "lucide-react";
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
-import { useAdminTable } from "@/admin/hooks/use-data-table";
+import type { ContextMenuAction, TableConfig } from "@/admin/types/data-table";
 
+import { useAdminTable } from "@/admin/hooks/use-data-table";
 import { Button } from "@/components/ui/button";
 
 import { DataTable } from "./DataTable";
 import { DataTableToolbar } from "./toolbar/DataTableToolbar";
-
-import type { ContextMenuAction, TableConfig } from "@/admin/types/data-table";
 
 interface ResourceTableProps<TData extends { id: string }> {
   config: TableConfig<TData>;

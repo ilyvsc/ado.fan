@@ -1,5 +1,4 @@
 import "dotenv/config";
-
 import { PrismaPg } from "@prisma/adapter-pg";
 import { env } from "prisma/config";
 

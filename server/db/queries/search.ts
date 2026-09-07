@@ -1,7 +1,7 @@
+import type { SearchResult } from "@/types/search";
+
 import { songListPrismaSelect } from "@/db/select";
 import { prisma } from "@/prisma/client";
-
-import type { SearchResult } from "@/types/search";
 
 /**
  * Search for songs by title (English or Japanese).

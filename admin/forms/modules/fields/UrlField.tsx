@@ -5,23 +5,13 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { FormControl, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 import { BASE_INPUT, READONLY } from "./field-utils";
-import {
-  FieldDescription,
-  FieldLabel,
-  FieldMessage,
-  FieldProps,
-} from "./FieldShared";
+import { FieldDescription, FieldLabel, FieldMessage, FieldProps } from "./FieldShared";
 
 export function blockWhitespace(e: React.KeyboardEvent<HTMLInputElement>) {
   if (e.key === " ") e.preventDefault();
@@ -88,9 +78,7 @@ export function UrlField({
         <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
           <DialogContent className="max-w-sm">
             <DialogHeader>
-              <DialogTitle className="text-sm font-medium">
-                Cover Art Preview
-              </DialogTitle>
+              <DialogTitle className="text-sm font-medium">Cover Art Preview</DialogTitle>
             </DialogHeader>
             <div className="overflow-hidden rounded-md border border-foreground/10 bg-foreground/5">
               <Image

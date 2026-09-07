@@ -1,8 +1,8 @@
 import { ControllerRenderProps } from "react-hook-form";
 
-import { FormDescription, FormLabel, FormMessage } from "@/components/ui/form";
-
 import type { FieldConfig } from "@/admin/types/forms";
+
+import { FormDescription, FormLabel, FormMessage } from "@/components/ui/form";
 
 export type RhfField = Omit<ControllerRenderProps, "value"> & {
   value: string | undefined;

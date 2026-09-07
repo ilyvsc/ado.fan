@@ -13,11 +13,7 @@ export interface LightboxProps {
   alt: string;
 }
 
-export function Lightbox({
-  src,
-  alt,
-  onClose,
-}: LightboxProps & { onClose: () => void }) {
+export function Lightbox({ src, alt, onClose }: LightboxProps & { onClose: () => void }) {
   const overlayRef = useRef<HTMLDialogElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -27,10 +23,20 @@ export function Lightbox({
       if (!overlayRef.current || !imageRef.current || !closeRef.current) return;
 
       const tl = gsap.timeline();
-      tl.from(overlayRef.current, { autoAlpha: 0, duration: 0.4, ease: "power3.out" })
+      tl.from(overlayRef.current, {
+        autoAlpha: 0,
+        duration: 0.4,
+        ease: "power3.out",
+      })
         .from(
           imageRef.current,
-          { autoAlpha: 0, scale: 0.96, y: 10, duration: 0.45, ease: "power3.out" },
+          {
+            autoAlpha: 0,
+            scale: 0.96,
+            y: 10,
+            duration: 0.45,
+            ease: "power3.out",
+          },
           0.05,
         )
         .from(
@@ -54,11 +60,7 @@ export function Lightbox({
         duration: 0.28,
         ease: "power3.in",
       })
-      .to(
-        overlayRef.current,
-        { autoAlpha: 0, duration: 0.22, ease: "power3.in" },
-        0.06,
-      );
+      .to(overlayRef.current, { autoAlpha: 0, duration: 0.22, ease: "power3.in" }, 0.06);
   }, [onClose]);
 
   const handleButtonClick = useCallback(

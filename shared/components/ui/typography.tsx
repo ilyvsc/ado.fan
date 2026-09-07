@@ -82,9 +82,7 @@ function TypographyInlineCode({ className, ...props }: React.ComponentProps<"cod
 }
 
 function TypographyList({ className, ...props }: React.ComponentProps<"ul">) {
-  return (
-    <ul className={cn("my-6 ml-6 list-disc [&>li]:mt-2", className)} {...props} />
-  );
+  return <ul className={cn("my-6 ml-6 list-disc [&>li]:mt-2", className)} {...props} />;
 }
 
 export {

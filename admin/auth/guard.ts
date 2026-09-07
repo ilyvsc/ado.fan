@@ -2,11 +2,11 @@
 
 import { headers } from "next/headers";
 
+import type { Action, Resource } from "@/admin/lib/permissions";
+
 import { auth } from "@/admin/auth/server";
 import { can, Role } from "@/admin/lib/permissions";
 import { loadOverrides } from "@/db/queries/admin";
-
-import type { Action, Resource } from "@/admin/lib/permissions";
 
 const devBypass = process.env.ADMIN_DEV_BYPASS === "allow";
 

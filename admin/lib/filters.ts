@@ -26,10 +26,7 @@ export function matchesSelectIn(
   return typeof active !== "string" || candidates.includes(active);
 }
 
-export function filtersToCrud(
-  filters: FilterDef[],
-  active: ActiveFilters,
-): CrudFilter[] {
+export function filtersToCrud(filters: FilterDef[], active: ActiveFilters): CrudFilter[] {
   const result: CrudFilter[] = [];
 
   for (const def of filters) {
@@ -130,10 +127,7 @@ export function userSelectFilter(
   opts: { id?: string; label?: string } = {},
 ): FilterDef {
   const id = opts.id ?? "user";
-  const byId = new Map<
-    string,
-    { value: string; label: string; image: string | null }
-  >();
+  const byId = new Map<string, { value: string; label: string; image: string | null }>();
   for (const u of users) {
     if (u.id && !byId.has(u.id)) {
       byId.set(u.id, { value: u.id, label: u.name, image: u.image ?? null });

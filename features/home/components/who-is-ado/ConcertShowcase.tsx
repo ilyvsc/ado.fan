@@ -3,7 +3,6 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
 import { useCallback, useRef, useState } from "react";
 
 import { getAssetUrl, Image } from "@/components/ui/image";
@@ -47,18 +46,10 @@ function MobileConcertCard({ concert }: { concert: ConcertEntry }) {
       );
 
       if (overlay) {
-        tl.from(
-          overlay,
-          { autoAlpha: 0, y: 30, duration: 0.7, ease: "power3.out" },
-          0.5,
-        );
+        tl.from(overlay, { autoAlpha: 0, y: 30, duration: 0.7, ease: "power3.out" }, 0.5);
       }
 
-      tl.from(
-        content,
-        { autoAlpha: 0, y: 24, duration: 0.7, ease: "power3.out" },
-        0.65,
-      );
+      tl.from(content, { autoAlpha: 0, y: 24, duration: 0.7, ease: "power3.out" }, 0.65);
 
       return () => {
         tl.scrollTrigger?.kill();
@@ -178,18 +169,32 @@ function StackedConcertCard({
 
       tl.from(
         paras,
-        { autoAlpha: 0, y: 20, stagger: 0.1, duration: 0.6, ease: "power3.out" },
+        {
+          autoAlpha: 0,
+          y: 20,
+          stagger: 0.1,
+          duration: 0.6,
+          ease: "power3.out",
+        },
         0.55,
       ).from(
         thumbs,
-        { autoAlpha: 0, y: 24, stagger: 0.08, duration: 0.6, ease: "power3.out" },
+        {
+          autoAlpha: 0,
+          y: 24,
+          stagger: 0.08,
+          duration: 0.6,
+          ease: "power3.out",
+        },
         0.7,
       );
 
       if (portrait) {
         tl.fromTo(
           portrait,
-          { clipPath: imageOnRight ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)" },
+          {
+            clipPath: imageOnRight ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)",
+          },
           { clipPath: "inset(0 0% 0 0%)", duration: 1.2, ease: "power4.inOut" },
           0,
         );

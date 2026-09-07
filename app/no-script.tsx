@@ -1,3 +1,5 @@
+import type { FC } from "react";
+
 import {
   SiFirefoxbrowser,
   SiGooglechrome,
@@ -5,17 +7,13 @@ import {
 } from "@icons-pack/react-simple-icons";
 import { Compass, RefreshCcw } from "lucide-react";
 
-import type { FC } from "react";
-
 const NoScriptError: FC = () => {
   return (
     <main className="relative min-h-screen bg-black text-white">
       <div className="relative mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-5 py-12">
         <section className="space-y-4">
           <header className="space-y-3 text-center">
-            <h1 className="text-2xl font-medium tracking-tight">
-              JavaScript Required
-            </h1>
+            <h1 className="text-2xl font-medium tracking-tight">JavaScript Required</h1>
             <p className="text-sm text-white/60">
               Enable JavaScript in your browser to continue
             </p>
@@ -70,8 +68,8 @@ const NoScriptError: FC = () => {
 
           <footer className="space-y-2 text-center">
             <p className="text-xs text-white/60">
-              Some ad blockers may block JavaScript. This page has absolutely no ads,
-              so you can safely disable your ad blocker here.
+              Some ad blockers may block JavaScript. This page has absolutely no ads, so
+              you can safely disable your ad blocker here.
             </p>
             <div className="flex items-center justify-center gap-2 text-xs text-white/40">
               <RefreshCcw className="h-3 w-3" />

@@ -17,8 +17,9 @@ import {
   X,
   type LucideIcon,
 } from "lucide-react";
-
 import { useEffect, useRef, useState } from "react";
+
+import type { SongSortOption } from "@/types/song";
 
 import { ThemeSelectorButton } from "@/components/themes/ThemeButton";
 import { ThemeSelectorDialog } from "@/components/themes/ThemeSelector";
@@ -29,8 +30,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-
-import type { SongSortOption } from "@/types/song";
 
 const SORT_OPTIONS: {
   value: SongSortOption;
@@ -314,9 +313,7 @@ export function LyricsNavigation({
                 >
                   <span
                     className={
-                      selectedYear === null
-                        ? "text-foreground"
-                        : "text-muted-foreground"
+                      selectedYear === null ? "text-foreground" : "text-muted-foreground"
                     }
                   >
                     All

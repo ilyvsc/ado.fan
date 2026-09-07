@@ -15,6 +15,9 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 
+import type { PendingPreview } from "@/db/queries/admin/changes";
+import type { ContentPrInfo, SyncRun } from "@/db/sync";
+
 import {
   listPendingSync,
   requeueUnverifiedChanges,
@@ -22,12 +25,8 @@ import {
 } from "@/admin/actions/sync";
 import { CoverCell } from "@/admin/data-table/cells";
 import { Button } from "@/components/ui/button";
-
 import { timeAgo } from "@/lib/relative-time";
 import { cn } from "@/lib/utils";
-
-import type { PendingPreview } from "@/db/queries/admin/changes";
-import type { ContentPrInfo, SyncRun } from "@/db/sync";
 
 const PR_STATE_META = {
   open: { icon: GitPullRequest, className: "text-ado-primary" },
@@ -44,9 +43,10 @@ export function GitHubSyncPanel({
 }) {
   const router = useRouter();
   const [pending, setPending] = useState<PendingPreview[] | null>(null);
-  const [result, setResult] = useState<{ run?: SyncRun; error?: string } | null>(
-    null,
-  );
+  const [result, setResult] = useState<{
+    run?: SyncRun;
+    error?: string;
+  } | null>(null);
   const [refreshTick, setRefreshTick] = useState(0);
   const [busy, startTransition] = useTransition();
 
@@ -77,7 +77,9 @@ export function GitHubSyncPanel({
         refresh();
         setRefreshTick((tick) => tick + 1);
       } catch (e) {
-        setResult({ error: e instanceof Error ? e.message : "Re-queue failed." });
+        setResult({
+          error: e instanceof Error ? e.message : "Re-queue failed.",
+        });
       }
     });
   };
@@ -126,8 +128,8 @@ export function GitHubSyncPanel({
       {unverifiedCount > 0 && (
         <div className="border-destructive/30 bg-destructive/5 flex items-center justify-between gap-3 rounded-md border px-3 py-2">
           <p className="text-destructive text-xs">
-            {unverifiedCount} change{unverifiedCount === 1 ? "" : "s"} marked as
-            synced but the commit is missing on GitHub.
+            {unverifiedCount} change{unverifiedCount === 1 ? "" : "s"} marked as synced
+            but the commit is missing on GitHub.
           </p>
           <Button
             type="button"
@@ -195,9 +197,7 @@ export function GitHubSyncPanel({
               <span className="truncate font-medium text-foreground group-hover:underline">
                 {lastPr.title}
               </span>
-              <span className="shrink-0 text-muted-foreground/50">
-                #{lastPr.number}
-              </span>
+              <span className="shrink-0 text-muted-foreground/50">#{lastPr.number}</span>
             </span>
             <span className="flex shrink-0 items-center gap-1 text-muted-foreground/60">
               <Clock className="size-3" />
@@ -216,7 +216,8 @@ export function GitHubSyncPanel({
         <div className="flex flex-wrap items-center gap-2 rounded-md border border-foreground/8 bg-background px-3 py-2 text-xs">
           <CircleCheck className="size-3.5 shrink-0 text-ado-primary" />
           <span className="text-foreground">
-            Synced {result.run.synced} change{result.run.synced === 1 ? "" : "s"}
+            Synced {result.run.synced} change
+            {result.run.synced === 1 ? "" : "s"}
           </span>
           <div className="ml-auto flex items-center gap-1.5">
             {result.run.commit && (

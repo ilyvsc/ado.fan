@@ -1,6 +1,6 @@
-import { getLanguageLabel } from "@/types/lyrics";
-
 import type { LyricsLanguage, Lyrics } from "@/types/lyrics";
+
+import { getLanguageLabel } from "@/types/lyrics";
 
 export function serializeLyricsToLanguages(lyrics: Lyrics[]): LyricsLanguage[] {
   return lyrics

@@ -8,8 +8,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { useSongTheme } from "@/providers/SongThemeProvider";
 
-import { ThemeToggleButton } from "./ThemeButton";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../ui/dialog";
+import { ThemeToggleButton } from "./ThemeButton";
 
 function ThemeCard({
   theme,
@@ -118,8 +118,7 @@ function ThemeSelectorContent({ onClose }: { onClose: () => void }) {
     }, 100);
   }
 
-  const activeTheme =
-    SONG_THEMES.find((t) => t.id === currentTheme) ?? SONG_THEMES[0];
+  const activeTheme = SONG_THEMES.find((t) => t.id === currentTheme) ?? SONG_THEMES[0];
 
   if (!activeTheme) return null;
 

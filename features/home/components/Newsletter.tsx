@@ -4,7 +4,6 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRightSquare, Bell, Calendar, ShoppingBag, Video } from "lucide-react";
-
 import Link from "next/link";
 import { useMemo, useRef } from "react";
 
@@ -128,8 +127,8 @@ export function NewsletterSection() {
               className="mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground md:text-base"
             >
               Keep up with official news and updates. Be the first to hear about new
-              music, upcoming live shows, tour dates, and special announcements as
-              they're released.
+              music, upcoming live shows, tour dates, and special announcements as they're
+              released.
             </p>
           </div>
 
@@ -179,11 +178,7 @@ export function NewsletterSection() {
             <div className="h-px flex-1 bg-ado-primary-foreground/20" />
           </div>
 
-          <Link
-            href="https://umusic.jp/ado_nl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <Link href="https://umusic.jp/ado_nl" target="_blank" rel="noopener noreferrer">
             <Button className="group w-full bg-ado-primary-foreground py-5 text-base font-semibold tracking-wide text-ado-primary transition-colors duration-200 hover:bg-ado-primary-foreground/90">
               Subscribe
               <ArrowUpRightSquare />
@@ -191,8 +186,9 @@ export function NewsletterSection() {
           </Link>
 
           <p className="text-center text-xs text-ado-primary-foreground/80 md:text-sm">
-            via{" "}
-            <span className="font-medium text-ado-primary-foreground">umusic.jp</span>{" "}
+            via <span className="font-medium text-ado-primary-foreground">
+              umusic.jp
+            </span>{" "}
             Ado's official newsletter platform
           </p>
         </div>

@@ -3,27 +3,23 @@
 import { useRouter } from "next/navigation";
 import { Activity, useCallback, useDeferredValue, useMemo, useState } from "react";
 
-import { useIsMobile } from "@/hooks/use-mobile";
+import type { SongListItem } from "@/types/song";
 
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
+import { useFavorites } from "../hooks/useFavorites";
+import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 import { getRandomSongId } from "./actions";
-
 import { AlphabetStrip } from "./components/AlphabetStrip";
 import { BrowsePanel } from "./components/BrowsePanel";
 import { LyricsNavigation } from "./components/LyricsNavigation";
 import { ScrollToTopButton } from "./components/ScrollToTopButton";
 import { SearchResultsPanel } from "./components/SearchResultsPanel";
-
 import { useDisplayPagination } from "./hooks/useDisplayPagination";
 import { useSearchFilters } from "./hooks/useSearchFilters";
 import { useSongSearch } from "./hooks/useSongSearch";
-import { useFavorites } from "../hooks/useFavorites";
-import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
-
 import { applySortAndFilter, sortSongs } from "./utils/sort";
-
-import type { SongListItem } from "@/types/song";
 
 interface LyricsSearchPageProps {
   recommended: {
@@ -60,9 +56,9 @@ export function LyricsSearchPage({ recommended, allSongs }: LyricsSearchPageProp
 
   const availableYears = useMemo(
     () =>
-      [
-        ...new Set(allSongs.map((s) => new Date(s.releaseDate).getFullYear())),
-      ].toSorted((a, b) => a - b),
+      [...new Set(allSongs.map((s) => new Date(s.releaseDate).getFullYear()))].toSorted(
+        (a, b) => a - b,
+      ),
     [allSongs],
   );
 

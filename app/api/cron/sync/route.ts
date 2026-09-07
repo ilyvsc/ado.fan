@@ -1,6 +1,5 @@
-import { timingSafeEqual } from "node:crypto";
-
 import { NextResponse } from "next/server";
+import { timingSafeEqual } from "node:crypto";
 
 import { runSync } from "@/db/sync";
 

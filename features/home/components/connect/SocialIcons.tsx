@@ -1,7 +1,6 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ArrowUpRight } from "lucide-react";
-
 import Link from "next/link";
 import React from "react";
 

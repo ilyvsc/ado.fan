@@ -1,12 +1,10 @@
+import type { Song, SongListItem, SongSeedInput } from "@/types/song";
+
 import { Prisma } from "@/prisma/client";
-
 import { parseCredits } from "@/schemas/credits";
-
 import { parseExternalLinks } from "@/schemas/externalLinks";
 
 import { songListPrismaSelect, songPrismaSelect } from "../select/song";
-
-import type { Song, SongListItem, SongSeedInput } from "@/types/song";
 
 export function serializeSongListItem(
   song: Prisma.SongGetPayload<{ select: typeof songListPrismaSelect }>,

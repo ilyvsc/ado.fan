@@ -3,15 +3,10 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 import { BASE_INPUT, READONLY } from "./field-utils";
-import {
-  FieldDescription,
-  FieldLabel,
-  FieldMessage,
-  FieldProps,
-} from "./FieldShared";
+import { FieldDescription, FieldLabel, FieldMessage, FieldProps } from "./FieldShared";
 
 export function blockNonNumeric(e: React.KeyboardEvent<HTMLInputElement>) {
-  if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !/[\d.\-]/.test(e.key)) {
+  if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !/[\d.-]/.test(e.key)) {
     e.preventDefault();
   }
 }

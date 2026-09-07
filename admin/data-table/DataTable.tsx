@@ -2,8 +2,9 @@
 
 import { type Table } from "@tanstack/react-table";
 
-import { Skeleton } from "@/components/ui/skeleton";
+import type { BulkAction, ContextMenuConfig } from "@/admin/types/data-table";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table as ShadTable,
   TableBody,
@@ -16,8 +17,6 @@ import { DataTableHeader } from "./columns/DataTableHeader";
 import { DataTableRow } from "./rows/DataTableRow";
 import { DataTableBulkBar } from "./toolbar/DataTableBulkBar";
 import { DataTablePagination } from "./toolbar/DataTablePagination";
-
-import type { BulkAction, ContextMenuConfig } from "@/admin/types/data-table";
 
 interface DataTableProps<TData extends { id: string }> {
   table: Table<TData>;

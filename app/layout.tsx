@@ -1,17 +1,15 @@
+import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
+
 import { Analytics } from "@vercel/analytics/react";
 
 import NoScriptError from "@/app/no-script";
 import { buildAlternates, SITE_KEYWORDS } from "@/lib/metadata";
 import { linksCategories } from "@/lib/socialLinks";
-
 import { cn } from "@/lib/utils";
 import { SongThemeProvider } from "@/providers/SongThemeProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { gambarino, inter, jpNotoSans, jpNotoSerif } from "@/styles/fonts";
-
-import type { Metadata, Viewport } from "next";
-import type { ReactNode } from "react";
-
 import "@/styles/globals.css";
 
 const description =

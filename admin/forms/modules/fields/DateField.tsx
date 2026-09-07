@@ -1,6 +1,5 @@
 import { format, isValid, parse } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-
 import * as React from "react";
 
 import { Calendar } from "@/components/ui/calendar";
@@ -17,12 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 
 import { BASE_INPUT, READONLY } from "./field-utils";
-import {
-  FieldDescription,
-  FieldLabel,
-  FieldMessage,
-  FieldProps,
-} from "./FieldShared";
+import { FieldDescription, FieldLabel, FieldMessage, FieldProps } from "./FieldShared";
 
 interface Segments {
   mm: string;
@@ -131,8 +125,7 @@ export function DateField({
   const yyyy = editing?.yyyy ?? (parsed ? format(parsed, "yyyy") : "");
 
   function tryCommit(segs: Segments) {
-    if (segs.mm.length !== 2 || segs.dd.length !== 2 || segs.yyyy.length !== 4)
-      return;
+    if (segs.mm.length !== 2 || segs.dd.length !== 2 || segs.yyyy.length !== 4) return;
     const d = parse(`${segs.yyyy}-${segs.mm}-${segs.dd}`, "yyyy-MM-dd", new Date());
     rhfField.onChange(isValid(d) ? format(d, "yyyy-MM-dd") : "");
   }
@@ -159,10 +152,7 @@ export function DateField({
     const raw = e.target.value.replace(/\D/g, "").slice(0, 4);
     const value =
       raw.length === 4
-        ? String(Math.min(Math.max(parseInt(raw, 10), fromYear), toYear)).padStart(
-            4,
-            "0",
-          )
+        ? String(Math.min(Math.max(parseInt(raw, 10), fromYear), toYear)).padStart(4, "0")
         : raw;
     const segs: Segments = { mm, dd, yyyy: value };
     setEditing(segs);

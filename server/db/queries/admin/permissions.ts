@@ -1,6 +1,6 @@
-import { prisma } from "@/prisma/client";
-
 import type { Override, Resource } from "@/admin/lib/permissions";
+
+import { prisma } from "@/prisma/client";
 
 /** Per-user resource permission overrides, layered on top of their role. */
 export async function loadOverrides(userId: string): Promise<Override[]> {
@@ -8,5 +8,8 @@ export async function loadOverrides(userId: string): Promise<Override[]> {
     where: { userId },
     select: { resource: true, level: true },
   });
-  return rows.map((r) => ({ resource: r.resource as Resource, level: r.level }));
+  return rows.map((r) => ({
+    resource: r.resource as Resource,
+    level: r.level,
+  }));
 }

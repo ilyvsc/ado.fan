@@ -2,14 +2,13 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-
 import { useRef } from "react";
-
-import { GridCard } from "./GridCard";
-import { ListRow } from "./ListRow";
 
 import type { SearchResult } from "@/types/search";
 import type { SongListItem } from "@/types/song";
+
+import { GridCard } from "./GridCard";
+import { ListRow } from "./ListRow";
 
 type ViewMode = "grid" | "list";
 
@@ -65,8 +64,7 @@ export function LyricsSongDisplay({
 
       if (prefersReduced) {
         if (newHeadings.length) gsap.set(newHeadings, { opacity: 1 });
-        if (newItems.length)
-          gsap.set(newItems, { opacity: 1, y: 0, clearProps: "all" });
+        if (newItems.length) gsap.set(newItems, { opacity: 1, y: 0, clearProps: "all" });
         return;
       }
 

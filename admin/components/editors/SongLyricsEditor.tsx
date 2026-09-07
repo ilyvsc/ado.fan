@@ -26,10 +26,7 @@ export function SongLyricsEditor({ songId }: { songId: string }) {
   }, [songId]);
 
   const handleAdd = useCallback((language: string) => {
-    setEntries((prev) => [
-      ...(prev ?? []),
-      { language, translator: null, lines: [] },
-    ]);
+    setEntries((prev) => [...(prev ?? []), { language, translator: null, lines: [] }]);
     setActiveLanguage(language);
   }, []);
 
@@ -42,9 +39,7 @@ export function SongLyricsEditor({ songId }: { songId: string }) {
   const handleDeleted = useCallback((language: string) => {
     setEntries((prev) => {
       const next = (prev ?? []).filter((e) => e.language !== language);
-      setActiveLanguage((cur) =>
-        cur === language ? (next[0]?.language ?? null) : cur,
-      );
+      setActiveLanguage((cur) => (cur === language ? (next[0]?.language ?? null) : cur));
       return next;
     });
   }, []);
@@ -74,9 +69,7 @@ export function SongLyricsEditor({ songId }: { songId: string }) {
         <p className="text-xs font-medium tracking-wider text-muted-foreground/60 uppercase">
           Lyrics
         </p>
-        <TypographyMuted className="text-muted-foreground/50">
-          Loading…
-        </TypographyMuted>
+        <TypographyMuted className="text-muted-foreground/50">Loading…</TypographyMuted>
       </div>
     );
   }

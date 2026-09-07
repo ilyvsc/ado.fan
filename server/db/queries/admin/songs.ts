@@ -21,9 +21,7 @@ export async function dbGetSong(id: string) {
 
 export async function dbListSongs(params: {
   where: Prisma.SongWhereInput;
-  orderBy:
-    | Prisma.SongOrderByWithRelationInput
-    | Prisma.SongOrderByWithRelationInput[];
+  orderBy: Prisma.SongOrderByWithRelationInput | Prisma.SongOrderByWithRelationInput[];
   skip: number;
   take: number;
 }) {
@@ -44,7 +42,10 @@ export async function dbListSongs(params: {
 }
 
 export async function dbCreateSong(id: string, data: SongMutationData) {
-  return prisma.song.create({ data: { id, ...data }, select: songPrismaSelect });
+  return prisma.song.create({
+    data: { id, ...data },
+    select: songPrismaSelect,
+  });
 }
 
 export async function dbUpdateSong(id: string, data: SongMutationData) {
@@ -76,9 +77,7 @@ export async function dbDuplicateSong(id: string): Promise<{ id: string }> {
       coverArt: source.coverArt,
       themeColor: source.themeColor ?? null,
       credits:
-        source.credits !== null
-          ? (source.credits as Prisma.InputJsonValue)
-          : undefined,
+        source.credits !== null ? (source.credits as Prisma.InputJsonValue) : undefined,
     },
     select: { id: true },
   });
@@ -108,5 +107,7 @@ export async function dbUpsertLyrics(
 }
 
 export async function dbDeleteLyrics(songId: string, language: string) {
-  await prisma.lyrics.delete({ where: { songId_language: { songId, language } } });
+  await prisma.lyrics.delete({
+    where: { songId_language: { songId, language } },
+  });
 }

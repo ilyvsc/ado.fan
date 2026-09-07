@@ -1,6 +1,6 @@
-import { defaultLocale, locales } from "../i18n/types";
-
 import type { Metadata } from "next";
+
+import { defaultLocale, locales } from "../i18n/types";
 
 export const SEO_BASE_URL = "https://ado.fan";
 
@@ -114,9 +114,7 @@ export function buildAlternates(pathname = ""): Metadata["alternates"] {
  * @param duration - Duration string (e.g. `"03:45"`).
  * @returns The parsed minutes and seconds.
  */
-function parseDuration(
-  duration: string,
-): Readonly<{ minutes: number; seconds: number }> {
+function parseDuration(duration: string): Readonly<{ minutes: number; seconds: number }> {
   const [minutes = 0, seconds = 0] = duration.split(":").map(Number);
   return { minutes, seconds };
 }

@@ -1,6 +1,6 @@
-import { useLayoutEffect } from "react";
-
 import type { RefObject } from "react";
+
+import { useLayoutEffect } from "react";
 
 /**
  * Sets an element's height in px once, from `window.innerHeight` at mount.

@@ -7,12 +7,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowDown, ChevronDown } from "lucide-react";
 import { useRef, useState } from "react";
 
+import type { TimelineGroups } from "@/types/timeline";
+
 import { cn } from "@/lib/utils";
 
 import { SongCard } from "./TimelineCard";
 import { TimelineHeader } from "./TimelineHeader";
-
-import type { TimelineGroups } from "@/types/timeline";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -27,11 +27,7 @@ function handleSkip() {
   });
 }
 
-export function TimelineClient({
-  timelineGroups,
-}: {
-  timelineGroups: TimelineGroups[];
-}) {
+export function TimelineClient({ timelineGroups }: { timelineGroups: TimelineGroups[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -258,7 +254,9 @@ export function TimelineClient({
       });
 
       return () => {
-        gsap.set([content, ...sections, ...cards], { clearProps: "willChange" });
+        gsap.set([content, ...sections, ...cards], {
+          clearProps: "willChange",
+        });
         mm.revert();
       };
     },

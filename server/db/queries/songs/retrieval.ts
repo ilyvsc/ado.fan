@@ -1,20 +1,17 @@
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
 
+import type { Lyrics } from "@/types/lyrics";
+import type { Song, SongListItem } from "@/types/song";
+
 import {
   lyricsPrismaSelect,
+  songBaseSelect,
   songListPrismaSelect,
   songPrismaSelect,
 } from "@/db/select";
-import {
-  serializeLyrics,
-  serializeSong,
-  serializeSongListItem,
-} from "@/db/serialize";
+import { serializeLyrics, serializeSong, serializeSongListItem } from "@/db/serialize";
 import { prisma } from "@/prisma/client";
-
-import type { Lyrics } from "@/types/lyrics";
-import type { Song, SongListItem } from "@/types/song";
 
 /**
  * Fetch a single song by its ID.

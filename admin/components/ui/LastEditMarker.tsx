@@ -3,13 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import type { ContentEntityType, LastChange } from "@/db/queries/admin/changes";
+
 import { getEntityLastChange } from "@/admin/actions/sync";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Marker, MarkerContent } from "@/components/ui/marker";
-
 import { timeAgo } from "@/lib/relative-time";
-
-import type { ContentEntityType, LastChange } from "@/db/queries/admin/changes";
 
 export function LastEditMarker({
   entity,
@@ -44,9 +43,7 @@ export function LastEditMarker({
           {change.user.name}
         </Link>
         <span>edited {timeAgo(change.createdAt)}</span>
-        <span
-          className={change.synced ? "text-muted-foreground/80" : "text-ado-primary"}
-        >
+        <span className={change.synced ? "text-muted-foreground/80" : "text-ado-primary"}>
           ({change.synced ? "synced" : "unsynced"})
         </span>
       </MarkerContent>

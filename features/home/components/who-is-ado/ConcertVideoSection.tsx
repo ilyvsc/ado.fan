@@ -3,7 +3,6 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
 import { useRef } from "react";
 
 import { Image } from "@/components/ui/image";
@@ -125,7 +124,13 @@ function ContentPart({ entry }: { entry: ConcertEntry }) {
         if (logo) {
           intro.from(
             logo,
-            { autoAlpha: 0, y: 30, scale: 0.94, duration: 0.9, ease: "power3.out" },
+            {
+              autoAlpha: 0,
+              y: 30,
+              scale: 0.94,
+              duration: 0.9,
+              ease: "power3.out",
+            },
             0,
           );
         }
@@ -150,7 +155,13 @@ function ContentPart({ entry }: { entry: ConcertEntry }) {
 
         intro.from(
           paras,
-          { autoAlpha: 0, y: 24, stagger: 0.15, duration: 0.7, ease: "power3.out" },
+          {
+            autoAlpha: 0,
+            y: 24,
+            stagger: 0.15,
+            duration: 0.7,
+            ease: "power3.out",
+          },
           base + 0.7,
         );
       }
@@ -249,10 +260,7 @@ function ContentPart({ entry }: { entry: ConcertEntry }) {
 
         <div className="mt-24 grid grid-cols-3 gap-6">
           {entry.stack.slice(0, 3).map((img, i) => (
-            <div
-              key={img}
-              className="content-figure relative aspect-3/4 overflow-hidden"
-            >
+            <div key={img} className="content-figure relative aspect-3/4 overflow-hidden">
               <Image
                 src={img}
                 alt={`${entry.title} ${String(i + 1)}`}

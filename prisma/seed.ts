@@ -1,19 +1,18 @@
 import { existsSync, globSync, readFileSync, readdirSync } from "fs";
-import { basename, dirname, join } from "path";
-
 import matter from "gray-matter";
+import { basename, dirname, join } from "path";
 import { z } from "zod";
+
+import type { LanguageCode } from "@/i18n/types";
+import type { AlbumDefinition } from "@/types/album";
+import type { Lyrics } from "@/types/lyrics";
+import type { Song, SongSeedInput } from "@/types/song";
 
 import { serializeSongSeed } from "@/db/serialize";
 import { Credits, assertCredits } from "@/schemas/credits";
 
 import { prisma } from "./client";
 import { AlbumType } from "./generated/client";
-
-import type { LanguageCode } from "@/i18n/types";
-import type { AlbumDefinition } from "@/types/album";
-import type { Lyrics } from "@/types/lyrics";
-import type { Song, SongSeedInput } from "@/types/song";
 
 function loadJsonFile(path: string): unknown {
   return JSON.parse(readFileSync(path, "utf-8"));
