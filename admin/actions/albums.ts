@@ -1,6 +1,7 @@
 "use server";
 
 import { requireResource } from "@/admin/auth/guard";
+import { invalidateContentTag } from "@/admin/lib/cache";
 import { type AlbumFormValues } from "@/admin/schemas/albums";
 import {
   dbCreateAlbum,
@@ -114,6 +115,7 @@ export async function adminCreateAlbum(data: AlbumFormValues) {
     externalLinks: data.externalLinks as Prisma.InputJsonValue | undefined,
   });
   await recordChange("album", album.id, user.id);
+  invalidateContentTag("albums:list");
   return { ...album, releaseDate: album.releaseDate.toISOString().slice(0, 10) };
 }
 
@@ -129,16 +131,20 @@ export async function adminUpdateAlbum(id: string, data: AlbumFormValues) {
     externalLinks: data.externalLinks as Prisma.InputJsonValue | undefined,
   });
   await recordChange("album", id, user.id);
+  invalidateContentTag("albums:list");
   return { ...album, releaseDate: album.releaseDate.toISOString().slice(0, 10) };
 }
 
 export async function adminDeleteAlbum(id: string) {
   await requireResource("albums", "write");
   await dbDeleteAlbum(id);
+  invalidateContentTag("albums:list");
   return { id };
 }
 
 export async function adminDuplicateAlbum(id: string) {
   await requireResource("albums", "write");
-  return dbDuplicateAlbum(id);
+  const album = await dbDuplicateAlbum(id);
+  invalidateContentTag("albums:list");
+  return album;
 }

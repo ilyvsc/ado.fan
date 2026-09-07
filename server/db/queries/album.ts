@@ -1,3 +1,5 @@
+import { unstable_cache } from "next/cache";
+
 import { albumListPrismaSelect } from "@/db/select";
 import { serializeAlbumWithoutLyrics } from "@/db/serialize";
 import { prisma, Prisma } from "@/prisma/client";
@@ -31,17 +33,23 @@ type AlbumWithTracks = Prisma.AlbumGetPayload<{
  * @note This query excludes lyrics to reduce payload size. Songs in tracks will have empty lyrics fields.
  */
 export async function getAlbumsBySongId(songId: string): Promise<Album[]> {
-  const albums = (await prisma.album.findMany({
-    where: {
-      tracks: {
-        some: {
-          songId,
+  return unstable_cache(
+    async () => {
+      const albums = (await prisma.album.findMany({
+        where: {
+          tracks: {
+            some: {
+              songId,
+            },
+          },
         },
-      },
-    },
-    select: albumListPrismaSelect,
-    orderBy: { releaseDate: "desc" },
-  })) as unknown as AlbumWithTracks[];
+        select: albumListPrismaSelect,
+        orderBy: { releaseDate: "desc" },
+      })) as unknown as AlbumWithTracks[];
 
-  return albums.map(serializeAlbumWithoutLyrics);
+      return albums.map(serializeAlbumWithoutLyrics);
+    },
+    ["albums-by-song", songId],
+    { tags: [`song:${songId}`, "albums:list"], revalidate: false },
+  )();
 }

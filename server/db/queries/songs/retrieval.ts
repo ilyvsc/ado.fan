@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { cache } from "react";
 
 import {
@@ -30,14 +31,20 @@ import type { Song, SongListItem } from "@/types/song";
 export const getSongById = cache(async function getSongById(
   id: string,
 ): Promise<Song | null> {
-  const song = await prisma.song.findUnique({
-    where: { id },
-    select: songPrismaSelect,
-  });
+  return unstable_cache(
+    async () => {
+      const song = await prisma.song.findUnique({
+        where: { id },
+        select: songPrismaSelect,
+      });
 
-  if (!song) return null;
+      if (!song) return null;
 
-  return serializeSong(song);
+      return serializeSong(song);
+    },
+    ["song-by-id", id],
+    { tags: [`song:${id}`], revalidate: false },
+  )();
 });
 
 /**
@@ -48,14 +55,22 @@ export const getSongById = cache(async function getSongById(
  *
  * @note This function returns FULL LYRICS. Only use for lyrics pages.
  */
-export async function getSongLyricsById(songId: string): Promise<Lyrics[]> {
-  const lyrics = await prisma.lyrics.findMany({
-    where: { songId },
-    select: lyricsPrismaSelect,
-  });
+export const getSongLyricsById = cache(async function getSongLyricsById(
+  songId: string,
+): Promise<Lyrics[]> {
+  return unstable_cache(
+    async () => {
+      const lyrics = await prisma.lyrics.findMany({
+        where: { songId },
+        select: lyricsPrismaSelect,
+      });
 
-  return lyrics.map(serializeLyrics);
-}
+      return lyrics.map(serializeLyrics);
+    },
+    ["song-lyrics", songId],
+    { tags: [`song:${songId}`], revalidate: false },
+  )();
+});
 
 /**
  * Fetch all songs for listing.
@@ -64,10 +79,16 @@ export async function getSongLyricsById(songId: string): Promise<Lyrics[]> {
  */
 export const getAllSongsForListing = cache(
   async function getAllSongsForListing(): Promise<SongListItem[]> {
-    const songs = await prisma.song.findMany({
-      orderBy: [{ titleEnglish: "asc" }, { titleJapanese: "asc" }],
-      select: songListPrismaSelect,
-    });
-    return songs.map(serializeSongListItem);
+    return unstable_cache(
+      async () => {
+        const songs = await prisma.song.findMany({
+          orderBy: [{ titleEnglish: "asc" }, { titleJapanese: "asc" }],
+          select: songListPrismaSelect,
+        });
+        return songs.map(serializeSongListItem);
+      },
+      ["all-songs-listing"],
+      { tags: ["songs:list"], revalidate: false },
+    )();
   },
 );

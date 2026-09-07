@@ -1,6 +1,7 @@
 "use server";
 
 import { requireResource } from "@/admin/auth/guard";
+import { invalidateContentTag } from "@/admin/lib/cache";
 import { type SongFormValues } from "@/admin/schemas/songs";
 import { recordChange } from "@/db/queries/admin/changes";
 import {
@@ -134,6 +135,7 @@ export async function adminCreateSong(data: SongFormValues) {
     externalLinks: data.externalLinks as Prisma.InputJsonValue | undefined,
   });
   await recordChange("song", song.id, user.id);
+  invalidateContentTag("songs:list");
   return { ...song, releaseDate: song.releaseDate.toISOString().slice(0, 10) };
 }
 
@@ -153,6 +155,8 @@ export async function adminUpdateSong(id: string, data: SongFormValues) {
     externalLinks: data.externalLinks as Prisma.InputJsonValue | undefined,
   });
   await recordChange("song", id, user.id);
+  invalidateContentTag(`song:${id}`);
+  invalidateContentTag("songs:list");
   return { ...song, releaseDate: song.releaseDate.toISOString().slice(0, 10) };
 }
 
@@ -164,12 +168,17 @@ export async function adminGetSongAlbums(id: string) {
 export async function adminDeleteSong(id: string) {
   await requireResource("songs", "write");
   await dbDeleteSong(id);
+  invalidateContentTag(`song:${id}`);
+  invalidateContentTag("songs:list");
+  invalidateContentTag("albums:list");
   return { id };
 }
 
 export async function adminDuplicateSong(id: string) {
   await requireResource("songs", "write");
-  return dbDuplicateSong(id);
+  const song = await dbDuplicateSong(id);
+  invalidateContentTag("songs:list");
+  return song;
 }
 
 export async function adminGetSongLyrics(songId: string) {
@@ -186,10 +195,12 @@ export async function adminUpsertLyrics(
   const user = await requireResource("songs", "write");
   const result = await dbUpsertLyrics(songId, language, lines, translator);
   await recordChange("song", songId, user.id);
+  invalidateContentTag(`song:${songId}`);
   return result;
 }
 
 export async function adminDeleteLyrics(songId: string, language: string) {
   await requireResource("songs", "write");
   await dbDeleteLyrics(songId, language);
+  invalidateContentTag(`song:${songId}`);
 }

@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { cache } from "react";
 
 import { songListPrismaSelect } from "@/db/select";
@@ -13,12 +14,18 @@ import type { SongListItem } from "@/types/song";
  * @returns Promise resolving to an array of the most recent songs
  */
 export async function getLatestSongs(count = 3): Promise<SongListItem[]> {
-  const songs = await prisma.song.findMany({
-    orderBy: { releaseDate: "desc" },
-    select: songListPrismaSelect,
-    take: count,
-  });
-  return songs.map(serializeSongListItem);
+  return unstable_cache(
+    async () => {
+      const songs = await prisma.song.findMany({
+        orderBy: { releaseDate: "desc" },
+        select: songListPrismaSelect,
+        take: count,
+      });
+      return songs.map(serializeSongListItem);
+    },
+    ["latest-songs", String(count)],
+    { tags: ["songs:list"], revalidate: false },
+  )();
 }
 
 /**
@@ -33,41 +40,49 @@ export async function getLatestSongs(count = 3): Promise<SongListItem[]> {
 export async function getRandomSongs(count = 3): Promise<SongListItem[]> {
   const safeCount = Math.min(Math.max(1, Math.floor(count)), 10);
 
-  const songs = await prisma.$queryRaw<
-    {
-      id: string;
-      titleEnglish: string;
-      titleJapanese: string;
-      length: string;
-      releaseDate: Date;
-      coverArt: string;
-      themeColor: string | null;
-    }[]
-  >`
-    SELECT
-      id,
-      "titleEnglish",
-      "titleJapanese",
-      "length",
-      "releaseDate",
-      "coverArt",
-      "themeColor"
-    FROM "Song"
-    ORDER BY RANDOM()
-    LIMIT ${safeCount};
-  `;
+  return unstable_cache(
+    async () => {
+      const songs = await prisma.$queryRaw<
+        {
+          id: string;
+          titleEnglish: string;
+          titleJapanese: string;
+          length: string;
+          releaseDate: Date;
+          coverArt: string;
+          themeColor: string | null;
+        }[]
+      >`
+        SELECT
+          id,
+          "titleEnglish",
+          "titleJapanese",
+          "length",
+          "releaseDate",
+          "coverArt",
+          "themeColor"
+        FROM "Song"
+        ORDER BY RANDOM()
+        LIMIT ${safeCount};
+      `;
 
-  return songs.map((song) => ({
-    id: song.id,
-    title: {
-      english: song.titleEnglish,
-      japanese: song.titleJapanese,
+      return songs.map((song) => ({
+        id: song.id,
+        title: {
+          english: song.titleEnglish,
+          japanese: song.titleJapanese,
+        },
+        length: song.length,
+        releaseDate: song.releaseDate.toISOString().slice(0, 10),
+        coverArt: song.coverArt,
+        themeColor: song.themeColor ?? undefined,
+      }));
     },
-    length: song.length,
-    releaseDate: song.releaseDate.toISOString().slice(0, 10),
-    coverArt: song.coverArt,
-    themeColor: song.themeColor ?? undefined,
-  }));
+    ["random-songs", String(safeCount)],
+    // Short TTL, not tag-invalidated: keeps the pick rotating instead of
+    // freezing on the first roll after a deploy.
+    { tags: ["songs:list"], revalidate: 300 },
+  )();
 }
 
 /**
