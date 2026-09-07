@@ -92,3 +92,22 @@ export const getAllSongsForListing = cache(
     )();
   },
 );
+
+/**
+ * Fetch all songs with the fields the sitemap needs (video metadata, dates).
+ *
+ * @returns Promise resolving to an array of songs shaped for `app/sitemap.ts`
+ */
+export const getAllSongsForSitemap = cache(async function getAllSongsForSitemap() {
+  return unstable_cache(
+    async () => {
+      const songs = await prisma.song.findMany({ select: songBaseSelect });
+      return songs.map((song) => ({
+        ...song,
+        releaseDate: song.releaseDate.toISOString(),
+      }));
+    },
+    ["all-songs-sitemap"],
+    { tags: ["songs:list"], revalidate: false },
+  )();
+});

@@ -1,22 +1,10 @@
-import { buildLocalizedUrls, durationToSeconds, SEO_BASE_URL } from "@/lib/metadata";
-import { prisma } from "@/prisma/client";
-
 import type { MetadataRoute } from "next";
 
+import { getAllSongsForSitemap } from "@/db/queries/songs";
+import { buildLocalizedUrls, durationToSeconds, SEO_BASE_URL } from "@/lib/metadata";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const songs = await prisma.song.findMany({
-    select: {
-      id: true,
-      titleEnglish: true,
-      titleJapanese: true,
-      releaseDate: true,
-      description: true,
-      length: true,
-      coverArt: true,
-      youtubeId: true,
-      nicoId: true,
-    },
-  });
+  const songs = await getAllSongsForSitemap();
 
   const songEntries: MetadataRoute.Sitemap = songs.map((song) => {
     const baseVideoMetadata = {

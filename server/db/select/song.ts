@@ -1,4 +1,4 @@
-const songBaseSelect = {
+export const songBaseSelect = {
   id: true,
   titleEnglish: true,
   titleJapanese: true,
