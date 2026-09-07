@@ -67,10 +67,18 @@ function assertSuccess(status: number, step: string) {
   }
 }
 
+type GraphqlVariableValue =
+  | string
+  | number
+  | boolean
+  | null
+  | readonly GraphqlVariableValue[]
+  | { readonly [key: string]: GraphqlVariableValue };
+
 async function githubGraphql<T>(
   config: SyncConfig,
   query: string,
-  variables: Record<string, unknown>,
+  variables: Record<string, GraphqlVariableValue>,
 ): Promise<T> {
   const response = await fetch("https://api.github.com/graphql", {
     method: "POST",

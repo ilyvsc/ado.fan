@@ -1,11 +1,22 @@
 "use client";
 
 import { Table } from "@tanstack/react-table";
-import { Check, Columns3, Eye, EyeOff, GripVertical, RotateCcw } from "lucide-react";
+import {
+  Check,
+  Columns3,
+  Eye,
+  EyeOff,
+  GripVertical,
+  RotateCcw,
+} from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
@@ -94,11 +105,16 @@ export function DataTableColumnToggle<T>({
         const order = getOrder();
         const toggleableIds = toggleable.map((c) => c.id);
 
-        const toggleableOrder = order.filter((id) => toggleableIds.includes(id));
+        const toggleableOrder = order.filter((id) =>
+          toggleableIds.includes(id),
+        );
         const fromIdx = toggleableOrder.indexOf(prev.id);
         if (fromIdx === -1) return null;
 
-        const toIdx = Math.max(0, Math.min(dropIndex, toggleableOrder.length - 1));
+        const toIdx = Math.max(
+          0,
+          Math.min(dropIndex, toggleableOrder.length - 1),
+        );
         if (fromIdx !== toIdx) {
           const reordered = [...toggleableOrder];
           reordered.splice(fromIdx, 1);
@@ -159,7 +175,9 @@ export function DataTableColumnToggle<T>({
         }}
       >
         <div className="flex items-center justify-between px-2 py-1.5">
-          <span className="text-xs font-medium text-muted-foreground">Columns</span>
+          <span className="text-xs font-medium text-muted-foreground">
+            Columns
+          </span>
           <button
             onClick={onResetAction}
             className="group flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
@@ -175,10 +193,8 @@ export function DataTableColumnToggle<T>({
           {orderedToggleable.map((column, i) => {
             const isVisible = column.getIsVisible();
             const isDragging = drag?.id === column.id;
-            const label =
-              typeof column.columnDef.header === "string"
-                ? column.columnDef.header
-                : column.id;
+            const header = column.columnDef.header;
+            const label = typeof header === "string" ? header : column.id;
 
             const showDropIndicator = drag && !isDragging && dropIndex === i;
             const showDropIndicatorAfter =

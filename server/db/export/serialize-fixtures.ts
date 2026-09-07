@@ -45,7 +45,7 @@ export interface AlbumFixtureInput {
 const SONG_DIR = "prisma/fixtures/songs";
 const ALBUM_DIR = "prisma/fixtures/albums";
 
-const json = (value: unknown) => JSON.stringify(value, null, 2) + "\n";
+const json = <T,>(value: T) => JSON.stringify(value, null, 2) + "\n";
 
 // Inverse of seed's resolveCoverArt: strip CDN prefix + .webp back to the raw stored path.
 // ponytail: leaves a leading slash if present; the refactor normalizes slash convention.
@@ -68,12 +68,25 @@ function lyricsFrontmatter(lyric: LyricsFixtureInput): string {
   return `---\n${lines.join("\n")}\n---\n\n${lyric.lines.join("\n")}\n`;
 }
 
+interface SongMeta {
+  id: string;
+  title: { english: string; japanese: string };
+  length: string;
+  releaseDate: string;
+  youtubeId: string;
+  nicoId: string;
+  coverArt: string;
+  themeColor: string;
+  credits?: Credits;
+  externalLinks?: ExternalLinks;
+}
+
 export function songFixtureFiles(
   song: SongFixtureInput,
   lyrics: LyricsFixtureInput[],
   opts: { cdnUrl?: string } = {},
 ): FixtureFile[] {
-  const meta: Record<string, unknown> = {
+  const meta: SongMeta = {
     id: song.id,
     title: { english: song.titleEnglish, japanese: song.titleJapanese ?? "" },
     length: song.length,
@@ -107,25 +120,43 @@ export function songFixtureFiles(
   return files;
 }
 
+interface AlbumTrackData {
+  songId: string;
+  trackNumber: number;
+  isBonusTrack?: boolean;
+}
+
+interface AlbumData {
+  id: string;
+  titleEnglish: string;
+  titleJapanese: string;
+  releaseDate: string;
+  type: string;
+  coverArt: string;
+  credits?: Credits;
+  externalLinks?: ExternalLinks;
+  tracks: AlbumTrackData[];
+}
+
 export function albumFixtureFiles(
   album: AlbumFixtureInput,
   opts: { cdnUrl?: string } = {},
 ): FixtureFile[] {
-  const data: Record<string, unknown> = {
+  const data: AlbumData = {
     id: album.id,
     titleEnglish: album.titleEnglish,
     titleJapanese: album.titleJapanese ?? "",
     releaseDate: album.releaseDate,
     type: album.type,
     coverArt: toRawCoverArt(album.coverArt ?? "", opts.cdnUrl),
+    tracks: album.tracks.map((t) => {
+      const track: AlbumTrackData = { songId: t.songId, trackNumber: t.trackNumber };
+      if (t.isBonusTrack) track.isBonusTrack = true;
+      return track;
+    }),
   };
   if (album.credits) data.credits = album.credits;
   if (album.externalLinks.length) data.externalLinks = album.externalLinks;
-  data.tracks = album.tracks.map((t) => ({
-    songId: t.songId,
-    trackNumber: t.trackNumber,
-    ...(t.isBonusTrack ? { isBonusTrack: true } : {}),
-  }));
 
   return [{ path: `${ALBUM_DIR}/${album.id}.json`, content: json(data) }];
 }

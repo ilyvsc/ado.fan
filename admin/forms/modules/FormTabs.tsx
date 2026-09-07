@@ -1,6 +1,6 @@
 "use client";
 
-import { Control, useFormState } from "react-hook-form";
+import { Control, type FieldErrors, useFormState } from "react-hook-form";
 
 import type { TabConfig } from "@/admin/types/forms";
 
@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { type ParseableSchema } from "../validation";
 import { GroupsLayout } from "./FormGroups";
 
-function tabHasError(tab: TabConfig, errors: Record<string, unknown>): boolean {
+function tabHasError(tab: TabConfig, errors: FieldErrors): boolean {
   const fieldNames = tab.groups?.flatMap((g) => g.fields.map((f) => f.name)) ?? [];
   return fieldNames.some((name) => name in errors);
 }

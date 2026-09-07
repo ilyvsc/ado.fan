@@ -141,13 +141,13 @@ function EmptyState() {
 
 const LYRICS_MARKDOWN: Components = {
   ...proseComponents,
-  h1: ({ node, className, ...props }) => (
+  h1: ({ node: _node, className, ...props }) => (
     <TypographyH2
       className={cn("mt-8 mb-4 border-foreground/10 first:mt-0", className)}
       {...props}
     />
   ),
-  h2: ({ node, className, ...props }) => (
+  h2: ({ node: _node, className, ...props }) => (
     <TypographyH3
       className={cn(
         "mt-6 mb-3 text-sm tracking-widest text-muted-foreground uppercase first:mt-0",
@@ -156,25 +156,25 @@ const LYRICS_MARKDOWN: Components = {
       {...props}
     />
   ),
-  h3: ({ node, className, ...props }) => (
+  h3: ({ node: _node, className, ...props }) => (
     <TypographyH3
       className={cn("mt-5 mb-2 text-base text-muted-foreground first:mt-0", className)}
       {...props}
     />
   ),
-  p: ({ node, className, ...props }) => (
+  p: ({ node: _node, className, ...props }) => (
     <TypographyP
       className={cn("my-2 leading-loose whitespace-pre-wrap not-first:mt-2", className)}
       {...props}
     />
   ),
-  em: ({ node, className, ...props }) => (
+  em: ({ node: _node, className, ...props }) => (
     <em className={cn("text-foreground/70", className)} {...props} />
   ),
-  hr: ({ node, className, ...props }) => (
+  hr: ({ node: _node, className, ...props }) => (
     <hr className={cn("my-8 border-foreground/15", className)} {...props} />
   ),
-  blockquote: ({ node, className, ...props }) => (
+  blockquote: ({ node: _node, className, ...props }) => (
     <TypographyBlockquote
       className={cn("my-2 border-foreground/20 pl-4 text-muted-foreground", className)}
       {...props}

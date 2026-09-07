@@ -34,9 +34,11 @@ async function main() {
   console.log("Sign in via GitHub OAuth with this email to link the account.");
 }
 
-main()
-  .catch((error: unknown) => {
-    console.error("❌ Failed to provision superadmin:", error);
-    process.exit(1);
-  })
-  .finally(() => prisma.$disconnect());
+try {
+  await main();
+} catch (error) {
+  console.error("❌ Failed to provision superadmin:", error);
+  process.exitCode = 1;
+} finally {
+  await prisma.$disconnect();
+}

@@ -12,9 +12,9 @@ import { serializeSongSeed } from "@/db/serialize";
 import { Credits, assertCredits } from "@/schemas/credits";
 
 import { prisma } from "./client";
-import { AlbumType } from "./generated/client";
+import { AlbumType, type Prisma } from "./generated/client";
 
-function loadJsonFile(path: string): unknown {
+function loadJsonFile(path: string): Song | AlbumDefinition {
   return JSON.parse(readFileSync(path, "utf-8"));
 }
 
@@ -116,10 +116,10 @@ function normalizeDescription(
   return description;
 }
 
-function normalizeCredits(credits: unknown): Credits | "" {
+function normalizeCredits(credits: SongSeedInput["credits"]): Credits | "" {
   if (!credits) return "";
   const normalized = Array.isArray(credits) ? { credits } : credits;
-  return assertCredits(normalized);
+  return assertCredits(normalized as Prisma.JsonValue);
 }
 
 export function normalizeSongs(songs: Song[]): SongSeedInput[] {

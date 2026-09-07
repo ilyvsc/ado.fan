@@ -1,4 +1,4 @@
-import type { FieldConfig } from "@/admin/types/forms";
+import type { FieldConfig, FieldType } from "@/admin/types/forms";
 
 import { cn } from "@/lib/utils";
 
@@ -36,7 +36,7 @@ export const TRASH_BUTTON =
 
 export const FORM_MESSAGE = "text-xs text-destructive";
 
-const DEFAULT_PLACEHOLDERS: Record<string, string> = {
+const DEFAULT_PLACEHOLDERS: Partial<Record<FieldType, string>> = {
   text: "Type something…",
   textarea: "Write something…",
   url: "https://ado.fan/",

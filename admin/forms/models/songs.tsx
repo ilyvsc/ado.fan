@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "@refinedev/react-hook-form";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
-import { Resolver } from "react-hook-form";
 
 import type { FormConfig } from "@/admin/types/forms";
 
@@ -17,6 +16,7 @@ import { LastEditMarker } from "@/admin/components/ui/LastEditMarker";
 import { FormSkeleton } from "@/admin/components/ui/TableSkeleton";
 import { GenericForm } from "@/admin/forms/form";
 import { FormActions } from "@/admin/forms/FormActions";
+import { toFieldValuesResolver } from "@/admin/forms/validation";
 import { songFormSchema, type SongFormValues } from "@/admin/schemas/songs";
 import { Form } from "@/components/ui/form";
 
@@ -34,7 +34,7 @@ export function SongForm({ action, id }: { action: "create" | "edit"; id?: strin
         router.refresh();
       },
     },
-    resolver: zodResolver(songFormSchema) as unknown as Resolver,
+    resolver: toFieldValuesResolver(zodResolver(songFormSchema)),
     defaultValues: {
       credits: { credits: [] },
       externalLinks: [],
@@ -193,7 +193,7 @@ export function SongForm({ action, id }: { action: "create" | "edit"; id?: strin
         onSubmit={(e) => void form.handleSubmit(onFinish)(e)}
         className="flex flex-col items-center gap-6"
       >
-        <GenericForm form={form} schema={songFormSchema} config={config} />
+        <GenericForm form={form} schema={songFormSchema.shape} config={config} />
         <FormActions listHref="/admin/songs" />
         {action === "edit" && songId && <LastEditMarker entity="song" id={songId} />}
       </form>

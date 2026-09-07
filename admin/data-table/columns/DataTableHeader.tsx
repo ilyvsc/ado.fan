@@ -53,11 +53,17 @@ function HeaderContent<TData>({ header }: { header: Header<TData, unknown> }) {
   return headerDef;
 }
 
-export function DataTableHeader<TData>({ header }: { header: Header<TData, unknown> }) {
+export function DataTableHeader<TData>({
+  header,
+}: {
+  header: Header<TData, unknown>;
+}) {
   return (
     <TableHead
       style={
-        header.column.getCanResize() ? { minWidth: `${header.getSize()}px` } : undefined
+        header.column.getCanResize()
+          ? { minWidth: `${header.getSize()}px` }
+          : undefined
       }
       className={cn(
         "relative h-9 text-xs font-medium text-muted-foreground",
@@ -75,7 +81,9 @@ export function DataTableHeader<TData>({ header }: { header: Header<TData, unkno
           <div
             className={cn(
               "h-4 w-px transition-colors group-hover/resize:bg-ado-primary",
-              header.column.getIsResizing() ? "bg-ado-primary" : "bg-foreground/8",
+              header.column.getIsResizing()
+                ? "bg-ado-primary"
+                : "bg-foreground/8",
             )}
           />
         </div>

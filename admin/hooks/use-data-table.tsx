@@ -110,8 +110,8 @@ export function useAdminTable<TData>({
   const defaultOrder = useMemo(
     () =>
       allColumns.map((c) => {
-        const col = c as { id?: string; accessorKey?: string };
-        return col.id ?? col.accessorKey ?? "";
+        if (c.id) return c.id;
+        return "accessorKey" in c ? String(c.accessorKey) : "";
       }),
     [allColumns],
   );
@@ -149,7 +149,9 @@ export function useAdminTable<TData>({
     onColumnSizingChange: setColumnSizing,
     onColumnOrderChange: setColumnOrder,
     onExpandedChange: setExpanded,
-    getSubRows: (row) => (row as unknown as { children?: TData[] }).children,
+    getSubRows: (row) => {
+      return (row as TData & { children?: TData[] }).children;
+    },
     columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),

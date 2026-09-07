@@ -32,6 +32,10 @@ function writePrefs(tableId: string, prefs: Partial<TablePreferences>) {
 
 const EMPTY_PREFS: Partial<TablePreferences> = {};
 
+function isUpdaterFunction<T>(updater: T | ((prev: T) => T)): updater is (prev: T) => T {
+  return updater instanceof Function;
+}
+
 function subscribe(callback: () => void) {
   window.addEventListener("storage", callback);
   return () => {
@@ -80,13 +84,14 @@ export function useTablePreferences(
   function setColumnVisibility(
     updater: VisibilityState | ((prev: VisibilityState) => VisibilityState),
   ) {
-    const next: VisibilityState =
-      typeof updater === "function" ? updater(columnVisibility) : updater;
+    const next: VisibilityState = isUpdaterFunction(updater)
+      ? updater(columnVisibility)
+      : updater;
     writePrefs(tableId, { ...readPrefs(tableId), columnVisibility: next });
   }
 
   function setColumnOrder(updater: string[] | ((prev: string[]) => string[])) {
-    const next: string[] = typeof updater === "function" ? updater(columnOrder) : updater;
+    const next: string[] = isUpdaterFunction(updater) ? updater(columnOrder) : updater;
     writePrefs(tableId, { ...readPrefs(tableId), columnOrder: next });
   }
 

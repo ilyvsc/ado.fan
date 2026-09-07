@@ -7,7 +7,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { Resolver } from "react-hook-form";
 
 import type { FormConfig } from "@/admin/types/forms";
 import type { Album } from "@/types/album";
@@ -18,6 +17,7 @@ import { LastEditMarker } from "@/admin/components/ui/LastEditMarker";
 import { FormSkeleton } from "@/admin/components/ui/TableSkeleton";
 import { GenericForm } from "@/admin/forms/form";
 import { FormActions } from "@/admin/forms/FormActions";
+import { toFieldValuesResolver } from "@/admin/forms/validation";
 import { albumFormSchema, type AlbumFormValues } from "@/admin/schemas/albums";
 import { Form } from "@/components/ui/form";
 import { TypographyMuted } from "@/components/ui/typography";
@@ -83,7 +83,12 @@ export function SongAlbums({ songId }: { songId: string }) {
                   <dl className="mt-0.5 grid grid-cols-2 gap-x-3 gap-y-0.5">
                     {(
                       [
-                        ["Type", <span className="capitalize">{album.type}</span>],
+                        [
+                          "Type",
+                          <span key="type" className="capitalize">
+                            {album.type}
+                          </span>,
+                        ],
                         ["Released", album.releaseDate.slice(0, 4)],
                         ["Tracks", album.tracks.length],
                         [
@@ -92,7 +97,7 @@ export function SongAlbums({ songId }: { songId: string }) {
                             ? `#${track.trackNumber}${track.isBonusTrack ? " (bonus)" : ""}`
                             : "—",
                         ],
-                      ] as [string, React.ReactNode][]
+                      ] satisfies [string, React.ReactNode][]
                     ).map(([label, value]) => (
                       <div key={label} className="flex items-baseline gap-1">
                         <dt className="shrink-0 text-xs text-muted-foreground/40">
@@ -132,7 +137,7 @@ export function AlbumForm({ action, id }: { action: "create" | "edit"; id?: stri
         router.refresh();
       },
     },
-    resolver: zodResolver(albumFormSchema) as unknown as Resolver,
+    resolver: toFieldValuesResolver(zodResolver(albumFormSchema)),
     defaultValues: {
       credits: { credits: [] },
       externalLinks: [],
@@ -246,7 +251,7 @@ export function AlbumForm({ action, id }: { action: "create" | "edit"; id?: stri
         onSubmit={(e) => void form.handleSubmit(onFinish)(e)}
         className="flex flex-col items-center gap-6"
       >
-        <GenericForm form={form} schema={albumFormSchema} config={config} />
+        <GenericForm form={form} schema={albumFormSchema.shape} config={config} />
         <FormActions listHref="/admin/albums" />
         {action === "edit" && id && <LastEditMarker entity="album" id={id} />}
       </form>

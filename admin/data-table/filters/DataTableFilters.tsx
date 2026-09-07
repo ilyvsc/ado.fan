@@ -9,7 +9,7 @@ import type { ActiveFilterValue, FilterDef } from "@/admin/types/filters";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 
-export function isFilterActive(value: unknown) {
+export function isFilterActive(value: ActiveFilterValue) {
   if (value === null || value === undefined) return false;
   if (Array.isArray(value) && value.length === 0) return false;
   return true;

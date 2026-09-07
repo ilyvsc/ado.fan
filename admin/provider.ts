@@ -28,11 +28,13 @@ interface ListParams {
   sorters?: CrudSort[];
 }
 
+type ResourceFormValues = AlbumFormValues | SongFormValues;
+
 interface ResourceHandlers {
   getList: (params: ListParams) => Promise<{ data: BaseRecord[]; total: number }>;
   getOne: (id: string) => Promise<BaseRecord>;
-  create: (variables: unknown) => Promise<BaseRecord>;
-  update: (id: string, variables: unknown) => Promise<BaseRecord>;
+  create: (variables: ResourceFormValues) => Promise<BaseRecord>;
+  update: (id: string, variables: ResourceFormValues) => Promise<BaseRecord>;
   deleteOne: (id: string) => Promise<BaseRecord>;
 }
 
@@ -53,10 +55,15 @@ const registry = {
   },
 } satisfies Record<string, ResourceHandlers>;
 
+function isKnownResource(resource: string): resource is keyof typeof registry {
+  return Object.hasOwn(registry, resource);
+}
+
 function getHandlers(resource: string): ResourceHandlers {
-  const handlers = (registry as Record<string, ResourceHandlers | undefined>)[resource];
-  if (!handlers) throw new Error(`Resource not registered: ${resource}`);
-  return handlers;
+  if (!isKnownResource(resource)) {
+    throw new Error(`Resource not registered: ${resource}`);
+  }
+  return registry[resource];
 }
 
 export const adminDataProvider: DataProvider = {
@@ -78,11 +85,11 @@ export const adminDataProvider: DataProvider = {
   }),
 
   create: async ({ resource, variables }) => ({
-    data: (await getHandlers(resource).create(variables)) as never,
+    data: (await getHandlers(resource).create(variables as ResourceFormValues)) as never,
   }),
 
   update: async ({ resource, id, variables }) => ({
-    data: (await getHandlers(resource).update(String(id), variables)) as never,
+    data: (await getHandlers(resource).update(String(id), variables as ResourceFormValues)) as never,
   }),
 
   deleteOne: async ({ resource, id }) => ({

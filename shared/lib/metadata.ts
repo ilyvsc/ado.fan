@@ -64,10 +64,7 @@ export function buildUrl(pathname = ""): string {
  * @param pathname - Route pathname. May be provided with or without a leading slash.
  * @returns Canonical URL and locale-specific alternate URLs.
  */
-export function buildLocalizedUrls(pathname = ""): {
-  canonical: string;
-  languages: Record<string, string>;
-} {
+export function buildLocalizedUrls(pathname = "") {
   const normalized = pathname.startsWith("/") ? pathname : `/${pathname}`;
   const canonical = buildUrl(normalized);
 
@@ -114,7 +111,7 @@ export function buildAlternates(pathname = ""): Metadata["alternates"] {
  * @param duration - Duration string (e.g. `"03:45"`).
  * @returns The parsed minutes and seconds.
  */
-function parseDuration(duration: string): Readonly<{ minutes: number; seconds: number }> {
+function parseDuration(duration: string) {
   const [minutes = 0, seconds = 0] = duration.split(":").map(Number);
   return { minutes, seconds };
 }

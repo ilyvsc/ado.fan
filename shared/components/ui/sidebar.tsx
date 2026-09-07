@@ -75,7 +75,7 @@ function SidebarProvider({
   const open = openProp ?? _open;
   const setOpen = React.useCallback(
     (value: boolean | ((value: boolean) => boolean)) => {
-      const openState = typeof value === "function" ? value(open) : value;
+      const openState = value instanceof Function ? value(open) : value;
       if (setOpenProp) {
         setOpenProp(openState);
       } else {
@@ -523,6 +523,7 @@ function SidebarMenuButton({
     return button;
   }
 
+  // oxlint-disable-next-line anti-slop/no-runtime-typeof -- tooltip is string | TooltipContent props; typeof is the only way to tell them apart.
   if (typeof tooltip === "string") {
     tooltip = {
       children: tooltip,

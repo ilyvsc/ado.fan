@@ -12,25 +12,25 @@ import {
 import { cn } from "@/lib/utils";
 
 export const proseComponents: Components = {
-  h1: ({ node, className, ...props }) => (
+  h1: ({ node: _node, className, ...props }) => (
     <TypographyH1 className={cn("mt-8 mb-4 first:mt-0", className)} {...props} />
   ),
-  h2: ({ node, className, ...props }) => (
+  h2: ({ node: _node, className, ...props }) => (
     <TypographyH2 className={cn("mt-8 mb-4 first:mt-0", className)} {...props} />
   ),
-  h3: ({ node, className, ...props }) => (
+  h3: ({ node: _node, className, ...props }) => (
     <TypographyH3 className={cn("mt-6 mb-3 first:mt-0", className)} {...props} />
   ),
-  h4: ({ node, className, ...props }) => (
+  h4: ({ node: _node, className, ...props }) => (
     <TypographyH4 className={cn("mt-5 mb-2 first:mt-0", className)} {...props} />
   ),
-  p: ({ node, className, ...props }) => (
+  p: ({ node: _node, className, ...props }) => (
     <TypographyP className={cn("not-first:mt-4", className)} {...props} />
   ),
-  ul: ({ node, className, ...props }) => (
+  ul: ({ node: _node, className, ...props }) => (
     <TypographyList className={className} {...props} />
   ),
-  blockquote: ({ node, className, ...props }) => (
+  blockquote: ({ node: _node, className, ...props }) => (
     <TypographyBlockquote className={className} {...props} />
   ),
 };

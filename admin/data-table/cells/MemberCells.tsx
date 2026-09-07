@@ -114,7 +114,7 @@ export function AccessCell({ member }: { member: Member }) {
 
 export function MemberActionsCell({
   member,
-  pending,
+  pending: _pending,
 }: {
   member: Member;
   pending: boolean;

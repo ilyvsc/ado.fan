@@ -16,6 +16,7 @@ import { Prisma } from "@/prisma/client";
 import { assertCredits, parseCredits } from "@/schemas/credits";
 
 import type { ListFilter } from "../types/filters";
+import { isNumericFilterValue } from "../forms/validation";
 
 function buildFilterWhere(filters?: ListFilter[]): Prisma.AlbumWhereInput {
   if (!filters?.length) return {};
@@ -25,17 +26,15 @@ function buildFilterWhere(filters?: ListFilter[]): Prisma.AlbumWhereInput {
     switch (f.field) {
       case "releaseDate":
         if (f.operator === "gte") {
-          const v =
-            typeof f.value === "number"
-              ? new Date(`${f.value}-01-01`)
-              : new Date(String(f.value));
+          const v = isNumericFilterValue(f.value)
+            ? new Date(`${f.value}-01-01`)
+            : new Date(String(f.value));
           conditions.push({ releaseDate: { gte: v } });
         }
         if (f.operator === "lte") {
-          const v =
-            typeof f.value === "number"
-              ? new Date(`${f.value}-12-31`)
-              : new Date(String(f.value));
+          const v = isNumericFilterValue(f.value)
+            ? new Date(`${f.value}-12-31`)
+            : new Date(String(f.value));
           conditions.push({ releaseDate: { lte: v } });
         }
         break;

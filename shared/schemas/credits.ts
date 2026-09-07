@@ -23,15 +23,17 @@ export const CreditsSchema = z.strictObject({
 
 export type Credits = z.infer<typeof CreditsSchema>;
 
-export function assertCredits(json: unknown): Credits {
+export function assertCredits(json: Prisma.JsonValue): Credits {
   return CreditsSchema.parse(json);
 }
 
 export function parseCredits(json: Prisma.JsonValue): Credits | null {
   if (json == null) return null;
-  if (typeof json === "string") {
+
+  const stringJson = z.string().safeParse(json);
+  if (stringJson.success) {
     try {
-      return parseCredits(JSON.parse(json) as Prisma.JsonValue);
+      return parseCredits(JSON.parse(stringJson.data) as Prisma.JsonValue);
     } catch {
       return null;
     }

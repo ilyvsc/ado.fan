@@ -12,7 +12,7 @@ import { ConcertEntry } from "./WhoIsAdo";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function VideoPart({ entry, videoSrc }: { entry: ConcertEntry; videoSrc: string }) {
+function VideoPart({ videoSrc }: { entry: ConcertEntry; videoSrc: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 

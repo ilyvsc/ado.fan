@@ -58,15 +58,19 @@ import { cn } from "@/lib/utils";
 const SIDEBAR_TOOLTIP =
   "border-foreground/10 bg-foreground text-background text-xs font-medium shadow-lg";
 
-const ROLE_LABEL: Record<string, string> = {
+const ROLE_LABEL: Record<Role, string> = {
   superadmin: "Super Admin",
   admin: "Admin",
   contributor: "Contributor",
 };
 
+function isRole(value: string): value is Role {
+  return value in ROLE_LABEL;
+}
+
 function roleLabel(role?: string | null) {
   if (!role) return "Member";
-  return ROLE_LABEL[role] ?? role;
+  return isRole(role) ? ROLE_LABEL[role] : role;
 }
 
 function initials(name?: string | null) {

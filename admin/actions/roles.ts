@@ -56,7 +56,7 @@ export async function listMembers(): Promise<Member[]> {
       role: u.role,
       createdAt: u.createdAt,
       updatedAt: u.updatedAt,
-      sessionCount: (u as unknown as { _count: { sessions: number } })._count.sessions,
+      sessionCount: u._count.sessions,
       levels: Object.fromEntries(
         RESOURCES.map((r) => [r, effectiveLevel(u.role, overrides, r)]),
       ) as Record<Resource, Level>,

@@ -5,6 +5,8 @@ import { useRef, useMemo } from "react";
 
 import { cn } from "@/lib/utils";
 
+import { Prisma } from "@/prisma/client";
+
 function tokenize(raw: string): string {
   return raw
     .replace(/&/g, "&amp;")
@@ -14,7 +16,8 @@ function tokenize(raw: string): string {
       /("(?:\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(?:\s*:)?|\b(?:true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g,
       (match) => {
         if (match.startsWith('"')) {
-          const cls = match.endsWith(":") || match.endsWith('":') ? "t-key" : "t-str";
+          const cls =
+            match.endsWith(":") || match.endsWith('":') ? "t-key" : "t-str";
           return `<span class="${cls}">${match}</span>`;
         }
         if (match === "true" || match === "false" || match === "null")
@@ -24,7 +27,7 @@ function tokenize(raw: string): string {
     );
 }
 
-export function serialize(val: unknown, depth = 0): string {
+export function serialize(val: Prisma.JsonValue, depth = 0): string {
   if (val === null || typeof val !== "object") return JSON.stringify(val);
 
   const pad = "  ".repeat(depth);
@@ -37,15 +40,15 @@ export function serialize(val: unknown, depth = 0): string {
         el !== null &&
         typeof el === "object" &&
         !Array.isArray(el) &&
-        Object.values(el as object).every((v) => v === null || typeof v !== "object"),
+        Object.values(el).every((v) => v === null || typeof v !== "object"),
     );
     if (simple) return `[${val.map((el) => JSON.stringify(el)).join(", ")}]`;
     return `[\n${val.map((el) => `${inner}${serialize(el, depth + 1)}`).join(",\n")}\n${pad}]`;
   }
 
-  const entries = Object.entries(val as Record<string, unknown>);
+  const entries = Object.entries(val);
   if (entries.length === 0) return "{}";
-  return `{\n${entries.map(([k, v]) => `${inner}${JSON.stringify(k)}: ${serialize(v, depth + 1)}`).join(",\n")}\n${pad}}`;
+  return `{\n${entries.map(([k, v]) => `${inner}${JSON.stringify(k)}: ${serialize(v ?? null, depth + 1)}`).join(",\n")}\n${pad}}`;
 }
 
 function parseError(raw: string): string | null {
@@ -116,7 +119,8 @@ export function JsonEditor({
             handleChange(e.target.value);
           }}
           onScroll={(e) => {
-            if (preRef.current) preRef.current.scrollTop = e.currentTarget.scrollTop;
+            if (preRef.current)
+              preRef.current.scrollTop = e.currentTarget.scrollTop;
           }}
           rows={rows}
           spellCheck={false}

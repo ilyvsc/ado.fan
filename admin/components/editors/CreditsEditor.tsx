@@ -109,7 +109,7 @@ export function CreditsEditor({ control: rawControl }: { control: unknown }) {
   const [jsonValid, setJsonValid] = useState(true);
 
   const enterJsonMode = () => {
-    setJsonText(serialize(fields.map(({ id, ...rest }) => rest)));
+    setJsonText(serialize(fields.map(({ id: _id, ...rest }) => rest)));
     setJsonError(null);
     setJsonMode(true);
   };

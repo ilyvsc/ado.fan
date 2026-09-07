@@ -36,11 +36,21 @@ import { cn } from "@/lib/utils";
 
 type Session = Awaited<ReturnType<typeof listMemberSessions>>[number];
 type Icon = React.ComponentType<{ className?: string }>;
+type OsName =
+  | "ChromeOS"
+  | "Windows"
+  | "iOS"
+  | "iPadOS"
+  | "Android"
+  | "macOS"
+  | "Linux"
+  | "Unknown";
+type BrowserName = "Edge" | "Opera" | "Firefox" | "Chrome" | "Safari" | "Unknown";
 
-function parseUA(ua: string | null): { browser: string; os: string } {
-  if (!ua) return { browser: "Unknown", os: "Unknown" };
+function parseUA(ua: string | null) {
+  if (!ua) return { browser: "Unknown" as BrowserName, os: "Unknown" as OsName };
 
-  let os = "Unknown";
+  let os: OsName = "Unknown";
   if (/CrOS/i.test(ua)) os = "ChromeOS";
   else if (/Windows NT/i.test(ua)) os = "Windows";
   else if (/iPhone/i.test(ua)) os = "iOS";
@@ -49,7 +59,7 @@ function parseUA(ua: string | null): { browser: string; os: string } {
   else if (/Mac OS X/i.test(ua)) os = "macOS";
   else if (/Linux/i.test(ua)) os = "Linux";
 
-  let browser = "Unknown";
+  let browser: BrowserName = "Unknown";
   if (/Edg\//i.test(ua)) browser = "Edge";
   else if (/OPR\/|Opera\//i.test(ua)) browser = "Opera";
   else if (/Firefox\/\d/i.test(ua)) browser = "Firefox";
@@ -59,7 +69,7 @@ function parseUA(ua: string | null): { browser: string; os: string } {
   return { browser, os };
 }
 
-const OS_ICON: Record<string, Icon> = {
+const OS_ICON: Partial<Record<OsName, Icon>> = {
   macOS: SiMacos,
   iOS: SiApple,
   iPadOS: SiApple,
@@ -67,7 +77,7 @@ const OS_ICON: Record<string, Icon> = {
   Linux: SiLinux,
 };
 
-const BROWSER_ICON: Record<string, Icon> = {
+const BROWSER_ICON: Partial<Record<BrowserName, Icon>> = {
   Chrome: SiGooglechrome,
   Firefox: SiFirefox,
   Safari: SiSafari,

@@ -41,7 +41,7 @@ export function SongHeaderActions({
       url,
     };
 
-    if (typeof navigator.share === "function") {
+    if ("share" in navigator) {
       try {
         await navigator.share(shareData);
         return;
