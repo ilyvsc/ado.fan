@@ -15,10 +15,7 @@ export function matchesSearch(
   return fields.some((f) => (f ?? "").toLowerCase().includes(search));
 }
 
-export function matchesSelect(
-  active: ActiveFilterValue,
-  value: string,
-): boolean {
+export function matchesSelect(active: ActiveFilterValue, value: string): boolean {
   return typeof active !== "string" || active === value;
 }
 
@@ -29,10 +26,7 @@ export function matchesSelectIn(
   return typeof active !== "string" || candidates.includes(active);
 }
 
-export function filtersToCrud(
-  filters: FilterDef[],
-  active: ActiveFilters,
-): CrudFilter[] {
+export function filtersToCrud(filters: FilterDef[], active: ActiveFilters): CrudFilter[] {
   const result: CrudFilter[] = [];
 
   for (const def of filters) {
@@ -77,8 +71,7 @@ export function filtersToCrud(
         break;
       case "date-range": {
         const [from, to] = value as [string, string];
-        if (from)
-          result.push({ field: def.field, operator: "gte", value: from });
+        if (from) result.push({ field: def.field, operator: "gte", value: from });
         if (to) result.push({ field: def.field, operator: "lte", value: to });
         break;
       }
@@ -96,17 +89,12 @@ export function countActiveFilters(active: ActiveFilters): number {
   }).length;
 }
 
-export function getFilterSummary(
-  def: FilterDef,
-  value: ActiveFilterValue,
-): string {
+export function getFilterSummary(def: FilterDef, value: ActiveFilterValue): string {
   switch (def.type) {
     case "search":
       return String(value);
     case "select":
-      return (
-        def.options?.find((o) => o.value === value)?.label ?? String(value)
-      );
+      return def.options?.find((o) => o.value === value)?.label ?? String(value);
     case "multi-select":
     case "checkbox-group":
       return (value as string[]).join(", ");
@@ -139,10 +127,7 @@ export function userSelectFilter(
   opts: { id?: string; label?: string } = {},
 ): FilterDef {
   const id = opts.id ?? "user";
-  const byId = new Map<
-    string,
-    { value: string; label: string; image: string | null }
-  >();
+  const byId = new Map<string, { value: string; label: string; image: string | null }>();
   for (const u of users) {
     if (u.id && !byId.has(u.id)) {
       byId.set(u.id, { value: u.id, label: u.name, image: u.image ?? null });

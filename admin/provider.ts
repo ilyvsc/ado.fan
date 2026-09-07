@@ -89,7 +89,10 @@ export const adminDataProvider: DataProvider = {
   }),
 
   update: async ({ resource, id, variables }) => ({
-    data: (await getHandlers(resource).update(String(id), variables as ResourceFormValues)) as never,
+    data: (await getHandlers(resource).update(
+      String(id),
+      variables as ResourceFormValues,
+    )) as never,
   }),
 
   deleteOne: async ({ resource, id }) => ({

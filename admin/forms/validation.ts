@@ -5,10 +5,7 @@ import {
   type ResolverOptions,
 } from "react-hook-form";
 
-export type ParseableSchema = Record<
-  string,
-  { isOptional?: () => boolean } | undefined
->;
+export type ParseableSchema = Record<string, { isOptional?: () => boolean } | undefined>;
 
 export function isFieldRequired<T extends FieldValues>(
   schema: ParseableSchema | undefined,

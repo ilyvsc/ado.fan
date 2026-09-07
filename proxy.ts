@@ -26,7 +26,7 @@ export async function proxy(request: NextRequest) {
       headers: request.headers,
     });
     if (session) return NextResponse.next();
-  } catch  {
+  } catch {
     console.error("Admin authentication failed");
   }
 

@@ -45,7 +45,7 @@ export interface AlbumFixtureInput {
 const SONG_DIR = "prisma/fixtures/songs";
 const ALBUM_DIR = "prisma/fixtures/albums";
 
-const json = <T,>(value: T) => JSON.stringify(value, null, 2) + "\n";
+const json = <T>(value: T) => JSON.stringify(value, null, 2) + "\n";
 
 // Inverse of seed's resolveCoverArt: strip CDN prefix + .webp back to the raw stored path.
 // ponytail: leaves a leading slash if present; the refactor normalizes slash convention.

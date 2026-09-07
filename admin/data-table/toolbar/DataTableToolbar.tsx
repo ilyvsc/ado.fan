@@ -43,12 +43,8 @@ export function DataTableToolbar<TData>({
   lockedColumnIds,
 }: DataTableToolbarProps<TData>) {
   const nonSearchFilters = filters.filter((f) => f.type !== "search");
-  const simpleFilters = nonSearchFilters.filter(
-    (f) => "simple" in f && f.simple,
-  );
-  const complexFilters = nonSearchFilters.filter(
-    (f) => !("simple" in f && f.simple),
-  );
+  const simpleFilters = nonSearchFilters.filter((f) => "simple" in f && f.simple);
+  const complexFilters = nonSearchFilters.filter((f) => !("simple" in f && f.simple));
 
   const totalActive = countActiveFilters(activeFilters);
   const activeSorts = table.getState().sorting;

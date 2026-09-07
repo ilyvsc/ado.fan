@@ -4,7 +4,6 @@ import { WandSparkles } from "lucide-react";
 import { useRef, useMemo } from "react";
 
 import { cn } from "@/lib/utils";
-
 import { Prisma } from "@/prisma/client";
 
 function tokenize(raw: string): string {
@@ -16,8 +15,7 @@ function tokenize(raw: string): string {
       /("(?:\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(?:\s*:)?|\b(?:true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g,
       (match) => {
         if (match.startsWith('"')) {
-          const cls =
-            match.endsWith(":") || match.endsWith('":') ? "t-key" : "t-str";
+          const cls = match.endsWith(":") || match.endsWith('":') ? "t-key" : "t-str";
           return `<span class="${cls}">${match}</span>`;
         }
         if (match === "true" || match === "false" || match === "null")
@@ -119,8 +117,7 @@ export function JsonEditor({
             handleChange(e.target.value);
           }}
           onScroll={(e) => {
-            if (preRef.current)
-              preRef.current.scrollTop = e.currentTarget.scrollTop;
+            if (preRef.current) preRef.current.scrollTop = e.currentTarget.scrollTop;
           }}
           rows={rows}
           spellCheck={false}

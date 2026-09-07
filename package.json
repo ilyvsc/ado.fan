@@ -64,6 +64,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^10.5.0",
+    "@oxlint/plugins": "^1.81.0",
     "@tailwindcss/postcss": "^4.3.1",
     "@types/node": "^26.0.1",
     "@types/pg": "^8.20.0",
@@ -73,7 +74,6 @@
     "oxfmt": "^0.66.0",
     "oxlint": "^1.81.0",
     "oxlint-tsgolint": "^7.0.2001",
-    "@oxlint/plugins": "^1.81.0",
     "postcss": "^8.5.15",
     "prisma": "^7.8.0",
     "tailwindcss": "^4.3.1",
